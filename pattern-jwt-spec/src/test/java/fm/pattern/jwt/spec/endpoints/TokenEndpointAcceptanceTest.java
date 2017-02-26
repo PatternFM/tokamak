@@ -10,7 +10,7 @@ import org.junit.Test;
 
 import fm.pattern.commons.rest.Result;
 import fm.pattern.jwt.sdk.ClientCredentials;
-import fm.pattern.jwt.sdk.OAuthClient;
+import fm.pattern.jwt.sdk.TokensClient;
 import fm.pattern.jwt.sdk.UserCredentials;
 import fm.pattern.jwt.sdk.model.AccessTokenRepresentation;
 import fm.pattern.jwt.sdk.model.AccountRepresentation;
@@ -18,7 +18,7 @@ import fm.pattern.jwt.spec.AcceptanceTest;
 
 public class TokenEndpointAcceptanceTest extends AcceptanceTest {
 
-	private OAuthClient oAuthClient = new OAuthClient("http://localhost:9600");
+	private TokensClient oAuthClient = new TokensClient("http://localhost:9600");
 
 	private String password = "password12345";
 	private AccountRepresentation account;

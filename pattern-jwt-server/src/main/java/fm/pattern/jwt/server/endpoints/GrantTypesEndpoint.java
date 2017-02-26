@@ -48,14 +48,14 @@ public class GrantTypesEndpoint extends Endpoint {
 	}
 
 	@ResponseStatus(value = HttpStatus.OK)
-	@RequestMapping(value = "/v1/grants/{id}", method = GET, produces = APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/v1/grant_types/{id}", method = GET, produces = APPLICATION_JSON_VALUE)
 	public GrantTypeRepresentation findById(@PathVariable String id) {
 		GrantType grant = validate(grantService.findById(id));
 		return egress.convert(grant);
 	}
 
 	@ResponseStatus(value = HttpStatus.OK)
-	@RequestMapping(value = "/v1/grants", method = GET, produces = APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/v1/grant_types", method = GET, produces = APPLICATION_JSON_VALUE)
 	public GrantTypesRepresentation list() {
 		List<GrantType> grants = validate(grantService.list());
 		return new GrantTypesRepresentation(grants.stream().map(grant -> egress.convert(grant)).collect(Collectors.toList()));

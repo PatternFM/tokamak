@@ -25,9 +25,9 @@ import fm.pattern.commons.rest.RestClient;
 import fm.pattern.commons.rest.Result;
 import fm.pattern.jwt.sdk.model.AccessTokenRepresentation;
 
-public class OAuthClient extends RestClient {
+public class TokensClient extends RestClient {
 
-	public OAuthClient(String endpoint) {
+	public TokensClient(String endpoint) {
 		super(config(), endpoint);
 	}
 
