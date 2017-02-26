@@ -60,4 +60,22 @@ public class ClientsEndpointAcceptanceTest extends AcceptanceTest {
 		assertThat(created.getAuthorities()).extracting("name").contains(authority1.getName(), authority2.getName());
 	}
 
+	@Test
+	public void shouldNotBeAbleToCreateAnInvalidClient() {
+		ClientRepresentation representation = client().withToken(token).build();
+
+		Result<ClientRepresentation> response = client.create(representation, this.token.getAccessToken());
+		assertThat(response).rejected().withResponseCode(422).withDescription("A client requires at least one grant type.");
+
+	}
+
+	@Test
+	public void shouldNotBeAbleToCreateAClientWithAClientIdThatIsAlreadyInUse() {
+		ClientRepresentation representation = client().withGrantTypes("password", "refresh_token").thatIs().persistent(token).build();
+		representation.setClientSecret("client_secret");
+
+		Result<ClientRepresentation> response = client.create(representation, this.token.getAccessToken());
+		assertThat(response).rejected().withResponseCode(422).withDescription("This client id is already in use.");
+	}
+
 }

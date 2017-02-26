@@ -52,12 +52,18 @@ public class AccountsEndpoint extends Endpoint {
 	@RequestMapping(value = "/v1/accounts", method = POST, consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
 	public AccountRepresentation create(@RequestBody AccountRepresentation representation) {
 		Account account = ingress.convert(representation);
-		return egress.convert(validate(accountService.create(account)));
+		Account created = validate(accountService.create(account));
+		return egress.convert(validate(accountService.findById(created.getId())));
 	}
 
 	@RequestMapping(value = "/v1/accounts/{id}", method = GET, produces = APPLICATION_JSON_VALUE)
 	public AccountRepresentation findById(@PathVariable String id) {
 		return egress.convert(validate(accountService.findById(id)));
+	}
+
+	@RequestMapping(value = "/v1/accounts/username/{username}", method = GET, produces = APPLICATION_JSON_VALUE)
+	public AccountRepresentation findByUsername(@PathVariable String username) {
+		return egress.convert(validate(accountService.findByUsername(username)));
 	}
 
 }

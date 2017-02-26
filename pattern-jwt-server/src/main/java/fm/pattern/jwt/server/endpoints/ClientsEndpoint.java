@@ -51,7 +51,8 @@ public class ClientsEndpoint extends Endpoint {
 	@RequestMapping(value = "/v1/clients", method = POST, consumes = "application/json", produces = "application/json")
 	public ClientRepresentation create(@RequestBody ClientRepresentation representation) {
 		Client client = ingress.convert(representation);
-		return egress.convert(validate(clientService.create(client)));
+		Client created = validate(clientService.create(client));
+		return egress.convert(validate(clientService.findById(created.getId())));
 	}
 
 	@ResponseStatus(value = HttpStatus.OK)
