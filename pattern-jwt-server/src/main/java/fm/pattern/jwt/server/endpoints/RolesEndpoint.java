@@ -62,7 +62,6 @@ public class RolesEndpoint extends Endpoint {
 		return egress.convert(validate(roleService.findById(created.getId())));
 	}
 
-	@ResponseStatus(value = HttpStatus.OK)
 	@RequestMapping(value = "/v1/roles/{id}", method = PUT, consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
 	public RoleRepresentation update(@PathVariable String id, @RequestBody RoleRepresentation representation) {
 		Role role = ingress.update(representation, validate(roleService.findById(id)));
@@ -76,14 +75,18 @@ public class RolesEndpoint extends Endpoint {
 		validate(roleService.delete(role));
 	}
 
-	@ResponseStatus(value = HttpStatus.OK)
 	@RequestMapping(value = "/v1/roles/{id}", method = GET, produces = APPLICATION_JSON_VALUE)
 	public RoleRepresentation findById(@PathVariable String id) {
 		Role role = validate(roleService.findById(id));
 		return egress.convert(role);
 	}
 
-	@ResponseStatus(value = HttpStatus.OK)
+	@RequestMapping(value = "/v1/roles/name/{name}", method = GET, produces = APPLICATION_JSON_VALUE)
+	public RoleRepresentation findByName(@PathVariable String name) {
+		Role role = validate(roleService.findByName(name));
+		return egress.convert(role);
+	}
+
 	@RequestMapping(value = "/v1/roles", method = GET, produces = APPLICATION_JSON_VALUE)
 	public RolesRepresentation list() {
 		List<Role> roles = validate(roleService.list());

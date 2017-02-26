@@ -27,6 +27,10 @@ public class RolesClient extends RestClient {
 		return get(resource("/v1/roles/" + id), RoleRepresentation.class, token);
 	}
 
+	   public Result<RoleRepresentation> findByName(String name, String token) {
+	        return get(resource("/v1/roles/name/" + name), RoleRepresentation.class, token);
+	    }
+	
 	public Result<RolesRepresentation> list(String token) {
 		return get(resource("/v1/roles"), RolesRepresentation.class, token);
 	}

@@ -133,4 +133,19 @@ public class RolesEndpointAcceptanceTest extends AcceptanceTest {
 		assertThat(result).rejected().withResponseCode(404).withDescription("No such role id: rol_123");
 	}
 
+	@Test
+	public void shouldBeAbleToFindARoleByName() {
+		RoleRepresentation role = role().thatIs().persistent(token).build();
+
+		Result<RoleRepresentation> result = client.findByName(role.getName(), token.getAccessToken());
+		assertThat(result).accepted().withResponseCode(200);
+		assertThat(result.getInstance()).isEqualToComparingFieldByField(role);
+	}
+
+	@Test
+	public void shouldReturnA404WhenARoleWithTheSpecifiedNameCannotBeFound() {
+		Result<RoleRepresentation> result = client.findByName("rol_123", token.getAccessToken());
+		assertThat(result).rejected().withResponseCode(404).withDescription("No such role name: rol_123");
+	}
+
 }

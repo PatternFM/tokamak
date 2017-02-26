@@ -62,7 +62,6 @@ public class ScopesEndpoint extends Endpoint {
 		return egress.convert(validate(scopeService.findById(created.getId())));
 	}
 
-	@ResponseStatus(value = HttpStatus.OK)
 	@RequestMapping(value = "/v1/scopes/{id}", method = PUT, consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
 	public ScopeRepresentation update(@PathVariable String id, @RequestBody ScopeRepresentation representation) {
 		Scope scope = ingress.update(representation, validate(scopeService.findById(id)));
@@ -76,14 +75,18 @@ public class ScopesEndpoint extends Endpoint {
 		validate(scopeService.delete(scope));
 	}
 
-	@ResponseStatus(value = HttpStatus.OK)
 	@RequestMapping(value = "/v1/scopes/{id}", method = GET, produces = APPLICATION_JSON_VALUE)
 	public ScopeRepresentation findById(@PathVariable String id) {
 		Scope scope = validate(scopeService.findById(id));
 		return egress.convert(scope);
 	}
 
-	@ResponseStatus(value = HttpStatus.OK)
+	@RequestMapping(value = "/v1/scopes/name/{name}", method = GET, produces = APPLICATION_JSON_VALUE)
+	public ScopeRepresentation findByName(@PathVariable String name) {
+		Scope scope = validate(scopeService.findByName(name));
+		return egress.convert(scope);
+	}
+
 	@RequestMapping(value = "/v1/scopes", method = GET, produces = APPLICATION_JSON_VALUE)
 	public ScopesRepresentation list() {
 		List<Scope> scopes = validate(scopeService.list());

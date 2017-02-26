@@ -62,7 +62,6 @@ public class AuthoritiesEndpoint extends Endpoint {
 		return egress.convert(validate(authorityService.findById(created.getId())));
 	}
 
-	@ResponseStatus(value = HttpStatus.OK)
 	@RequestMapping(value = "/v1/authorities/{id}", method = PUT, consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
 	public AuthorityRepresentation update(@PathVariable String id, @RequestBody AuthorityRepresentation representation) {
 		Authority authority = ingress.update(representation, validate(authorityService.findById(id)));
@@ -76,14 +75,18 @@ public class AuthoritiesEndpoint extends Endpoint {
 		validate(authorityService.delete(authority));
 	}
 
-	@ResponseStatus(value = HttpStatus.OK)
 	@RequestMapping(value = "/v1/authorities/{id}", method = GET, produces = APPLICATION_JSON_VALUE)
 	public AuthorityRepresentation findById(@PathVariable String id) {
 		Authority authority = validate(authorityService.findById(id));
 		return egress.convert(authority);
 	}
 
-	@ResponseStatus(value = HttpStatus.OK)
+	@RequestMapping(value = "/v1/authorities/name/{name}", method = GET, produces = APPLICATION_JSON_VALUE)
+	public AuthorityRepresentation findByName(@PathVariable String name) {
+		Authority authority = validate(authorityService.findByName(name));
+		return egress.convert(authority);
+	}
+
 	@RequestMapping(value = "/v1/authorities", method = GET, produces = APPLICATION_JSON_VALUE)
 	public AuthoritiesRepresentation list() {
 		List<Authority> authorities = validate(authorityService.list());

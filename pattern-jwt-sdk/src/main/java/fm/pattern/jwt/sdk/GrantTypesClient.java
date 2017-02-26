@@ -15,6 +15,10 @@ public class GrantTypesClient extends RestClient {
         return get(resource("/v1/grant_types/" + id), GrantTypeRepresentation.class, token);
     }
 
+    public Result<GrantTypeRepresentation> findByName(String name, String token) {
+        return get(resource("/v1/grant_types/name/" + name), GrantTypeRepresentation.class, token);
+    }
+    
     public Result<GrantTypesRepresentation> list(String token) {
         return get(resource("/v1/grant_types"), GrantTypesRepresentation.class, token);
     }

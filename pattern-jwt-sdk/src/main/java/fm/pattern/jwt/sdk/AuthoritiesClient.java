@@ -27,6 +27,10 @@ public class AuthoritiesClient extends RestClient {
         return get(resource("/v1/authorities/" + id), AuthorityRepresentation.class, token);
     }
 
+    public Result<AuthorityRepresentation> findByName(String name, String token) {
+        return get(resource("/v1/authorities/name/" + name), AuthorityRepresentation.class, token);
+    }
+    
     public Result<AuthoritiesRepresentation> list(String token) {
         return get(resource("/v1/authorities"), AuthoritiesRepresentation.class, token);
     }

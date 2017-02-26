@@ -1,7 +1,7 @@
 package fm.pattern.jwt.spec.endpoints;
 
 import static fm.pattern.jwt.sdk.dsl.AccessTokenDSL.token;
-import static fm.pattern.jwt.sdk.dsl.AuthorityDSL.authority;
+import static fm.pattern.jwt.sdk.dsl.ScopeDSL.scope;
 import static fm.pattern.jwt.spec.PatternAssertions.assertThat;
 import static org.assertj.core.api.StrictAssertions.assertThat;
 
@@ -10,14 +10,14 @@ import org.junit.Before;
 import org.junit.Test;
 
 import fm.pattern.commons.rest.Result;
-import fm.pattern.jwt.sdk.AuthoritiesClient;
+import fm.pattern.jwt.sdk.ScopesClient;
 import fm.pattern.jwt.sdk.model.AccessTokenRepresentation;
-import fm.pattern.jwt.sdk.model.AuthorityRepresentation;
+import fm.pattern.jwt.sdk.model.ScopeRepresentation;
 import fm.pattern.jwt.spec.AcceptanceTest;
 
 public class ScopesEndpointAcceptanceTest extends AcceptanceTest {
 
-	private final AuthoritiesClient client = new AuthoritiesClient("http://localhost:9600");
+	private final ScopesClient client = new ScopesClient("http://localhost:9600");
 
 	private AccessTokenRepresentation token;
 
@@ -27,100 +27,115 @@ public class ScopesEndpointAcceptanceTest extends AcceptanceTest {
 	}
 
 	@Test
-	public void shouldBeAbleToCreateAnAuthority() {
-		AuthorityRepresentation authority = authority().build();
+	public void shouldBeAbleToCreateAScope() {
+		ScopeRepresentation scope = scope().build();
 
-		Result<AuthorityRepresentation> result = client.create(authority, token.getAccessToken());
+		Result<ScopeRepresentation> result = client.create(scope, token.getAccessToken());
 		assertThat(result).accepted().withResponseCode(201);
 
-		AuthorityRepresentation created = result.getInstance();
-		assertThat(created.getId()).startsWith("ath_");
+		ScopeRepresentation created = result.getInstance();
+		assertThat(created.getId()).startsWith("scp_");
 		assertThat(created.getCreated()).isNotNull();
 		assertThat(created.getUpdated()).isNotNull();
 		assertThat(created.getCreated()).isEqualTo(created.getUpdated());
-		assertThat(created.getName()).isEqualTo(authority.getName());
+		assertThat(created.getName()).isEqualTo(scope.getName());
 	}
 
 	@Test
-	public void shouldNotBeAbleToCreateAnAuthorityIfTheAuthorityIsInvalid() {
-		AuthorityRepresentation authority = authority().withName("").build();
+	public void shouldNotBeAbleToCreateAScopeIfTheScopeIsInvalid() {
+		ScopeRepresentation scope = scope().withName("").build();
 
-		Result<AuthorityRepresentation> result = client.create(authority, token.getAccessToken());
-		assertThat(result).rejected().withResponseCode(422).withCode("authority.name.required").withDescription("An authority name is required.");
+		Result<ScopeRepresentation> result = client.create(scope, token.getAccessToken());
+		assertThat(result).rejected().withResponseCode(422).withCode("scope.name.required").withDescription("A scope name is required.");
 	}
 
 	@Test
-	public void shouldNotBeAbleToCreateAnAuthorityIfTheAuthorityNameIsAlreadyInUse() {
-		AuthorityRepresentation authority = authority().thatIs().persistent(token).build();
+	public void shouldNotBeAbleToCreateAScopeIfTheScopeNameIsAlreadyInUse() {
+		ScopeRepresentation scope = scope().thatIs().persistent(token).build();
 
-		Result<AuthorityRepresentation> result = client.create(authority, token.getAccessToken());
-		assertThat(result).rejected().withResponseCode(422).withCode("authority.name.conflict").withDescription("This authority name is already in use.");
+		Result<ScopeRepresentation> result = client.create(scope, token.getAccessToken());
+		assertThat(result).rejected().withResponseCode(422).withCode("scope.name.conflict").withDescription("This scope name is already in use.");
 	}
 
 	@Test
-	public void shouldBeAbleToUpdateAnAuthority() {
-		AuthorityRepresentation authority = authority().thatIs().persistent(token).build();
+	public void shouldBeAbleToUpdateAScope() {
+		ScopeRepresentation scope = scope().thatIs().persistent(token).build();
 		pause(1000);
 
-		authority.setName(RandomStringUtils.randomAlphabetic(10));
+		scope.setName(RandomStringUtils.randomAlphabetic(10));
 
-		Result<AuthorityRepresentation> result = client.update(authority, token.getAccessToken());
+		Result<ScopeRepresentation> result = client.update(scope, token.getAccessToken());
 		assertThat(result).accepted().withResponseCode(200);
 
-		AuthorityRepresentation updated = result.getInstance();
-		assertThat(updated.getId()).startsWith("ath_");
+		ScopeRepresentation updated = result.getInstance();
+		assertThat(updated.getId()).startsWith("scp_");
 		assertThat(updated.getCreated()).isNotNull();
 		assertThat(updated.getUpdated()).isNotNull();
 
-		assertThat(updated.getCreated()).isEqualTo(authority.getCreated());
+		assertThat(updated.getCreated()).isEqualTo(scope.getCreated());
 		assertThat(updated.getCreated()).isBefore(updated.getUpdated());
-		assertThat(updated.getUpdated()).isAfter(authority.getUpdated());
+		assertThat(updated.getUpdated()).isAfter(scope.getUpdated());
 
-		assertThat(updated.getName()).isEqualTo(authority.getName());
+		assertThat(updated.getName()).isEqualTo(scope.getName());
 	}
 
 	@Test
-	public void shouldNotBeAbleToUpdateAnAuthorityIfTheAuthorityIsInvalid() {
-		AuthorityRepresentation authority = authority().thatIs().persistent(token).build();
-		authority.setName("");
+	public void shouldNotBeAbleToUpdateAScopeIfTheScopeIsInvalid() {
+		ScopeRepresentation scope = scope().thatIs().persistent(token).build();
+		scope.setName("");
 
-		Result<AuthorityRepresentation> result = client.update(authority, token.getAccessToken());
-		assertThat(result).rejected().withResponseCode(422).withCode("authority.name.required").withDescription("An authority name is required.");
+		Result<ScopeRepresentation> result = client.update(scope, token.getAccessToken());
+		assertThat(result).rejected().withResponseCode(422).withCode("scope.name.required").withDescription("A scope name is required.");
 	}
 
 	@Test
-	public void shouldNotBeAbleToUpdateAnAuthorityIfTheAuthorityNameIsAlreadyInUse() {
-		AuthorityRepresentation existing = authority().thatIs().persistent(token).build();
-		AuthorityRepresentation authority = authority().thatIs().persistent(token).build();
-		authority.setName(existing.getName());
+	public void shouldNotBeAbleToUpdateAScopeIfTheScopeNameIsAlreadyInUse() {
+		ScopeRepresentation existing = scope().thatIs().persistent(token).build();
+		ScopeRepresentation scope = scope().thatIs().persistent(token).build();
+		scope.setName(existing.getName());
 
-		Result<AuthorityRepresentation> result = client.update(authority, token.getAccessToken());
-		assertThat(result).rejected().withResponseCode(422).withCode("authority.name.conflict").withDescription("This authority name is already in use.");
+		Result<ScopeRepresentation> result = client.update(scope, token.getAccessToken());
+		assertThat(result).rejected().withResponseCode(422).withCode("scope.name.conflict").withDescription("This scope name is already in use.");
 	}
 
 	@Test
-	public void shouldBeAbleToDeleteAnAuthority() {
-		AuthorityRepresentation authority = authority().thatIs().persistent(token).build();
+	public void shouldBeAbleToDeleteAScope() {
+		ScopeRepresentation scope = scope().thatIs().persistent(token).build();
 
-		Result<AuthorityRepresentation> result = client.delete(authority.getId(), token.getAccessToken());
+		Result<ScopeRepresentation> result = client.delete(scope.getId(), token.getAccessToken());
 		assertThat(result).accepted().withResponseCode(204);
 
-		assertThat(client.findById(authority.getId(), token.getAccessToken())).rejected().withResponseCode(404);
+		assertThat(client.findById(scope.getId(), token.getAccessToken())).rejected().withResponseCode(404);
 	}
 
 	@Test
-	public void shouldBeAbleToFindAnAuthorityById() {
-		AuthorityRepresentation authority = authority().thatIs().persistent(token).build();
+	public void shouldBeAbleToFindAScopeById() {
+		ScopeRepresentation scope = scope().thatIs().persistent(token).build();
 
-		Result<AuthorityRepresentation> result = client.findById(authority.getId(), token.getAccessToken());
+		Result<ScopeRepresentation> result = client.findById(scope.getId(), token.getAccessToken());
 		assertThat(result).accepted().withResponseCode(200);
-		assertThat(result.getInstance()).isEqualToComparingFieldByField(authority);
+		assertThat(result.getInstance()).isEqualToComparingFieldByField(scope);
 	}
 
 	@Test
-	public void shouldReturnA404WhenAnAuthorityWithTheSpecifiedIdCannotBeFound() {
-		Result<AuthorityRepresentation> result = client.findById("ath_123", token.getAccessToken());
-		assertThat(result).rejected().withResponseCode(404).withDescription("No such authority id: ath_123");
+	public void shouldReturnA404WhenAScopeWithTheSpecifiedIdCannotBeFound() {
+		Result<ScopeRepresentation> result = client.findById("scp_123", token.getAccessToken());
+		assertThat(result).rejected().withResponseCode(404).withDescription("No such scope id: scp_123");
+	}
+
+	@Test
+	public void shouldBeAbleToFindAScopeByName() {
+		ScopeRepresentation scope = scope().thatIs().persistent(token).build();
+
+		Result<ScopeRepresentation> result = client.findByName(scope.getName(), token.getAccessToken());
+		assertThat(result).accepted().withResponseCode(200);
+		assertThat(result.getInstance()).isEqualToComparingFieldByField(scope);
+	}
+
+	@Test
+	public void shouldReturnA404WhenAScopeWithTheSpecifiedNameCannotBeFound() {
+		Result<ScopeRepresentation> result = client.findByName("scp_123", token.getAccessToken());
+		assertThat(result).rejected().withResponseCode(404).withDescription("No such scope name: scp_123");
 	}
 
 }

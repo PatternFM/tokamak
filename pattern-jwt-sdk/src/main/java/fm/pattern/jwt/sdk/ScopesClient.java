@@ -27,6 +27,10 @@ public class ScopesClient extends RestClient {
         return get(resource("/v1/scopes/" + id), ScopeRepresentation.class, token);
     }
 
+    public Result<ScopeRepresentation> findByName(String name, String token) {
+        return get(resource("/v1/scopes/name/" + name), ScopeRepresentation.class, token);
+    }
+    
     public Result<ScopesRepresentation> list(String token) {
         return get(resource("/v1/scopes"), ScopesRepresentation.class, token);
     }
