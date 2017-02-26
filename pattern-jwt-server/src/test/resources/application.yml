@@ -12,7 +12,7 @@ jdbc:
 jwt:
     keyPairAlias: rocketjwtkey
     keyPairPassword: e2hL440iwrLMoyxBKY9zQ%^
-    keyStore: rocket.jks
+    keyStore: pattern.jks
     keyStorePassword: aZ92wtwHvhW6zG8cJU9FQhbnDa
 
 logging.config: classpath:logback.xml

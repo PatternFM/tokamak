@@ -31,6 +31,8 @@ public interface ScopeService {
 
 	Result<Scope> findById(String id);
 
+	Result<Scope> findByName(String name);
+
 	Result<List<Scope>> list();
 
 }

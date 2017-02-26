@@ -16,6 +16,8 @@
 
 package fm.pattern.jwt.server.service;
 
+import static org.apache.commons.lang3.StringUtils.isBlank;
+
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,7 +53,7 @@ class AuthorityServiceImpl extends DataServiceImpl<Authority> implements Authori
 
 		Long count = repository.count(repository.sqlQuery("select count(_id) from ClientAuthorities where authority_id = :id").setString("id", authority.getId()));
 		if (count != 0) {
-			return Result.conflict(new Consumable("authority.delete.conflict", "This authority cannot be deleted as there are " + count + " clients currently linked to this authority."));
+			return Result.conflict(new Consumable("authority.delete.conflict", "This authority cannot be deleted, " + count + (count != 1 ? " clients are" : " client is") + " linked to this authority."));
 		}
 
 		return repository.delete(authority);
@@ -60,6 +62,16 @@ class AuthorityServiceImpl extends DataServiceImpl<Authority> implements Authori
 	@Transactional(readOnly = true)
 	public Result<Authority> findById(String id) {
 		return super.findById(id, Authority.class);
+	}
+
+	@Transactional(readOnly = true)
+	public Result<Authority> findByName(String name) {
+		if (isBlank(name)) {
+			return Result.unprocessable_entity("{authority.get.name.required}");
+		}
+
+		Authority authority = (Authority) repository.query("from Authorities where name = :name").setString("name", name).uniqueResult();
+		return authority == null ? Result.not_found("No such authority name: " + name) : Result.accept(authority);
 	}
 
 	@Transactional(readOnly = true)

@@ -16,6 +16,8 @@
 
 package fm.pattern.jwt.server.service;
 
+import static org.apache.commons.lang3.StringUtils.isBlank;
+
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,7 +53,7 @@ class ScopeServiceImpl extends DataServiceImpl<Scope> implements ScopeService {
 
 		Long count = repository.count(repository.sqlQuery("select count(_id) from ClientScopes where scope_id = :id").setString("id", scope.getId()));
 		if (count != 0) {
-			return Result.conflict(new Consumable("scope.delete.conflict", "This scope cannot be deleted as there are " + count + " clients currently linked to this scope."));
+			return Result.conflict(new Consumable("scope.delete.conflict", "This scope cannot be deleted, " + count + (count != 1 ? " clients are" : " client is") + " linked to this scope."));
 		}
 
 		return repository.delete(scope);
@@ -60,6 +62,16 @@ class ScopeServiceImpl extends DataServiceImpl<Scope> implements ScopeService {
 	@Transactional(readOnly = true)
 	public Result<Scope> findById(String id) {
 		return super.findById(id, Scope.class);
+	}
+
+	@Transactional(readOnly = true)
+	public Result<Scope> findByName(String name) {
+		if (isBlank(name)) {
+			return Result.unprocessable_entity("{scope.get.name.required}");
+		}
+
+		Scope scope = (Scope) repository.query("from Scopes where name = :name").setString("name", name).uniqueResult();
+		return scope == null ? Result.not_found("No such scope name: " + name) : Result.accept(scope);
 	}
 
 	@Transactional(readOnly = true)

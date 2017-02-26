@@ -99,12 +99,33 @@ public class AuthorityServiceIntegrationTest extends IntegrationTest {
 	}
 
 	@Test
+	public void shouldBeAbleToFindAAuthorityByName() {
+		Authority authority = authority().thatIs().persistent().build();
+
+		Result<Authority> result = authorityService.findByName(authority.getName());
+		assertThat(result).accepted();
+		assertThat(result.getInstance()).isEqualToComparingFieldByField(authority);
+	}
+
+	@Test
+	public void shouldNotBeAbleToFindAAuthorityByNameIfTheAuthorityNameIsNullOrEmpty() {
+		assertThat(authorityService.findByName(null)).rejected().withType(UNPROCESSABLE_ENTITY).withDescription("The authority name to retrieve cannot be null or empty.");
+		assertThat(authorityService.findByName("")).rejected().withType(UNPROCESSABLE_ENTITY).withDescription("The authority name to retrieve cannot be null or empty.");
+		assertThat(authorityService.findByName("  ")).rejected().withType(UNPROCESSABLE_ENTITY).withDescription("The authority name to retrieve cannot be null or empty.");
+	}
+
+	@Test
+	public void shouldNotBeAbleToFindAAuthorityByNameIfTheAuthorityNameDoesNotExist() {
+		assertThat(authorityService.findByName("csrx")).rejected().withType(NOT_FOUND).withDescription("No such authority name: csrx");
+	}
+
+	@Test
 	public void shouldBeAbleToListAllAuthorities() {
 		range(0, 5).forEach(i -> authority().thatIs().persistent().build());
 
 		Result<List<Authority>> result = authorityService.list();
 		assertThat(result).accepted();
-		assertThat(result.getInstance()).hasSize(5);
+		assertThat(result.getInstance().size()).isGreaterThanOrEqualTo(5);
 	}
 
 }

@@ -16,6 +16,8 @@
 
 package fm.pattern.jwt.server.service;
 
+import static org.apache.commons.lang3.StringUtils.isBlank;
+
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,18 +50,28 @@ class GrantTypeServiceImpl extends DataServiceImpl<GrantType> implements GrantTy
 		if (result.rejected()) {
 			return result;
 		}
-		
+
 		Long count = repository.count(repository.sqlQuery("select count(_id) from ClientGrantTypes where grant_type_id = :id").setString("id", grantType.getId()));
 		if (count != 0) {
-			return Result.conflict(new Consumable("grantType.delete.conflict", "This grant type cannot be deleted as there are " + count + " clients currently linked to this grant type."));
+			return Result.conflict(new Consumable("grantType.delete.conflict", "This grant type cannot be deleted, " + count + (count != 1 ? " clients are" : " client is") + " linked to this grant type."));
 		}
-		
+
 		return repository.delete(grantType);
 	}
 
 	@Transactional(readOnly = true)
 	public Result<GrantType> findById(String id) {
 		return super.findById(id, GrantType.class);
+	}
+
+	@Transactional(readOnly = true)
+	public Result<GrantType> findByName(String name) {
+		if (isBlank(name)) {
+			return Result.unprocessable_entity("{grantType.get.name.required}");
+		}
+
+		GrantType grantType = (GrantType) repository.query("from GrantTypes where name = :name").setString("name", name).uniqueResult();
+		return grantType == null ? Result.not_found("No such grant type name: " + name) : Result.accept(grantType);
 	}
 
 	@Transactional(readOnly = true)

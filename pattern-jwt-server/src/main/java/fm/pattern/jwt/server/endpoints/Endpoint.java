@@ -78,7 +78,7 @@ public class Endpoint {
 	@ResponseBody
 	@ResponseStatus(value = HttpStatus.CONFLICT)
 	@ExceptionHandler(ResourceConflictException.class)
-	public ErrorsRepresentation handleResourceConflict(EntityNotFoundException exception) {
+	public ErrorsRepresentation handleResourceConflict(ResourceConflictException exception) {
 		return egress.convert(exception);
 	}
 

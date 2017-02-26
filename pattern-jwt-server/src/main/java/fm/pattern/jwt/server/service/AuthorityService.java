@@ -31,6 +31,8 @@ public interface AuthorityService {
 
 	Result<Authority> findById(String id);
 
+	Result<Authority> findByName(String name);
+
 	Result<List<Authority>> list();
 
 }

@@ -99,12 +99,33 @@ public class ScopeServiceIntegrationTest extends IntegrationTest {
 	}
 
 	@Test
+	public void shouldBeAbleToFindAScopeByName() {
+		Scope scope = scope().thatIs().persistent().build();
+
+		Result<Scope> result = scopeService.findByName(scope.getName());
+		assertThat(result).accepted();
+		assertThat(result.getInstance()).isEqualToComparingFieldByField(scope);
+	}
+
+	@Test
+	public void shouldNotBeAbleToFindAScopeByNameIfTheScopeNameIsNullOrEmpty() {
+		assertThat(scopeService.findByName(null)).rejected().withType(UNPROCESSABLE_ENTITY).withDescription("The scope name to retrieve cannot be null or empty.");
+		assertThat(scopeService.findByName("")).rejected().withType(UNPROCESSABLE_ENTITY).withDescription("The scope name to retrieve cannot be null or empty.");
+		assertThat(scopeService.findByName("  ")).rejected().withType(UNPROCESSABLE_ENTITY).withDescription("The scope name to retrieve cannot be null or empty.");
+	}
+
+	@Test
+	public void shouldNotBeAbleToFindAScopeByNameIfTheScopeNameDoesNotExist() {
+		assertThat(scopeService.findByName("csrx")).rejected().withType(NOT_FOUND).withDescription("No such scope name: csrx");
+	}
+
+	@Test
 	public void shouldBeAbleToListAllScopes() {
 		range(0, 5).forEach(i -> scope().thatIs().persistent().build());
 
 		Result<List<Scope>> result = scopeService.list();
 		assertThat(result).accepted();
-		assertThat(result.getInstance()).hasSize(29);
+		assertThat(result.getInstance().size()).isGreaterThanOrEqualTo(5);
 	}
 
 }

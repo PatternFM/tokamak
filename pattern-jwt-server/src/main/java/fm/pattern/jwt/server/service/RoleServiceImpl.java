@@ -16,6 +16,8 @@
 
 package fm.pattern.jwt.server.service;
 
+import static org.apache.commons.lang3.StringUtils.isBlank;
+
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,7 +53,7 @@ class RoleServiceImpl extends DataServiceImpl<Role> implements RoleService {
 
 		Long count = repository.count(repository.sqlQuery("select count(_id) from AccountRoles where role_id = :id").setString("id", role.getId()));
 		if (count != 0) {
-			return Result.conflict(new Consumable("role.delete.conflict", "This role cannot be deleted as there are " + count + " accounts currently linked to this role."));
+			return Result.conflict(new Consumable("role.delete.conflict", "This role cannot be deleted, " + count + (count != 1 ? " accounts are" : " account is") + " linked to this role."));
 		}
 
 		return repository.delete(role);
@@ -60,6 +62,16 @@ class RoleServiceImpl extends DataServiceImpl<Role> implements RoleService {
 	@Transactional(readOnly = true)
 	public Result<Role> findById(String id) {
 		return super.findById(id, Role.class);
+	}
+
+	@Transactional(readOnly = true)
+	public Result<Role> findByName(String name) {
+		if (isBlank(name)) {
+			return Result.unprocessable_entity("{role.get.name.required}");
+		}
+
+		Role role = (Role) repository.query("from Roles where name = :name").setString("name", name).uniqueResult();
+		return role == null ? Result.not_found("No such role name: " + name) : Result.accept(role);
 	}
 
 	@Transactional(readOnly = true)

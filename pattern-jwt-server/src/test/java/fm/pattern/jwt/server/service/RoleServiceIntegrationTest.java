@@ -87,15 +87,36 @@ public class RoleServiceIntegrationTest extends IntegrationTest {
 	}
 
 	@Test
-	public void shouldNotBeAbleToFindAnRoleByIdIfTheRoleIdIsNullOrEmpty() {
+	public void shouldNotBeAbleToFindARoleByIdIfTheRoleIdIsNullOrEmpty() {
 		assertThat(roleService.findById(null)).rejected().withType(UNPROCESSABLE_ENTITY).withDescription("The role id to retrieve cannot be null or empty.");
 		assertThat(roleService.findById("")).rejected().withType(UNPROCESSABLE_ENTITY).withDescription("The role id to retrieve cannot be null or empty.");
 		assertThat(roleService.findById("  ")).rejected().withType(UNPROCESSABLE_ENTITY).withDescription("The role id to retrieve cannot be null or empty.");
 	}
 
 	@Test
-	public void shouldNotBeAbleToFindAnRoleByIdIfTheRoleIdDoesNotExist() {
+	public void shouldNotBeAbleToFindARoleByIdIfTheRoleIdDoesNotExist() {
 		assertThat(roleService.findById("csrx")).rejected().withType(NOT_FOUND).withDescription("No such role id: csrx");
+	}
+	
+	@Test
+	public void shouldBeAbleToFindARoleByName() {
+		Role role = role().thatIs().persistent().build();
+
+		Result<Role> result = roleService.findByName(role.getName());
+		assertThat(result).accepted();
+		assertThat(result.getInstance()).isEqualToComparingFieldByField(role);
+	}
+	
+	@Test
+	public void shouldNotBeAbleToFindARoleByNameIfTheRoleNameIsNullOrEmpty() {
+		assertThat(roleService.findByName(null)).rejected().withType(UNPROCESSABLE_ENTITY).withDescription("The role name to retrieve cannot be null or empty.");
+		assertThat(roleService.findByName("")).rejected().withType(UNPROCESSABLE_ENTITY).withDescription("The role name to retrieve cannot be null or empty.");
+		assertThat(roleService.findByName("  ")).rejected().withType(UNPROCESSABLE_ENTITY).withDescription("The role name to retrieve cannot be null or empty.");
+	}
+	
+	@Test
+	public void shouldNotBeAbleToFindARoleByNameIfTheRoleNameDoesNotExist() {
+		assertThat(roleService.findByName("csrx")).rejected().withType(NOT_FOUND).withDescription("No such role name: csrx");
 	}
 
 	@Test
@@ -104,7 +125,7 @@ public class RoleServiceIntegrationTest extends IntegrationTest {
 
 		Result<List<Role>> result = roleService.list();
 		assertThat(result).accepted();
-		assertThat(result.getInstance()).hasSize(5);
+		assertThat(result.getInstance().size()).isGreaterThanOrEqualTo(5);
 	}
 
 }

@@ -31,6 +31,8 @@ public interface RoleService {
 
 	Result<Role> findById(String id);
 
+	Result<Role> findByName(String name);
+	
 	Result<List<Role>> list();
 
 }

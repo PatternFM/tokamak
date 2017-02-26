@@ -99,12 +99,33 @@ public class GrantTypeServiceIntegrationTest extends IntegrationTest {
 	}
 
 	@Test
+	public void shouldBeAbleToFindAGrantTypeByName() {
+		GrantType grantType = grantType().thatIs().persistent().build();
+
+		Result<GrantType> result = grantTypeService.findByName(grantType.getName());
+		assertThat(result).accepted();
+		assertThat(result.getInstance()).isEqualToComparingFieldByField(grantType);
+	}
+
+	@Test
+	public void shouldNotBeAbleToFindAGrantTypeByNameIfTheGrantTypeNameIsNullOrEmpty() {
+		assertThat(grantTypeService.findByName(null)).rejected().withType(UNPROCESSABLE_ENTITY).withDescription("The grant type name to retrieve cannot be null or empty.");
+		assertThat(grantTypeService.findByName("")).rejected().withType(UNPROCESSABLE_ENTITY).withDescription("The grant type name to retrieve cannot be null or empty.");
+		assertThat(grantTypeService.findByName("  ")).rejected().withType(UNPROCESSABLE_ENTITY).withDescription("The grant type name to retrieve cannot be null or empty.");
+	}
+
+	@Test
+	public void shouldNotBeAbleToFindAGrantTypeByNameIfTheGrantTypeNameDoesNotExist() {
+		assertThat(grantTypeService.findByName("csrx")).rejected().withType(NOT_FOUND).withDescription("No such grant type name: csrx");
+	}
+
+	@Test
 	public void shouldBeAbleToListAllGrantTypes() {
 		range(0, 5).forEach(i -> grantType().thatIs().persistent().build());
 
 		Result<List<GrantType>> result = grantTypeService.list();
 		assertThat(result).accepted();
-		assertThat(result.getInstance()).hasSize(9);
+		assertThat(result.getInstance().size()).isGreaterThanOrEqualTo(5);
 	}
 
 }
