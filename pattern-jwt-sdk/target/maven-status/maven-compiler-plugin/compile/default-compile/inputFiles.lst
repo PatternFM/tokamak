@@ -1,0 +1,10 @@
+/Users/brandongrenier/Projects/rocket/rocket-accounts-platform/rocket-accounts-client/src/main/java/run/rocket/accounts/client/dsl/ClientRepresentationDSL.java
+/Users/brandongrenier/Projects/rocket/rocket-accounts-platform/rocket-accounts-client/src/main/java/run/rocket/accounts/client/api/ClientsClient.java
+/Users/brandongrenier/Projects/rocket/rocket-accounts-platform/rocket-accounts-client/src/main/java/run/rocket/accounts/client/model/AccountRepresentation.java
+/Users/brandongrenier/Projects/rocket/rocket-accounts-platform/rocket-accounts-client/src/main/java/run/rocket/accounts/client/model/ChangePasswordRepresentation.java
+/Users/brandongrenier/Projects/rocket/rocket-accounts-platform/rocket-accounts-client/src/main/java/run/rocket/accounts/client/dsl/AccountRepresentationDSL.java
+/Users/brandongrenier/Projects/rocket/rocket-accounts-platform/rocket-accounts-client/src/main/java/run/rocket/accounts/client/model/AccountsRepresentation.java
+/Users/brandongrenier/Projects/rocket/rocket-accounts-platform/rocket-accounts-client/src/main/java/run/rocket/accounts/client/model/ResetPasswordRepresentation.java
+/Users/brandongrenier/Projects/rocket/rocket-accounts-platform/rocket-accounts-client/src/main/java/run/rocket/accounts/client/api/AccountsClient.java
+/Users/brandongrenier/Projects/rocket/rocket-accounts-platform/rocket-accounts-client/src/main/java/run/rocket/accounts/client/model/AccountEmailVerificationRepresentation.java
+/Users/brandongrenier/Projects/rocket/rocket-accounts-platform/rocket-accounts-client/src/main/java/run/rocket/accounts/client/model/ClientRepresentation.java

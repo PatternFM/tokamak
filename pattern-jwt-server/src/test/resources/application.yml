@@ -1,0 +1,33 @@
+jdbc:
+    schema: pattern-jwt
+    url: jdbc:mysql://localhost:3306
+    username: username
+    password: password
+    encrypted: false
+    driver: com.mysql.jdbc.Driver
+    dialect: org.hibernate.dialect.MySQLDialect
+    ddl: validate 
+    migrations: classpath:db/migration
+    
+jwt:
+    keyPairAlias: rocketjwtkey
+    keyPairPassword: e2hL440iwrLMoyxBKY9zQ%^
+    keyStore: rocket.jks
+    keyStorePassword: aZ92wtwHvhW6zG8cJU9FQhbnDa
+
+logging.config: classpath:logback.xml
+
+spring:
+    oauth2:
+        resource:
+           jwt:
+               keyValue: |
+                   -----BEGIN PUBLIC KEY-----
+                   MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAoc4WhiI4FoL95COU7TlR
+                   WvcgWsjBr7dbMYbUFkziz+ClIn5FC6xjjmFAFhnh8gOaSdZDwmZapUSV7urvx26Q
+                   y0eN5szTaxUQH1stjPcAyoXHnEdSemzszOjgNR9hmVWh0df/j+WZSNWMvnxKpx9X 
+                   MKmHUnjp4G7ilWJjrekhBuEB78POy7jpnkml7E/iHkKzFhomOwglfRGJOURLBKCb 
+                   iU7V4R/TgIzEhBs6d0BHYSCyAYSx7JbGNg3tQfnkH69vrvDAv1nq6sbbaqbLlH4I
+                   wq5MyatoQ2B7Hdp2IsjE6WhS6Y+wWuScrHPu5LhITYsAD/z8ylvezav/ZWmRobzk
+                   rQIDAQAB
+                   -----END PUBLIC KEY-----       
