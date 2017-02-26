@@ -2,6 +2,7 @@ package fm.pattern.jwt.spec.endpoints;
 
 import static fm.pattern.jwt.sdk.dsl.AccessTokenDSL.token;
 import static fm.pattern.jwt.sdk.dsl.AuthorityDSL.authority;
+import static fm.pattern.jwt.sdk.dsl.ClientDSL.client;
 import static fm.pattern.jwt.spec.PatternAssertions.assertThat;
 import static org.assertj.core.api.StrictAssertions.assertThat;
 
@@ -106,6 +107,15 @@ public class AuthoritiesEndpointAcceptanceTest extends AcceptanceTest {
 		assertThat(result).accepted().withResponseCode(204);
 
 		assertThat(client.findById(authority.getId(), token.getAccessToken())).rejected().withResponseCode(404);
+	}
+
+	@Test
+	public void shouldNotBeAbleToDeleteAnAuthorityIfTheAuthorityIsAssociatedWithClients() {
+		AuthorityRepresentation authority = authority().thatIs().persistent(token).build();
+		client().withAuthorities(authority).withGrantTypes("password", "refresh_token").thatIs().persistent(token).build();
+
+		Result<AuthorityRepresentation> result = client.delete(authority.getId(), token.getAccessToken());
+		assertThat(result).rejected().withResponseCode(409).withCode("authority.delete.conflict").withDescription("This authority cannot be deleted, 1 client is linked to this authority.");
 	}
 
 	@Test

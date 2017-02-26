@@ -1,6 +1,7 @@
 package fm.pattern.jwt.spec.endpoints;
 
 import static fm.pattern.jwt.sdk.dsl.AccessTokenDSL.token;
+import static fm.pattern.jwt.sdk.dsl.ClientDSL.client;
 import static fm.pattern.jwt.sdk.dsl.ScopeDSL.scope;
 import static fm.pattern.jwt.spec.PatternAssertions.assertThat;
 import static org.assertj.core.api.StrictAssertions.assertThat;
@@ -106,6 +107,15 @@ public class ScopesEndpointAcceptanceTest extends AcceptanceTest {
 		assertThat(result).accepted().withResponseCode(204);
 
 		assertThat(client.findById(scope.getId(), token.getAccessToken())).rejected().withResponseCode(404);
+	}
+
+	@Test
+	public void shouldNotBeAbleToDeleteAScopeIfTheScopeIsAssociatedWithClients() {
+		ScopeRepresentation scope = scope().thatIs().persistent(token).build();
+		client().withScopes(scope).withGrantTypes("password", "refresh_token").thatIs().persistent(token).build();
+
+		Result<ScopeRepresentation> result = client.delete(scope.getId(), token.getAccessToken());
+		assertThat(result).rejected().withResponseCode(409).withCode("scope.delete.conflict").withDescription("This scope cannot be deleted, 1 client is linked to this scope.");
 	}
 
 	@Test
