@@ -17,6 +17,7 @@
 package fm.pattern.jwt.server.repository;
 
 import java.math.BigInteger;
+import java.util.Date;
 
 import javax.persistence.Entity;
 
@@ -28,6 +29,7 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import fm.pattern.commons.util.ReflectionUtils;
 import fm.pattern.microstructure.Result;
 
 @Repository("dataRepository")
@@ -58,6 +60,7 @@ class DataRepositoryImpl implements DataRepository {
 
 	public <T> Result<T> update(T instance) {
 		try {
+			ReflectionUtils.setValue(instance, "updated", new Date(), 1);
 			sessionFactory.getCurrentSession().update(instance);
 			sessionFactory.getCurrentSession().flush();
 			return Result.accept(instance);

@@ -58,7 +58,8 @@ public class ScopesEndpoint extends Endpoint {
 	@RequestMapping(value = "/v1/scopes", method = POST, consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
 	public ScopeRepresentation create(@RequestBody ScopeRepresentation representation) {
 		Scope scope = ingress.convert(representation);
-		return egress.convert(validate(scopeService.create(scope)));
+		Scope created = validate(scopeService.create(scope));
+		return egress.convert(validate(scopeService.findById(created.getId())));
 	}
 
 	@ResponseStatus(value = HttpStatus.OK)

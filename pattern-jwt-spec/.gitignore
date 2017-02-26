@@ -1,39 +1,14 @@
-*.pydevproject
 .metadata
 .gradle
 bin/
 tmp/
 target/
 *.tmp
-*.bak
 *.swp
-*~.nib
-local.properties
 .settings/
-.loadpath
-
 .project
 .classpath
-
-/enterprise-genetics-content/node_modules
-/node_modules
-
-# External tool builders
 .externalToolBuilders/
-
 .DS_Store
-
-# Locally stored "Eclipse launch configurations"
 *.launch
-
-# CDT-specific
 .cproject
-
-# PDT-specific
-.buildpath
-
-# sbteclipse plugin 
-.target
-
-# TeXlipse plugin
-.texlipse

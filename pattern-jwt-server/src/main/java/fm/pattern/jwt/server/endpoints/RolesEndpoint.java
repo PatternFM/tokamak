@@ -58,7 +58,8 @@ public class RolesEndpoint extends Endpoint {
 	@RequestMapping(value = "/v1/roles", method = POST, consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
 	public RoleRepresentation create(@RequestBody RoleRepresentation representation) {
 		Role role = ingress.convert(representation);
-		return egress.convert(validate(roleService.create(role)));
+		Role created = validate(roleService.create(role));
+		return egress.convert(validate(roleService.findById(created.getId())));
 	}
 
 	@ResponseStatus(value = HttpStatus.OK)

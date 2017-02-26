@@ -20,4 +20,13 @@ public abstract class AcceptanceTest {
 	public static final String INSUFFICIENT_SCOPE_ERROR = "Insufficient scope for this resource";
 	public static final String UNAUTHORIZED_ERROR = "User is not authorized to perform the requested operation.";
 
+	public static void pause(Integer milliseconds) {
+		try {
+			Thread.sleep(milliseconds);
+		}
+		catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
+
 }

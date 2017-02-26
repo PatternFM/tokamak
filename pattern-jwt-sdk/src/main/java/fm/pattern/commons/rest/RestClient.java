@@ -3,8 +3,6 @@ package fm.pattern.commons.rest;
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
@@ -21,11 +19,8 @@ import org.glassfish.jersey.filter.LoggingFilter;
 import org.glassfish.jersey.jackson.JacksonFeature;
 import org.glassfish.jersey.media.multipart.MultiPartFeature;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 public class RestClient {
 
-	private final ObjectMapper mapper;
 	private final Client client;
 	private final String endpoint;
 
@@ -36,7 +31,6 @@ public class RestClient {
 	public RestClient(ClientConfig config, String endpoint) {
 		this.client = ClientBuilder.newClient(config);
 		this.endpoint = endpoint;
-		this.mapper = new ObjectMapper();
 	}
 
 	public Client getClient() {
@@ -67,15 +61,6 @@ public class RestClient {
 		return getClient().target(endpoint).path(resource).request(APPLICATION_JSON);
 	}
 
-	public List<ErrorRepresentation> resolveErrors(Response response) {
-		try {
-			return mapper.readValue(getResponseBody(response), ErrorsRepresentation.class).getErrors();
-		}
-		catch (Exception e) {
-			return new ArrayList<ErrorRepresentation>();
-		}
-	}
-
 	protected final <T, S> Result<T> put(Invocation.Builder resource, S representation, Class<T> clazz, String token) {
 		if (isNotBlank(token)) {
 			resource.header("Authorization", "Bearer " + token);
@@ -86,46 +71,46 @@ public class RestClient {
 			return Result.accept(response.getStatus(), response.readEntity(clazz));
 		}
 
-		return Result.reject(response.getStatus(), null, resolveErrors(response));
+		return Result.reject(response.getStatus(), null, response.readEntity(ErrorsRepresentation.class).getErrors());
 	}
 
 	protected final <T, S> Result<T> post(Invocation.Builder resource, S representation, Class<T> clazz, String token) {
 		if (isNotBlank(token)) {
 			resource.header("Authorization", "Bearer " + token);
 		}
-		
+
 		Response response = resource.post(Entity.entity(representation, APPLICATION_JSON));
 		if (response.getStatus() == 201) {
 			return Result.accept(response.getStatus(), response.readEntity(clazz));
 		}
-		
-		return Result.reject(response.getStatus(), null, resolveErrors(response));
+
+		return Result.reject(response.getStatus(), null, response.readEntity(ErrorsRepresentation.class).getErrors());
 	}
 
 	protected final <T> Result<T> delete(Invocation.Builder resource, String token) {
 		if (isNotBlank(token)) {
 			resource.header("Authorization", "Bearer " + token);
 		}
-		
+
 		Response response = resource.delete();
 		if (response.getStatus() == 204) {
 			return Result.accept(response.getStatus(), null);
 		}
-		
-		return Result.reject(response.getStatus(), null, resolveErrors(response));
+
+		return Result.reject(response.getStatus(), null, response.readEntity(ErrorsRepresentation.class).getErrors());
 	}
 
 	protected final <T> Result<T> get(Invocation.Builder resource, Class<T> clazz, String token) {
 		if (isNotBlank(token)) {
 			resource.header("Authorization", "Bearer " + token);
 		}
-		
+
 		Response response = resource.get();
 		if (response.getStatus() == 200) {
 			return Result.accept(response.getStatus(), response.readEntity(clazz));
 		}
-		
-		return Result.reject(response.getStatus(), null, resolveErrors(response));
+
+		return Result.reject(response.getStatus(), null, response.readEntity(ErrorsRepresentation.class).getErrors());
 	}
 
 	private static ClientConfig config() {
