@@ -65,6 +65,8 @@ class EgressConversionServiceImpl implements EgressConversionService {
 		representation.setAuthorities(client.getAuthorities().stream().map(authority -> convert(authority)).collect(Collectors.toCollection(HashSet::new)));
 		representation.setGrantTypes(client.getGrantTypes().stream().map(grantType -> convert(grantType)).collect(Collectors.toCollection(HashSet::new)));
 		representation.setScopes(client.getScopes().stream().map(scope -> convert(scope)).collect(Collectors.toCollection(HashSet::new)));
+		representation.setAccessTokenValiditySeconds(client.getAccessTokenValiditySeconds());
+		representation.setRefreshTokenValiditySeconds(client.getRefreshTokenValiditySeconds());
 		return representation;
 	}
 
