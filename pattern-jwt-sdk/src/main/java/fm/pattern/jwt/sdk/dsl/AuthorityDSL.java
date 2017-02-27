@@ -1,14 +1,14 @@
 package fm.pattern.jwt.sdk.dsl;
 
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
+import fm.pattern.commons.rest.JwtClientProperties;
 import fm.pattern.commons.rest.Result;
 import fm.pattern.jwt.sdk.AuthoritiesClient;
 import fm.pattern.jwt.sdk.model.AuthorityRepresentation;
 
 public class AuthorityDSL extends AbstractDSL<AuthorityDSL, AuthorityRepresentation> {
 
-    // TODO: Replace hard-coded values with configuration.
-    private AuthoritiesClient client = new AuthoritiesClient("http://localhost:9600");
+    private AuthoritiesClient client = new AuthoritiesClient(JwtClientProperties.getEndpoint());
 
     private String name = randomAlphanumeric(10);
     private String description = "description";

@@ -1,5 +1,6 @@
 package fm.pattern.jwt.sdk.dsl;
 
+import fm.pattern.commons.rest.JwtClientProperties;
 import fm.pattern.jwt.sdk.ClientCredentials;
 import fm.pattern.jwt.sdk.TokensClient;
 import fm.pattern.jwt.sdk.UserCredentials;
@@ -7,8 +8,7 @@ import fm.pattern.jwt.sdk.model.AccessTokenRepresentation;
 
 public class AccessTokenDSL extends AbstractDSL<AccessTokenDSL, AccessTokenRepresentation> {
 
-    // TODO: Replace hard-coded values with configuration.
-    private TokensClient client = new TokensClient("http://localhost:9600");
+    private TokensClient client = new TokensClient(JwtClientProperties.getEndpoint());
 
     private ClientCredentials clientCredentials = null;
     private UserCredentials userCredentials = null;

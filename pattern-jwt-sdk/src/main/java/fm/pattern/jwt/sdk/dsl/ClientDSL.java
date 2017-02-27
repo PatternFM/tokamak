@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
+import fm.pattern.commons.rest.JwtClientProperties;
 import fm.pattern.commons.rest.Result;
 import fm.pattern.jwt.sdk.AuthoritiesClient;
 import fm.pattern.jwt.sdk.ClientsClient;
@@ -18,11 +19,10 @@ import fm.pattern.jwt.sdk.model.ScopeRepresentation;
 
 public class ClientDSL extends AbstractDSL<ClientDSL, ClientRepresentation> {
 
-    // TODO: Replace hard-coded values with configuration.
-    private ClientsClient client = new ClientsClient("http://localhost:9600");
-    private ScopesClient scopesClient = new ScopesClient("http://localhost:9600");
-    private GrantTypesClient grantTypesClient = new GrantTypesClient("http://localhost:9600");
-    private AuthoritiesClient authoritiesClient = new AuthoritiesClient("http://localhost:9600");
+    private ClientsClient client = new ClientsClient(JwtClientProperties.getEndpoint());
+    private ScopesClient scopesClient = new ScopesClient(JwtClientProperties.getEndpoint());
+    private GrantTypesClient grantTypesClient = new GrantTypesClient(JwtClientProperties.getEndpoint());
+    private AuthoritiesClient authoritiesClient = new AuthoritiesClient(JwtClientProperties.getEndpoint());
 
     private String clientId = "cli_" + randomAlphanumeric(15);
     private String clientSecret = "pwd_" + randomAlphanumeric(15);

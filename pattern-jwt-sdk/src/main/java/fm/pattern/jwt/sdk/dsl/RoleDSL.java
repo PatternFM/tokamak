@@ -1,14 +1,14 @@
 package fm.pattern.jwt.sdk.dsl;
 
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
+import fm.pattern.commons.rest.JwtClientProperties;
 import fm.pattern.commons.rest.Result;
 import fm.pattern.jwt.sdk.RolesClient;
 import fm.pattern.jwt.sdk.model.RoleRepresentation;
 
 public class RoleDSL extends AbstractDSL<RoleDSL, RoleRepresentation> {
 
-    // TODO: Configure hard-coded values....
-    private RolesClient client = new RolesClient("http://localhost:9600");
+    private RolesClient client = new RolesClient(JwtClientProperties.getEndpoint());
 
     private String name = randomAlphanumeric(10);
     private String description = "description";
@@ -26,7 +26,7 @@ public class RoleDSL extends AbstractDSL<RoleDSL, RoleRepresentation> {
         this.description = description;
         return this;
     }
-    
+
     public RoleRepresentation build() {
         RoleRepresentation representation = create();
         if (!shouldPersist()) {

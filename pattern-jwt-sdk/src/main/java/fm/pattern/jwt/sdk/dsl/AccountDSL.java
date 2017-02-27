@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
+import fm.pattern.commons.rest.JwtClientProperties;
 import fm.pattern.commons.rest.Result;
 import fm.pattern.jwt.sdk.AccountsClient;
 import fm.pattern.jwt.sdk.model.AccountRepresentation;
@@ -13,8 +14,7 @@ import fm.pattern.jwt.sdk.model.RoleRepresentation;
 
 public class AccountDSL extends AbstractDSL<AccountDSL, AccountRepresentation> {
 
-    // TODO: Replace hard-coded values with configuration.
-    private AccountsClient client = new AccountsClient("http://localhost:9600");
+    private AccountsClient client = new AccountsClient(JwtClientProperties.getEndpoint());
 
     private String username = "usr_" + randomAlphanumeric(15);
     private String password = "pwd_" + randomAlphanumeric(15);
