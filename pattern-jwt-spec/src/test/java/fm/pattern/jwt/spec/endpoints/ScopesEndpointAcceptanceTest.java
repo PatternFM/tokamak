@@ -40,6 +40,7 @@ public class ScopesEndpointAcceptanceTest extends AcceptanceTest {
 		assertThat(created.getUpdated()).isNotNull();
 		assertThat(created.getCreated()).isEqualTo(created.getUpdated());
 		assertThat(created.getName()).isEqualTo(scope.getName());
+		assertThat(created.getDescription()).isEqualTo(scope.getDescription());
 	}
 
 	@Test

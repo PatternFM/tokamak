@@ -11,6 +11,7 @@ public class ScopeDSL extends AbstractDSL<ScopeDSL, ScopeRepresentation> {
     private ScopesClient client = new ScopesClient("http://localhost:9600");
 
     private String name = randomAlphanumeric(10);
+    private String description = "description";
 
     public static ScopeDSL scope() {
         return new ScopeDSL();
@@ -18,6 +19,11 @@ public class ScopeDSL extends AbstractDSL<ScopeDSL, ScopeRepresentation> {
 
     public ScopeDSL withName(String name) {
         this.name = name;
+        return this;
+    }
+
+    public ScopeDSL withDescription(String description) {
+        this.description = description;
         return this;
     }
 
@@ -38,6 +44,7 @@ public class ScopeDSL extends AbstractDSL<ScopeDSL, ScopeRepresentation> {
     private ScopeRepresentation create() {
         ScopeRepresentation representation = new ScopeRepresentation();
         representation.setName(name);
+        representation.setDescription(description);
         return representation;
     }
 

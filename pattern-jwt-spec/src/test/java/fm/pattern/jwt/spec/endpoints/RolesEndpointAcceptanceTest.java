@@ -40,6 +40,7 @@ public class RolesEndpointAcceptanceTest extends AcceptanceTest {
 		assertThat(created.getUpdated()).isNotNull();
 		assertThat(created.getCreated()).isEqualTo(created.getUpdated());
 		assertThat(created.getName()).isEqualTo(role.getName());
+		assertThat(created.getDescription()).isEqualTo(role.getDescription());
 	}
 
 	@Test

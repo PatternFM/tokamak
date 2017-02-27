@@ -11,7 +11,8 @@ public class AuthorityDSL extends AbstractDSL<AuthorityDSL, AuthorityRepresentat
     private AuthoritiesClient client = new AuthoritiesClient("http://localhost:9600");
 
     private String name = randomAlphanumeric(10);
-
+    private String description = "description";
+    
     public static AuthorityDSL authority() {
         return new AuthorityDSL();
     }
@@ -21,6 +22,11 @@ public class AuthorityDSL extends AbstractDSL<AuthorityDSL, AuthorityRepresentat
         return this;
     }
 
+    public AuthorityDSL withDescription(String description) {
+        this.description = description;
+        return this;
+    }
+    
     public AuthorityRepresentation build() {
         AuthorityRepresentation representation = create();
         if (!shouldPersist()) {
@@ -38,6 +44,7 @@ public class AuthorityDSL extends AbstractDSL<AuthorityDSL, AuthorityRepresentat
     private AuthorityRepresentation create() {
         AuthorityRepresentation representation = new AuthorityRepresentation();
         representation.setName(name);
+        representation.setDescription(description);
         return representation;
     }
 
