@@ -14,16 +14,18 @@
  * limitations under the License.
  */
 
-package fm.pattern.jwt.server.config;
+package fm.pattern.jwt.security.authorization;
 
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.EnableAspectJAutoProxy;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
-@Configuration
-@EnableAspectJAutoProxy
-@ComponentScan("fm.pattern.jwt.server.endpoints")
-public class WebConfiguration extends WebMvcConfigurerAdapter {
+import org.apache.commons.lang3.StringUtils;
+
+public class StringTokenizer {
+
+	public static Set<String> tokenize(String input) {
+		return StringUtils.isBlank(input) ? new HashSet<String>() : new HashSet<String>(Arrays.asList(input.trim().split("\\s*,\\s*")));
+	}
 
 }

@@ -14,16 +14,16 @@
  * limitations under the License.
  */
 
-package fm.pattern.jwt.server.config;
+package fm.pattern.jwt.security.authorization;
 
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.EnableAspectJAutoProxy;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import java.util.Set;
 
-@Configuration
-@EnableAspectJAutoProxy
-@ComponentScan("fm.pattern.jwt.server.endpoints")
-public class WebConfiguration extends WebMvcConfigurerAdapter {
+public interface AuthorizationContextProvider {
+
+	Set<String> getScopes();
+
+	Set<String> getAuthorities();
+
+	Set<String> getRoles();
 
 }

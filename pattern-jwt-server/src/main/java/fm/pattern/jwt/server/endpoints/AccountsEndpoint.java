@@ -29,6 +29,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import fm.pattern.jwt.sdk.model.AccountRepresentation;
+import fm.pattern.jwt.security.authorization.Authorize;
 import fm.pattern.jwt.server.conversion.EgressConversionService;
 import fm.pattern.jwt.server.conversion.IngressConversionService;
 import fm.pattern.jwt.server.model.Account;
@@ -56,11 +57,13 @@ public class AccountsEndpoint extends Endpoint {
 		return egress.convert(validate(accountService.findById(created.getId())));
 	}
 
+	@Authorize(scopes = "accounts:read")
 	@RequestMapping(value = "/v1/accounts/{id}", method = GET, produces = APPLICATION_JSON_VALUE)
 	public AccountRepresentation findById(@PathVariable String id) {
 		return egress.convert(validate(accountService.findById(id)));
 	}
 
+	@Authorize(scopes = "accounts:read")
 	@RequestMapping(value = "/v1/accounts/username/{username}", method = GET, produces = APPLICATION_JSON_VALUE)
 	public AccountRepresentation findByUsername(@PathVariable String username) {
 		return egress.convert(validate(accountService.findByUsername(username)));

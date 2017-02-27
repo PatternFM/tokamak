@@ -14,76 +14,52 @@
  * limitations under the License.
  */
 
-package fm.pattern.jwt.server.security;
+package fm.pattern.jwt.security.authorization;
 
 import static org.springframework.security.core.context.SecurityContextHolder.getContext;
 
-import java.io.Serializable;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
+import org.springframework.stereotype.Component;
 
-final class AuthenticationContextExtractor {
+@Component
+public class OAuth2AuthorizationContext implements AuthorizationContextProvider {
 
-	private AuthenticationContextExtractor() {
+	private OAuth2AuthorizationContext() {
 
 	}
 
-	static String getAccountId() {
-		Authentication authentication = getContext().getAuthentication();
-		if (!(authentication instanceof OAuth2Authentication)) {
-			return null;
-		}
-
-		OAuth2Authentication oauth = (OAuth2Authentication) authentication;
-
-		Map<String, Serializable> extensions = oauth.getOAuth2Request().getExtensions();
-		if (extensions == null || extensions.isEmpty()) {
-			return null;
-		}
-
-		if (!extensions.containsKey("account_id")) {
-			return null;
-		}
-
-		return (String) extensions.get("account_id");
-	}
-
-	static String getClientId() {
-		Authentication authentication = getContext().getAuthentication();
-		if (!(authentication instanceof OAuth2Authentication)) {
-			return null;
-		}
-
-		OAuth2Authentication oauth = (OAuth2Authentication) authentication;
-		return oauth.getOAuth2Request().getClientId();
-	}
-
-	static Set<String> getClientRoles() {
-		Authentication authentication = getContext().getAuthentication();
-		if (!(authentication instanceof OAuth2Authentication)) {
+	public Set<String> getScopes() {
+		OAuth2Authentication oauth = oauth2Authentication();
+		if (oauth == null) {
 			return new HashSet<String>();
 		}
+		if (oauth.getOAuth2Request().getScope() == null || oauth.getOAuth2Request().getScope().isEmpty()) {
+			return new HashSet<String>();
+		}
+		return oauth.getOAuth2Request().getScope();
+	}
 
-		OAuth2Authentication oauth = (OAuth2Authentication) authentication;
+	public Set<String> getAuthorities() {
+		OAuth2Authentication oauth = oauth2Authentication();
+		if (oauth == null) {
+			return new HashSet<String>();
+		}
 		if (oauth.getAuthorities() == null || oauth.getAuthorities().isEmpty()) {
 			return new HashSet<String>();
 		}
-
 		return oauth.getAuthorities().stream().map(authority -> authority.getAuthority()).collect(Collectors.toSet());
 	}
 
-	static Set<String> getUserRoles() {
-		Authentication authentication = getContext().getAuthentication();
-		if (!(authentication instanceof OAuth2Authentication)) {
+	public Set<String> getRoles() {
+		OAuth2Authentication oauth = oauth2Authentication();
+		if (oauth == null) {
 			return new HashSet<String>();
 		}
-
-		OAuth2Authentication oauth = (OAuth2Authentication) authentication;
 		if (oauth.isClientOnly()) {
 			return new HashSet<String>();
 		}
@@ -94,6 +70,14 @@ final class AuthenticationContextExtractor {
 		}
 
 		return userAuthentication.getAuthorities().stream().map(authority -> authority.getAuthority()).collect(Collectors.toSet());
+	}
+
+	private static OAuth2Authentication oauth2Authentication() {
+		Authentication authentication = getContext().getAuthentication();
+		if (!(authentication instanceof OAuth2Authentication)) {
+			return null;
+		}
+		return (OAuth2Authentication) authentication;
 	}
 
 }
