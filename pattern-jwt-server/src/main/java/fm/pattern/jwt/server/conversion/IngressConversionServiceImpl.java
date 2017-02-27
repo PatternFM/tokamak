@@ -81,19 +81,27 @@ class IngressConversionServiceImpl implements IngressConversionService {
 	}
 
 	public Role convert(RoleRepresentation representation) {
-		return new Role(representation.getName());
+		Role role = new Role(representation.getName());
+		role.setDescription(representation.getDescription());
+		return role;
 	}
 
 	public Authority convert(AuthorityRepresentation representation) {
-		return new Authority(representation.getName());
+		Authority authority = new Authority(representation.getName());
+		authority.setDescription(representation.getDescription());
+		return authority;
 	}
 
 	public Scope convert(ScopeRepresentation representation) {
-		return new Scope(representation.getName());
+		Scope scope = new Scope(representation.getName());
+		scope.setDescription(representation.getDescription());
+		return scope;
 	}
 
 	public GrantType convert(GrantTypeRepresentation representation) {
-		return new GrantType(representation.getName());
+		GrantType grantType = new GrantType(representation.getName());
+		grantType.setDescription(representation.getDescription());
+		return grantType;
 	}
 
 	public Account update(AccountRepresentation representation, Account account) {
@@ -119,21 +127,25 @@ class IngressConversionServiceImpl implements IngressConversionService {
 
 	public Role update(RoleRepresentation representation, Role role) {
 		role.setName(representation.getName());
+		role.setDescription(representation.getDescription());
 		return role;
 	}
 
 	public Authority update(AuthorityRepresentation representation, Authority authority) {
 		authority.setName(representation.getName());
+		authority.setDescription(representation.getDescription());
 		return authority;
 	}
 
 	public Scope update(ScopeRepresentation representation, Scope scope) {
 		scope.setName(representation.getName());
+		scope.setDescription(representation.getDescription());
 		return scope;
 	}
 
 	public GrantType update(GrantTypeRepresentation representation, GrantType grantType) {
 		grantType.setName(representation.getName());
+		grantType.setDescription(representation.getDescription());
 		return grantType;
 	}
 

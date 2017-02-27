@@ -8,6 +8,7 @@ import fm.pattern.microstructure.Result;
 public class ScopeDSL extends AbstractDSL<ScopeDSL, Scope> {
 
 	private String name = randomAlphabetic(10);
+	private String description = null;
 
 	public static ScopeDSL scope() {
 		return new ScopeDSL();
@@ -18,8 +19,14 @@ public class ScopeDSL extends AbstractDSL<ScopeDSL, Scope> {
 		return this;
 	}
 
+	public ScopeDSL withDescription(String description) {
+		this.description = description;
+		return this;
+	}
+
 	public Scope build() {
 		Scope scope = new Scope(name);
+		scope.setDescription(description);
 		return shouldPersist() ? persist(scope) : scope;
 	}
 

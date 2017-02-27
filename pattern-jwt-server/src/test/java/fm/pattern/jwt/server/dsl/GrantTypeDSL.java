@@ -8,7 +8,8 @@ import fm.pattern.microstructure.Result;
 public class GrantTypeDSL extends AbstractDSL<GrantTypeDSL, GrantType> {
 
 	private String name = randomAlphabetic(10);
-
+	private String description = null;
+	
 	public static GrantTypeDSL grantType() {
 		return new GrantTypeDSL();
 	}
@@ -18,8 +19,14 @@ public class GrantTypeDSL extends AbstractDSL<GrantTypeDSL, GrantType> {
 		return this;
 	}
 
+	public GrantTypeDSL withDescription(String description) {
+		this.description = description;
+		return this;
+	}
+	
 	public GrantType build() {
 		GrantType grantType = new GrantType(name);
+		grantType.setDescription(description);
 		return shouldPersist() ? persist(grantType) : grantType;
 	}
 

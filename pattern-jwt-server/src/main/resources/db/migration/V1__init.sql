@@ -41,6 +41,7 @@ CREATE TABLE Roles (
   created datetime NOT NULL,
   updated datetime NOT NULL,
   name varchar(128) NOT NULL,
+  description varchar(255), 
   KEY(_id),
   PRIMARY KEY(id),
   UNIQUE KEY UK_ROLE_NAME (name)
@@ -56,6 +57,7 @@ CREATE TABLE Authorities (
   created datetime NOT NULL,
   updated datetime NOT NULL,
   name varchar(128) NOT NULL,
+  description varchar(255),
   KEY(_id),
   PRIMARY KEY(id),
   UNIQUE KEY UK_AUTHORITY_NAME (name)
@@ -71,6 +73,7 @@ CREATE TABLE Scopes (
   created datetime NOT NULL,
   updated datetime NOT NULL,
   name varchar(128) NOT NULL,
+  description varchar(255),
   KEY(_id),
   PRIMARY KEY(id),
   UNIQUE KEY UK_SCOPE_NAME (name)
@@ -86,6 +89,7 @@ CREATE TABLE GrantTypes (
   created datetime NOT NULL,
   updated datetime NOT NULL,
   name varchar(128) NOT NULL,
+  description varchar(255),
   KEY(_id),
   PRIMARY KEY(id),
   UNIQUE KEY UK_GRANT_TYPE_NAME (name)

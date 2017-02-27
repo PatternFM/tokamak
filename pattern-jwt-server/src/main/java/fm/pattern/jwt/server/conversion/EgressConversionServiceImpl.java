@@ -80,6 +80,7 @@ class EgressConversionServiceImpl implements EgressConversionService {
 		representation.setCreated(role.getCreated());
 		representation.setUpdated(role.getUpdated());
 		representation.setName(role.getName());
+		representation.setDescription(role.getDescription());
 		return representation;
 	}
 
@@ -88,6 +89,7 @@ class EgressConversionServiceImpl implements EgressConversionService {
 		representation.setCreated(authority.getCreated());
 		representation.setUpdated(authority.getUpdated());
 		representation.setName(authority.getName());
+		representation.setDescription(authority.getDescription());
 		return representation;
 	}
 
@@ -96,6 +98,7 @@ class EgressConversionServiceImpl implements EgressConversionService {
 		representation.setCreated(grantType.getCreated());
 		representation.setUpdated(grantType.getUpdated());
 		representation.setName(grantType.getName());
+		representation.setDescription(grantType.getDescription());
 		return representation;
 	}
 
@@ -104,6 +107,7 @@ class EgressConversionServiceImpl implements EgressConversionService {
 		representation.setCreated(scope.getCreated());
 		representation.setUpdated(scope.getUpdated());
 		representation.setName(scope.getName());
+		representation.setDescription(scope.getDescription());
 		return representation;
 	}
 

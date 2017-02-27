@@ -47,6 +47,10 @@ public class Scope extends PersistentEntity {
 	@Size(max = 128, message = "{scope.name.size}", groups = { CreateLevel2.class, UpdateLevel2.class })
 	private String name;
 
+	@Column(name = "description")
+	@Size(max = 255, message = "{scope.description.size}", groups = { CreateLevel2.class, UpdateLevel2.class })
+	private String description;
+
 	Scope() {
 		super(IdGenerator.generateId("scp", 30));
 	}
@@ -62,6 +66,14 @@ public class Scope extends PersistentEntity {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	public int hashCode() {

@@ -47,6 +47,10 @@ public class GrantType extends PersistentEntity {
 	@Size(max = 128, message = "{grantType.name.size}", groups = { CreateLevel2.class, UpdateLevel2.class })
 	private String name;
 
+	@Column(name = "description")
+	@Size(max = 255, message = "{grantType.description.size}", groups = { CreateLevel2.class, UpdateLevel2.class })
+	private String description;
+
 	GrantType() {
 		super(IdGenerator.generateId("gnt", 30));
 	}
@@ -62,6 +66,14 @@ public class GrantType extends PersistentEntity {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	public int hashCode() {

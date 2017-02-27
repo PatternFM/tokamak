@@ -47,6 +47,10 @@ public class Authority extends PersistentEntity {
 	@Size(max = 128, message = "{authority.name.size}", groups = { CreateLevel2.class, UpdateLevel2.class })
 	private String name;
 
+	@Column(name = "description")
+	@Size(max = 255, message = "{authority.description.size}", groups = { CreateLevel2.class, UpdateLevel2.class })
+	private String description;
+
 	Authority() {
 		super(IdGenerator.generateId("ath", 30));
 	}
@@ -62,6 +66,14 @@ public class Authority extends PersistentEntity {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	public int hashCode() {

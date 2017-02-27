@@ -8,7 +8,8 @@ import fm.pattern.microstructure.Result;
 public class RoleDSL extends AbstractDSL<RoleDSL, Role> {
 
 	private String name = randomAlphabetic(10);
-
+	private String description = null;
+	
 	public static RoleDSL role() {
 		return new RoleDSL();
 	}
@@ -17,9 +18,15 @@ public class RoleDSL extends AbstractDSL<RoleDSL, Role> {
 		this.name = name;
 		return this;
 	}
+	
+	public RoleDSL withDescription(String description) {
+		this.description = description;
+		return this;
+	}
 
 	public Role build() {
 		Role role = new Role(name);
+		role.setDescription(description);
 		return shouldPersist() ? persist(role) : role;
 	}
 

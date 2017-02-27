@@ -8,6 +8,7 @@ import fm.pattern.microstructure.Result;
 public class AuthorityDSL extends AbstractDSL<AuthorityDSL, Authority> {
 
 	private String name = randomAlphabetic(10);
+	private String description = null;
 
 	public static AuthorityDSL authority() {
 		return new AuthorityDSL();
@@ -18,8 +19,14 @@ public class AuthorityDSL extends AbstractDSL<AuthorityDSL, Authority> {
 		return this;
 	}
 
+	public AuthorityDSL withDescription(String description) {
+		this.description = description;
+		return this;
+	}
+
 	public Authority build() {
 		Authority authority = new Authority(name);
+		authority.setDescription(description);
 		return shouldPersist() ? persist(authority) : authority;
 	}
 

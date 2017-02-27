@@ -29,6 +29,11 @@ public class RoleValidationTest extends IntegrationTest {
 	}
 
 	@Test
+	public void shouldNotBeAbleToCreateARoleWhenTheRoleDescriptionIsGreaterThan255Characters() {
+		onCreate(role().withDescription(RandomStringUtils.randomAlphabetic(256)).build()).rejected().withCode("role.description.size").withType(UNPROCESSABLE_ENTITY).withDescription("A role description cannot be greater than 255 characters.");
+	}
+
+	@Test
 	public void shouldNotBeAbleToCreateARoleWhenTheRoleNameAlredyExists() {
 		role().withName("first").thatIs().persistent().build();
 		onCreate(role().withName("first").build()).rejected().withCode("role.name.conflict").withType(UNPROCESSABLE_ENTITY).withDescription("This role name is already in use.");
@@ -52,12 +57,17 @@ public class RoleValidationTest extends IntegrationTest {
 	}
 
 	@Test
+	public void shouldNotBeAbleToUpdateARoleWhenTheRoleDescriptionIsGreaterThan255Characters() {
+		onUpdate(role().withDescription(RandomStringUtils.randomAlphabetic(256)).build()).rejected().withCode("role.description.size").withType(UNPROCESSABLE_ENTITY).withDescription("A role description cannot be greater than 255 characters.");
+	}
+
+	@Test
 	public void shouldNotBeAbleToUpdateARoleWhenTheRoleNameAlredyExists() {
 		role().withName("first").thatIs().persistent().build();
 
 		Role second = role().withName("second").thatIs().persistent().build();
 		second.setName("first");
-		
+
 		onUpdate(second).rejected().withCode("role.name.conflict").withType(UNPROCESSABLE_ENTITY).withDescription("This role name is already in use.");
 	}
 

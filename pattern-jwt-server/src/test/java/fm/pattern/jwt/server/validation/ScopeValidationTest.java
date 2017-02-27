@@ -35,6 +35,11 @@ public class ScopeValidationTest extends IntegrationTest {
 	}
 
 	@Test
+	public void shouldNotBeAbleToCreateAScopeWhenTheScopeDescriptionIsGreaterThan255Characters() {
+		onCreate(scope().withDescription(RandomStringUtils.randomAlphabetic(256)).build()).rejected().withCode("scope.description.size").withType(UNPROCESSABLE_ENTITY).withDescription("A scope description cannot be greater than 255 characters.");
+	}
+	
+	@Test
 	public void shouldBeAbleToUpdateAValidScope() {
 		onUpdate(scope().build()).accepted();
 	}
@@ -51,6 +56,11 @@ public class ScopeValidationTest extends IntegrationTest {
 		onUpdate(scope().withName(RandomStringUtils.randomAlphabetic(129)).build()).rejected().withCode("scope.name.size").withType(UNPROCESSABLE_ENTITY).withDescription("A scope name cannot be greater than 128 characters.");
 	}
 
+	@Test
+	public void shouldNotBeAbleToUpdateAScopeWhenTheScopeDescriptionIsGreaterThan255Characters() {
+		onUpdate(scope().withDescription(RandomStringUtils.randomAlphabetic(256)).build()).rejected().withCode("scope.description.size").withType(UNPROCESSABLE_ENTITY).withDescription("A scope description cannot be greater than 255 characters.");
+	}
+	
 	@Test
 	public void shouldNotBeAbleToUpdateAScopeWhenTheScopeNameAlredyExists() {
 		scope().withName("first").thatIs().persistent().build();
