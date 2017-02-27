@@ -16,6 +16,8 @@
 
 package fm.pattern.jwt.server.endpoints;
 
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 import static org.springframework.web.bind.annotation.RequestMethod.PUT;
 
@@ -28,6 +30,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import fm.pattern.jwt.sdk.model.ClientRepresentation;
+import fm.pattern.jwt.security.authorization.Authorize;
 import fm.pattern.jwt.server.conversion.EgressConversionService;
 import fm.pattern.jwt.server.conversion.IngressConversionService;
 import fm.pattern.jwt.server.model.Client;
@@ -47,6 +50,7 @@ public class ClientsEndpoint extends Endpoint {
 		this.egress = egress;
 	}
 
+	@Authorize(scopes = "clients:create")
 	@ResponseStatus(value = HttpStatus.CREATED)
 	@RequestMapping(value = "/v1/clients", method = POST, consumes = "application/json", produces = "application/json")
 	public ClientRepresentation create(@RequestBody ClientRepresentation representation) {
@@ -55,11 +59,18 @@ public class ClientsEndpoint extends Endpoint {
 		return egress.convert(validate(clientService.findById(created.getId())));
 	}
 
-	@ResponseStatus(value = HttpStatus.OK)
+	@Authorize(scopes = "clients:update")
 	@RequestMapping(value = "/v1/clients/{id}", method = PUT, consumes = "application/json", produces = "application/json")
 	public ClientRepresentation update(@PathVariable String id, @RequestBody ClientRepresentation representation) {
 		Client client = ingress.update(representation, validate(clientService.findById(id)));
-		return egress.convert(validate(clientService.update(client)));
+		Client updated = validate(clientService.update(client));
+		return egress.convert(validate(clientService.findById(updated.getId())));
+	}
+
+	@Authorize(scopes = "clients:read")
+	@RequestMapping(value = "/v1/clients/{id}", method = GET, produces = APPLICATION_JSON_VALUE)
+	public ClientRepresentation findById(@PathVariable String id) {
+		return egress.convert(validate(clientService.findById(id)));
 	}
 
 }

@@ -119,7 +119,7 @@ public class SecurityConfiguration {
 	@EnableAuthorizationServer
 	protected static class OAuth2Config extends AuthorizationServerConfigurerAdapter {
 
-		/** TODO Brandon: Configure these attributes via yml file. */
+		/** TODO : Configure these attributes via yml file. */
 		
 		/** Access tokens are valid for 2 hours. **/
 		private final Integer accessTokenValiditySeconds = 60 * 60 * 2;

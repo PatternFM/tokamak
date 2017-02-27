@@ -19,6 +19,7 @@ package fm.pattern.jwt.server.endpoints;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
+import static org.springframework.web.bind.annotation.RequestMethod.PUT;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -49,12 +50,21 @@ public class AccountsEndpoint extends Endpoint {
 		this.egress = egress;
 	}
 
+	@Authorize(scopes = "accounts:create")
 	@ResponseStatus(value = HttpStatus.CREATED)
 	@RequestMapping(value = "/v1/accounts", method = POST, consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
 	public AccountRepresentation create(@RequestBody AccountRepresentation representation) {
 		Account account = ingress.convert(representation);
 		Account created = validate(accountService.create(account));
 		return egress.convert(validate(accountService.findById(created.getId())));
+	}
+
+	@Authorize(scopes = "accounts:update")
+	@RequestMapping(value = "/v1/accounts/{id}", method = PUT, consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
+	public AccountRepresentation update(@PathVariable String id, @RequestBody AccountRepresentation representation) {
+		Account account = ingress.update(representation, validate(accountService.findById(id)));
+		Account updated = validate(accountService.update(account));
+		return egress.convert(validate(accountService.findById(updated.getId())));
 	}
 
 	@Authorize(scopes = "accounts:read")
