@@ -10,6 +10,7 @@ import static org.assertj.core.api.StrictAssertions.assertThat;
 import org.junit.Before;
 import org.junit.Test;
 
+import fm.pattern.commons.rest.JwtClientProperties;
 import fm.pattern.commons.rest.Result;
 import fm.pattern.jwt.sdk.ClientsClient;
 import fm.pattern.jwt.sdk.model.AccessTokenRepresentation;
@@ -19,7 +20,7 @@ import fm.pattern.jwt.spec.AcceptanceTest;
 
 public class ClientsEndpointAcceptanceTest extends AcceptanceTest {
 
-	private ClientsClient client = new ClientsClient("http://localhost:9600");
+	private ClientsClient client = new ClientsClient(JwtClientProperties.getEndpoint());
 
 	private AccessTokenRepresentation token;
 

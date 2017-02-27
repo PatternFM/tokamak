@@ -10,6 +10,7 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Before;
 import org.junit.Test;
 
+import fm.pattern.commons.rest.JwtClientProperties;
 import fm.pattern.commons.rest.Result;
 import fm.pattern.jwt.sdk.ScopesClient;
 import fm.pattern.jwt.sdk.model.AccessTokenRepresentation;
@@ -18,7 +19,7 @@ import fm.pattern.jwt.spec.AcceptanceTest;
 
 public class ScopesEndpointAcceptanceTest extends AcceptanceTest {
 
-	private final ScopesClient client = new ScopesClient("http://localhost:9600");
+	private final ScopesClient client = new ScopesClient(JwtClientProperties.getEndpoint());
 
 	private AccessTokenRepresentation token;
 

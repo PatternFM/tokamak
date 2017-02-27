@@ -9,6 +9,7 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
+import fm.pattern.commons.rest.JwtClientProperties;
 import fm.pattern.commons.rest.Result;
 import fm.pattern.jwt.sdk.GrantTypesClient;
 import fm.pattern.jwt.sdk.model.AccessTokenRepresentation;
@@ -17,7 +18,7 @@ import fm.pattern.jwt.spec.AcceptanceTest;
 
 public class GrantTypesEndpointAcceptanceTest extends AcceptanceTest {
 
-	private final GrantTypesClient client = new GrantTypesClient("http://localhost:9600");
+	private final GrantTypesClient client = new GrantTypesClient(JwtClientProperties.getEndpoint());
 
 	private AccessTokenRepresentation token;
 

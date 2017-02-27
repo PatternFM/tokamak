@@ -8,6 +8,7 @@ import static org.assertj.core.api.StrictAssertions.assertThat;
 import org.junit.Before;
 import org.junit.Test;
 
+import fm.pattern.commons.rest.JwtClientProperties;
 import fm.pattern.commons.rest.Result;
 import fm.pattern.jwt.sdk.ClientCredentials;
 import fm.pattern.jwt.sdk.TokensClient;
@@ -18,7 +19,7 @@ import fm.pattern.jwt.spec.AcceptanceTest;
 
 public class TokenEndpointAcceptanceTest extends AcceptanceTest {
 
-	private TokensClient oAuthClient = new TokensClient("http://localhost:9600");
+	private TokensClient oAuthClient = new TokensClient(JwtClientProperties.getEndpoint());
 
 	private String password = "password12345";
 	private AccountRepresentation account;
