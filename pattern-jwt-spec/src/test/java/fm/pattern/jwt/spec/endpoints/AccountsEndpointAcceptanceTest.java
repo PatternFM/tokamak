@@ -2,22 +2,32 @@ package fm.pattern.jwt.spec.endpoints;
 
 import static fm.pattern.jwt.sdk.dsl.AccessTokenDSL.token;
 import static fm.pattern.jwt.sdk.dsl.AccountDSL.account;
+import static fm.pattern.jwt.sdk.dsl.RoleDSL.role;
 import static fm.pattern.jwt.spec.PatternAssertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.StrictAssertions.assertThat;
 
+import java.util.Arrays;
+import java.util.HashSet;
+
+import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Before;
 import org.junit.Test;
 
 import fm.pattern.commons.rest.JwtClientProperties;
 import fm.pattern.commons.rest.Result;
 import fm.pattern.jwt.sdk.AccountsClient;
+import fm.pattern.jwt.sdk.TokensClient;
+import fm.pattern.jwt.sdk.UserCredentials;
 import fm.pattern.jwt.sdk.model.AccessTokenRepresentation;
 import fm.pattern.jwt.sdk.model.AccountRepresentation;
+import fm.pattern.jwt.sdk.model.RoleRepresentation;
 import fm.pattern.jwt.spec.AcceptanceTest;
 
 public class AccountsEndpointAcceptanceTest extends AcceptanceTest {
 
 	private AccountsClient accountsClient = new AccountsClient(JwtClientProperties.getEndpoint());
+	private TokensClient tokensClient = new TokensClient(JwtClientProperties.getEndpoint());
 
 	private AccessTokenRepresentation token;
 
@@ -48,6 +58,82 @@ public class AccountsEndpointAcceptanceTest extends AcceptanceTest {
 		AccountRepresentation account = account().withUsername(null).withPassword("password").build();
 		Result<AccountRepresentation> response = accountsClient.create(account, token.getAccessToken());
 		assertThat(response).rejected().withResponseCode(422).withDescription("An account username is required.");
+	}
+
+	@Test
+	public void shouldBeAbleToUpdateAnAccount() {
+		AccountRepresentation account = account().thatIs().persistent(token).build();
+		pause(1000);
+
+		RoleRepresentation role = role().thatIs().persistent(token).build();
+
+		account.setRoles(new HashSet<RoleRepresentation>(Arrays.asList(role)));
+		account.setLocked(true);
+
+		Result<AccountRepresentation> result = accountsClient.update(account, token.getAccessToken());
+		assertThat(result).accepted().withResponseCode(200);
+
+		AccountRepresentation updated = result.getInstance();
+		assertThat(updated.getId()).startsWith("acc_");
+		assertThat(updated.getCreated()).isNotNull();
+		assertThat(updated.getUpdated()).isNotNull();
+
+		assertThat(updated.getCreated()).isEqualTo(account.getCreated());
+		assertThat(updated.getCreated()).isBefore(updated.getUpdated());
+		assertThat(updated.getUpdated()).isAfter(account.getUpdated());
+
+		assertThat(updated.isLocked()).isTrue();
+		assertThat(updated.getRoles()).hasSize(1);
+		assertThat(updated.getRoles().iterator().next()).isEqualToComparingFieldByField(role);
+	}
+
+	@Test
+	public void shouldDeleteRoleAssociationsWhenUpdatingAnAccount() {
+		RoleRepresentation role1 = role().thatIs().persistent(token).build();
+		RoleRepresentation role2 = role().thatIs().persistent(token).build();
+		RoleRepresentation role3 = role().thatIs().persistent(token).build();
+
+		AccountRepresentation account = account().withRoles(role1, role2, role3).thatIs().persistent(token).build();
+		account.setRoles(new HashSet<RoleRepresentation>(Arrays.asList(role1)));
+
+		Result<AccountRepresentation> result = accountsClient.update(account, token.getAccessToken());
+		assertThat(result).accepted().withResponseCode(200);
+
+		AccountRepresentation updated = result.getInstance();
+		assertThat(updated.getRoles()).hasSize(1);
+		assertThat(updated.getRoles().iterator().next()).isEqualToComparingFieldByField(role1);
+	}
+
+	@Test
+	public void updatingAnAccountShouldNotUpdateTheUsernameOrPassword() {
+		AccountRepresentation account = account().withPassword("password").thatIs().persistent(token).build();
+		String username = account.getUsername();
+
+		account.setLocked(true);
+		account.setPassword("new_password");
+		account.setUsername(RandomStringUtils.randomAlphanumeric(6));
+
+		Result<AccountRepresentation> result = accountsClient.update(account, token.getAccessToken());
+		assertThat(result).accepted().withResponseCode(200);
+
+		AccountRepresentation updated = result.getInstance();
+		assertThat(updated.getId()).startsWith("acc_");
+
+		assertThat(updated.getUsername()).isEqualTo(username);
+		assertThat(updated.isLocked()).isTrue();
+
+		Result<AccessTokenRepresentation> response = tokensClient.getAccessToken(TEST_CLIENT_CREDENTIALS, new UserCredentials(username, "new_password"));
+		assertThat(response).rejected().withResponseCode(400).withDescription(BAD_CREDENTIALS);
+	}
+
+	@Test
+	public void shouldBeAbleToDeleteAnAccount() {
+		AccountRepresentation account = account().thatIs().persistent(token).build();
+
+		Result<AccountRepresentation> result = accountsClient.delete(account.getId(), token.getAccessToken());
+		assertThat(result).accepted().withResponseCode(204);
+
+		assertThat(accountsClient.findById(account.getId(), token.getAccessToken())).rejected().withResponseCode(404);
 	}
 
 	@Test

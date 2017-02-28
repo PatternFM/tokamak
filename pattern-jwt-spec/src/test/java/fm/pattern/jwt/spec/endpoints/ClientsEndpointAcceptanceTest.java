@@ -67,7 +67,6 @@ public class ClientsEndpointAcceptanceTest extends AcceptanceTest {
 
 		Result<ClientRepresentation> response = client.create(representation, this.token.getAccessToken());
 		assertThat(response).rejected().withResponseCode(422).withDescription("A client requires at least one grant type.");
-
 	}
 
 	@Test
@@ -77,6 +76,21 @@ public class ClientsEndpointAcceptanceTest extends AcceptanceTest {
 
 		Result<ClientRepresentation> response = client.create(representation, this.token.getAccessToken());
 		assertThat(response).rejected().withResponseCode(422).withDescription("This client id is already in use.");
+	}
+
+	@Test
+	public void shouldBeAbleToFindAnClientById() {
+		ClientRepresentation persistent = client().withGrantTypes("password", "refresh_token").thatIs().persistent(token).build();
+		Result<ClientRepresentation> response = client.findById(persistent.getId(), token.getAccessToken());
+
+		assertThat(response).accepted().withResponseCode(200);
+		assertThat(response.getInstance().getId()).isEqualTo(persistent.getId());
+	}
+
+	@Test
+	public void shouldReturnA404WhenAnClientWithTheSpecifiedIdCannotBeFound() {
+		Result<ClientRepresentation> response = client.findById("abcdefg", token.getAccessToken());
+		assertThat(response).rejected().withResponseCode(404).withDescription("No such client id: abcdefg");
 	}
 
 }

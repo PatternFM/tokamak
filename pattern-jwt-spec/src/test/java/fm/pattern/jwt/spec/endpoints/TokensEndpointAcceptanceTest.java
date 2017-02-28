@@ -17,9 +17,9 @@ import fm.pattern.jwt.sdk.model.AccessTokenRepresentation;
 import fm.pattern.jwt.sdk.model.AccountRepresentation;
 import fm.pattern.jwt.spec.AcceptanceTest;
 
-public class TokenEndpointAcceptanceTest extends AcceptanceTest {
+public class TokensEndpointAcceptanceTest extends AcceptanceTest {
 
-	private TokensClient oAuthClient = new TokensClient(JwtClientProperties.getEndpoint());
+	private TokensClient tokensClient = new TokensClient(JwtClientProperties.getEndpoint());
 
 	private String password = "password12345";
 	private AccountRepresentation account;
@@ -35,7 +35,7 @@ public class TokenEndpointAcceptanceTest extends AcceptanceTest {
 
 	@Test
 	public void theServerShouldReturnAnAccessTokenButNotRefreshTokenWhenUsingTheClientCredentialsGrantType() {
-		Result<AccessTokenRepresentation> response = oAuthClient.getAccessToken(TEST_CLIENT_CREDENTIALS);
+		Result<AccessTokenRepresentation> response = tokensClient.getAccessToken(TEST_CLIENT_CREDENTIALS);
 		assertThat(response).accepted();
 
 		AccessTokenRepresentation token = response.getInstance();
@@ -47,19 +47,19 @@ public class TokenEndpointAcceptanceTest extends AcceptanceTest {
 
 	@Test
 	public void aClientShouldNotBeAbleToGetAnAccessTokenUsingAClientCredentialsGrantTypeWhenTheClientIdIsInvalid() {
-		Result<AccessTokenRepresentation> response = oAuthClient.getAccessToken(new ClientCredentials("invalid_client_id", TEST_CLIENT_SECRET));
+		Result<AccessTokenRepresentation> response = tokensClient.getAccessToken(new ClientCredentials("invalid_client_id", TEST_CLIENT_SECRET));
 		assertThat(response).rejected().withResponseCode(401).withDescription(BAD_CREDENTIALS);
 	}
 
 	@Test
 	public void aClientShouldNotBeAbleToGetAnAccessTokenUsingAClientCredentialsGrantTypeWhenTheClientSecretIsInvalid() {
-		Result<AccessTokenRepresentation> response = oAuthClient.getAccessToken(new ClientCredentials(TEST_CLIENT_ID, "invalid_client_secret"));
+		Result<AccessTokenRepresentation> response = tokensClient.getAccessToken(new ClientCredentials(TEST_CLIENT_ID, "invalid_client_secret"));
 		assertThat(response).rejected().withResponseCode(401).withDescription(BAD_CREDENTIALS);
 	}
 
 	@Test
 	public void theServerShouldReturnAnAccessTokenAndRefreshTokenWhenUsingThePasswordGrantType() {
-		Result<AccessTokenRepresentation> response = oAuthClient.getAccessToken(TEST_CLIENT_CREDENTIALS, account.getUsername(), password);
+		Result<AccessTokenRepresentation> response = tokensClient.getAccessToken(TEST_CLIENT_CREDENTIALS, account.getUsername(), password);
 		assertThat(response).accepted();
 
 		AccessTokenRepresentation token = response.getInstance();
@@ -71,35 +71,35 @@ public class TokenEndpointAcceptanceTest extends AcceptanceTest {
 
 	@Test
 	public void aClientShouldNotBeAbleToGetAnAccessTokenUsingAResourceOwnerGrantTypeWhenTheClientIdIsInvalid() {
-		Result<AccessTokenRepresentation> response = oAuthClient.getAccessToken(new ClientCredentials("invalid_client_id", TEST_CLIENT_SECRET), new UserCredentials(account.getUsername(), password));
+		Result<AccessTokenRepresentation> response = tokensClient.getAccessToken(new ClientCredentials("invalid_client_id", TEST_CLIENT_SECRET), new UserCredentials(account.getUsername(), password));
 		assertThat(response).rejected().withResponseCode(401).withDescription(BAD_CREDENTIALS);
 	}
 
 	@Test
 	public void aClientShouldNotBeAbleToGetAnAccessTokenUsingAResourceOwnerGrantTypeWhenTheClientSecretIsInvalid() {
-		Result<AccessTokenRepresentation> response = oAuthClient.getAccessToken(new ClientCredentials(TEST_CLIENT_ID, "invalid_client_secret"), new UserCredentials(account.getUsername(), password));
+		Result<AccessTokenRepresentation> response = tokensClient.getAccessToken(new ClientCredentials(TEST_CLIENT_ID, "invalid_client_secret"), new UserCredentials(account.getUsername(), password));
 		assertThat(response).rejected().withResponseCode(401).withDescription(BAD_CREDENTIALS);
 	}
 
 	@Test
 	public void aClientShouldNotBeAbleToGetAnAccessTokenUsingAResourceOwnerGrantTypeWhenTheUsernameIsInvalid() {
-		Result<AccessTokenRepresentation> response = oAuthClient.getAccessToken(TEST_CLIENT_CREDENTIALS, new UserCredentials("invalid_username", password));
+		Result<AccessTokenRepresentation> response = tokensClient.getAccessToken(TEST_CLIENT_CREDENTIALS, new UserCredentials("invalid_username", password));
 		assertThat(response).rejected().withResponseCode(400).withDescription(BAD_CREDENTIALS);
 	}
 
 	@Test
 	public void aClientShouldNotBeAbleToGetAnAccessTokenUsingAResourceOwnerGrantTypeWhenThePasswordIsInvalid() {
-		Result<AccessTokenRepresentation> response = oAuthClient.getAccessToken(TEST_CLIENT_CREDENTIALS, new UserCredentials(account.getUsername(), "invalid_password"));
+		Result<AccessTokenRepresentation> response = tokensClient.getAccessToken(TEST_CLIENT_CREDENTIALS, new UserCredentials(account.getUsername(), "invalid_password"));
 		assertThat(response).rejected().withResponseCode(400).withDescription(BAD_CREDENTIALS);
 	}
 
 	@Test
 	public void shouldBeAbleToGetAnAccessTokenUsingARefreshTokenGrantType() {
-		Result<AccessTokenRepresentation> accessTokenResponse = oAuthClient.getAccessToken(TEST_CLIENT_CREDENTIALS, account.getUsername(), password);
+		Result<AccessTokenRepresentation> accessTokenResponse = tokensClient.getAccessToken(TEST_CLIENT_CREDENTIALS, account.getUsername(), password);
 		assertThat(accessTokenResponse).accepted();
 		AccessTokenRepresentation originalAccessToken = accessTokenResponse.getInstance();
 
-		Result<AccessTokenRepresentation> refreshTokenResponse = oAuthClient.refreshAccessToken(TEST_CLIENT_CREDENTIALS, originalAccessToken);
+		Result<AccessTokenRepresentation> refreshTokenResponse = tokensClient.refreshAccessToken(TEST_CLIENT_CREDENTIALS, originalAccessToken);
 		assertThat(refreshTokenResponse).accepted();
 
 		AccessTokenRepresentation refreshedAccessToken = refreshTokenResponse.getInstance();
@@ -108,19 +108,19 @@ public class TokenEndpointAcceptanceTest extends AcceptanceTest {
 
 	@Test
 	public void shouldBeNotAbleToGetAnAccessTokenUsingARefreshTokenGrantTypeWhenTheClientIdIsInvalid() {
-		Result<AccessTokenRepresentation> accessTokenResponse = oAuthClient.getAccessToken(TEST_CLIENT_CREDENTIALS, new UserCredentials(account.getUsername(), password));
+		Result<AccessTokenRepresentation> accessTokenResponse = tokensClient.getAccessToken(TEST_CLIENT_CREDENTIALS, new UserCredentials(account.getUsername(), password));
 		assertThat(accessTokenResponse).accepted();
 
-		Result<AccessTokenRepresentation> refreshTokenResponse = oAuthClient.refreshAccessToken(new ClientCredentials("invalid_client_id", TEST_CLIENT_SECRET), accessTokenResponse.getInstance());
+		Result<AccessTokenRepresentation> refreshTokenResponse = tokensClient.refreshAccessToken(new ClientCredentials("invalid_client_id", TEST_CLIENT_SECRET), accessTokenResponse.getInstance());
 		assertThat(refreshTokenResponse).withResponseCode(401).withDescription(BAD_CREDENTIALS);
 	}
 
 	@Test
 	public void shouldBeNotAbleToGetAnAccessTokenUsingARefreshTokenGrantTypeWhenTheClientPasswordIsInvalid() {
-		Result<AccessTokenRepresentation> accessTokenResponse = oAuthClient.getAccessToken(TEST_CLIENT_CREDENTIALS, new UserCredentials(account.getUsername(), password));
+		Result<AccessTokenRepresentation> accessTokenResponse = tokensClient.getAccessToken(TEST_CLIENT_CREDENTIALS, new UserCredentials(account.getUsername(), password));
 		assertThat(accessTokenResponse).accepted();
 
-		Result<AccessTokenRepresentation> refreshTokenResponse = oAuthClient.refreshAccessToken(new ClientCredentials(TEST_CLIENT_ID, "invalid_password"), accessTokenResponse.getInstance());
+		Result<AccessTokenRepresentation> refreshTokenResponse = tokensClient.refreshAccessToken(new ClientCredentials(TEST_CLIENT_ID, "invalid_password"), accessTokenResponse.getInstance());
 		assertThat(refreshTokenResponse).rejected().withResponseCode(401).withDescription(BAD_CREDENTIALS);
 	}
 
