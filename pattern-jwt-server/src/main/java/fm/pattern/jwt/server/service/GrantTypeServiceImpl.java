@@ -27,7 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import fm.pattern.jwt.server.model.GrantType;
 import fm.pattern.jwt.server.repository.DataRepository;
-import fm.pattern.microstructure.Consumable;
+import fm.pattern.microstructure.Reportable;
 import fm.pattern.microstructure.Result;
 import fm.pattern.microstructure.ValidationService;
 import fm.pattern.microstructure.sequences.Delete;
@@ -53,7 +53,7 @@ class GrantTypeServiceImpl extends DataServiceImpl<GrantType> implements GrantTy
 
 		Long count = repository.count(repository.sqlQuery("select count(_id) from ClientGrantTypes where grant_type_id = :id").setString("id", grantType.getId()));
 		if (count != 0) {
-			return Result.conflict(new Consumable("grantType.delete.conflict", "This grant type cannot be deleted, " + count + (count != 1 ? " clients are" : " client is") + " linked to this grant type."));
+			return Result.conflict(new Reportable("grantType.delete.conflict", "This grant type cannot be deleted, " + count + (count != 1 ? " clients are" : " client is") + " linked to this grant type."));
 		}
 
 		return repository.delete(grantType);

@@ -17,6 +17,7 @@
 package fm.pattern.jwt.server.endpoints;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+import static org.springframework.web.bind.annotation.RequestMethod.DELETE;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 import static org.springframework.web.bind.annotation.RequestMethod.PUT;
@@ -55,28 +56,36 @@ public class AccountsEndpoint extends Endpoint {
 	@RequestMapping(value = "/v1/accounts", method = POST, consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
 	public AccountRepresentation create(@RequestBody AccountRepresentation representation) {
 		Account account = ingress.convert(representation);
-		Account created = validate(accountService.create(account));
-		return egress.convert(validate(accountService.findById(created.getId())));
+		Account created = accountService.create(account).orThrow();
+		return egress.convert(accountService.findById(created.getId()).orThrow());
 	}
 
 	@Authorize(scopes = "accounts:update")
 	@RequestMapping(value = "/v1/accounts/{id}", method = PUT, consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
 	public AccountRepresentation update(@PathVariable String id, @RequestBody AccountRepresentation representation) {
-		Account account = ingress.update(representation, validate(accountService.findById(id)));
-		Account updated = validate(accountService.update(account));
-		return egress.convert(validate(accountService.findById(updated.getId())));
+		Account account = ingress.convert(representation, accountService.findById(id).orThrow());
+		Account updated = accountService.update(account).orThrow();
+		return egress.convert(accountService.findById(updated.getId()).orThrow());
+	}
+
+	@Authorize(scopes = "accounts:delete")
+	@ResponseStatus(value = HttpStatus.NO_CONTENT)
+	@RequestMapping(value = "/v1/accounts/{id}", method = DELETE)
+	public void delete(@PathVariable String id) {
+		Account account = accountService.findById(id).orThrow();
+		accountService.delete(account).orThrow();
 	}
 
 	@Authorize(scopes = "accounts:read")
 	@RequestMapping(value = "/v1/accounts/{id}", method = GET, produces = APPLICATION_JSON_VALUE)
 	public AccountRepresentation findById(@PathVariable String id) {
-		return egress.convert(validate(accountService.findById(id)));
+		return egress.convert(accountService.findById(id).orThrow());
 	}
 
 	@Authorize(scopes = "accounts:read")
 	@RequestMapping(value = "/v1/accounts/username/{username}", method = GET, produces = APPLICATION_JSON_VALUE)
 	public AccountRepresentation findByUsername(@PathVariable String username) {
-		return egress.convert(validate(accountService.findByUsername(username)));
+		return egress.convert(accountService.findByUsername(username).orThrow());
 	}
 
 }

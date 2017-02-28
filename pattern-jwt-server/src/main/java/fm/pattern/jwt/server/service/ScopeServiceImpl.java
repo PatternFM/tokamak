@@ -27,7 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import fm.pattern.jwt.server.model.Scope;
 import fm.pattern.jwt.server.repository.DataRepository;
-import fm.pattern.microstructure.Consumable;
+import fm.pattern.microstructure.Reportable;
 import fm.pattern.microstructure.Result;
 import fm.pattern.microstructure.ValidationService;
 import fm.pattern.microstructure.sequences.Delete;
@@ -53,7 +53,7 @@ class ScopeServiceImpl extends DataServiceImpl<Scope> implements ScopeService {
 
 		Long count = repository.count(repository.sqlQuery("select count(_id) from ClientScopes where scope_id = :id").setString("id", scope.getId()));
 		if (count != 0) {
-			return Result.conflict(new Consumable("scope.delete.conflict", "This scope cannot be deleted, " + count + (count != 1 ? " clients are" : " client is") + " linked to this scope."));
+			return Result.conflict(new Reportable("scope.delete.conflict", "This scope cannot be deleted, " + count + (count != 1 ? " clients are" : " client is") + " linked to this scope."));
 		}
 
 		return repository.delete(scope);

@@ -27,7 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import fm.pattern.jwt.server.model.Authority;
 import fm.pattern.jwt.server.repository.DataRepository;
-import fm.pattern.microstructure.Consumable;
+import fm.pattern.microstructure.Reportable;
 import fm.pattern.microstructure.Result;
 import fm.pattern.microstructure.ValidationService;
 import fm.pattern.microstructure.sequences.Delete;
@@ -53,7 +53,7 @@ class AuthorityServiceImpl extends DataServiceImpl<Authority> implements Authori
 
 		Long count = repository.count(repository.sqlQuery("select count(_id) from ClientAuthorities where authority_id = :id").setString("id", authority.getId()));
 		if (count != 0) {
-			return Result.conflict(new Consumable("authority.delete.conflict", "This authority cannot be deleted, " + count + (count != 1 ? " clients are" : " client is") + " linked to this authority."));
+			return Result.conflict(new Reportable("authority.delete.conflict", "This authority cannot be deleted, " + count + (count != 1 ? " clients are" : " client is") + " linked to this authority."));
 		}
 
 		return repository.delete(authority);

@@ -14,6 +14,7 @@ import fm.pattern.jwt.server.IntegrationTest;
 import fm.pattern.jwt.server.model.Account;
 import fm.pattern.jwt.server.security.PasswordEncodingService;
 import fm.pattern.microstructure.Result;
+import fm.pattern.microstructure.ResultType;
 
 public class AccountServiceIntegrationTest extends IntegrationTest {
 
@@ -42,16 +43,45 @@ public class AccountServiceIntegrationTest extends IntegrationTest {
 	}
 
 	@Test
+	public void shouldNotBeAbleToCreateAnInvalidAccount() {
+		Account account = account().withUsername(null).withPassword("password").build();
+		assertThat(accountService.create(account)).rejected().withType(UNPROCESSABLE_ENTITY);
+	}
+
+	@Test
+	public void shouldBeAbleToUpdateAnAccount() {
+		Account account = account().thatIs().persistent().build();
+		account.setLocked(true);
+
+		Result<Account> result = accountService.update(account);
+		assertThat(result).accepted();
+		assertThat(result.getInstance().isLocked()).isTrue();
+	}
+
+	@Test
+	public void shouldNotBeAbleToUpdateAnInvalidAccount() {
+		Account account = account().thatIs().persistent().build();
+		account.setLocked(true);
+		account.setUsername(null);
+
+		Result<Account> result = accountService.update(account);
+		assertThat(result).rejected().withType(ResultType.UNPROCESSABLE_ENTITY);
+	}
+
+	@Test
+	public void shouldBeAbleToDeleteAnAccount() {
+		Account account = account().thatIs().persistent().build();
+		assertThat(accountService.findById(account.getId())).accepted();
+
+		assertThat(accountService.delete(account)).accepted();
+		assertThat(accountService.findById(account.getId())).rejected().withType(NOT_FOUND).withDescription("No such account id: " + account.getId());
+	}
+
+	@Test
 	public void shouldEncryptTheAccountPasswordBeforeSavingTheAccount() {
 		Account account = account().withPassword("password1234").thatIs().persistent().build();
 		assertThat(account.getPassword()).startsWith("$2a$");
 		assertThat(passwordEncodingService.matches("password1234", account.getPassword()));
-	}
-	
-	@Test
-	public void shouldNotBeAbleToCreateAnAccountWhenTheAccountIsInvalid() {
-		Account account = account().withUsername(null).withPassword("password").build();
-		assertThat(accountService.create(account)).rejected().withType(UNPROCESSABLE_ENTITY);
 	}
 
 	@Test
@@ -95,24 +125,15 @@ public class AccountServiceIntegrationTest extends IntegrationTest {
 	}
 
 	@Test
-	public void shouldBeAbleToDeleteAnAccount() {
-		Account account = account().thatIs().persistent().build();
-		assertThat(accountService.findById(account.getId())).accepted();
-
-		assertThat(accountService.delete(account)).accepted();
-		assertThat(accountService.findById(account.getId())).rejected().withType(NOT_FOUND).withDescription("No such account id: " + account.getId());
-	}
-
-	@Test
 	public void shouldBeAbleToUpdateAPassword() {
-		String oldPassword = "myOLDPassword";
+		String currentPassword = "myOLDPassword";
 		String newPassword = "myNEWPassword";
-		String email = "test@email.com";
+		String username = "test@email.com";
 
-		Account account = account().withUsername(email).withPassword(oldPassword).thatIs().persistent().build();
-		assertThat(accountService.updatePassword(account, oldPassword, newPassword)).accepted();
+		Account account = account().withUsername(username).withPassword(currentPassword).thatIs().persistent().build();
+		assertThat(accountService.updatePassword(account, currentPassword, newPassword)).accepted();
 
-		assertAccountHasPassword(email, newPassword);
+		assertAccountHasPassword(username, newPassword);
 	}
 
 	@Test

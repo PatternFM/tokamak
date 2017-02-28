@@ -29,7 +29,7 @@ import fm.pattern.jwt.server.model.Client;
 import fm.pattern.jwt.server.model.GrantType;
 import fm.pattern.jwt.server.model.Role;
 import fm.pattern.jwt.server.model.Scope;
-import fm.pattern.microstructure.exceptions.ConsumableException;
+import fm.pattern.microstructure.exceptions.ReportableException;
 
 public interface EgressConversionService {
 
@@ -45,6 +45,6 @@ public interface EgressConversionService {
 
 	GrantTypeRepresentation convert(GrantType grantType);
 
-	ErrorsRepresentation convert(ConsumableException exception);
+	ErrorsRepresentation convert(ReportableException exception);
 
 }

@@ -36,7 +36,7 @@ import fm.pattern.jwt.server.model.Client;
 import fm.pattern.jwt.server.model.GrantType;
 import fm.pattern.jwt.server.model.Role;
 import fm.pattern.jwt.server.model.Scope;
-import fm.pattern.microstructure.exceptions.ConsumableException;
+import fm.pattern.microstructure.exceptions.ReportableException;
 
 @Service
 class EgressConversionServiceImpl implements EgressConversionService {
@@ -70,7 +70,7 @@ class EgressConversionServiceImpl implements EgressConversionService {
 		return representation;
 	}
 
-	public ErrorsRepresentation convert(ConsumableException exception) {
+	public ErrorsRepresentation convert(ReportableException exception) {
 		List<ErrorRepresentation> errors = exception.getErrors().stream().map(e -> new ErrorRepresentation(e.getCode(), e.getDescription(), e.getProperty())).collect(Collectors.toList());
 		return new ErrorsRepresentation(errors);
 	}

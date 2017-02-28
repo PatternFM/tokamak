@@ -18,6 +18,7 @@ package fm.pattern.jwt.server.model;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -87,9 +88,9 @@ public class Client extends PersistentEntity {
 		this();
 		this.username = username;
 		this.password = password;
-		this.authorities.addAll(authorities);
-		this.grantTypes.addAll(grantTypes);
-		this.scopes.addAll(scope);
+		this.authorities.addAll(authorities.stream().filter(a -> a != null).collect(Collectors.toList()));
+		this.grantTypes.addAll(grantTypes.stream().filter(a -> a != null).collect(Collectors.toList()));
+		this.scopes.addAll(scope.stream().filter(a -> a != null).collect(Collectors.toList()));
 	}
 
 	public String getUsername() {
@@ -132,6 +133,7 @@ public class Client extends PersistentEntity {
 		this.grantTypes = grantTypes;
 	}
 
+	// TODO: Remove hard-coded value.
 	public Set<String> getResourceIds() {
 		return Sets.newHashSet("oauth-service");
 	}

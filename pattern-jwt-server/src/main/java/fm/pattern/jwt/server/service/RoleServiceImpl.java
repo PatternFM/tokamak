@@ -27,7 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import fm.pattern.jwt.server.model.Role;
 import fm.pattern.jwt.server.repository.DataRepository;
-import fm.pattern.microstructure.Consumable;
+import fm.pattern.microstructure.Reportable;
 import fm.pattern.microstructure.Result;
 import fm.pattern.microstructure.ValidationService;
 import fm.pattern.microstructure.sequences.Delete;
@@ -53,7 +53,7 @@ class RoleServiceImpl extends DataServiceImpl<Role> implements RoleService {
 
 		Long count = repository.count(repository.sqlQuery("select count(_id) from AccountRoles where role_id = :id").setString("id", role.getId()));
 		if (count != 0) {
-			return Result.conflict(new Consumable("role.delete.conflict", "This role cannot be deleted, " + count + (count != 1 ? " accounts are" : " account is") + " linked to this role."));
+			return Result.conflict(new Reportable("role.delete.conflict", "This role cannot be deleted, " + count + (count != 1 ? " accounts are" : " account is") + " linked to this role."));
 		}
 
 		return repository.delete(role);

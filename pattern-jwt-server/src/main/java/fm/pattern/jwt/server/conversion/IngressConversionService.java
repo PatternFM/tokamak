@@ -43,7 +43,7 @@ public interface IngressConversionService {
 
 	GrantType convert(GrantTypeRepresentation representation);
 
-	Account update(AccountRepresentation representation, Account account);
+	Account convert(AccountRepresentation representation, Account account);
 
 	Client update(ClientRepresentation representation, Client client);
 

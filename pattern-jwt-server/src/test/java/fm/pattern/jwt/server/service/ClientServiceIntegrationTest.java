@@ -16,6 +16,7 @@ import fm.pattern.jwt.server.model.Client;
 import fm.pattern.jwt.server.model.GrantType;
 import fm.pattern.jwt.server.security.PasswordEncodingService;
 import fm.pattern.microstructure.Result;
+import fm.pattern.microstructure.ResultType;
 
 public class ClientServiceIntegrationTest extends IntegrationTest {
 
@@ -40,15 +41,31 @@ public class ClientServiceIntegrationTest extends IntegrationTest {
 		assertThat(result).accepted();
 
 		Client created = result.getInstance();
-
 		assertThat(created.getId()).isNotNull();
 		assertThat(created.getCreated()).isNotNull();
 		assertThat(created.getUpdated()).isNotNull();
 		assertThat(created.getCreated()).isEqualTo(client.getUpdated());
 		assertThat(created.getId()).isNotNull();
-
 		assertThat(created.getUsername()).isNotNull();
 		assertThat(created.getPassword()).isNotNull();
+	}
+
+	@Test
+	public void shouldNotBeAbleToCreateAnInvalidClient() {
+		Client client = client().withGrantType(null).build();
+
+		Result<Client> result = clientService.create(client);
+		assertThat(result).rejected().withType(ResultType.UNPROCESSABLE_ENTITY);
+	}
+	
+	
+	@Test
+	public void shouldBeAbleToDeleteAClient() {
+		Client client = client().withGrantType(grantType).thatIs().persistent().build();
+		assertThat(clientService.findById(client.getId())).isNotNull();
+		
+		clientService.delete(client);
+		assertThat(clientService.findById(client.getId())).rejected().withType(NOT_FOUND);
 	}
 
 	@Test
@@ -92,15 +109,6 @@ public class ClientServiceIntegrationTest extends IntegrationTest {
 	@Test
 	public void shouldNotBeAbleToFindAClientByUsernameIfTheClientUsernameDoesNotExist() {
 		assertThat(clientService.findByUsername("csrx")).rejected().withType(NOT_FOUND).withDescription("No such username: csrx");
-	}
-
-	@Test
-	public void shouldBeAbleToDeleteAClient() {
-		Client client = client().withGrantType(grantType).thatIs().persistent().build();
-		assertThat(clientService.findById(client.getId())).isNotNull();
-		
-		clientService.delete(client);
-		assertThat(clientService.findById(client.getId())).rejected().withType(NOT_FOUND);
 	}
 
 }
