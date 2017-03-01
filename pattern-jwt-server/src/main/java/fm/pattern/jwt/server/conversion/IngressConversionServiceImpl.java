@@ -123,7 +123,7 @@ class IngressConversionServiceImpl implements IngressConversionService {
 		client.setAccessTokenValiditySeconds(representation.getAccessTokenValiditySeconds());
 		client.setRefreshTokenValiditySeconds(representation.getRefreshTokenValiditySeconds());
 
-		return null;
+		return client;
 	}
 
 	public Role update(RoleRepresentation representation, Role role) {

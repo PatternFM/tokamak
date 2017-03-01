@@ -46,8 +46,8 @@ public class ClientServiceIntegrationTest extends IntegrationTest {
 		assertThat(created.getUpdated()).isNotNull();
 		assertThat(created.getCreated()).isEqualTo(client.getUpdated());
 		assertThat(created.getId()).isNotNull();
-		assertThat(created.getUsername()).isNotNull();
-		assertThat(created.getPassword()).isNotNull();
+		assertThat(created.getClientId()).isNotNull();
+		assertThat(created.getClientSecret()).isNotNull();
 	}
 
 	@Test
@@ -70,9 +70,9 @@ public class ClientServiceIntegrationTest extends IntegrationTest {
 
 	@Test
 	public void shouldEncryptTheClientPasswordWhenCreatingAClient() {
-		Client client = client().withGrantType(grantType).withPassword("password1234").thatIs().persistent().build();
-		assertThat(client.getPassword()).startsWith("$2a$");
-		assertThat(passwordEncodingService.matches("password1234", client.getPassword()));
+		Client client = client().withGrantType(grantType).withClientSecret("password1234").thatIs().persistent().build();
+		assertThat(client.getClientSecret()).startsWith("$2a$");
+		assertThat(passwordEncodingService.matches("password1234", client.getClientSecret()));
 	}
 
 	@Test
@@ -96,19 +96,19 @@ public class ClientServiceIntegrationTest extends IntegrationTest {
 	@Test
 	public void shouldBeAbleToFindAClientByUsername() {
 		Client client = client().withGrantType(grantType).thatIs().persistent().build();
-		assertThat(clientService.findByUsername(client.getUsername()).getInstance()).isEqualTo(client);
+		assertThat(clientService.findByClientId(client.getClientId()).getInstance()).isEqualTo(client);
 	}
 
 	@Test
-	public void shouldNotBeAbleToFindAClientByUsernameIfTheClientUsernameIsNullOrEmpty() {
-		assertThat(clientService.findByUsername(null)).rejected().withType(UNPROCESSABLE_ENTITY).withDescription("The client username to retrieve cannot be null or empty.");
-		assertThat(clientService.findByUsername("")).rejected().withType(UNPROCESSABLE_ENTITY).withDescription("The client username to retrieve cannot be null or empty.");
-		assertThat(clientService.findByUsername("  ")).rejected().withType(UNPROCESSABLE_ENTITY).withDescription("The client username to retrieve cannot be null or empty.");
+	public void shouldNotBeAbleToFindAClientByClientIdIfTheClientIdIsNullOrEmpty() {
+		assertThat(clientService.findByClientId(null)).rejected().withType(UNPROCESSABLE_ENTITY).withDescription("The client id to retrieve cannot be null or empty.");
+		assertThat(clientService.findByClientId("")).rejected().withType(UNPROCESSABLE_ENTITY).withDescription("The client id to retrieve cannot be null or empty.");
+		assertThat(clientService.findByClientId("  ")).rejected().withType(UNPROCESSABLE_ENTITY).withDescription("The client id to retrieve cannot be null or empty.");
 	}
 
 	@Test
-	public void shouldNotBeAbleToFindAClientByUsernameIfTheClientUsernameDoesNotExist() {
-		assertThat(clientService.findByUsername("csrx")).rejected().withType(NOT_FOUND).withDescription("No such username: csrx");
+	public void shouldNotBeAbleToFindAClientByClienIdIfTheClientIdDoesNotExist() {
+		assertThat(clientService.findByClientId("csrx")).rejected().withType(NOT_FOUND).withDescription("No such client id: csrx");
 	}
 
 }

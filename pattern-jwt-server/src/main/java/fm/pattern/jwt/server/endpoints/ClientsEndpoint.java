@@ -17,6 +17,7 @@
 package fm.pattern.jwt.server.endpoints;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+import static org.springframework.web.bind.annotation.RequestMethod.DELETE;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 import static org.springframework.web.bind.annotation.RequestMethod.PUT;
@@ -65,6 +66,14 @@ public class ClientsEndpoint extends Endpoint {
 		Client client = ingress.update(representation, validate(clientService.findById(id)));
 		Client updated = validate(clientService.update(client));
 		return egress.convert(validate(clientService.findById(updated.getId())));
+	}
+
+	@Authorize(scopes = "clients:delete")
+	@ResponseStatus(value = HttpStatus.NO_CONTENT)
+	@RequestMapping(value = "/v1/clients/{id}", method = DELETE)
+	public void delete(@PathVariable String id) {
+		Client client = clientService.findById(id).orThrow();
+		clientService.delete(client).orThrow();
 	}
 
 	@Authorize(scopes = "clients:read")

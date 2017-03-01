@@ -13,8 +13,8 @@ import fm.pattern.microstructure.Result;
 
 public class ClientDSL extends AbstractDSL<ClientDSL, Client> {
 
-	private String username = IdGenerator.generateId(15);
-	private String password = IdGenerator.generateId(15);
+	private String clientId = IdGenerator.generateId(15);
+	private String clientSecret = IdGenerator.generateId(15);
 	private Set<Authority> authorities = new HashSet<Authority>();
 	private Set<GrantType> grantTypes = new HashSet<GrantType>();
 	private Set<Scope> scopes = new HashSet<>();
@@ -24,13 +24,13 @@ public class ClientDSL extends AbstractDSL<ClientDSL, Client> {
 		return clientDSL;
 	}
 
-	public ClientDSL withUsername(String username) {
-		this.username = username;
+	public ClientDSL withClientId(String clientId) {
+		this.clientId = clientId;
 		return this;
 	}
 
-	public ClientDSL withPassword(String password) {
-		this.password = password;
+	public ClientDSL withClientSecret(String clientSecret) {
+		this.clientSecret = clientSecret;
 		return this;
 	}
 
@@ -50,7 +50,7 @@ public class ClientDSL extends AbstractDSL<ClientDSL, Client> {
 	}
 
 	public Client build() {
-		Client client = new Client(username, password, authorities, grantTypes, scopes);
+		Client client = new Client(clientId, clientSecret, authorities, grantTypes, scopes);
 		return shouldPersist() ? persist(client) : client;
 	}
 

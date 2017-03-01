@@ -20,6 +20,6 @@ import fm.pattern.jwt.server.model.Client;
 
 public interface ClientRepository extends DataRepository {
 
-	Client findByUsername(String username);
+	Client findByClientId(String username);
 
 }

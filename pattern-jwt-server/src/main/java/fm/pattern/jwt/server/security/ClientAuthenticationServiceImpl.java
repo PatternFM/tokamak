@@ -37,7 +37,7 @@ class ClientAuthenticationServiceImpl implements ClientAuthenticationService {
 	}
 
 	public ClientDetails loadClientByClientId(String id) throws ClientRegistrationException {
-		Result<Client> result = clientService.findByUsername(id);
+		Result<Client> result = clientService.findByClientId(id);
 		if (result.rejected()) {
 			throw new UsernameNotFoundException("Could not find client with client id " + id);
 		}

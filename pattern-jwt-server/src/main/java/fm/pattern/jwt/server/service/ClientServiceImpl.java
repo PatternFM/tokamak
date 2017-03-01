@@ -43,7 +43,7 @@ class ClientServiceImpl extends DataServiceImpl<Client> implements ClientService
 		if (result.rejected()) {
 			return result;
 		}
-		ReflectionUtils.setValue(client, "password", passwordEncodingService.encode(client.getPassword()));
+		ReflectionUtils.setValue(client, "clientSecret", passwordEncodingService.encode(client.getClientSecret()));
 		return clientRepository.save(client);
 	}
 
@@ -53,13 +53,13 @@ class ClientServiceImpl extends DataServiceImpl<Client> implements ClientService
 	}
 
 	@Transactional(readOnly = true)
-	public Result<Client> findByUsername(String username) {
+	public Result<Client> findByClientId(String username) {
 		if (isBlank(username)) {
-			return Result.reject("{client.get.username.required}");
+			return Result.reject("{client.get.clientId.required}");
 		}
 
-		Client client = clientRepository.findByUsername(username);
-		return client != null ? Result.accept(client) : Result.not_found("No such username: " + username);
+		Client client = clientRepository.findByClientId(username);
+		return client != null ? Result.accept(client) : Result.not_found("No such client id: " + username);
 	}
 
 	@Autowired

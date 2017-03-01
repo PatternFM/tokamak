@@ -22,13 +22,13 @@ CREATE TABLE Clients (
   _id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   created datetime NOT NULL,
   updated datetime NOT NULL,
-  username varchar(128) NOT NULL,
-  password varchar(255) NOT NULL,
+  client_id varchar(128) NOT NULL,
+  client_secret varchar(255) NOT NULL,
   access_token_validity_seconds int(11) unsigned,
   refresh_token_validity_seconds int(11) unsigned,
   KEY(_id),
   PRIMARY KEY(id),
-  UNIQUE KEY UK_CLIENT_USERNAME (username)
+  UNIQUE KEY UK_CLIENT_ID (client_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 

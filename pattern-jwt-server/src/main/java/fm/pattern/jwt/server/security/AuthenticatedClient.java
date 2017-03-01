@@ -32,8 +32,8 @@ public class AuthenticatedClient extends BaseClientDetails implements ClientDeta
 	private Client client;
 
 	public AuthenticatedClient(Client client) {
-		super.setClientId(client.getUsername());
-		super.setClientSecret(client.getPassword());
+		super.setClientId(client.getClientId());
+		super.setClientSecret(client.getClientSecret());
 
 		super.setScope(client.getScopes().stream().map(scope -> scope.getName()).collect(Collectors.toCollection(HashSet::new)));
 		super.setAuthorities(client.getAuthorities().stream().map(authority -> new SimpleGrantedAuthority(authority.getName())).collect(Collectors.toCollection(HashSet::new)));

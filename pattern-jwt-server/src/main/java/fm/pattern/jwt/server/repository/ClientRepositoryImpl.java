@@ -23,8 +23,8 @@ import fm.pattern.jwt.server.model.Client;
 @Repository
 class ClientRepositoryImpl extends DataRepositoryImpl implements ClientRepository {
 
-	public Client findByUsername(String username) {
-		return (Client) query("from Clients where username = :username").setString("username", username).uniqueResult();
+	public Client findByClientId(String clientId) {
+		return (Client) query("from Clients where client_id = :clientId").setString("clientId", clientId).uniqueResult();
 	}
 
 }

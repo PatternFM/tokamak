@@ -1,4 +1,4 @@
-INSERT INTO Clients (created, updated, id, username, password) VALUES ('2017-01-01 12:00:00','2017-01-01 12:00:00','cli_vthrewfbhgbt2bm46bksylwzximkug','test-client','$2a$10$XMYMNDyiEN9982NGHsVeCextGacHs.cXvBVJQVPCTiB.crDiPS0eu');
+INSERT INTO Clients (created, updated, id, client_id, client_secret) VALUES ('2017-01-01 12:00:00','2017-01-01 12:00:00','cli_vthrewfbhgbt2bm46bksylwzximkug','test-client','$2a$10$XMYMNDyiEN9982NGHsVeCextGacHs.cXvBVJQVPCTiB.crDiPS0eu');
 INSERT INTO ClientGrantTypes (client_id, grant_type_id) VALUES('cli_vthrewfbhgbt2bm46bksylwzximkug', 'gnt_x8ir9yj0gdb8839pkyuk4z9b4eeb3i');
 INSERT INTO ClientGrantTypes (client_id, grant_type_id) VALUES('cli_vthrewfbhgbt2bm46bksylwzximkug', 'gnt_qlb2cfhvcwo2hqxadretxbfcgl30vj');
 INSERT INTO ClientGrantTypes (client_id, grant_type_id) VALUES('cli_vthrewfbhgbt2bm46bksylwzximkug', 'gnt_dzp0fousdl0um2ppa2mpfvyhtww7ld');

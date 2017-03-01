@@ -45,20 +45,20 @@ import fm.pattern.microstructure.sequences.UpdateLevel2;
 import fm.pattern.microstructure.sequences.UpdateLevel4;
 
 @Entity(name = "Clients")
-@UniqueValue(property = "username", message = "{client.username.conflict}", groups = { CreateLevel4.class, UpdateLevel4.class })
+@UniqueValue(property = "clientId", message = "{client.clientId.conflict}", groups = { CreateLevel4.class, UpdateLevel4.class })
 public class Client extends PersistentEntity {
 
 	private static final long serialVersionUID = -229014499144213599L;
 
-	@Column(name = "username", nullable = false, length = 120, updatable = false, unique = true)
-	@NotBlank(message = "{client.username.required}", groups = { CreateLevel1.class, UpdateLevel1.class })
-	@Size(min = 10, max = 128, message = "{client.username.size}", groups = { CreateLevel2.class, UpdateLevel2.class })
-	private String username;
+	@Column(name = "client_id", nullable = false, updatable = false, unique = true)
+	@NotBlank(message = "{client.clientId.required}", groups = { CreateLevel1.class, UpdateLevel1.class })
+	@Size(min = 10, max = 128, message = "{client.clientId.size}", groups = { CreateLevel2.class, UpdateLevel2.class })
+	private String clientId;
 
-	@Column(name = "password", nullable = false, updatable = false, length = 255)
-	@NotBlank(message = "{client.password.required}", groups = { CreateLevel1.class, UpdateLevel1.class })
-	@Size(min = 10, max = 255, message = "{client.password.size}", groups = { CreateLevel2.class, UpdateLevel2.class })
-	private String password;
+	@Column(name = "client_secret", nullable = false, updatable = false)
+	@NotBlank(message = "{client.secret.required}", groups = { CreateLevel1.class, UpdateLevel1.class })
+	@Size(min = 10, max = 255, message = "{client.secret.size}", groups = { CreateLevel2.class, UpdateLevel2.class })
+	private String clientSecret;
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinTable(name = "ClientAuthorities", joinColumns = { @JoinColumn(name = "client_id", referencedColumnName = "id") }, inverseJoinColumns = { @JoinColumn(name = "authority_id", referencedColumnName = "id") })
@@ -84,29 +84,29 @@ public class Client extends PersistentEntity {
 		super(IdGenerator.generateId("cli", 30));
 	}
 
-	public Client(String username, String password, Set<Authority> authorities, Set<GrantType> grantTypes, Set<Scope> scope) {
+	public Client(String clientId, String clientSecret, Set<Authority> authorities, Set<GrantType> grantTypes, Set<Scope> scope) {
 		this();
-		this.username = username;
-		this.password = password;
+		this.clientId = clientId;
+		this.clientSecret = clientSecret;
 		this.authorities.addAll(authorities.stream().filter(a -> a != null).collect(Collectors.toList()));
 		this.grantTypes.addAll(grantTypes.stream().filter(a -> a != null).collect(Collectors.toList()));
 		this.scopes.addAll(scope.stream().filter(a -> a != null).collect(Collectors.toList()));
 	}
 
-	public String getUsername() {
-		return username;
+	public String getClientId() {
+		return clientId;
 	}
 
-	public void setUsername(String username) {
-		this.username = username;
+	public void setClientId(String clientId) {
+		this.clientId = clientId;
 	}
 
-	public String getPassword() {
-		return password;
+	public String getClientSecret() {
+		return clientSecret;
 	}
 
-	public void setPassword(String password) {
-		this.password = password;
+	public void setClientSecret(String clientSecret) {
+		this.clientSecret = clientSecret;
 	}
 
 	public Set<Authority> getAuthorities() {

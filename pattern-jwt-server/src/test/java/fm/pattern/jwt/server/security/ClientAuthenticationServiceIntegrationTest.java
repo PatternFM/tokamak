@@ -30,7 +30,7 @@ public class ClientAuthenticationServiceIntegrationTest extends IntegrationTest 
 	@Test
 	public void shouldBeAbleToFindAnInternalClientByUsername() {
 		Client client = client().withGrantType(grantType).thatIs().persistent().build();
-		ClientDetails clientDetails = clientAuthenticationService.loadClientByClientId(client.getUsername());
+		ClientDetails clientDetails = clientAuthenticationService.loadClientByClientId(client.getClientId());
 
 		assertThat(clientDetails).isNotNull();
 		assertThat(clientDetails.getAccessTokenValiditySeconds()).isNull();
@@ -40,7 +40,7 @@ public class ClientAuthenticationServiceIntegrationTest extends IntegrationTest 
 	@Test
 	public void shouldBeAbleToFindAnAdminClientByUsername() {
 		Client client = client().withGrantType(grantType).thatIs().persistent().build();
-		ClientDetails clientDetails = clientAuthenticationService.loadClientByClientId(client.getUsername());
+		ClientDetails clientDetails = clientAuthenticationService.loadClientByClientId(client.getClientId());
 
 		assertThat(clientDetails).isNotNull();
 		assertThat(clientDetails.getAccessTokenValiditySeconds()).isNull();
@@ -50,7 +50,7 @@ public class ClientAuthenticationServiceIntegrationTest extends IntegrationTest 
 	@Test
 	public void shouldBeAbleToFindATrustedClientByUsername() {
 		Client client = client().withGrantType(grantType).thatIs().persistent().build();
-		ClientDetails clientDetails = clientAuthenticationService.loadClientByClientId(client.getUsername());
+		ClientDetails clientDetails = clientAuthenticationService.loadClientByClientId(client.getClientId());
 		assertThat(clientDetails).isNotNull();
 	}
 

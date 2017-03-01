@@ -31,8 +31,8 @@ public class ClientValidationTest extends IntegrationTest {
 
 	@Test
 	public void shouldNotBeAbleToCreateAClientIfTheClientIdAlreadyExists() {
-		client().withUsername("firstclient").withGrantType(grantType).thatIs().persistent().build();
-		onCreate(client().withUsername("firstclient").withGrantType(grantType).build()).rejected().withType(UNPROCESSABLE_ENTITY).withCode("client.username.conflict").withDescription("This client id is already in use.");
+		client().withClientId("firstclient").withGrantType(grantType).thatIs().persistent().build();
+		onCreate(client().withClientId("firstclient").withGrantType(grantType).build()).rejected().withType(UNPROCESSABLE_ENTITY).withCode("client.clientId.conflict").withDescription("This client id is already in use.");
 	}
 
 	@Test
@@ -51,36 +51,36 @@ public class ClientValidationTest extends IntegrationTest {
 
 	@Test
 	public void shouldNotBeAbleToCreateAClientWhenTheClientSecretIsNullOrEmpty() {
-		onCreate(client().withGrantType(grantType).withPassword(null).build()).rejected().withType(UNPROCESSABLE_ENTITY).withCode("client.password.required").withDescription("A client secret is required.");
-		onCreate(client().withGrantType(grantType).withPassword("").build()).rejected().withType(UNPROCESSABLE_ENTITY).withCode("client.password.required").withDescription("A client secret is required.");
-		onCreate(client().withGrantType(grantType).withPassword("    ").build()).rejected().withType(UNPROCESSABLE_ENTITY).withCode("client.password.required").withDescription("A client secret is required.");
+		onCreate(client().withGrantType(grantType).withClientSecret(null).build()).rejected().withType(UNPROCESSABLE_ENTITY).withCode("client.secret.required").withDescription("A client secret is required.");
+		onCreate(client().withGrantType(grantType).withClientSecret("").build()).rejected().withType(UNPROCESSABLE_ENTITY).withCode("client.secret.required").withDescription("A client secret is required.");
+		onCreate(client().withGrantType(grantType).withClientSecret("    ").build()).rejected().withType(UNPROCESSABLE_ENTITY).withCode("client.secret.required").withDescription("A client secret is required.");
 	}
 
 	@Test
 	public void shouldNotBeAbleToCreateAClientWhenTheClientSecretIsLessThan10Characters() {
-		onCreate(client().withGrantType(grantType).withPassword("ABC").build()).rejected().withType(UNPROCESSABLE_ENTITY).withCode("client.password.size").withDescription("A client secret must be between 10 and 255 characters.");
+		onCreate(client().withGrantType(grantType).withClientSecret("ABC").build()).rejected().withType(UNPROCESSABLE_ENTITY).withCode("client.secret.size").withDescription("A client secret must be between 10 and 255 characters.");
 	}
 
 	@Test
 	public void shouldNotBeAbleToCreateAClientWhenTheClientSecretIsGreaterThan255Characters() {
-		onCreate(client().withGrantType(grantType).withPassword(randomAlphabetic(256)).build()).rejected().withType(UNPROCESSABLE_ENTITY).withCode("client.password.size").withDescription("A client secret must be between 10 and 255 characters.");
+		onCreate(client().withGrantType(grantType).withClientSecret(randomAlphabetic(256)).build()).rejected().withType(UNPROCESSABLE_ENTITY).withCode("client.secret.size").withDescription("A client secret must be between 10 and 255 characters.");
 	}
 
 	@Test
-	public void shouldNotBeAbleToCreateAClientWhenTheUsernameIsNullOrEmpty() {
-		onCreate(client().withGrantType(grantType).withUsername(null).build()).rejected().withType(UNPROCESSABLE_ENTITY).withCode("client.username.required").withDescription("A client id is required.");
-		onCreate(client().withGrantType(grantType).withUsername("").build()).rejected().withType(UNPROCESSABLE_ENTITY).withCode("client.username.required").withDescription("A client id is required.");
-		onCreate(client().withGrantType(grantType).withUsername("    ").build()).rejected().withType(UNPROCESSABLE_ENTITY).withCode("client.username.required").withDescription("A client id is required.");
+	public void shouldNotBeAbleToCreateAClientWhenTheClientIdIsNullOrEmpty() {
+		onCreate(client().withGrantType(grantType).withClientId(null).build()).rejected().withType(UNPROCESSABLE_ENTITY).withCode("client.clientId.required").withDescription("A client id is required.");
+		onCreate(client().withGrantType(grantType).withClientId("").build()).rejected().withType(UNPROCESSABLE_ENTITY).withCode("client.clientId.required").withDescription("A client id is required.");
+		onCreate(client().withGrantType(grantType).withClientId("    ").build()).rejected().withType(UNPROCESSABLE_ENTITY).withCode("client.clientId.required").withDescription("A client id is required.");
 	}
 
 	@Test
-	public void shouldNotBeAbleToCreateAClientWhenTheClientUsernameIsLessThan10Characters() {
-		onCreate(client().withGrantType(grantType).withUsername("ABC").build()).rejected().withType(UNPROCESSABLE_ENTITY).withCode("client.username.size").withDescription("A client id must be between 10 and 128 characters.");
+	public void shouldNotBeAbleToCreateAClientWhenTheClientClientIdIsLessThan10Characters() {
+		onCreate(client().withGrantType(grantType).withClientId("ABC").build()).rejected().withType(UNPROCESSABLE_ENTITY).withCode("client.clientId.size").withDescription("A client id must be between 10 and 128 characters.");
 	}
 
 	@Test
-	public void shouldNotBeAbleToCreateAClientWhenTheClientUsernameIsGreaterThan128Characters() {
-		onCreate(client().withGrantType(grantType).withUsername(randomAlphabetic(129)).build()).rejected().withType(UNPROCESSABLE_ENTITY).withCode("client.username.size").withDescription("A client id must be between 10 and 128 characters.");
+	public void shouldNotBeAbleToCreateAClientWhenTheClientClientIdIsGreaterThan128Characters() {
+		onCreate(client().withGrantType(grantType).withClientId(randomAlphabetic(129)).build()).rejected().withType(UNPROCESSABLE_ENTITY).withCode("client.clientId.size").withDescription("A client id must be between 10 and 128 characters.");
 	}
 
 	@Test
@@ -90,12 +90,12 @@ public class ClientValidationTest extends IntegrationTest {
 
 	@Test
 	public void shouldNotBeAbleToUpdateAClientIfTheClientIdAlreadyExists() {
-		client().withUsername("firstclient").withGrantType(grantType).thatIs().persistent().build();
+		client().withClientId("firstclient").withGrantType(grantType).thatIs().persistent().build();
 
-		Client updated = client().withUsername("secondclient").withGrantType(grantType).thatIs().persistent().build();
-		updated.setUsername("firstclient");
+		Client updated = client().withClientId("secondclient").withGrantType(grantType).thatIs().persistent().build();
+		updated.setClientId("firstclient");
 
-		onUpdate(updated).rejected().withType(UNPROCESSABLE_ENTITY).withCode("client.username.conflict").withDescription("This client id is already in use.");
+		onUpdate(updated).rejected().withType(UNPROCESSABLE_ENTITY).withCode("client.clientId.conflict").withDescription("This client id is already in use.");
 	}
 
 	@Test
@@ -114,36 +114,36 @@ public class ClientValidationTest extends IntegrationTest {
 
 	@Test
 	public void shouldNotBeAbleToUpdateAClientWhenTheClientSecretIsNullOrEmpty() {
-		onUpdate(client().withGrantType(grantType).withPassword(null).build()).rejected().withType(UNPROCESSABLE_ENTITY).withCode("client.password.required").withDescription("A client secret is required.");
-		onUpdate(client().withGrantType(grantType).withPassword("").build()).rejected().withType(UNPROCESSABLE_ENTITY).withCode("client.password.required").withDescription("A client secret is required.");
-		onUpdate(client().withGrantType(grantType).withPassword("    ").build()).rejected().withType(UNPROCESSABLE_ENTITY).withCode("client.password.required").withDescription("A client secret is required.");
+		onUpdate(client().withGrantType(grantType).withClientSecret(null).build()).rejected().withType(UNPROCESSABLE_ENTITY).withCode("client.secret.required").withDescription("A client secret is required.");
+		onUpdate(client().withGrantType(grantType).withClientSecret("").build()).rejected().withType(UNPROCESSABLE_ENTITY).withCode("client.secret.required").withDescription("A client secret is required.");
+		onUpdate(client().withGrantType(grantType).withClientSecret("    ").build()).rejected().withType(UNPROCESSABLE_ENTITY).withCode("client.secret.required").withDescription("A client secret is required.");
 	}
 
 	@Test
 	public void shouldNotBeAbleToUpdateAClientWhenTheClientSecretIsLessThan10Characters() {
-		onUpdate(client().withGrantType(grantType).withPassword("ABC").build()).rejected().withType(UNPROCESSABLE_ENTITY).withCode("client.password.size").withDescription("A client secret must be between 10 and 255 characters.");
+		onUpdate(client().withGrantType(grantType).withClientSecret("ABC").build()).rejected().withType(UNPROCESSABLE_ENTITY).withCode("client.secret.size").withDescription("A client secret must be between 10 and 255 characters.");
 	}
 
 	@Test
 	public void shouldNotBeAbleToUpdateAClientWhenTheClientSecretIsGreaterThan255Characters() {
-		onUpdate(client().withGrantType(grantType).withPassword(randomAlphabetic(256)).build()).rejected().withType(UNPROCESSABLE_ENTITY).withCode("client.password.size").withDescription("A client secret must be between 10 and 255 characters.");
+		onUpdate(client().withGrantType(grantType).withClientSecret(randomAlphabetic(256)).build()).rejected().withType(UNPROCESSABLE_ENTITY).withCode("client.secret.size").withDescription("A client secret must be between 10 and 255 characters.");
 	}
 
 	@Test
-	public void shouldNotBeAbleToUpdateAClientWhenTheUsernameIsNullOrEmpty() {
-		onUpdate(client().withGrantType(grantType).withUsername(null).build()).rejected().withType(UNPROCESSABLE_ENTITY).withCode("client.username.required").withDescription("A client id is required.");
-		onUpdate(client().withGrantType(grantType).withUsername("").build()).rejected().withType(UNPROCESSABLE_ENTITY).withCode("client.username.required").withDescription("A client id is required.");
-		onUpdate(client().withGrantType(grantType).withUsername("    ").build()).rejected().withType(UNPROCESSABLE_ENTITY).withCode("client.username.required").withDescription("A client id is required.");
+	public void shouldNotBeAbleToUpdateAClientWhenTheClientIdIsNullOrEmpty() {
+		onUpdate(client().withGrantType(grantType).withClientId(null).build()).rejected().withType(UNPROCESSABLE_ENTITY).withCode("client.clientId.required").withDescription("A client id is required.");
+		onUpdate(client().withGrantType(grantType).withClientId("").build()).rejected().withType(UNPROCESSABLE_ENTITY).withCode("client.clientId.required").withDescription("A client id is required.");
+		onUpdate(client().withGrantType(grantType).withClientId("    ").build()).rejected().withType(UNPROCESSABLE_ENTITY).withCode("client.clientId.required").withDescription("A client id is required.");
 	}
 
 	@Test
-	public void shouldNotBeAbleToUpdateAClientWhenTheClientUsernameIsLessThan10Characters() {
-		onUpdate(client().withGrantType(grantType).withUsername("ABC").build()).rejected().withType(UNPROCESSABLE_ENTITY).withCode("client.username.size").withDescription("A client id must be between 10 and 128 characters.");
+	public void shouldNotBeAbleToUpdateAClientWhenTheClientClientIdIsLessThan10Characters() {
+		onUpdate(client().withGrantType(grantType).withClientId("ABC").build()).rejected().withType(UNPROCESSABLE_ENTITY).withCode("client.clientId.size").withDescription("A client id must be between 10 and 128 characters.");
 	}
 
 	@Test
-	public void shouldNotBeAbleToUpdateAClientWhenTheClientUsernameIsGreaterThan128Characters() {
-		onUpdate(client().withGrantType(grantType).withUsername(randomAlphabetic(129)).build()).rejected().withType(UNPROCESSABLE_ENTITY).withCode("client.username.size").withDescription("A client id must be between 10 and 128 characters.");
+	public void shouldNotBeAbleToUpdateAClientWhenTheClientClientIdIsGreaterThan128Characters() {
+		onUpdate(client().withGrantType(grantType).withClientId(randomAlphabetic(129)).build()).rejected().withType(UNPROCESSABLE_ENTITY).withCode("client.clientId.size").withDescription("A client id must be between 10 and 128 characters.");
 	}
 
 }

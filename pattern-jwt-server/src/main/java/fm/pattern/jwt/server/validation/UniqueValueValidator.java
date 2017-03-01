@@ -27,6 +27,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
+import com.google.common.base.CaseFormat;
+
 import fm.pattern.commons.util.ReflectionUtils;
 import fm.pattern.jwt.server.model.PersistentEntity;
 import fm.pattern.jwt.server.repository.DataRepository;
@@ -53,7 +55,10 @@ public class UniqueValueValidator extends ValidatorSupport implements Constraint
 			return true;
 		}
 
-		String query = "select count(id) from " + getTableName(entity) + " where " + property + " = :value and id != :id";
+		String columnName = CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, property);
+		
+		String query = "select count(id) from " + getTableName(entity) + " where " + columnName + " = :value and id != :id";
+		System.out.println(query);
 		return repository.count(resolve(query, value, entity)) == 0;
 	}
 
