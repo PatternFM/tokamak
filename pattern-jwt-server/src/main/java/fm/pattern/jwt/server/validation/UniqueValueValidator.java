@@ -58,7 +58,6 @@ public class UniqueValueValidator extends ValidatorSupport implements Constraint
 		String columnName = CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, property);
 		
 		String query = "select count(id) from " + getTableName(entity) + " where " + columnName + " = :value and id != :id";
-		System.out.println(query);
 		return repository.count(resolve(query, value, entity)) == 0;
 	}
 
