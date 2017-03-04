@@ -12,7 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import fm.pattern.jwt.server.IntegrationTest;
 import fm.pattern.jwt.server.model.Role;
+import fm.pattern.microstructure.EntityNotFoundException;
 import fm.pattern.microstructure.Result;
+import fm.pattern.microstructure.UnprocessableEntityException;
 
 public class RoleServiceIntegrationTest extends IntegrationTest {
 
@@ -79,14 +81,14 @@ public class RoleServiceIntegrationTest extends IntegrationTest {
 
 	@Test
 	public void shouldNotBeAbleToFindARoleByIdIfTheRoleIdIsNullOrEmpty() {
-		assertThat(roleService.findById(null)).rejected().withMessage("A role id is required.");
-		assertThat(roleService.findById("")).rejected().withMessage("A role id is required.");
-		assertThat(roleService.findById("  ")).rejected().withMessage("A role id is required.");
+		assertThat(roleService.findById(null)).rejected().withError("ROL-0005", "A role id is required.", UnprocessableEntityException.class);
+		assertThat(roleService.findById("")).rejected().withError("ROL-0005", "A role id is required.", UnprocessableEntityException.class);
+		assertThat(roleService.findById("  ")).rejected().withError("ROL-0005", "A role id is required.", UnprocessableEntityException.class);
 	}
 
 	@Test
 	public void shouldNotBeAbleToFindARoleByIdIfTheRoleIdDoesNotExist() {
-		assertThat(roleService.findById("csrx")).rejected().withMessage("No such role id: csrx");
+		assertThat(roleService.findById("csrx")).rejected().withError("SYS-0001", "No such role id: csrx", EntityNotFoundException.class);
 	}
 
 	@Test
@@ -100,14 +102,14 @@ public class RoleServiceIntegrationTest extends IntegrationTest {
 
 	@Test
 	public void shouldNotBeAbleToFindARoleByNameIfTheRoleNameIsNullOrEmpty() {
-		assertThat(roleService.findByName(null)).rejected().withMessage("A role name is required.");
-		assertThat(roleService.findByName("")).rejected().withMessage("A role name is required.");
-		assertThat(roleService.findByName("  ")).rejected().withMessage("A role name is required.");
+		assertThat(roleService.findByName(null)).rejected().withError("ROL-0001", "A role name is required.", UnprocessableEntityException.class);
+		assertThat(roleService.findByName("")).rejected().withError("ROL-0001", "A role name is required.", UnprocessableEntityException.class);
+		assertThat(roleService.findByName("  ")).rejected().withError("ROL-0001", "A role name is required.", UnprocessableEntityException.class);
 	}
 
 	@Test
 	public void shouldNotBeAbleToFindARoleByNameIfTheRoleNameDoesNotExist() {
-		assertThat(roleService.findByName("csrx")).rejected().withMessage("No such role name: csrx");
+		assertThat(roleService.findByName("csrx")).rejected().withError("ROL-0008", "No such role name: csrx", EntityNotFoundException.class);
 	}
 
 	@Test

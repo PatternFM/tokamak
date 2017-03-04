@@ -13,7 +13,9 @@ import fm.pattern.jwt.server.IntegrationTest;
 import fm.pattern.jwt.server.model.Client;
 import fm.pattern.jwt.server.model.GrantType;
 import fm.pattern.jwt.server.security.PasswordEncodingService;
+import fm.pattern.microstructure.EntityNotFoundException;
 import fm.pattern.microstructure.Result;
+import fm.pattern.microstructure.UnprocessableEntityException;
 
 public class ClientServiceIntegrationTest extends IntegrationTest {
 
@@ -79,14 +81,14 @@ public class ClientServiceIntegrationTest extends IntegrationTest {
 
 	@Test
 	public void shouldNotBeAbleToFindAClientByIdIfTheClientIdIsNull() {
-		assertThat(clientService.findById(null)).rejected().withMessage("A client id is required.");
-		assertThat(clientService.findById("")).rejected().withMessage("A client id is required.");
-		assertThat(clientService.findById("  ")).rejected().withMessage("A client id is required.");
+		assertThat(clientService.findById(null)).rejected().withError("CLI-0007", "A client id is required.", UnprocessableEntityException.class);
+		assertThat(clientService.findById("")).rejected().withError("CLI-0007","A client id is required.", UnprocessableEntityException.class);
+		assertThat(clientService.findById("  ")).rejected().withError("CLI-0007","A client id is required.", UnprocessableEntityException.class);
 	}
 
 	@Test
 	public void shouldNotBeAbleToFindAClientByIdIfTheClientIdDoesNotExist() {
-		assertThat(clientService.findById("csrx")).rejected().withMessage("No such client id: csrx");
+		assertThat(clientService.findById("csrx")).rejected().withError("SYS-0001", "No such client id: csrx", EntityNotFoundException.class);
 	}
 
 	@Test
@@ -97,14 +99,14 @@ public class ClientServiceIntegrationTest extends IntegrationTest {
 
 	@Test
 	public void shouldNotBeAbleToFindAClientByClientIdIfTheClientIdIsNullOrEmpty() {
-		assertThat(clientService.findByClientId(null)).rejected().withMessage("A client id is required.");
-		assertThat(clientService.findByClientId("")).rejected().withMessage("A client id is required.");
-		assertThat(clientService.findByClientId("  ")).rejected().withMessage("A client id is required.");
+		assertThat(clientService.findByClientId(null)).rejected().withError("CLI-0001", "A client id is required.", UnprocessableEntityException.class);;
+		assertThat(clientService.findByClientId("")).rejected().withError("CLI-0001", "A client id is required.", UnprocessableEntityException.class);
+		assertThat(clientService.findByClientId("  ")).rejected().withError("CLI-0001", "A client id is required.", UnprocessableEntityException.class);
 	}
 
 	@Test
 	public void shouldNotBeAbleToFindAClientByClienIdIfTheClientIdDoesNotExist() {
-		assertThat(clientService.findByClientId("csrx")).rejected().withMessage("No such client id: csrx");
+		assertThat(clientService.findByClientId("csrx")).rejected().withError("CLI-0009", "No such client id: csrx", EntityNotFoundException.class);
 	}
 
 }

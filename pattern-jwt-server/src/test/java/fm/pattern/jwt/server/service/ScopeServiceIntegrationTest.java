@@ -12,7 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import fm.pattern.jwt.server.IntegrationTest;
 import fm.pattern.jwt.server.model.Scope;
+import fm.pattern.microstructure.EntityNotFoundException;
 import fm.pattern.microstructure.Result;
+import fm.pattern.microstructure.UnprocessableEntityException;
 
 public class ScopeServiceIntegrationTest extends IntegrationTest {
 
@@ -79,14 +81,14 @@ public class ScopeServiceIntegrationTest extends IntegrationTest {
 
 	@Test
 	public void shouldNotBeAbleToFindAnScopeByIdIfTheScopeIdIsNullOrEmpty() {
-		assertThat(scopeService.findById(null)).rejected().withMessage("A scope id is required.");
-		assertThat(scopeService.findById("")).rejected().withMessage("A scope id is required.");
-		assertThat(scopeService.findById("  ")).rejected().withMessage("A scope id is required.");
+		assertThat(scopeService.findById(null)).rejected().withError("SCO-0005", "A scope id is required.", UnprocessableEntityException.class);
+		assertThat(scopeService.findById("")).rejected().withError("SCO-0005", "A scope id is required.", UnprocessableEntityException.class);
+		assertThat(scopeService.findById("  ")).rejected().withError("SCO-0005", "A scope id is required.", UnprocessableEntityException.class);
 	}
 
 	@Test
 	public void shouldNotBeAbleToFindAnScopeByIdIfTheScopeIdDoesNotExist() {
-		assertThat(scopeService.findById("csrx")).rejected().withMessage("No such scope id: csrx");
+		assertThat(scopeService.findById("csrx")).rejected().withError("SYS-0001", "No such scope id: csrx", EntityNotFoundException.class);
 	}
 
 	@Test
@@ -100,14 +102,14 @@ public class ScopeServiceIntegrationTest extends IntegrationTest {
 
 	@Test
 	public void shouldNotBeAbleToFindAScopeByNameIfTheScopeNameIsNullOrEmpty() {
-		assertThat(scopeService.findByName(null)).rejected().withMessage("A scope name is required.");
-		assertThat(scopeService.findByName("")).rejected().withMessage("A scope name is required.");
-		assertThat(scopeService.findByName("  ")).rejected().withMessage("A scope name is required.");
+		assertThat(scopeService.findByName(null)).rejected().withError("SCO-0001", "A scope name is required.", UnprocessableEntityException.class);
+		assertThat(scopeService.findByName("")).rejected().withError("SCO-0001", "A scope name is required.", UnprocessableEntityException.class);
+		assertThat(scopeService.findByName("  ")).rejected().withError("SCO-0001", "A scope name is required.", UnprocessableEntityException.class);
 	}
 
 	@Test
 	public void shouldNotBeAbleToFindAScopeByNameIfTheScopeNameDoesNotExist() {
-		assertThat(scopeService.findByName("csrx")).rejected().withMessage("No such scope name: csrx");
+		assertThat(scopeService.findByName("csrx")).rejected().withError("SCO-0007", "No such scope name: csrx", EntityNotFoundException.class);
 	}
 
 	@Test

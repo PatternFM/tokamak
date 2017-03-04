@@ -11,7 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import fm.pattern.jwt.server.IntegrationTest;
 import fm.pattern.jwt.server.model.Account;
 import fm.pattern.jwt.server.security.PasswordEncodingService;
+import fm.pattern.microstructure.EntityNotFoundException;
 import fm.pattern.microstructure.Result;
+import fm.pattern.microstructure.UnprocessableEntityException;
 
 public class AccountServiceIntegrationTest extends IntegrationTest {
 
@@ -91,14 +93,14 @@ public class AccountServiceIntegrationTest extends IntegrationTest {
 
 	@Test
 	public void shouldNotBeAbleToFindAnAccountByIdIfTheAccountIdIsNullOrEmpty() {
-		assertThat(accountService.findById(null)).rejected().withMessage("An account id is required.");
-		assertThat(accountService.findById("")).rejected().withMessage("An account id is required.");
-		assertThat(accountService.findById("  ")).rejected().withMessage("An account id is required.");
+		assertThat(accountService.findById(null)).rejected().withError("ACC-0006", "An account id is required.", UnprocessableEntityException.class);
+		assertThat(accountService.findById("")).rejected().withError("ACC-0006", "An account id is required.", UnprocessableEntityException.class);
+		assertThat(accountService.findById("  ")).rejected().withError("ACC-0006", "An account id is required.", UnprocessableEntityException.class);
 	}
 
 	@Test
 	public void shouldNotBeAbleToFindAnAccountByIdIfTheAccountIdDoesNotExist() {
-		assertThat(accountService.findById("csrx")).rejected().withMessage("No such account id: csrx");
+		assertThat(accountService.findById("csrx")).rejected().withError("SYS-0001", "No such account id: csrx", EntityNotFoundException.class);
 	}
 
 	@Test
@@ -112,12 +114,12 @@ public class AccountServiceIntegrationTest extends IntegrationTest {
 
 	@Test
 	public void shouldNotBeAbleToFindAnAccountByUsernameIfTheUsernameIsNull() {
-		assertThat(accountService.findByUsername(null)).rejected().withMessage("An account username is required.");
+		assertThat(accountService.findByUsername(null)).rejected().withError("ACC-0001", "An account username is required.", UnprocessableEntityException.class);
 	}
 
 	@Test
 	public void shouldNotBeAbleToFindAnAccountByIdIfTheEmailAddressIsInvalid() {
-		assertThat(accountService.findByUsername("csrx")).rejected().withMessage("No such username: csrx");
+		assertThat(accountService.findByUsername("csrx")).rejected().withError("ACC-0008", "No such username: csrx", EntityNotFoundException.class);
 	}
 
 	@Test

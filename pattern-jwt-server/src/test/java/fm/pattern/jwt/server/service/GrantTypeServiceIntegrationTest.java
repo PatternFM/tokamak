@@ -12,7 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import fm.pattern.jwt.server.IntegrationTest;
 import fm.pattern.jwt.server.model.GrantType;
+import fm.pattern.microstructure.EntityNotFoundException;
 import fm.pattern.microstructure.Result;
+import fm.pattern.microstructure.UnprocessableEntityException;
 
 public class GrantTypeServiceIntegrationTest extends IntegrationTest {
 
@@ -79,14 +81,14 @@ public class GrantTypeServiceIntegrationTest extends IntegrationTest {
 
 	@Test
 	public void shouldNotBeAbleToFindAnGrantTypeByIdIfTheGrantTypeIdIsNullOrEmpty() {
-		assertThat(grantTypeService.findById(null)).rejected().withMessage("The grant type id to retrieve cannot be null or empty.");
-		assertThat(grantTypeService.findById("")).rejected().withMessage("The grant type id to retrieve cannot be null or empty.");
-		assertThat(grantTypeService.findById("  ")).rejected().withMessage("The grant type id to retrieve cannot be null or empty.");
+		assertThat(grantTypeService.findById(null)).rejected().withError("GNT-0005", "The grant type id to retrieve cannot be null or empty.", UnprocessableEntityException.class);
+		assertThat(grantTypeService.findById("")).rejected().withError("GNT-0005", "The grant type id to retrieve cannot be null or empty.", UnprocessableEntityException.class);
+		assertThat(grantTypeService.findById("  ")).rejected().withError("GNT-0005", "The grant type id to retrieve cannot be null or empty.", UnprocessableEntityException.class);
 	}
 
 	@Test
 	public void shouldNotBeAbleToFindAnGrantTypeByIdIfTheGrantTypeIdDoesNotExist() {
-		assertThat(grantTypeService.findById("csrx")).rejected().withMessage("No such granttype id: csrx");
+		assertThat(grantTypeService.findById("csrx")).rejected().withError("SYS-0001", "No such granttype id: csrx", EntityNotFoundException.class);
 	}
 
 	@Test
@@ -100,14 +102,14 @@ public class GrantTypeServiceIntegrationTest extends IntegrationTest {
 
 	@Test
 	public void shouldNotBeAbleToFindAGrantTypeByNameIfTheGrantTypeNameIsNullOrEmpty() {
-		assertThat(grantTypeService.findByName(null)).rejected().withMessage("A grant type name is required.");
-		assertThat(grantTypeService.findByName("")).rejected().withMessage("A grant type name is required.");
-		assertThat(grantTypeService.findByName("  ")).rejected().withMessage("A grant type name is required.");
+		assertThat(grantTypeService.findByName(null)).rejected().withError("GNT-0001", "A grant type name is required.", UnprocessableEntityException.class);
+		assertThat(grantTypeService.findByName("")).rejected().withError("GNT-0001", "A grant type name is required.", UnprocessableEntityException.class);
+		assertThat(grantTypeService.findByName("  ")).rejected().withError("GNT-0001", "A grant type name is required.", UnprocessableEntityException.class);
 	}
 
 	@Test
 	public void shouldNotBeAbleToFindAGrantTypeByNameIfTheGrantTypeNameDoesNotExist() {
-		assertThat(grantTypeService.findByName("csrx")).rejected().withMessage("No such grant type name: csrx");
+		assertThat(grantTypeService.findByName("csrx")).rejected().withError("GNT-0007", "No such grant type name: csrx", EntityNotFoundException.class);
 	}
 
 	@Test

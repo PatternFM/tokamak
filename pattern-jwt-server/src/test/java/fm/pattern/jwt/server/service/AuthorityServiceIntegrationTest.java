@@ -12,7 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import fm.pattern.jwt.server.IntegrationTest;
 import fm.pattern.jwt.server.model.Authority;
+import fm.pattern.microstructure.EntityNotFoundException;
 import fm.pattern.microstructure.Result;
+import fm.pattern.microstructure.UnprocessableEntityException;
 
 public class AuthorityServiceIntegrationTest extends IntegrationTest {
 
@@ -79,14 +81,14 @@ public class AuthorityServiceIntegrationTest extends IntegrationTest {
 
 	@Test
 	public void shouldNotBeAbleToFindAnAuthorityByIdIfTheAuthorityIdIsNullOrEmpty() {
-		assertThat(authorityService.findById(null)).rejected().withMessage("An authority id is required.");
-		assertThat(authorityService.findById("")).rejected().withMessage("An authority id is required.");
-		assertThat(authorityService.findById("  ")).rejected().withMessage("An authority id is required.");
+		assertThat(authorityService.findById(null)).rejected().withError("ATH-0006", "An authority id is required.", UnprocessableEntityException.class);
+		assertThat(authorityService.findById("")).rejected().withError("ATH-0006", "An authority id is required.", UnprocessableEntityException.class);
+		assertThat(authorityService.findById("  ")).rejected().withError("ATH-0006", "An authority id is required.", UnprocessableEntityException.class);
 	}
 
 	@Test
 	public void shouldNotBeAbleToFindAnAuthorityByIdIfTheAuthorityIdDoesNotExist() {
-		assertThat(authorityService.findById("csrx")).rejected().withMessage("No such authority id: csrx");
+		assertThat(authorityService.findById("csrx")).rejected().withError("SYS-0001", "No such authority id: csrx", EntityNotFoundException.class);
 	}
 
 	@Test
@@ -100,14 +102,14 @@ public class AuthorityServiceIntegrationTest extends IntegrationTest {
 
 	@Test
 	public void shouldNotBeAbleToFindAnAuthorityByNameIfTheAuthorityNameIsNullOrEmpty() {
-		assertThat(authorityService.findByName(null)).rejected().withMessage("An authority name is required.");
-		assertThat(authorityService.findByName("")).rejected().withMessage("An authority name is required.");
-		assertThat(authorityService.findByName("  ")).rejected().withMessage("An authority name is required.");
+		assertThat(authorityService.findByName(null)).rejected().withError("ATH-0001", "An authority name is required.", UnprocessableEntityException.class);
+		assertThat(authorityService.findByName("")).rejected().withError("ATH-0001", "An authority name is required.", UnprocessableEntityException.class);
+		assertThat(authorityService.findByName("  ")).rejected().withError("ATH-0001", "An authority name is required.", UnprocessableEntityException.class);
 	}
 
 	@Test
 	public void shouldNotBeAbleToFindAnAuthorityByNameIfTheAuthorityNameDoesNotExist() {
-		assertThat(authorityService.findByName("csrx")).rejected().withMessage("No such authority name: csrx");
+		assertThat(authorityService.findByName("csrx")).rejected().withError("ATH-0008", "No such authority name: csrx", EntityNotFoundException.class);
 	}
 
 	@Test
