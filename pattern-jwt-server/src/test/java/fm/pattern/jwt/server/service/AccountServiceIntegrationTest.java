@@ -2,8 +2,6 @@ package fm.pattern.jwt.server.service;
 
 import static fm.pattern.jwt.server.PatternAssertions.assertThat;
 import static fm.pattern.jwt.server.dsl.AccountDSL.account;
-import static fm.pattern.microstructure.ResultType.NOT_FOUND;
-import static fm.pattern.microstructure.ResultType.UNPROCESSABLE_ENTITY;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.apache.commons.lang3.RandomStringUtils;
@@ -14,7 +12,6 @@ import fm.pattern.jwt.server.IntegrationTest;
 import fm.pattern.jwt.server.model.Account;
 import fm.pattern.jwt.server.security.PasswordEncodingService;
 import fm.pattern.microstructure.Result;
-import fm.pattern.microstructure.ResultType;
 
 public class AccountServiceIntegrationTest extends IntegrationTest {
 
@@ -45,7 +42,7 @@ public class AccountServiceIntegrationTest extends IntegrationTest {
 	@Test
 	public void shouldNotBeAbleToCreateAnInvalidAccount() {
 		Account account = account().withUsername(null).withPassword("password").build();
-		assertThat(accountService.create(account)).rejected().withType(UNPROCESSABLE_ENTITY);
+		assertThat(accountService.create(account)).rejected().withMessage("An account username is required.");
 	}
 
 	@Test
@@ -61,11 +58,10 @@ public class AccountServiceIntegrationTest extends IntegrationTest {
 	@Test
 	public void shouldNotBeAbleToUpdateAnInvalidAccount() {
 		Account account = account().thatIs().persistent().build();
-		account.setLocked(true);
 		account.setUsername(null);
 
 		Result<Account> result = accountService.update(account);
-		assertThat(result).rejected().withType(ResultType.UNPROCESSABLE_ENTITY);
+		assertThat(result).rejected().withMessage("An account username is required.");
 	}
 
 	@Test
@@ -74,7 +70,7 @@ public class AccountServiceIntegrationTest extends IntegrationTest {
 		assertThat(accountService.findById(account.getId())).accepted();
 
 		assertThat(accountService.delete(account)).accepted();
-		assertThat(accountService.findById(account.getId())).rejected().withType(NOT_FOUND).withMessage("No such account id: " + account.getId());
+		assertThat(accountService.findById(account.getId())).rejected().withMessage("No such account id: " + account.getId());
 	}
 
 	@Test
@@ -95,14 +91,14 @@ public class AccountServiceIntegrationTest extends IntegrationTest {
 
 	@Test
 	public void shouldNotBeAbleToFindAnAccountByIdIfTheAccountIdIsNullOrEmpty() {
-		assertThat(accountService.findById(null)).rejected().withType(UNPROCESSABLE_ENTITY).withMessage("The account id to retrieve cannot be null or empty.");
-		assertThat(accountService.findById("")).rejected().withType(UNPROCESSABLE_ENTITY).withMessage("The account id to retrieve cannot be null or empty.");
-		assertThat(accountService.findById("  ")).rejected().withType(UNPROCESSABLE_ENTITY).withMessage("The account id to retrieve cannot be null or empty.");
+		assertThat(accountService.findById(null)).rejected().withMessage("The account id to retrieve cannot be null or empty.");
+		assertThat(accountService.findById("")).rejected().withMessage("The account id to retrieve cannot be null or empty.");
+		assertThat(accountService.findById("  ")).rejected().withMessage("The account id to retrieve cannot be null or empty.");
 	}
 
 	@Test
 	public void shouldNotBeAbleToFindAnAccountByIdIfTheAccountIdDoesNotExist() {
-		assertThat(accountService.findById("csrx")).rejected().withType(NOT_FOUND).withMessage("No such account id: csrx");
+		assertThat(accountService.findById("csrx")).rejected().withMessage("No such account id: csrx");
 	}
 
 	@Test
@@ -116,12 +112,12 @@ public class AccountServiceIntegrationTest extends IntegrationTest {
 
 	@Test
 	public void shouldNotBeAbleToFindAnAccountByUsernameIfTheUsernameIsNull() {
-		assertThat(accountService.findByUsername(null)).rejected().withType(UNPROCESSABLE_ENTITY).withMessage("The account username to retrieve cannot be null or empty.");
+		assertThat(accountService.findByUsername(null)).rejected().withMessage("The account username to retrieve cannot be null or empty.");
 	}
 
 	@Test
 	public void shouldNotBeAbleToFindAnAccountByIdIfTheEmailAddressIsInvalid() {
-		assertThat(accountService.findByUsername("csrx")).rejected().withType(NOT_FOUND).withMessage("No such username: csrx");
+		assertThat(accountService.findByUsername("csrx")).rejected().withMessage("No such username: csrx");
 	}
 
 	@Test

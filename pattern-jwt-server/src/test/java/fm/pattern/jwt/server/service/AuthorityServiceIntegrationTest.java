@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import fm.pattern.jwt.server.IntegrationTest;
 import fm.pattern.jwt.server.model.Authority;
 import fm.pattern.microstructure.Result;
-import fm.pattern.microstructure.ResultType;
 
 public class AuthorityServiceIntegrationTest extends IntegrationTest {
 
@@ -37,10 +36,8 @@ public class AuthorityServiceIntegrationTest extends IntegrationTest {
 
 	@Test
 	public void shouldNotBeAbleToCreateAnAuthorityIfTheAuthorityIsInvalid() {
-		Authority authority = new Authority(null);
-
-		Result<Authority> result = authorityService.create(authority);
-		assertThat(result).rejected();
+		Authority authority = authority().withName(null).build();
+		assertThat(authorityService.create(authority)).rejected().withMessage("An authority name is required.");
 	}
 
 	@Test
@@ -48,8 +45,7 @@ public class AuthorityServiceIntegrationTest extends IntegrationTest {
 		Authority authority = authority().thatIs().persistent().build();
 		authority.setName("first");
 
-		Result<Authority> result = authorityService.update(authority);
-		assertThat(result).accepted();
+		assertThat(authorityService.update(authority)).accepted();
 
 		Authority found = authorityService.findById(authority.getId()).getInstance();
 		assertThat(found.getName()).isEqualTo("first");
@@ -60,8 +56,7 @@ public class AuthorityServiceIntegrationTest extends IntegrationTest {
 		Authority authority = authority().thatIs().persistent().build();
 		authority.setName(null);
 
-		Result<Authority> result = authorityService.update(authority);
-		assertThat(result).rejected();
+		assertThat(authorityService.update(authority)).rejected().withMessage("An authority name is required.");
 	}
 
 	@Test
@@ -69,10 +64,8 @@ public class AuthorityServiceIntegrationTest extends IntegrationTest {
 		Authority authority = authority().thatIs().persistent().build();
 		assertThat(authorityService.findById(authority.getId())).accepted();
 
-		Result<Authority> result = authorityService.delete(authority);
-		assertThat(result).accepted();
-
-		assertThat(authorityService.findById(authority.getId())).rejected().withType(ResultType.NOT_FOUND);
+		assertThat(authorityService.delete(authority)).accepted();
+		assertThat(authorityService.findById(authority.getId())).rejected();
 	}
 
 	@Test

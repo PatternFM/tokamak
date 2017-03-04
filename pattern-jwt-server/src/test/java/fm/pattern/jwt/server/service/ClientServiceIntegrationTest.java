@@ -3,8 +3,6 @@ package fm.pattern.jwt.server.service;
 import static fm.pattern.jwt.server.PatternAssertions.assertThat;
 import static fm.pattern.jwt.server.dsl.ClientDSL.client;
 import static fm.pattern.jwt.server.dsl.GrantTypeDSL.grantType;
-import static fm.pattern.microstructure.ResultType.NOT_FOUND;
-import static fm.pattern.microstructure.ResultType.UNPROCESSABLE_ENTITY;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.Before;
@@ -16,7 +14,6 @@ import fm.pattern.jwt.server.model.Client;
 import fm.pattern.jwt.server.model.GrantType;
 import fm.pattern.jwt.server.security.PasswordEncodingService;
 import fm.pattern.microstructure.Result;
-import fm.pattern.microstructure.ResultType;
 
 public class ClientServiceIntegrationTest extends IntegrationTest {
 
@@ -55,17 +52,16 @@ public class ClientServiceIntegrationTest extends IntegrationTest {
 		Client client = client().withGrantType(null).build();
 
 		Result<Client> result = clientService.create(client);
-		assertThat(result).rejected().withType(ResultType.UNPROCESSABLE_ENTITY);
+		assertThat(result).rejected().withMessage("A client requires at least one grant type.");
 	}
-	
-	
+
 	@Test
 	public void shouldBeAbleToDeleteAClient() {
 		Client client = client().withGrantType(grantType).thatIs().persistent().build();
 		assertThat(clientService.findById(client.getId())).isNotNull();
-		
-		clientService.delete(client);
-		assertThat(clientService.findById(client.getId())).rejected().withType(NOT_FOUND);
+
+		assertThat(clientService.delete(client)).accepted();
+		assertThat(clientService.findById(client.getId())).rejected();
 	}
 
 	@Test
@@ -83,14 +79,14 @@ public class ClientServiceIntegrationTest extends IntegrationTest {
 
 	@Test
 	public void shouldNotBeAbleToFindAClientByIdIfTheClientIdentifierIsNull() {
-		assertThat(clientService.findById(null)).rejected().withType(UNPROCESSABLE_ENTITY).withMessage("The client id to retrieve cannot be null or empty.");
-		assertThat(clientService.findById("")).rejected().withType(UNPROCESSABLE_ENTITY).withMessage("The client id to retrieve cannot be null or empty.");
-		assertThat(clientService.findById("  ")).rejected().withType(UNPROCESSABLE_ENTITY).withMessage("The client id to retrieve cannot be null or empty.");
+		assertThat(clientService.findById(null)).rejected().withMessage("The client id to retrieve cannot be null or empty.");
+		assertThat(clientService.findById("")).rejected().withMessage("The client id to retrieve cannot be null or empty.");
+		assertThat(clientService.findById("  ")).rejected().withMessage("The client id to retrieve cannot be null or empty.");
 	}
 
 	@Test
 	public void shouldNotBeAbleToFindAClientByIdIfTheClientIdentifierDoesNotExist() {
-		assertThat(clientService.findById("csrx")).rejected().withType(NOT_FOUND).withMessage("No such client id: csrx");
+		assertThat(clientService.findById("csrx")).rejected().withMessage("No such client id: csrx");
 	}
 
 	@Test
@@ -101,14 +97,14 @@ public class ClientServiceIntegrationTest extends IntegrationTest {
 
 	@Test
 	public void shouldNotBeAbleToFindAClientByClientIdIfTheClientIdIsNullOrEmpty() {
-		assertThat(clientService.findByClientId(null)).rejected().withType(UNPROCESSABLE_ENTITY).withMessage("The client id to retrieve cannot be null or empty.");
-		assertThat(clientService.findByClientId("")).rejected().withType(UNPROCESSABLE_ENTITY).withMessage("The client id to retrieve cannot be null or empty.");
-		assertThat(clientService.findByClientId("  ")).rejected().withType(UNPROCESSABLE_ENTITY).withMessage("The client id to retrieve cannot be null or empty.");
+		assertThat(clientService.findByClientId(null)).rejected().withMessage("The client id to retrieve cannot be null or empty.");
+		assertThat(clientService.findByClientId("")).rejected().withMessage("The client id to retrieve cannot be null or empty.");
+		assertThat(clientService.findByClientId("  ")).rejected().withMessage("The client id to retrieve cannot be null or empty.");
 	}
 
 	@Test
 	public void shouldNotBeAbleToFindAClientByClienIdIfTheClientIdDoesNotExist() {
-		assertThat(clientService.findByClientId("csrx")).rejected().withType(NOT_FOUND).withMessage("No such client id: csrx");
+		assertThat(clientService.findByClientId("csrx")).rejected().withMessage("No such client id: csrx");
 	}
 
 }
