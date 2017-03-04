@@ -66,7 +66,7 @@ class AccountServiceImpl extends DataServiceImpl<Account> implements AccountServ
 		}
 
 		Account account = accountRepository.findByUsername(username);
-		return account != null ? Result.accept(account) : Result.not_found("account.username.not_found", username);
+		return account != null ? Result.accept(account) : Result.reject("account.username.not_found", username);
 	}
 
 	// TODO: Refactor into a PasswordPolicy model.

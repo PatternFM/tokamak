@@ -72,11 +72,11 @@ class DataServiceImpl<T> implements DataService<T> {
 	public Result<T> findById(String id, Class<T> type) {
 		String name = type.getSimpleName().toLowerCase();
 		if (isBlank(id)) {
-			return Result.invalid(report(uncapitalize(type.getSimpleName()) + ".id.required"));
+			return Result.reject(report(uncapitalize(type.getSimpleName()) + ".id.required"));
 		}
 
 		T entity = repository.findById(id, type);
-		return entity != null ? Result.accept(entity) : Result.not_found(report("system.not.found", name, id));
+		return entity != null ? Result.accept(entity) : Result.reject(report("system.not.found", name, id));
 	}
 
 	@Transactional(readOnly = true)
@@ -85,7 +85,7 @@ class DataServiceImpl<T> implements DataService<T> {
 			return Result.accept(repository.query("from " + entity(type) + " order by created").list());
 		}
 		catch (Exception e) {
-			return Result.internal_error(report("system.query.failed", e.getMessage()));
+			return Result.reject(report("system.query.failed", e.getMessage()));
 		}
 	}
 

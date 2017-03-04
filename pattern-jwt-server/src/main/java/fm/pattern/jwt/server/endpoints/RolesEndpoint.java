@@ -58,38 +58,38 @@ public class RolesEndpoint extends Endpoint {
 	@RequestMapping(value = "/v1/roles", method = POST, consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
 	public RoleRepresentation create(@RequestBody RoleRepresentation representation) {
 		Role role = ingress.convert(representation);
-		Role created = validate(roleService.create(role));
-		return egress.convert(validate(roleService.findById(created.getId())));
+		Role created = roleService.create(role).orThrow();
+		return egress.convert(roleService.findById(created.getId()).orThrow());
 	}
 
 	@RequestMapping(value = "/v1/roles/{id}", method = PUT, consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
 	public RoleRepresentation update(@PathVariable String id, @RequestBody RoleRepresentation representation) {
-		Role role = ingress.update(representation, validate(roleService.findById(id)));
-		return egress.convert(validate(roleService.update(role)));
+		Role role = ingress.update(representation, roleService.findById(id).orThrow());
+		return egress.convert(roleService.update(role).orThrow());
 	}
 
 	@ResponseStatus(value = HttpStatus.NO_CONTENT)
 	@RequestMapping(value = "/v1/roles/{id}", method = DELETE)
 	public void delete(@PathVariable String id) {
-		Role role = validate(roleService.findById(id));
-		validate(roleService.delete(role));
+		Role role = roleService.findById(id).orThrow();
+		roleService.delete(role).orThrow();
 	}
 
 	@RequestMapping(value = "/v1/roles/{id}", method = GET, produces = APPLICATION_JSON_VALUE)
 	public RoleRepresentation findById(@PathVariable String id) {
-		Role role = validate(roleService.findById(id));
+		Role role = roleService.findById(id).orThrow();
 		return egress.convert(role);
 	}
 
 	@RequestMapping(value = "/v1/roles/name/{name}", method = GET, produces = APPLICATION_JSON_VALUE)
 	public RoleRepresentation findByName(@PathVariable String name) {
-		Role role = validate(roleService.findByName(name));
+		Role role = roleService.findByName(name).orThrow();
 		return egress.convert(role);
 	}
 
 	@RequestMapping(value = "/v1/roles", method = GET, produces = APPLICATION_JSON_VALUE)
 	public RolesRepresentation list() {
-		List<Role> roles = validate(roleService.list());
+		List<Role> roles = roleService.list().orThrow();
 		return new RolesRepresentation(roles.stream().map(role -> egress.convert(role)).collect(Collectors.toList()));
 	}
 

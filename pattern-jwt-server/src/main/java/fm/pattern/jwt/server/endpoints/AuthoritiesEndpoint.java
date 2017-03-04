@@ -58,38 +58,38 @@ public class AuthoritiesEndpoint extends Endpoint {
 	@RequestMapping(value = "/v1/authorities", method = POST, consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
 	public AuthorityRepresentation create(@RequestBody AuthorityRepresentation representation) {
 		Authority authority = ingress.convert(representation);
-		Authority created = validate(authorityService.create(authority));
-		return egress.convert(validate(authorityService.findById(created.getId())));
+		Authority created = authorityService.create(authority).orThrow();
+		return egress.convert(authorityService.findById(created.getId()).orThrow());
 	}
 
 	@RequestMapping(value = "/v1/authorities/{id}", method = PUT, consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
 	public AuthorityRepresentation update(@PathVariable String id, @RequestBody AuthorityRepresentation representation) {
-		Authority authority = ingress.update(representation, validate(authorityService.findById(id)));
-		return egress.convert(validate(authorityService.update(authority)));
+		Authority authority = ingress.update(representation, authorityService.findById(id).orThrow());
+		return egress.convert(authorityService.update(authority).orThrow());
 	}
 
 	@ResponseStatus(value = HttpStatus.NO_CONTENT)
 	@RequestMapping(value = "/v1/authorities/{id}", method = DELETE)
 	public void delete(@PathVariable String id) {
-		Authority authority = validate(authorityService.findById(id));
-		validate(authorityService.delete(authority));
+		Authority authority = authorityService.findById(id).orThrow();
+		authorityService.delete(authority).orThrow();
 	}
 
 	@RequestMapping(value = "/v1/authorities/{id}", method = GET, produces = APPLICATION_JSON_VALUE)
 	public AuthorityRepresentation findById(@PathVariable String id) {
-		Authority authority = validate(authorityService.findById(id));
+		Authority authority = authorityService.findById(id).orThrow();
 		return egress.convert(authority);
 	}
 
 	@RequestMapping(value = "/v1/authorities/name/{name}", method = GET, produces = APPLICATION_JSON_VALUE)
 	public AuthorityRepresentation findByName(@PathVariable String name) {
-		Authority authority = validate(authorityService.findByName(name));
+		Authority authority = authorityService.findByName(name).orThrow();
 		return egress.convert(authority);
 	}
 
 	@RequestMapping(value = "/v1/authorities", method = GET, produces = APPLICATION_JSON_VALUE)
 	public AuthoritiesRepresentation list() {
-		List<Authority> authorities = validate(authorityService.list());
+		List<Authority> authorities = authorityService.list().orThrow();
 		return new AuthoritiesRepresentation(authorities.stream().map(authority -> egress.convert(authority)).collect(Collectors.toList()));
 	}
 

@@ -56,16 +56,16 @@ public class ClientsEndpoint extends Endpoint {
 	@RequestMapping(value = "/v1/clients", method = POST, consumes = "application/json", produces = "application/json")
 	public ClientRepresentation create(@RequestBody ClientRepresentation representation) {
 		Client client = ingress.convert(representation);
-		Client created = validate(clientService.create(client));
-		return egress.convert(validate(clientService.findById(created.getId())));
+		Client created = clientService.create(client).orThrow();
+		return egress.convert(clientService.findById(created.getId()).orThrow());
 	}
 
 	@Authorize(scopes = "clients:update")
 	@RequestMapping(value = "/v1/clients/{id}", method = PUT, consumes = "application/json", produces = "application/json")
 	public ClientRepresentation update(@PathVariable String id, @RequestBody ClientRepresentation representation) {
-		Client client = ingress.update(representation, validate(clientService.findById(id)));
-		Client updated = validate(clientService.update(client));
-		return egress.convert(validate(clientService.findById(updated.getId())));
+		Client client = ingress.update(representation, clientService.findById(id).orThrow());
+		Client updated = clientService.update(client).orThrow();
+		return egress.convert(clientService.findById(updated.getId()).orThrow());
 	}
 
 	@Authorize(scopes = "clients:delete")
@@ -79,7 +79,7 @@ public class ClientsEndpoint extends Endpoint {
 	@Authorize(scopes = "clients:read")
 	@RequestMapping(value = "/v1/clients/{id}", method = GET, produces = APPLICATION_JSON_VALUE)
 	public ClientRepresentation findById(@PathVariable String id) {
-		return egress.convert(validate(clientService.findById(id)));
+		return egress.convert(clientService.findById(id).orThrow());
 	}
 
 }

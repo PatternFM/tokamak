@@ -36,7 +36,7 @@ import fm.pattern.jwt.server.model.Client;
 import fm.pattern.jwt.server.model.GrantType;
 import fm.pattern.jwt.server.model.Role;
 import fm.pattern.jwt.server.model.Scope;
-import fm.pattern.microstructure.exceptions.ReportableException;
+import fm.pattern.microstructure.ReportableException;
 
 @Service
 class EgressConversionServiceImpl implements EgressConversionService {

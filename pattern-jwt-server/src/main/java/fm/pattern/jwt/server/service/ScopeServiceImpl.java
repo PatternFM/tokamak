@@ -52,7 +52,7 @@ class ScopeServiceImpl extends DataServiceImpl<Scope> implements ScopeService {
 
 		Long count = repository.count(repository.sqlQuery("select count(_id) from ClientScopes where scope_id = :id").setString("id", scope.getId()));
 		if (count != 0) {
-			return Result.conflict("scope.delete.conflict", count, (count != 1 ? " clients are" : " client is"));
+			return Result.reject("scope.delete.conflict", count, (count != 1 ? " clients are" : " client is"));
 		}
 
 		return repository.delete(scope);
@@ -66,11 +66,11 @@ class ScopeServiceImpl extends DataServiceImpl<Scope> implements ScopeService {
 	@Transactional(readOnly = true)
 	public Result<Scope> findByName(String name) {
 		if (isBlank(name)) {
-			return Result.invalid("scope.name.required");
+			return Result.reject("scope.name.required");
 		}
 
 		Scope scope = (Scope) repository.query("from Scopes where name = :name").setString("name", name).uniqueResult();
-		return scope == null ? Result.not_found("scope.name.not_found", name) : Result.accept(scope);
+		return scope == null ? Result.reject("scope.name.not_found", name) : Result.accept(scope);
 	}
 
 	@Transactional(readOnly = true)

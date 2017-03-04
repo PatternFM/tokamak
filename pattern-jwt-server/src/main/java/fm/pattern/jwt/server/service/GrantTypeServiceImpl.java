@@ -52,7 +52,7 @@ class GrantTypeServiceImpl extends DataServiceImpl<GrantType> implements GrantTy
 
 		Long count = repository.count(repository.sqlQuery("select count(_id) from ClientGrantTypes where grant_type_id = :id").setString("id", grantType.getId()));
 		if (count != 0) {
-			return Result.conflict("grantType.delete.conflict", count, (count != 1 ? " clients are" : " client is"));
+			return Result.reject("grantType.delete.conflict", count, (count != 1 ? " clients are" : " client is"));
 		}
 
 		return repository.delete(grantType);
@@ -66,11 +66,11 @@ class GrantTypeServiceImpl extends DataServiceImpl<GrantType> implements GrantTy
 	@Transactional(readOnly = true)
 	public Result<GrantType> findByName(String name) {
 		if (isBlank(name)) {
-			return Result.invalid("grantType.name.required");
+			return Result.reject("grantType.name.required");
 		}
 
 		GrantType grantType = (GrantType) repository.query("from GrantTypes where name = :name").setString("name", name).uniqueResult();
-		return grantType == null ? Result.not_found("grantType.name.not_found", name) : Result.accept(grantType);
+		return grantType == null ? Result.reject("grantType.name.not_found", name) : Result.accept(grantType);
 	}
 
 	@Transactional(readOnly = true)

@@ -52,7 +52,7 @@ class AuthorityServiceImpl extends DataServiceImpl<Authority> implements Authori
 
 		Long count = repository.count(repository.sqlQuery("select count(_id) from ClientAuthorities where authority_id = :id").setString("id", authority.getId()));
 		if (count != 0) {
-			return Result.conflict("authority.delete.conflict", count, (count != 1 ? " clients are" : " client is"));
+			return Result.reject("authority.delete.conflict", count, (count != 1 ? " clients are" : " client is"));
 		}
 
 		return repository.delete(authority);
@@ -66,11 +66,11 @@ class AuthorityServiceImpl extends DataServiceImpl<Authority> implements Authori
 	@Transactional(readOnly = true)
 	public Result<Authority> findByName(String name) {
 		if (isBlank(name)) {
-			return Result.invalid("authority.name.required");
+			return Result.reject("authority.name.required");
 		}
 
 		Authority authority = (Authority) repository.query("from Authorities where name = :name").setString("name", name).uniqueResult();
-		return authority == null ? Result.not_found("authority.name.not_found", name) : Result.accept(authority);
+		return authority == null ? Result.reject("authority.name.not_found", name) : Result.accept(authority);
 	}
 
 	@Transactional(readOnly = true)

@@ -59,7 +59,7 @@ class ClientServiceImpl extends DataServiceImpl<Client> implements ClientService
 		}
 
 		Client client = clientRepository.findByClientId(clientId);
-		return client != null ? Result.accept(client) : Result.not_found("client.clientId.not_found", clientId);
+		return client != null ? Result.accept(client) : Result.reject("client.clientId.not_found", clientId);
 	}
 
 	@Autowired

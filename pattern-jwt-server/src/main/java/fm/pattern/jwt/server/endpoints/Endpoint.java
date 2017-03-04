@@ -27,13 +27,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import fm.pattern.commons.rest.ErrorsRepresentation;
 import fm.pattern.jwt.server.conversion.EgressConversionService;
-import fm.pattern.microstructure.Result;
-import fm.pattern.microstructure.exceptions.AuthenticationException;
-import fm.pattern.microstructure.exceptions.AuthorizationException;
-import fm.pattern.microstructure.exceptions.EntityNotFoundException;
-import fm.pattern.microstructure.exceptions.InternalErrorException;
-import fm.pattern.microstructure.exceptions.ResourceConflictException;
-import fm.pattern.microstructure.exceptions.UnprocessableEntityException;
+import fm.pattern.microstructure.AuthenticationException;
+import fm.pattern.microstructure.AuthorizationException;
+import fm.pattern.microstructure.EntityNotFoundException;
+import fm.pattern.microstructure.InternalErrorException;
+import fm.pattern.microstructure.ResourceConflictException;
+import fm.pattern.microstructure.UnprocessableEntityException;
 
 @RestController
 public class Endpoint {
@@ -83,15 +82,8 @@ public class Endpoint {
 	}
 
 	@Autowired
-	public void setConversionService(EgressConversionService egress) {
+	public void setEgressConversionService(EgressConversionService egress) {
 		this.egress = egress;
-	}
-
-	public <T> T validate(Result<T> result) {
-		if (result.accepted()) {
-			return result.getInstance();
-		}
-		throw result.raise();
 	}
 
 }

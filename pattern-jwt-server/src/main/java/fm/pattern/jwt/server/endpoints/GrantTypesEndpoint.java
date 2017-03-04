@@ -36,31 +36,31 @@ import fm.pattern.jwt.server.service.GrantTypeService;
 @RestController
 public class GrantTypesEndpoint extends Endpoint {
 
-	private final GrantTypeService grantService;
+	private final GrantTypeService grantTypeService;
 	private final EgressConversionService egress;
 
 	@Autowired
-	public GrantTypesEndpoint(GrantTypeService grantService, EgressConversionService egress) {
-		this.grantService = grantService;
+	public GrantTypesEndpoint(GrantTypeService grantTypeService, EgressConversionService egress) {
+		this.grantTypeService = grantTypeService;
 		this.egress = egress;
 	}
 
 	@RequestMapping(value = "/v1/grant_types/{id}", method = GET, produces = APPLICATION_JSON_VALUE)
 	public GrantTypeRepresentation findById(@PathVariable String id) {
-		GrantType grant = validate(grantService.findById(id));
-		return egress.convert(grant);
+		GrantType grantType = grantTypeService.findById(id).orThrow();
+		return egress.convert(grantType);
 	}
 
 	@RequestMapping(value = "/v1/grant_types/name/{name}", method = GET, produces = APPLICATION_JSON_VALUE)
 	public GrantTypeRepresentation findByName(@PathVariable String name) {
-		GrantType grant = validate(grantService.findByName(name));
-		return egress.convert(grant);
+		GrantType grantType = grantTypeService.findByName(name).orThrow();
+		return egress.convert(grantType);
 	}
 
 	@RequestMapping(value = "/v1/grant_types", method = GET, produces = APPLICATION_JSON_VALUE)
 	public GrantTypesRepresentation list() {
-		List<GrantType> grants = validate(grantService.list());
-		return new GrantTypesRepresentation(grants.stream().map(grant -> egress.convert(grant)).collect(Collectors.toList()));
+		List<GrantType> grantTypes = grantTypeService.list().orThrow();
+		return new GrantTypesRepresentation(grantTypes.stream().map(grant -> egress.convert(grant)).collect(Collectors.toList()));
 	}
 
 }

@@ -58,38 +58,38 @@ public class ScopesEndpoint extends Endpoint {
 	@RequestMapping(value = "/v1/scopes", method = POST, consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
 	public ScopeRepresentation create(@RequestBody ScopeRepresentation representation) {
 		Scope scope = ingress.convert(representation);
-		Scope created = validate(scopeService.create(scope));
-		return egress.convert(validate(scopeService.findById(created.getId())));
+		Scope created = scopeService.create(scope).orThrow();
+		return egress.convert(scopeService.findById(created.getId()).orThrow());
 	}
 
 	@RequestMapping(value = "/v1/scopes/{id}", method = PUT, consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
 	public ScopeRepresentation update(@PathVariable String id, @RequestBody ScopeRepresentation representation) {
-		Scope scope = ingress.update(representation, validate(scopeService.findById(id)));
-		return egress.convert(validate(scopeService.update(scope)));
+		Scope scope = ingress.update(representation, scopeService.findById(id).orThrow());
+		return egress.convert(scopeService.update(scope).orThrow());
 	}
 
 	@ResponseStatus(value = HttpStatus.NO_CONTENT)
 	@RequestMapping(value = "/v1/scopes/{id}", method = DELETE)
 	public void delete(@PathVariable String id) {
-		Scope scope = validate(scopeService.findById(id));
-		validate(scopeService.delete(scope));
+		Scope scope = scopeService.findById(id).orThrow();
+		scopeService.delete(scope).orThrow();
 	}
 
 	@RequestMapping(value = "/v1/scopes/{id}", method = GET, produces = APPLICATION_JSON_VALUE)
 	public ScopeRepresentation findById(@PathVariable String id) {
-		Scope scope = validate(scopeService.findById(id));
+		Scope scope = scopeService.findById(id).orThrow();
 		return egress.convert(scope);
 	}
 
 	@RequestMapping(value = "/v1/scopes/name/{name}", method = GET, produces = APPLICATION_JSON_VALUE)
 	public ScopeRepresentation findByName(@PathVariable String name) {
-		Scope scope = validate(scopeService.findByName(name));
+		Scope scope = scopeService.findByName(name).orThrow();
 		return egress.convert(scope);
 	}
 
 	@RequestMapping(value = "/v1/scopes", method = GET, produces = APPLICATION_JSON_VALUE)
 	public ScopesRepresentation list() {
-		List<Scope> scopes = validate(scopeService.list());
+		List<Scope> scopes = scopeService.list().orThrow();
 		return new ScopesRepresentation(scopes.stream().map(scope -> egress.convert(scope)).collect(Collectors.toList()));
 	}
 

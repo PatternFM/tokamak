@@ -2,7 +2,6 @@ package fm.pattern.jwt.server.service;
 
 import static fm.pattern.jwt.server.PatternAssertions.assertThat;
 import static fm.pattern.jwt.server.dsl.RoleDSL.role;
-import static fm.pattern.microstructure.ResultType.NOT_FOUND;
 import static java.util.stream.IntStream.range;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -87,7 +86,7 @@ public class RoleServiceIntegrationTest extends IntegrationTest {
 
 	@Test
 	public void shouldNotBeAbleToFindARoleByIdIfTheRoleIdDoesNotExist() {
-		assertThat(roleService.findById("csrx")).rejected().withType(NOT_FOUND).withMessage("No such role id: csrx");
+		assertThat(roleService.findById("csrx")).rejected().withMessage("No such role id: csrx");
 	}
 
 	@Test
