@@ -16,6 +16,7 @@
 
 package fm.pattern.jwt.server.service;
 
+import static fm.pattern.microstructure.Reportable.report;
 import static org.apache.commons.lang3.StringUtils.isBlank;
 
 import java.util.List;
@@ -67,11 +68,11 @@ class GrantTypeServiceImpl extends DataServiceImpl<GrantType> implements GrantTy
 	@Transactional(readOnly = true)
 	public Result<GrantType> findByName(String name) {
 		if (isBlank(name)) {
-			return Result.unprocessable_entity("{grantType.get.name.required}");
+			return Result.invalid(report("grantType.get.name.required"));
 		}
 
 		GrantType grantType = (GrantType) repository.query("from GrantTypes where name = :name").setString("name", name).uniqueResult();
-		return grantType == null ? Result.not_found("No such grant type name: " + name) : Result.accept(grantType);
+		return grantType == null ? Result.not_found(report("grantType.get.name.nf", name)) : Result.accept(grantType);
 	}
 
 	@Transactional(readOnly = true)

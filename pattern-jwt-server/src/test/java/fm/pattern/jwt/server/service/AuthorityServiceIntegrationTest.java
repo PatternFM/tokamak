@@ -2,8 +2,6 @@ package fm.pattern.jwt.server.service;
 
 import static fm.pattern.jwt.server.PatternAssertions.assertThat;
 import static fm.pattern.jwt.server.dsl.AuthorityDSL.authority;
-import static fm.pattern.microstructure.ResultType.NOT_FOUND;
-import static fm.pattern.microstructure.ResultType.UNPROCESSABLE_ENTITY;
 import static java.util.stream.IntStream.range;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -23,7 +21,7 @@ public class AuthorityServiceIntegrationTest extends IntegrationTest {
 	private AuthorityService authorityService;
 
 	@Test
-	public void shouldBeAbleToCreateAAuthority() {
+	public void shouldBeAbleToCreateAnAuthority() {
 		Authority authority = new Authority("user");
 
 		Result<Authority> result = authorityService.create(authority);
@@ -38,15 +36,15 @@ public class AuthorityServiceIntegrationTest extends IntegrationTest {
 	}
 
 	@Test
-	public void shouldNotBeAbleToCreateAAuthorityIfTheAuthorityIsInvalid() {
+	public void shouldNotBeAbleToCreateAnAuthorityIfTheAuthorityIsInvalid() {
 		Authority authority = new Authority(null);
 
 		Result<Authority> result = authorityService.create(authority);
-		assertThat(result).rejected().withType(ResultType.UNPROCESSABLE_ENTITY);
+		assertThat(result).rejected();
 	}
 
 	@Test
-	public void shouldBeAbleToUpdateAAuthority() {
+	public void shouldBeAbleToUpdateAnAuthority() {
 		Authority authority = authority().thatIs().persistent().build();
 		authority.setName("first");
 
@@ -58,16 +56,16 @@ public class AuthorityServiceIntegrationTest extends IntegrationTest {
 	}
 
 	@Test
-	public void shouldNotBeAbleToUpdateAAuthorityIfTheAuthorityIsInvalid() {
+	public void shouldNotBeAbleToUpdateAnAuthorityIfTheAuthorityIsInvalid() {
 		Authority authority = authority().thatIs().persistent().build();
 		authority.setName(null);
 
 		Result<Authority> result = authorityService.update(authority);
-		assertThat(result).rejected().withType(ResultType.UNPROCESSABLE_ENTITY);
+		assertThat(result).rejected();
 	}
 
 	@Test
-	public void shouldBeAbleToDeleteAAuthority() {
+	public void shouldBeAbleToDeleteAnAuthority() {
 		Authority authority = authority().thatIs().persistent().build();
 		assertThat(authorityService.findById(authority.getId())).accepted();
 
@@ -78,7 +76,7 @@ public class AuthorityServiceIntegrationTest extends IntegrationTest {
 	}
 
 	@Test
-	public void shouldBeAbleToFindAAuthorityById() {
+	public void shouldBeAbleToFindAnAuthorityById() {
 		Authority authority = authority().thatIs().persistent().build();
 
 		Result<Authority> result = authorityService.findById(authority.getId());
@@ -88,18 +86,18 @@ public class AuthorityServiceIntegrationTest extends IntegrationTest {
 
 	@Test
 	public void shouldNotBeAbleToFindAnAuthorityByIdIfTheAuthorityIdIsNullOrEmpty() {
-		assertThat(authorityService.findById(null)).rejected().withType(UNPROCESSABLE_ENTITY).withDescription("The authority id to retrieve cannot be null or empty.");
-		assertThat(authorityService.findById("")).rejected().withType(UNPROCESSABLE_ENTITY).withDescription("The authority id to retrieve cannot be null or empty.");
-		assertThat(authorityService.findById("  ")).rejected().withType(UNPROCESSABLE_ENTITY).withDescription("The authority id to retrieve cannot be null or empty.");
+		assertThat(authorityService.findById(null)).rejected().withMessage("The authority id to retrieve cannot be null or empty.");
+		assertThat(authorityService.findById("")).rejected().withMessage("The authority id to retrieve cannot be null or empty.");
+		assertThat(authorityService.findById("  ")).rejected().withMessage("The authority id to retrieve cannot be null or empty.");
 	}
 
 	@Test
 	public void shouldNotBeAbleToFindAnAuthorityByIdIfTheAuthorityIdDoesNotExist() {
-		assertThat(authorityService.findById("csrx")).rejected().withType(NOT_FOUND).withDescription("No such authority id: csrx");
+		assertThat(authorityService.findById("csrx")).rejected().withMessage("No such authority id: csrx");
 	}
 
 	@Test
-	public void shouldBeAbleToFindAAuthorityByName() {
+	public void shouldBeAbleToFindAnAuthorityByName() {
 		Authority authority = authority().thatIs().persistent().build();
 
 		Result<Authority> result = authorityService.findByName(authority.getName());
@@ -108,15 +106,15 @@ public class AuthorityServiceIntegrationTest extends IntegrationTest {
 	}
 
 	@Test
-	public void shouldNotBeAbleToFindAAuthorityByNameIfTheAuthorityNameIsNullOrEmpty() {
-		assertThat(authorityService.findByName(null)).rejected().withType(UNPROCESSABLE_ENTITY).withDescription("The authority name to retrieve cannot be null or empty.");
-		assertThat(authorityService.findByName("")).rejected().withType(UNPROCESSABLE_ENTITY).withDescription("The authority name to retrieve cannot be null or empty.");
-		assertThat(authorityService.findByName("  ")).rejected().withType(UNPROCESSABLE_ENTITY).withDescription("The authority name to retrieve cannot be null or empty.");
+	public void shouldNotBeAbleToFindAnAuthorityByNameIfTheAuthorityNameIsNullOrEmpty() {
+		assertThat(authorityService.findByName(null)).rejected().withMessage("The authority name to retrieve cannot be null or empty.");
+		assertThat(authorityService.findByName("")).rejected().withMessage("The authority name to retrieve cannot be null or empty.");
+		assertThat(authorityService.findByName("  ")).rejected().withMessage("The authority name to retrieve cannot be null or empty.");
 	}
 
 	@Test
-	public void shouldNotBeAbleToFindAAuthorityByNameIfTheAuthorityNameDoesNotExist() {
-		assertThat(authorityService.findByName("csrx")).rejected().withType(NOT_FOUND).withDescription("No such authority name: csrx");
+	public void shouldNotBeAbleToFindAnAuthorityByNameIfTheAuthorityNameDoesNotExist() {
+		assertThat(authorityService.findByName("csrx")).rejected().withMessage("No such authority name: csrx");
 	}
 
 	@Test

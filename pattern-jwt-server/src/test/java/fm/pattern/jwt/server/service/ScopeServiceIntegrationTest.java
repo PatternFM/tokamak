@@ -88,14 +88,14 @@ public class ScopeServiceIntegrationTest extends IntegrationTest {
 
 	@Test
 	public void shouldNotBeAbleToFindAnScopeByIdIfTheScopeIdIsNullOrEmpty() {
-		assertThat(scopeService.findById(null)).rejected().withType(UNPROCESSABLE_ENTITY).withDescription("The scope id to retrieve cannot be null or empty.");
-		assertThat(scopeService.findById("")).rejected().withType(UNPROCESSABLE_ENTITY).withDescription("The scope id to retrieve cannot be null or empty.");
-		assertThat(scopeService.findById("  ")).rejected().withType(UNPROCESSABLE_ENTITY).withDescription("The scope id to retrieve cannot be null or empty.");
+		assertThat(scopeService.findById(null)).rejected().withType(UNPROCESSABLE_ENTITY).withMessage("The scope id to retrieve cannot be null or empty.");
+		assertThat(scopeService.findById("")).rejected().withType(UNPROCESSABLE_ENTITY).withMessage("The scope id to retrieve cannot be null or empty.");
+		assertThat(scopeService.findById("  ")).rejected().withType(UNPROCESSABLE_ENTITY).withMessage("The scope id to retrieve cannot be null or empty.");
 	}
 
 	@Test
 	public void shouldNotBeAbleToFindAnScopeByIdIfTheScopeIdDoesNotExist() {
-		assertThat(scopeService.findById("csrx")).rejected().withType(NOT_FOUND).withDescription("No such scope id: csrx");
+		assertThat(scopeService.findById("csrx")).rejected().withType(NOT_FOUND).withMessage("No such scope id: csrx");
 	}
 
 	@Test
@@ -109,14 +109,14 @@ public class ScopeServiceIntegrationTest extends IntegrationTest {
 
 	@Test
 	public void shouldNotBeAbleToFindAScopeByNameIfTheScopeNameIsNullOrEmpty() {
-		assertThat(scopeService.findByName(null)).rejected().withType(UNPROCESSABLE_ENTITY).withDescription("The scope name to retrieve cannot be null or empty.");
-		assertThat(scopeService.findByName("")).rejected().withType(UNPROCESSABLE_ENTITY).withDescription("The scope name to retrieve cannot be null or empty.");
-		assertThat(scopeService.findByName("  ")).rejected().withType(UNPROCESSABLE_ENTITY).withDescription("The scope name to retrieve cannot be null or empty.");
+		assertThat(scopeService.findByName(null)).rejected().withType(UNPROCESSABLE_ENTITY).withMessage("The scope name to retrieve cannot be null or empty.");
+		assertThat(scopeService.findByName("")).rejected().withType(UNPROCESSABLE_ENTITY).withMessage("The scope name to retrieve cannot be null or empty.");
+		assertThat(scopeService.findByName("  ")).rejected().withType(UNPROCESSABLE_ENTITY).withMessage("The scope name to retrieve cannot be null or empty.");
 	}
 
 	@Test
 	public void shouldNotBeAbleToFindAScopeByNameIfTheScopeNameDoesNotExist() {
-		assertThat(scopeService.findByName("csrx")).rejected().withType(NOT_FOUND).withDescription("No such scope name: csrx");
+		assertThat(scopeService.findByName("csrx")).rejected().withType(NOT_FOUND).withMessage("No such scope name: csrx");
 	}
 
 	@Test

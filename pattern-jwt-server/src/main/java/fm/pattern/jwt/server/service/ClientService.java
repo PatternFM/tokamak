@@ -29,6 +29,6 @@ public interface ClientService {
 
 	Result<Client> findById(String id);
 
-	Result<Client> findByClientId(String username);
+	Result<Client> findByClientId(String clientId);
 
 }

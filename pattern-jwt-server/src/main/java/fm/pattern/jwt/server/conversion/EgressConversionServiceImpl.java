@@ -71,7 +71,7 @@ class EgressConversionServiceImpl implements EgressConversionService {
 	}
 
 	public ErrorsRepresentation convert(ReportableException exception) {
-		List<ErrorRepresentation> errors = exception.getErrors().stream().map(e -> new ErrorRepresentation(e.getCode(), e.getDescription(), e.getProperty())).collect(Collectors.toList());
+		List<ErrorRepresentation> errors = exception.getErrors().stream().map(e -> new ErrorRepresentation(e.getCode(), e.getMessage())).collect(Collectors.toList());
 		return new ErrorsRepresentation(errors);
 	}
 

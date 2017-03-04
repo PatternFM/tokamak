@@ -74,7 +74,7 @@ public class AccountServiceIntegrationTest extends IntegrationTest {
 		assertThat(accountService.findById(account.getId())).accepted();
 
 		assertThat(accountService.delete(account)).accepted();
-		assertThat(accountService.findById(account.getId())).rejected().withType(NOT_FOUND).withDescription("No such account id: " + account.getId());
+		assertThat(accountService.findById(account.getId())).rejected().withType(NOT_FOUND).withMessage("No such account id: " + account.getId());
 	}
 
 	@Test
@@ -95,14 +95,14 @@ public class AccountServiceIntegrationTest extends IntegrationTest {
 
 	@Test
 	public void shouldNotBeAbleToFindAnAccountByIdIfTheAccountIdIsNullOrEmpty() {
-		assertThat(accountService.findById(null)).rejected().withType(UNPROCESSABLE_ENTITY).withDescription("The account id to retrieve cannot be null or empty.");
-		assertThat(accountService.findById("")).rejected().withType(UNPROCESSABLE_ENTITY).withDescription("The account id to retrieve cannot be null or empty.");
-		assertThat(accountService.findById("  ")).rejected().withType(UNPROCESSABLE_ENTITY).withDescription("The account id to retrieve cannot be null or empty.");
+		assertThat(accountService.findById(null)).rejected().withType(UNPROCESSABLE_ENTITY).withMessage("The account id to retrieve cannot be null or empty.");
+		assertThat(accountService.findById("")).rejected().withType(UNPROCESSABLE_ENTITY).withMessage("The account id to retrieve cannot be null or empty.");
+		assertThat(accountService.findById("  ")).rejected().withType(UNPROCESSABLE_ENTITY).withMessage("The account id to retrieve cannot be null or empty.");
 	}
 
 	@Test
 	public void shouldNotBeAbleToFindAnAccountByIdIfTheAccountIdDoesNotExist() {
-		assertThat(accountService.findById("csrx")).rejected().withType(NOT_FOUND).withDescription("No such account id: csrx");
+		assertThat(accountService.findById("csrx")).rejected().withType(NOT_FOUND).withMessage("No such account id: csrx");
 	}
 
 	@Test
@@ -116,12 +116,12 @@ public class AccountServiceIntegrationTest extends IntegrationTest {
 
 	@Test
 	public void shouldNotBeAbleToFindAnAccountByUsernameIfTheUsernameIsNull() {
-		assertThat(accountService.findByUsername(null)).rejected().withType(UNPROCESSABLE_ENTITY).withDescription("The account username to retrieve cannot be null or empty.");
+		assertThat(accountService.findByUsername(null)).rejected().withType(UNPROCESSABLE_ENTITY).withMessage("The account username to retrieve cannot be null or empty.");
 	}
 
 	@Test
 	public void shouldNotBeAbleToFindAnAccountByIdIfTheEmailAddressIsInvalid() {
-		assertThat(accountService.findByUsername("csrx")).rejected().withType(NOT_FOUND).withDescription("No such username: csrx");
+		assertThat(accountService.findByUsername("csrx")).rejected().withType(NOT_FOUND).withMessage("No such username: csrx");
 	}
 
 	@Test
@@ -142,9 +142,9 @@ public class AccountServiceIntegrationTest extends IntegrationTest {
 		String email = "test@email.com";
 
 		Account account = account().withUsername(email).withPassword(oldPassword).thatIs().persistent().build();
-		assertThat(accountService.updatePassword(account, oldPassword, null)).rejected().withDescription("Your new password must be provided.");
-		assertThat(accountService.updatePassword(account, oldPassword, "")).rejected().withDescription("Your new password must be provided.");
-		assertThat(accountService.updatePassword(account, oldPassword, "  ")).rejected().withDescription("Your new password must be provided.");
+		assertThat(accountService.updatePassword(account, oldPassword, null)).rejected().withMessage("Your new password must be provided.");
+		assertThat(accountService.updatePassword(account, oldPassword, "")).rejected().withMessage("Your new password must be provided.");
+		assertThat(accountService.updatePassword(account, oldPassword, "  ")).rejected().withMessage("Your new password must be provided.");
 	}
 
 	@Test
@@ -153,7 +153,7 @@ public class AccountServiceIntegrationTest extends IntegrationTest {
 		String email = "test@email.com";
 
 		Account account = account().withUsername(email).withPassword(oldPassword).thatIs().persistent().build();
-		assertThat(accountService.updatePassword(account, oldPassword, "abc")).rejected().withDescription("Your new password must be between 8 and 50 characters.");
+		assertThat(accountService.updatePassword(account, oldPassword, "abc")).rejected().withMessage("Your new password must be between 8 and 50 characters.");
 	}
 
 	@Test
@@ -162,7 +162,7 @@ public class AccountServiceIntegrationTest extends IntegrationTest {
 		String email = "test@email.com";
 
 		Account account = account().withUsername(email).withPassword(oldPassword).thatIs().persistent().build();
-		assertThat(accountService.updatePassword(account, oldPassword, RandomStringUtils.randomAlphabetic(51))).rejected().withDescription("Your new password must be between 8 and 50 characters.");
+		assertThat(accountService.updatePassword(account, oldPassword, RandomStringUtils.randomAlphabetic(51))).rejected().withMessage("Your new password must be between 8 and 50 characters.");
 	}
 
 	@Test
@@ -171,9 +171,9 @@ public class AccountServiceIntegrationTest extends IntegrationTest {
 		String email = "test@email.com";
 
 		Account account = account().withUsername(email).withPassword(oldPassword).thatIs().persistent().build();
-		assertThat(accountService.updatePassword(account, null, "ABC")).rejected().withDescription("Your current password must be provided.");
-		assertThat(accountService.updatePassword(account, "", "ABC")).rejected().withDescription("Your current password must be provided.");
-		assertThat(accountService.updatePassword(account, "  ", "ABC")).rejected().withDescription("Your current password must be provided.");
+		assertThat(accountService.updatePassword(account, null, "ABC")).rejected().withMessage("Your current password must be provided.");
+		assertThat(accountService.updatePassword(account, "", "ABC")).rejected().withMessage("Your current password must be provided.");
+		assertThat(accountService.updatePassword(account, "  ", "ABC")).rejected().withMessage("Your current password must be provided.");
 	}
 
 	@Test
@@ -182,7 +182,7 @@ public class AccountServiceIntegrationTest extends IntegrationTest {
 		String email = "test@email.com";
 
 		Account account = account().withUsername(email).withPassword(oldPassword).thatIs().persistent().build();
-		assertThat(accountService.updatePassword(account, "invalid", "ABC")).rejected().withDescription("The password you provided does not match your current password. Please try again.");
+		assertThat(accountService.updatePassword(account, "invalid", "ABC")).rejected().withMessage("The password you provided does not match your current password. Please try again.");
 	}
 
 	private void assertAccountHasPassword(String email, String expectedPassword) {

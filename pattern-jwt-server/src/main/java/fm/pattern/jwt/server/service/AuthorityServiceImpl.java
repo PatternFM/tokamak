@@ -27,7 +27,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import fm.pattern.jwt.server.model.Authority;
 import fm.pattern.jwt.server.repository.DataRepository;
-import fm.pattern.microstructure.Reportable;
 import fm.pattern.microstructure.Result;
 import fm.pattern.microstructure.ValidationService;
 import fm.pattern.microstructure.sequences.Delete;
@@ -53,7 +52,7 @@ class AuthorityServiceImpl extends DataServiceImpl<Authority> implements Authori
 
 		Long count = repository.count(repository.sqlQuery("select count(_id) from ClientAuthorities where authority_id = :id").setString("id", authority.getId()));
 		if (count != 0) {
-			return Result.conflict(new Reportable("authority.delete.conflict", "This authority cannot be deleted, " + count + (count != 1 ? " clients are" : " client is") + " linked to this authority."));
+			return Result.conflict("authority.delete.conflict", count, (count != 1 ? " clients are" : " client is"));
 		}
 
 		return repository.delete(authority);
@@ -67,11 +66,11 @@ class AuthorityServiceImpl extends DataServiceImpl<Authority> implements Authori
 	@Transactional(readOnly = true)
 	public Result<Authority> findByName(String name) {
 		if (isBlank(name)) {
-			return Result.unprocessable_entity("{authority.get.name.required}");
+			return Result.invalid("authority.get.name.required");
 		}
 
 		Authority authority = (Authority) repository.query("from Authorities where name = :name").setString("name", name).uniqueResult();
-		return authority == null ? Result.not_found("No such authority name: " + name) : Result.accept(authority);
+		return authority == null ? Result.not_found("authority.get.name.not_found", name) : Result.accept(authority);
 	}
 
 	@Transactional(readOnly = true)

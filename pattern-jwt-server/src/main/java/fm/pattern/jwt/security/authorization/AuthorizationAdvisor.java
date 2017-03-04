@@ -26,6 +26,9 @@ import org.aspectj.lang.annotation.Before;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import fm.pattern.microstructure.Reportable;
+import fm.pattern.microstructure.exceptions.AuthorizationException;
+
 @Aspect
 @Component
 public class AuthorizationAdvisor {
@@ -57,7 +60,7 @@ public class AuthorizationAdvisor {
 		Set<String> grantedScopes = provider.getAuthorities();
 
 		if (Collections.disjoint(scopes, grantedScopes)) {
-
+			throw new AuthorizationException(new Reportable("", ""));
 		}
 	}
 
@@ -66,7 +69,7 @@ public class AuthorizationAdvisor {
 		Set<String> grantedRoles = provider.getAuthorities();
 
 		if (Collections.disjoint(roles, grantedRoles)) {
-
+			throw new AuthorizationException(new Reportable("", ""));
 		}
 	}
 
@@ -75,7 +78,7 @@ public class AuthorizationAdvisor {
 		Set<String> grantedAuthorities = provider.getAuthorities();
 
 		if (Collections.disjoint(authorities, grantedAuthorities)) {
-
+			throw new AuthorizationException(new Reportable("", ""));
 		}
 	}
 

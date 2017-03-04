@@ -83,14 +83,14 @@ public class ClientServiceIntegrationTest extends IntegrationTest {
 
 	@Test
 	public void shouldNotBeAbleToFindAClientByIdIfTheClientIdentifierIsNull() {
-		assertThat(clientService.findById(null)).rejected().withType(UNPROCESSABLE_ENTITY).withDescription("The client id to retrieve cannot be null or empty.");
-		assertThat(clientService.findById("")).rejected().withType(UNPROCESSABLE_ENTITY).withDescription("The client id to retrieve cannot be null or empty.");
-		assertThat(clientService.findById("  ")).rejected().withType(UNPROCESSABLE_ENTITY).withDescription("The client id to retrieve cannot be null or empty.");
+		assertThat(clientService.findById(null)).rejected().withType(UNPROCESSABLE_ENTITY).withMessage("The client id to retrieve cannot be null or empty.");
+		assertThat(clientService.findById("")).rejected().withType(UNPROCESSABLE_ENTITY).withMessage("The client id to retrieve cannot be null or empty.");
+		assertThat(clientService.findById("  ")).rejected().withType(UNPROCESSABLE_ENTITY).withMessage("The client id to retrieve cannot be null or empty.");
 	}
 
 	@Test
 	public void shouldNotBeAbleToFindAClientByIdIfTheClientIdentifierDoesNotExist() {
-		assertThat(clientService.findById("csrx")).rejected().withType(NOT_FOUND).withDescription("No such client id: csrx");
+		assertThat(clientService.findById("csrx")).rejected().withType(NOT_FOUND).withMessage("No such client id: csrx");
 	}
 
 	@Test
@@ -101,14 +101,14 @@ public class ClientServiceIntegrationTest extends IntegrationTest {
 
 	@Test
 	public void shouldNotBeAbleToFindAClientByClientIdIfTheClientIdIsNullOrEmpty() {
-		assertThat(clientService.findByClientId(null)).rejected().withType(UNPROCESSABLE_ENTITY).withDescription("The client id to retrieve cannot be null or empty.");
-		assertThat(clientService.findByClientId("")).rejected().withType(UNPROCESSABLE_ENTITY).withDescription("The client id to retrieve cannot be null or empty.");
-		assertThat(clientService.findByClientId("  ")).rejected().withType(UNPROCESSABLE_ENTITY).withDescription("The client id to retrieve cannot be null or empty.");
+		assertThat(clientService.findByClientId(null)).rejected().withType(UNPROCESSABLE_ENTITY).withMessage("The client id to retrieve cannot be null or empty.");
+		assertThat(clientService.findByClientId("")).rejected().withType(UNPROCESSABLE_ENTITY).withMessage("The client id to retrieve cannot be null or empty.");
+		assertThat(clientService.findByClientId("  ")).rejected().withType(UNPROCESSABLE_ENTITY).withMessage("The client id to retrieve cannot be null or empty.");
 	}
 
 	@Test
 	public void shouldNotBeAbleToFindAClientByClienIdIfTheClientIdDoesNotExist() {
-		assertThat(clientService.findByClientId("csrx")).rejected().withType(NOT_FOUND).withDescription("No such client id: csrx");
+		assertThat(clientService.findByClientId("csrx")).rejected().withType(NOT_FOUND).withMessage("No such client id: csrx");
 	}
 
 }

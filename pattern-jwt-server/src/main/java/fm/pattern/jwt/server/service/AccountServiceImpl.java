@@ -49,7 +49,7 @@ class AccountServiceImpl extends DataServiceImpl<Account> implements AccountServ
 		if (result.rejected()) {
 			return result;
 		}
-		
+
 		account.setPassword(passwordEncodingService.encode(account.getPassword()));
 		return accountRepository.save(account);
 	}
@@ -62,24 +62,28 @@ class AccountServiceImpl extends DataServiceImpl<Account> implements AccountServ
 	@Transactional(readOnly = true)
 	public Result<Account> findByUsername(String username) {
 		if (isBlank(username)) {
-			return Result.reject("{account.get.username.required}");
+			return Result.reject("account.get.username.required");
 		}
 
 		Account account = accountRepository.findByUsername(username);
-		return account != null ? Result.accept(account) : Result.not_found("No such username: " + username);
+		return account != null ? Result.accept(account) : Result.not_found("account.get.username.not_found", username);
 	}
 
+	// TODO: Refactor into a PasswordPolicy model.
 	@Transactional
 	public Result<Account> updatePassword(Account account, String currentPassword, String newPassword) {
 		if (isBlank(currentPassword)) {
 			return Result.reject("Your current password must be provided.");
 		}
+
 		if (isBlank(newPassword)) {
 			return Result.reject("Your new password must be provided.");
 		}
+
 		if (!passwordEncodingService.matches(currentPassword, account.getPassword())) {
 			return Result.reject("The password you provided does not match your current password. Please try again.");
 		}
+
 		if (newPassword.length() < 8 || newPassword.length() > 50) {
 			return Result.reject("Your new password must be between 8 and 50 characters.");
 		}

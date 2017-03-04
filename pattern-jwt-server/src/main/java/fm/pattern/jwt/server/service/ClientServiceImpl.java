@@ -53,13 +53,13 @@ class ClientServiceImpl extends DataServiceImpl<Client> implements ClientService
 	}
 
 	@Transactional(readOnly = true)
-	public Result<Client> findByClientId(String username) {
-		if (isBlank(username)) {
-			return Result.reject("{client.get.clientId.required}");
+	public Result<Client> findByClientId(String clientId) {
+		if (isBlank(clientId)) {
+			return Result.reject("client.get.clientId.required");
 		}
 
-		Client client = clientRepository.findByClientId(username);
-		return client != null ? Result.accept(client) : Result.not_found("No such client id: " + username);
+		Client client = clientRepository.findByClientId(clientId);
+		return client != null ? Result.accept(client) : Result.not_found("client.get.clientId.not_found", clientId);
 	}
 
 	@Autowired

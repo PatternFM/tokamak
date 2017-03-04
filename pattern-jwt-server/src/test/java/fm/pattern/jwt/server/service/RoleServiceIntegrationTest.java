@@ -88,14 +88,14 @@ public class RoleServiceIntegrationTest extends IntegrationTest {
 
 	@Test
 	public void shouldNotBeAbleToFindARoleByIdIfTheRoleIdIsNullOrEmpty() {
-		assertThat(roleService.findById(null)).rejected().withType(UNPROCESSABLE_ENTITY).withDescription("The role id to retrieve cannot be null or empty.");
-		assertThat(roleService.findById("")).rejected().withType(UNPROCESSABLE_ENTITY).withDescription("The role id to retrieve cannot be null or empty.");
-		assertThat(roleService.findById("  ")).rejected().withType(UNPROCESSABLE_ENTITY).withDescription("The role id to retrieve cannot be null or empty.");
+		assertThat(roleService.findById(null)).rejected().withType(UNPROCESSABLE_ENTITY).withMessage("The role id to retrieve cannot be null or empty.");
+		assertThat(roleService.findById("")).rejected().withType(UNPROCESSABLE_ENTITY).withMessage("The role id to retrieve cannot be null or empty.");
+		assertThat(roleService.findById("  ")).rejected().withType(UNPROCESSABLE_ENTITY).withMessage("The role id to retrieve cannot be null or empty.");
 	}
 
 	@Test
 	public void shouldNotBeAbleToFindARoleByIdIfTheRoleIdDoesNotExist() {
-		assertThat(roleService.findById("csrx")).rejected().withType(NOT_FOUND).withDescription("No such role id: csrx");
+		assertThat(roleService.findById("csrx")).rejected().withType(NOT_FOUND).withMessage("No such role id: csrx");
 	}
 	
 	@Test
@@ -109,14 +109,14 @@ public class RoleServiceIntegrationTest extends IntegrationTest {
 	
 	@Test
 	public void shouldNotBeAbleToFindARoleByNameIfTheRoleNameIsNullOrEmpty() {
-		assertThat(roleService.findByName(null)).rejected().withType(UNPROCESSABLE_ENTITY).withDescription("The role name to retrieve cannot be null or empty.");
-		assertThat(roleService.findByName("")).rejected().withType(UNPROCESSABLE_ENTITY).withDescription("The role name to retrieve cannot be null or empty.");
-		assertThat(roleService.findByName("  ")).rejected().withType(UNPROCESSABLE_ENTITY).withDescription("The role name to retrieve cannot be null or empty.");
+		assertThat(roleService.findByName(null)).rejected().withType(UNPROCESSABLE_ENTITY).withMessage("The role name to retrieve cannot be null or empty.");
+		assertThat(roleService.findByName("")).rejected().withType(UNPROCESSABLE_ENTITY).withMessage("The role name to retrieve cannot be null or empty.");
+		assertThat(roleService.findByName("  ")).rejected().withType(UNPROCESSABLE_ENTITY).withMessage("The role name to retrieve cannot be null or empty.");
 	}
 	
 	@Test
 	public void shouldNotBeAbleToFindARoleByNameIfTheRoleNameDoesNotExist() {
-		assertThat(roleService.findByName("csrx")).rejected().withType(NOT_FOUND).withDescription("No such role name: csrx");
+		assertThat(roleService.findByName("csrx")).rejected().withType(NOT_FOUND).withMessage("No such role name: csrx");
 	}
 
 	@Test

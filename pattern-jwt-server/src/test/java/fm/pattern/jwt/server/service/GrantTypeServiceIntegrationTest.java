@@ -88,14 +88,14 @@ public class GrantTypeServiceIntegrationTest extends IntegrationTest {
 
 	@Test
 	public void shouldNotBeAbleToFindAnGrantTypeByIdIfTheGrantTypeIdIsNullOrEmpty() {
-		assertThat(grantTypeService.findById(null)).rejected().withType(UNPROCESSABLE_ENTITY).withDescription("The grant type id to retrieve cannot be null or empty.");
-		assertThat(grantTypeService.findById("")).rejected().withType(UNPROCESSABLE_ENTITY).withDescription("The grant type id to retrieve cannot be null or empty.");
-		assertThat(grantTypeService.findById("  ")).rejected().withType(UNPROCESSABLE_ENTITY).withDescription("The grant type id to retrieve cannot be null or empty.");
+		assertThat(grantTypeService.findById(null)).rejected().withType(UNPROCESSABLE_ENTITY).withMessage("The grant type id to retrieve cannot be null or empty.");
+		assertThat(grantTypeService.findById("")).rejected().withType(UNPROCESSABLE_ENTITY).withMessage("The grant type id to retrieve cannot be null or empty.");
+		assertThat(grantTypeService.findById("  ")).rejected().withType(UNPROCESSABLE_ENTITY).withMessage("The grant type id to retrieve cannot be null or empty.");
 	}
 
 	@Test
 	public void shouldNotBeAbleToFindAnGrantTypeByIdIfTheGrantTypeIdDoesNotExist() {
-		assertThat(grantTypeService.findById("csrx")).rejected().withType(NOT_FOUND).withDescription("No such granttype id: csrx");
+		assertThat(grantTypeService.findById("csrx")).rejected().withType(NOT_FOUND).withMessage("No such granttype id: csrx");
 	}
 
 	@Test
@@ -109,14 +109,14 @@ public class GrantTypeServiceIntegrationTest extends IntegrationTest {
 
 	@Test
 	public void shouldNotBeAbleToFindAGrantTypeByNameIfTheGrantTypeNameIsNullOrEmpty() {
-		assertThat(grantTypeService.findByName(null)).rejected().withType(UNPROCESSABLE_ENTITY).withDescription("The grant type name to retrieve cannot be null or empty.");
-		assertThat(grantTypeService.findByName("")).rejected().withType(UNPROCESSABLE_ENTITY).withDescription("The grant type name to retrieve cannot be null or empty.");
-		assertThat(grantTypeService.findByName("  ")).rejected().withType(UNPROCESSABLE_ENTITY).withDescription("The grant type name to retrieve cannot be null or empty.");
+		assertThat(grantTypeService.findByName(null)).rejected().withType(UNPROCESSABLE_ENTITY).withMessage("The grant type name to retrieve cannot be null or empty.");
+		assertThat(grantTypeService.findByName("")).rejected().withType(UNPROCESSABLE_ENTITY).withMessage("The grant type name to retrieve cannot be null or empty.");
+		assertThat(grantTypeService.findByName("  ")).rejected().withType(UNPROCESSABLE_ENTITY).withMessage("The grant type name to retrieve cannot be null or empty.");
 	}
 
 	@Test
 	public void shouldNotBeAbleToFindAGrantTypeByNameIfTheGrantTypeNameDoesNotExist() {
-		assertThat(grantTypeService.findByName("csrx")).rejected().withType(NOT_FOUND).withDescription("No such grant type name: csrx");
+		assertThat(grantTypeService.findByName("csrx")).rejected().withType(NOT_FOUND).withMessage("No such grant type name: csrx");
 	}
 
 	@Test

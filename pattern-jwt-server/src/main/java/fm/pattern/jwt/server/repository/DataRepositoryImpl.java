@@ -54,7 +54,7 @@ class DataRepositoryImpl implements DataRepository {
 			return Result.accept(instance);
 		}
 		catch (Exception e) {
-			return Result.internal_error(e.getMessage());
+			return Result.internal_error("system.create.failed", e.getMessage());
 		}
 	}
 
@@ -66,7 +66,7 @@ class DataRepositoryImpl implements DataRepository {
 			return Result.accept(instance);
 		}
 		catch (Exception e) {
-			return Result.internal_error(e.getMessage());
+			return Result.internal_error("system.update.failed", e.getMessage());
 		}
 	}
 
@@ -77,7 +77,7 @@ class DataRepositoryImpl implements DataRepository {
 			return Result.accept(instance);
 		}
 		catch (Exception e) {
-			return Result.internal_error(e.getMessage());
+			return Result.internal_error("system.delete.failed", e.getMessage());
 		}
 	}
 

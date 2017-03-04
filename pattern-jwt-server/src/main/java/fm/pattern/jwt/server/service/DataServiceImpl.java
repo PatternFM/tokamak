@@ -16,6 +16,7 @@
 
 package fm.pattern.jwt.server.service;
 
+import static fm.pattern.microstructure.Reportable.report;
 import static org.apache.commons.lang3.StringUtils.isBlank;
 import static org.apache.commons.lang3.text.WordUtils.uncapitalize;
 
@@ -71,11 +72,11 @@ class DataServiceImpl<T> implements DataService<T> {
 	public Result<T> findById(String id, Class<T> type) {
 		String name = type.getSimpleName().toLowerCase();
 		if (isBlank(id)) {
-			return Result.reject("{" + uncapitalize(type.getSimpleName()) + ".get.id.required}");
+			return Result.invalid(report(uncapitalize(type.getSimpleName()) + ".get.id.required"));
 		}
 
 		T entity = repository.findById(id, type);
-		return entity != null ? Result.accept(entity) : Result.not_found("No such " + name + " id: " + id);
+		return entity != null ? Result.accept(entity) : Result.not_found(report("system.not.found", name, id));
 	}
 
 	@Transactional(readOnly = true)
@@ -84,7 +85,7 @@ class DataServiceImpl<T> implements DataService<T> {
 			return Result.accept(repository.query("from " + entity(type) + " order by created").list());
 		}
 		catch (Exception e) {
-			return Result.internal_error(e.getMessage());
+			return Result.internal_error(report("system.query.failed", e.getMessage()));
 		}
 	}
 
