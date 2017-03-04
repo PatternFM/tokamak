@@ -79,9 +79,9 @@ public class AuthorityServiceIntegrationTest extends IntegrationTest {
 
 	@Test
 	public void shouldNotBeAbleToFindAnAuthorityByIdIfTheAuthorityIdIsNullOrEmpty() {
-		assertThat(authorityService.findById(null)).rejected().withMessage("The authority id to retrieve cannot be null or empty.");
-		assertThat(authorityService.findById("")).rejected().withMessage("The authority id to retrieve cannot be null or empty.");
-		assertThat(authorityService.findById("  ")).rejected().withMessage("The authority id to retrieve cannot be null or empty.");
+		assertThat(authorityService.findById(null)).rejected().withMessage("An authority id is required.");
+		assertThat(authorityService.findById("")).rejected().withMessage("An authority id is required.");
+		assertThat(authorityService.findById("  ")).rejected().withMessage("An authority id is required.");
 	}
 
 	@Test
@@ -100,9 +100,9 @@ public class AuthorityServiceIntegrationTest extends IntegrationTest {
 
 	@Test
 	public void shouldNotBeAbleToFindAnAuthorityByNameIfTheAuthorityNameIsNullOrEmpty() {
-		assertThat(authorityService.findByName(null)).rejected().withMessage("The authority name to retrieve cannot be null or empty.");
-		assertThat(authorityService.findByName("")).rejected().withMessage("The authority name to retrieve cannot be null or empty.");
-		assertThat(authorityService.findByName("  ")).rejected().withMessage("The authority name to retrieve cannot be null or empty.");
+		assertThat(authorityService.findByName(null)).rejected().withMessage("An authority name is required.");
+		assertThat(authorityService.findByName("")).rejected().withMessage("An authority name is required.");
+		assertThat(authorityService.findByName("  ")).rejected().withMessage("An authority name is required.");
 	}
 
 	@Test

@@ -79,9 +79,9 @@ public class ScopeServiceIntegrationTest extends IntegrationTest {
 
 	@Test
 	public void shouldNotBeAbleToFindAnScopeByIdIfTheScopeIdIsNullOrEmpty() {
-		assertThat(scopeService.findById(null)).rejected().withMessage("The scope id to retrieve cannot be null or empty.");
-		assertThat(scopeService.findById("")).rejected().withMessage("The scope id to retrieve cannot be null or empty.");
-		assertThat(scopeService.findById("  ")).rejected().withMessage("The scope id to retrieve cannot be null or empty.");
+		assertThat(scopeService.findById(null)).rejected().withMessage("A scope id is required.");
+		assertThat(scopeService.findById("")).rejected().withMessage("A scope id is required.");
+		assertThat(scopeService.findById("  ")).rejected().withMessage("A scope id is required.");
 	}
 
 	@Test
@@ -100,9 +100,9 @@ public class ScopeServiceIntegrationTest extends IntegrationTest {
 
 	@Test
 	public void shouldNotBeAbleToFindAScopeByNameIfTheScopeNameIsNullOrEmpty() {
-		assertThat(scopeService.findByName(null)).rejected().withMessage("The scope name to retrieve cannot be null or empty.");
-		assertThat(scopeService.findByName("")).rejected().withMessage("The scope name to retrieve cannot be null or empty.");
-		assertThat(scopeService.findByName("  ")).rejected().withMessage("The scope name to retrieve cannot be null or empty.");
+		assertThat(scopeService.findByName(null)).rejected().withMessage("A scope name is required.");
+		assertThat(scopeService.findByName("")).rejected().withMessage("A scope name is required.");
+		assertThat(scopeService.findByName("  ")).rejected().withMessage("A scope name is required.");
 	}
 
 	@Test

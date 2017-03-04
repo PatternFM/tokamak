@@ -66,11 +66,11 @@ class ScopeServiceImpl extends DataServiceImpl<Scope> implements ScopeService {
 	@Transactional(readOnly = true)
 	public Result<Scope> findByName(String name) {
 		if (isBlank(name)) {
-			return Result.invalid("scope.get.name.required");
+			return Result.invalid("scope.name.required");
 		}
 
 		Scope scope = (Scope) repository.query("from Scopes where name = :name").setString("name", name).uniqueResult();
-		return scope == null ? Result.not_found("scope.get.name.not_found", name) : Result.accept(scope);
+		return scope == null ? Result.not_found("scope.name.not_found", name) : Result.accept(scope);
 	}
 
 	@Transactional(readOnly = true)

@@ -62,11 +62,11 @@ class AccountServiceImpl extends DataServiceImpl<Account> implements AccountServ
 	@Transactional(readOnly = true)
 	public Result<Account> findByUsername(String username) {
 		if (isBlank(username)) {
-			return Result.reject("account.get.username.required");
+			return Result.reject("account.username.required");
 		}
 
 		Account account = accountRepository.findByUsername(username);
-		return account != null ? Result.accept(account) : Result.not_found("account.get.username.not_found", username);
+		return account != null ? Result.accept(account) : Result.not_found("account.username.not_found", username);
 	}
 
 	// TODO: Refactor into a PasswordPolicy model.

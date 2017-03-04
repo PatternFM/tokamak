@@ -91,9 +91,9 @@ public class AccountServiceIntegrationTest extends IntegrationTest {
 
 	@Test
 	public void shouldNotBeAbleToFindAnAccountByIdIfTheAccountIdIsNullOrEmpty() {
-		assertThat(accountService.findById(null)).rejected().withMessage("The account id to retrieve cannot be null or empty.");
-		assertThat(accountService.findById("")).rejected().withMessage("The account id to retrieve cannot be null or empty.");
-		assertThat(accountService.findById("  ")).rejected().withMessage("The account id to retrieve cannot be null or empty.");
+		assertThat(accountService.findById(null)).rejected().withMessage("An account id is required.");
+		assertThat(accountService.findById("")).rejected().withMessage("An account id is required.");
+		assertThat(accountService.findById("  ")).rejected().withMessage("An account id is required.");
 	}
 
 	@Test
@@ -112,7 +112,7 @@ public class AccountServiceIntegrationTest extends IntegrationTest {
 
 	@Test
 	public void shouldNotBeAbleToFindAnAccountByUsernameIfTheUsernameIsNull() {
-		assertThat(accountService.findByUsername(null)).rejected().withMessage("The account username to retrieve cannot be null or empty.");
+		assertThat(accountService.findByUsername(null)).rejected().withMessage("An account username is required.");
 	}
 
 	@Test

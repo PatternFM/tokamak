@@ -16,7 +16,6 @@
 
 package fm.pattern.jwt.server.service;
 
-import static fm.pattern.microstructure.Reportable.report;
 import static org.apache.commons.lang3.StringUtils.isBlank;
 
 import java.util.List;
@@ -28,7 +27,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import fm.pattern.jwt.server.model.GrantType;
 import fm.pattern.jwt.server.repository.DataRepository;
-import fm.pattern.microstructure.Reportable;
 import fm.pattern.microstructure.Result;
 import fm.pattern.microstructure.ValidationService;
 import fm.pattern.microstructure.sequences.Delete;
@@ -54,7 +52,7 @@ class GrantTypeServiceImpl extends DataServiceImpl<GrantType> implements GrantTy
 
 		Long count = repository.count(repository.sqlQuery("select count(_id) from ClientGrantTypes where grant_type_id = :id").setString("id", grantType.getId()));
 		if (count != 0) {
-			return Result.conflict(new Reportable("grantType.delete.conflict", "This grant type cannot be deleted, " + count + (count != 1 ? " clients are" : " client is") + " linked to this grant type."));
+			return Result.conflict("grantType.delete.conflict", count, (count != 1 ? " clients are" : " client is"));
 		}
 
 		return repository.delete(grantType);
@@ -68,11 +66,11 @@ class GrantTypeServiceImpl extends DataServiceImpl<GrantType> implements GrantTy
 	@Transactional(readOnly = true)
 	public Result<GrantType> findByName(String name) {
 		if (isBlank(name)) {
-			return Result.invalid(report("grantType.get.name.required"));
+			return Result.invalid("grantType.name.required");
 		}
 
 		GrantType grantType = (GrantType) repository.query("from GrantTypes where name = :name").setString("name", name).uniqueResult();
-		return grantType == null ? Result.not_found(report("grantType.get.name.nf", name)) : Result.accept(grantType);
+		return grantType == null ? Result.not_found("grantType.name.not_found", name) : Result.accept(grantType);
 	}
 
 	@Transactional(readOnly = true)

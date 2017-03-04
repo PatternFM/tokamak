@@ -78,14 +78,14 @@ public class ClientServiceIntegrationTest extends IntegrationTest {
 	}
 
 	@Test
-	public void shouldNotBeAbleToFindAClientByIdIfTheClientIdentifierIsNull() {
-		assertThat(clientService.findById(null)).rejected().withMessage("The client id to retrieve cannot be null or empty.");
-		assertThat(clientService.findById("")).rejected().withMessage("The client id to retrieve cannot be null or empty.");
-		assertThat(clientService.findById("  ")).rejected().withMessage("The client id to retrieve cannot be null or empty.");
+	public void shouldNotBeAbleToFindAClientByIdIfTheClientIdIsNull() {
+		assertThat(clientService.findById(null)).rejected().withMessage("A client id is required.");
+		assertThat(clientService.findById("")).rejected().withMessage("A client id is required.");
+		assertThat(clientService.findById("  ")).rejected().withMessage("A client id is required.");
 	}
 
 	@Test
-	public void shouldNotBeAbleToFindAClientByIdIfTheClientIdentifierDoesNotExist() {
+	public void shouldNotBeAbleToFindAClientByIdIfTheClientIdDoesNotExist() {
 		assertThat(clientService.findById("csrx")).rejected().withMessage("No such client id: csrx");
 	}
 
@@ -97,9 +97,9 @@ public class ClientServiceIntegrationTest extends IntegrationTest {
 
 	@Test
 	public void shouldNotBeAbleToFindAClientByClientIdIfTheClientIdIsNullOrEmpty() {
-		assertThat(clientService.findByClientId(null)).rejected().withMessage("The client id to retrieve cannot be null or empty.");
-		assertThat(clientService.findByClientId("")).rejected().withMessage("The client id to retrieve cannot be null or empty.");
-		assertThat(clientService.findByClientId("  ")).rejected().withMessage("The client id to retrieve cannot be null or empty.");
+		assertThat(clientService.findByClientId(null)).rejected().withMessage("A client id is required.");
+		assertThat(clientService.findByClientId("")).rejected().withMessage("A client id is required.");
+		assertThat(clientService.findByClientId("  ")).rejected().withMessage("A client id is required.");
 	}
 
 	@Test

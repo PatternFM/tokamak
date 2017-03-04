@@ -80,9 +80,9 @@ public class RoleServiceIntegrationTest extends IntegrationTest {
 
 	@Test
 	public void shouldNotBeAbleToFindARoleByIdIfTheRoleIdIsNullOrEmpty() {
-		assertThat(roleService.findById(null)).rejected().withMessage("The role id to retrieve cannot be null or empty.");
-		assertThat(roleService.findById("")).rejected().withMessage("The role id to retrieve cannot be null or empty.");
-		assertThat(roleService.findById("  ")).rejected().withMessage("The role id to retrieve cannot be null or empty.");
+		assertThat(roleService.findById(null)).rejected().withMessage("A role id is required.");
+		assertThat(roleService.findById("")).rejected().withMessage("A role id is required.");
+		assertThat(roleService.findById("  ")).rejected().withMessage("A role id is required.");
 	}
 
 	@Test
@@ -101,9 +101,9 @@ public class RoleServiceIntegrationTest extends IntegrationTest {
 
 	@Test
 	public void shouldNotBeAbleToFindARoleByNameIfTheRoleNameIsNullOrEmpty() {
-		assertThat(roleService.findByName(null)).rejected().withMessage("The role name to retrieve cannot be null or empty.");
-		assertThat(roleService.findByName("")).rejected().withMessage("The role name to retrieve cannot be null or empty.");
-		assertThat(roleService.findByName("  ")).rejected().withMessage("The role name to retrieve cannot be null or empty.");
+		assertThat(roleService.findByName(null)).rejected().withMessage("A role name is required.");
+		assertThat(roleService.findByName("")).rejected().withMessage("A role name is required.");
+		assertThat(roleService.findByName("  ")).rejected().withMessage("A role name is required.");
 	}
 
 	@Test

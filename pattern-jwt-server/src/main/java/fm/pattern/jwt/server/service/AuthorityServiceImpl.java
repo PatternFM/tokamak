@@ -66,11 +66,11 @@ class AuthorityServiceImpl extends DataServiceImpl<Authority> implements Authori
 	@Transactional(readOnly = true)
 	public Result<Authority> findByName(String name) {
 		if (isBlank(name)) {
-			return Result.invalid("authority.get.name.required");
+			return Result.invalid("authority.name.required");
 		}
 
 		Authority authority = (Authority) repository.query("from Authorities where name = :name").setString("name", name).uniqueResult();
-		return authority == null ? Result.not_found("authority.get.name.not_found", name) : Result.accept(authority);
+		return authority == null ? Result.not_found("authority.name.not_found", name) : Result.accept(authority);
 	}
 
 	@Transactional(readOnly = true)

@@ -72,7 +72,7 @@ class DataServiceImpl<T> implements DataService<T> {
 	public Result<T> findById(String id, Class<T> type) {
 		String name = type.getSimpleName().toLowerCase();
 		if (isBlank(id)) {
-			return Result.invalid(report(uncapitalize(type.getSimpleName()) + ".get.id.required"));
+			return Result.invalid(report(uncapitalize(type.getSimpleName()) + ".id.required"));
 		}
 
 		T entity = repository.findById(id, type);

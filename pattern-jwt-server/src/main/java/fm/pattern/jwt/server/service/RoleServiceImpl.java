@@ -66,11 +66,11 @@ class RoleServiceImpl extends DataServiceImpl<Role> implements RoleService {
 	@Transactional(readOnly = true)
 	public Result<Role> findByName(String name) {
 		if (isBlank(name)) {
-			return Result.invalid("role.get.name.required");
+			return Result.invalid("role.name.required");
 		}
 
 		Role role = (Role) repository.query("from Roles where name = :name").setString("name", name).uniqueResult();
-		return role == null ? Result.not_found("role.get.name.not_found", name) : Result.accept(role);
+		return role == null ? Result.not_found("role.name.not_found", name) : Result.accept(role);
 	}
 
 	@Transactional(readOnly = true)

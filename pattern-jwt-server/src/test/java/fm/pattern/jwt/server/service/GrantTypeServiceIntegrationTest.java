@@ -100,9 +100,9 @@ public class GrantTypeServiceIntegrationTest extends IntegrationTest {
 
 	@Test
 	public void shouldNotBeAbleToFindAGrantTypeByNameIfTheGrantTypeNameIsNullOrEmpty() {
-		assertThat(grantTypeService.findByName(null)).rejected().withMessage("The grant type name to retrieve cannot be null or empty.");
-		assertThat(grantTypeService.findByName("")).rejected().withMessage("The grant type name to retrieve cannot be null or empty.");
-		assertThat(grantTypeService.findByName("  ")).rejected().withMessage("The grant type name to retrieve cannot be null or empty.");
+		assertThat(grantTypeService.findByName(null)).rejected().withMessage("A grant type name is required.");
+		assertThat(grantTypeService.findByName("")).rejected().withMessage("A grant type name is required.");
+		assertThat(grantTypeService.findByName("  ")).rejected().withMessage("A grant type name is required.");
 	}
 
 	@Test
