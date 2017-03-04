@@ -7,6 +7,8 @@ import org.junit.Test;
 
 import fm.pattern.jwt.server.IntegrationTest;
 import fm.pattern.jwt.server.model.Authority;
+import fm.pattern.microstructure.ResourceConflictException;
+import fm.pattern.microstructure.UnprocessableEntityException;
 
 public class AuthorityValidationTest extends IntegrationTest {
 
@@ -17,27 +19,27 @@ public class AuthorityValidationTest extends IntegrationTest {
 
 	@Test
 	public void shouldNotBeAbleToCreateAnAuthorityWhenTheAuthorityNameIsNotProvided() {
-		onCreate(authority().withName(null).build()).rejected().withCode("ATH-0001").withMessage("An authority name is required.");
-		onCreate(authority().withName("").build()).rejected().withCode("ATH-0001").withMessage("An authority name is required.");
-		onCreate(authority().withName("  ").build()).rejected().withCode("ATH-0001").withMessage("An authority name is required.");
+		onCreate(authority().withName(null).build()).rejected().withError("ATH-0001", "An authority name is required.", UnprocessableEntityException.class);
+		onCreate(authority().withName("").build()).rejected().withError("ATH-0001", "An authority name is required.", UnprocessableEntityException.class);
+		onCreate(authority().withName("  ").build()).rejected().withError("ATH-0001", "An authority name is required.", UnprocessableEntityException.class);
 	}
 
 	@Test
 	public void shouldNotBeAbleToCreateAnAuthorityWhenTheAuthorityNameIsGreaterThan128Characters() {
-		onCreate(authority().withName(RandomStringUtils.randomAlphabetic(129)).build()).rejected().withCode("ATH-0002").withMessage("An authority name cannot be greater than 128 characters.");
+		onCreate(authority().withName(RandomStringUtils.randomAlphabetic(129)).build()).rejected().withError("ATH-0002", "An authority name cannot be greater than 128 characters.", UnprocessableEntityException.class);
 	}
 
 	@Test
 	public void shouldNotBeAbleToCreateAnAuthorityWhenTheAuthorityDescriptionIsGreaterThan255Characters() {
-		onCreate(authority().withDescription(RandomStringUtils.randomAlphabetic(256)).build()).rejected().withCode("ATH-0004").withMessage("An authority description cannot be greater than 255 characters.");
+		onCreate(authority().withDescription(RandomStringUtils.randomAlphabetic(256)).build()).rejected().withError("ATH-0004", "An authority description cannot be greater than 255 characters.", UnprocessableEntityException.class);
 	}
 
 	@Test
 	public void shouldNotBeAbleToCreateAnAuthorityWhenTheAuthorityNameAlredyExists() {
 		String name = RandomStringUtils.randomAlphanumeric(15);
-		
+
 		authority().withName(name).thatIs().persistent().build();
-		onCreate(authority().withName(name).build()).rejected().withCode("ATH-0003").withMessage("This authority name is already in use.");
+		onCreate(authority().withName(name).build()).rejected().withError("ATH-0003", "This authority name is already in use.", ResourceConflictException.class);
 	}
 
 	@Test
@@ -47,19 +49,19 @@ public class AuthorityValidationTest extends IntegrationTest {
 
 	@Test
 	public void shouldNotBeAbleToUpdateAnAuthorityWhenTheAuthorityNameIsNotProvided() {
-		onUpdate(authority().withName(null).build()).rejected().withCode("ATH-0001").withMessage("An authority name is required.");
-		onUpdate(authority().withName("").build()).rejected().withCode("ATH-0001").withMessage("An authority name is required.");
-		onUpdate(authority().withName("  ").build()).rejected().withCode("ATH-0001").withMessage("An authority name is required.");
+		onUpdate(authority().withName(null).build()).rejected().withError("ATH-0001", "An authority name is required.", UnprocessableEntityException.class);
+		onUpdate(authority().withName("").build()).rejected().withError("ATH-0001", "An authority name is required.", UnprocessableEntityException.class);
+		onUpdate(authority().withName("  ").build()).rejected().withError("ATH-0001", "An authority name is required.", UnprocessableEntityException.class);
 	}
 
 	@Test
 	public void shouldNotBeAbleToUpdateAnAuthorityWhenTheAuthorityNameIsGreaterThan128Characters() {
-		onUpdate(authority().withName(RandomStringUtils.randomAlphabetic(129)).build()).rejected().withCode("ATH-0002").withMessage("An authority name cannot be greater than 128 characters.");
+		onUpdate(authority().withName(RandomStringUtils.randomAlphabetic(129)).build()).rejected().withError("ATH-0002", "An authority name cannot be greater than 128 characters.", UnprocessableEntityException.class);
 	}
 
 	@Test
 	public void shouldNotBeAbleToUpdateAnAuthorityWhenTheAuthorityDescriptionIsGreaterThan255Characters() {
-		onUpdate(authority().withDescription(RandomStringUtils.randomAlphabetic(256)).build()).rejected().withCode("ATH-0004").withMessage("An authority description cannot be greater than 255 characters.");
+		onUpdate(authority().withDescription(RandomStringUtils.randomAlphabetic(256)).build()).rejected().withError("ATH-0004", "An authority description cannot be greater than 255 characters.", UnprocessableEntityException.class);
 	}
 
 	@Test
@@ -70,7 +72,7 @@ public class AuthorityValidationTest extends IntegrationTest {
 		Authority authority = authority().thatIs().persistent().build();
 		authority.setName(name);
 
-		onUpdate(authority).rejected().withCode("ATH-0003").withMessage("This authority name is already in use.");
+		onUpdate(authority).rejected().withError("ATH-0003", "This authority name is already in use.", ResourceConflictException.class);
 	}
 
 }

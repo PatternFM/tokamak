@@ -3,11 +3,11 @@ default:
   
   
 account.id.required: 
-  message: An account id is required.
+  message: "An account id is required."
   code: ACC-0006
 
 account.username.required: 
-  message: An account username is required.
+  message: "An account username is required."
   code: ACC-0001
 
 account.username.size: 
@@ -15,12 +15,12 @@ account.username.size:
   code: ACC-0002
 
 account.username.conflict:
-  message: This account username is already in use.
+  message: "This account username is already in use."
   code: ACC-0003
   exception: fm.pattern.microstructure.ResourceConflictException
 
 account.password.required: 
-  message: An account password is required.
+  message: "An account password is required."
   code: ACC-0004
 
 account.password.size: 
@@ -34,11 +34,11 @@ account.username.not_found:
 
 
 authority.id.required: 
-  message: An authority id is required.
+  message: "An authority id is required."
   code: ATH-0006
 
 authority.name.required: 
-  message: An authority name is required.
+  message: "An authority name is required."
   code: ATH-0001
 
 authority.name.size: 
@@ -46,7 +46,7 @@ authority.name.size:
   code: ATH-0002
 
 authority.name.conflict: 
-  message: This authority name is already in use.
+  message: "This authority name is already in use."
   code: ATH-0003
   exception: fm.pattern.microstructure.ResourceConflictException
 
@@ -66,11 +66,11 @@ authority.name.not_found:
 
 
 client.id.required: 
-  message: A client id is required.
+  message: "A client id is required."
   code: CLI-0007
 
 client.clientId.required: 
-  message: A client id is required.
+  message: "A client id is required."
   code: CLI-0001
 
 client.clientId.size: 
@@ -78,12 +78,12 @@ client.clientId.size:
   code: CLI-0002
 
 client.clientId.conflict: 
-  message: This client id is already in use.
-  code: CLI-0003
+  message: "This client id is already in use."
+  code: "CLI-0003"
   exception: fm.pattern.microstructure.ResourceConflictException
 
 client.secret.required: 
-  message: A client secret is required.
+  message: "A client secret is required."
   code: CLI-0004
 
 client.secret.size: 
@@ -91,7 +91,7 @@ client.secret.size:
   code: CLI-0005
 
 client.grantType.required: 
-  message: A client requires at least one grant type.
+  message: "A client requires at least one grant type."
   code: CLI-0006
 
 client.clientId.not_found: 
@@ -101,11 +101,11 @@ client.clientId.not_found:
 
 
 grantType.id.required: 
-  message: The grant type id to retrieve cannot be null or empty.
+  message: "The grant type id to retrieve cannot be null or empty."
   code: GNT-0005
 
 grantType.name.required: 
-  message: A grant type name is required.
+  message: "A grant type name is required."
   code: GNT-0001
 
 grantType.name.size: 
@@ -113,7 +113,7 @@ grantType.name.size:
   code: GNT-0002
 
 grantType.name.conflict: 
-  message: This grant type name is already in use.
+  message: "This grant type name is already in use."
   code: GNT-0003
   exception: fm.pattern.microstructure.ResourceConflictException
 
@@ -133,23 +133,24 @@ grantType.delete.conflict:
 
 
 role.id.required: 
-  message: A role id is required.
+  message: "A role id is required."
   code: ROL-0005
 
 role.name.required: 
-  message: A role name is required.
+  message: "A role name is required."
   code: ROL-0001
 
 role.name.size: 
-  message: A role name cannot be greater than {max} characters.
+  message: "A role name cannot be greater than {max} characters."
   code: ROL-0002
 
 role.name.conflict: 
-  message: This role name is already in use.
+  message: "This role name is already in use."
   code: ROL-0003
+  exception: fm.pattern.microstructure.ResourceConflictException
 
 role.description.size: 
-  message: A role description cannot be greater than {max} characters.
+  message: "A role description cannot be greater than {max} characters."
   code: ROL-0004
 
 role.delete.conflict: 
@@ -163,11 +164,11 @@ role.name.not_found:
 
 
 scope.id.required: 
-  message: A scope id is required.
+  message: "A scope id is required."
   code: SCO-0005
 
 scope.name.required: 
-  message: A scope name is required.
+  message: "A scope name is required."
   code: SCO-0001
 
 scope.name.size:
@@ -175,7 +176,7 @@ scope.name.size:
   code: SCO-0002
 
 scope.name.conflict: 
-  message: This scope name is already in use.
+  message: "This scope name is already in use."
   code: SCO-0003
   exception: fm.pattern.microstructure.ResourceConflictException
 
