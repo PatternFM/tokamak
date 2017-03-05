@@ -16,13 +16,12 @@
 
 package fm.pattern.jwt.server.config;
 
-import java.security.KeyPair;
 import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.ProviderManager;
@@ -42,20 +41,16 @@ import org.springframework.security.oauth2.provider.token.TokenEnhancerChain;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
-import org.springframework.security.oauth2.provider.token.store.KeyStoreKeyFactory;
 
 import com.google.common.collect.Lists;
 
 import fm.pattern.jwt.server.security.AccountAuthenticationService;
 import fm.pattern.jwt.server.security.AccountTokenEnhancer;
 import fm.pattern.jwt.server.security.ClientAuthenticationService;
-import fm.pattern.jwt.server.security.SimpleAccessTokenConverter;
 
 @Configuration
 @EnableWebSecurity
 public class AuthorizationServerConfiguration {
-
-	private static final String RESOURCE_ID = "oauth-service";
 
 	@Bean(name = "passwordEncoder")
 	public PasswordEncoder passwordEncoder() {
@@ -66,13 +61,20 @@ public class AuthorizationServerConfiguration {
 	@EnableAuthorizationServer
 	protected static class OAuth2Config extends AuthorizationServerConfigurerAdapter {
 
-		/** TODO : Configure these attributes via yml file. */
+		@Value("${oauth2.resourceId}")
+		private String resourceId;
 
-		/** Access tokens are valid for 2 hours. **/
-		private final Integer accessTokenValiditySeconds = 60 * 60 * 2;
+		@Value("${oauth2.privateKey}")
+		private String privateKey;
 
-		/** Refresh tokens are valid for 1 year. **/
-		private final Integer refreshTokenValiditySeconds = 60 * 60 * 24 * 365 * 1;
+		@Value("${oauth2.publicKey}")
+		private String publicKey;
+
+		@Value("${oauth2.accessTokenValiditySeconds}")
+		private Integer accessTokenValiditySeconds;
+
+		@Value("${oauth2.refreshTokenValiditySeconds}")
+		private Integer refreshTokenValiditySeconds;
 
 		@Autowired
 		private ClientAuthenticationService clientAuthenticationService;
@@ -81,15 +83,12 @@ public class AuthorizationServerConfiguration {
 		private AccountAuthenticationService accountAuthenticationService;
 
 		@Autowired
-		private JwtEncryptionProperties jwtEncryptionProperties;
-
-		@Autowired
 		private AccountTokenEnhancer accountTokenEnhancer;
 
 		@Bean
 		public AuthenticationProvider clientAuthenticationProvider() {
 			DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-			provider.setPasswordEncoder(passwordEncoder());
+			provider.setPasswordEncoder(new BCryptPasswordEncoder());
 			provider.setUserDetailsService(new ClientDetailsUserDetailsService(clientAuthenticationService));
 			return provider;
 		}
@@ -97,7 +96,7 @@ public class AuthorizationServerConfiguration {
 		@Bean
 		public AuthenticationProvider userAuthenticationProvider() {
 			DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-			provider.setPasswordEncoder(passwordEncoder());
+			provider.setPasswordEncoder(new BCryptPasswordEncoder());
 			provider.setUserDetailsService(accountAuthenticationService);
 			return provider;
 		}
@@ -109,16 +108,14 @@ public class AuthorizationServerConfiguration {
 
 		@Bean
 		public TokenStore tokenStore() {
-			return new JwtTokenStore(tokenEnhancer());
+			return new JwtTokenStore(accessTokenConverter());
 		}
 
 		@Bean
-		public JwtAccessTokenConverter tokenEnhancer() {
-			KeyStoreKeyFactory factory = new KeyStoreKeyFactory(new ClassPathResource(jwtEncryptionProperties.getKeyStore()), jwtEncryptionProperties.getKeyStorePassword().toCharArray());
-			KeyPair keyPair = factory.getKeyPair(jwtEncryptionProperties.getKeyPairAlias(), jwtEncryptionProperties.getKeyPairPassword().toCharArray());
+		public JwtAccessTokenConverter accessTokenConverter() {
 			JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
-			converter.setKeyPair(keyPair);
-			converter.setAccessTokenConverter(new SimpleAccessTokenConverter());
+			converter.setSigningKey(privateKey);
+			converter.setVerifierKey(publicKey);
 			return converter;
 		}
 
@@ -136,14 +133,9 @@ public class AuthorizationServerConfiguration {
 
 		@Bean
 		public TokenEnhancerChain tokenEnhancerChain() {
-			final TokenEnhancerChain tokenEnhancerChain = new TokenEnhancerChain();
-			tokenEnhancerChain.setTokenEnhancers(Lists.newArrayList(accountTokenEnhancer, tokenEnhancer()));
+			TokenEnhancerChain tokenEnhancerChain = new TokenEnhancerChain();
+			tokenEnhancerChain.setTokenEnhancers(Lists.newArrayList(accountTokenEnhancer, accessTokenConverter()));
 			return tokenEnhancerChain;
-		}
-
-		@Bean
-		public PasswordEncoder passwordEncoder() {
-			return new BCryptPasswordEncoder();
 		}
 
 		public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
@@ -156,7 +148,7 @@ public class AuthorizationServerConfiguration {
 		}
 
 		public void configure(AuthorizationServerSecurityConfigurer oauthServer) throws Exception {
-			oauthServer.passwordEncoder(passwordEncoder()).realm(RESOURCE_ID);
+			oauthServer.passwordEncoder(new BCryptPasswordEncoder()).realm(resourceId);
 		}
 
 	}

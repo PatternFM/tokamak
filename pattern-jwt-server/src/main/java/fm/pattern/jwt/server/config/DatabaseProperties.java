@@ -21,7 +21,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 @Component
-@ConfigurationProperties(prefix = "jdbc")
+@ConfigurationProperties(prefix = "database")
 public class DatabaseProperties {
 
 	@NotEmpty(message = "The database url cannot be empty")
