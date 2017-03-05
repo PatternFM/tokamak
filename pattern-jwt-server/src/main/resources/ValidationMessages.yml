@@ -196,6 +196,27 @@ scope.delete.conflict:
   exception: fm.pattern.microstructure.ResourceConflictException
   
 
+auth.invalid.scope:
+  message: "Insufficient scope for this resource."
+  code: ATZ-0001
+  exception: fm.pattern.microstructure.AuthorizationException
+    
+auth.invalid.grant:
+  message: "Unauthorized grant type: %s"
+  code: ATZ-0002
+  exception: fm.pattern.microstructure.AuthorizationException
+    
+auth.invalid.role:
+  message: "Access is denied."
+  code: ATZ-0003
+  exception: fm.pattern.microstructure.AuthorizationException
+
+auth.invalid.authority:
+  message: "Access is denied."
+  code: ATZ-0004
+  exception: fm.pattern.microstructure.AuthorizationException  
+
+
 system.not.found: 
   message: "No such %s id: %s"
   code: SYS-0001

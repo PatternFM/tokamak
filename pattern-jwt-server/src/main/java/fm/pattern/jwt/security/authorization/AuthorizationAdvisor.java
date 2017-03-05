@@ -55,30 +55,30 @@ public class AuthorizationAdvisor {
 		}
 	}
 
-	public void checkScopes(String input) {
+	private void checkScopes(String input) {
 		Set<String> scopes = StringTokenizer.tokenize(input);
-		Set<String> grantedScopes = provider.getAuthorities();
+		Set<String> grantedScopes = provider.getScopes();
 
 		if (Collections.disjoint(scopes, grantedScopes)) {
-			throw new AuthorizationException(Reportable.report(""));
+			throw new AuthorizationException(Reportable.report("auth.invalid.scope"));
 		}
 	}
 
-	public void checkRoles(String input) {
+	private void checkRoles(String input) {
 		Set<String> roles = StringTokenizer.tokenize(input);
-		Set<String> grantedRoles = provider.getAuthorities();
+		Set<String> grantedRoles = provider.getRoles();
 
 		if (Collections.disjoint(roles, grantedRoles)) {
-			throw new AuthorizationException(Reportable.report(""));
+			throw new AuthorizationException(Reportable.report("auth.invalid.role"));
 		}
 	}
 
-	public void checkAuthorities(String input) {
+	private void checkAuthorities(String input) {
 		Set<String> authorities = StringTokenizer.tokenize(input);
 		Set<String> grantedAuthorities = provider.getAuthorities();
 
 		if (Collections.disjoint(authorities, grantedAuthorities)) {
-			throw new AuthorizationException(Reportable.report(""));
+			throw new AuthorizationException(Reportable.report("auth.invalid.authority"));
 		}
 	}
 
