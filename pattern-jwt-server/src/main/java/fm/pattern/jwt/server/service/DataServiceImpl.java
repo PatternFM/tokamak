@@ -16,7 +16,7 @@
 
 package fm.pattern.jwt.server.service;
 
-import static fm.pattern.microstructure.Reportable.report;
+import static fm.pattern.validation.Reportable.report;
 import static org.apache.commons.lang3.StringUtils.isBlank;
 import static org.apache.commons.lang3.text.WordUtils.uncapitalize;
 
@@ -30,11 +30,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import fm.pattern.jwt.server.repository.DataRepository;
-import fm.pattern.microstructure.Result;
-import fm.pattern.microstructure.ValidationService;
-import fm.pattern.microstructure.sequences.Create;
-import fm.pattern.microstructure.sequences.Delete;
-import fm.pattern.microstructure.sequences.Update;
+import fm.pattern.validation.Result;
+import fm.pattern.validation.ValidationService;
+import fm.pattern.validation.sequences.Create;
+import fm.pattern.validation.sequences.Delete;
+import fm.pattern.validation.sequences.Update;
 
 @Service
 @SuppressWarnings({ "unchecked", "hiding" })

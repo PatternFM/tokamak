@@ -27,9 +27,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import fm.pattern.jwt.server.model.Audience;
 import fm.pattern.jwt.server.repository.DataRepository;
-import fm.pattern.microstructure.Result;
-import fm.pattern.microstructure.ValidationService;
-import fm.pattern.microstructure.sequences.Delete;
+import fm.pattern.validation.Result;
+import fm.pattern.validation.ValidationService;
+import fm.pattern.validation.sequences.Delete;
 
 @Service
 class AudienceServiceImpl extends DataServiceImpl<Audience> implements AudienceService {

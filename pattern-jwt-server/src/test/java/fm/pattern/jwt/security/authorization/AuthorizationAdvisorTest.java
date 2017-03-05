@@ -24,8 +24,8 @@ import org.assertj.core.api.Assertions;
 import org.junit.Before;
 import org.junit.Test;
 
-import fm.pattern.microstructure.AuthorizationException;
-import fm.pattern.microstructure.Reportable;
+import fm.pattern.validation.AuthorizationException;
+import fm.pattern.validation.Reportable;
 
 public class AuthorizationAdvisorTest {
 

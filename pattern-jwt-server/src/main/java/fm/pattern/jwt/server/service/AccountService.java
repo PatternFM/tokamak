@@ -17,7 +17,7 @@
 package fm.pattern.jwt.server.service;
 
 import fm.pattern.jwt.server.model.Account;
-import fm.pattern.microstructure.Result;
+import fm.pattern.validation.Result;
 
 public interface AccountService {
 

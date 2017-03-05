@@ -30,7 +30,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import fm.pattern.commons.util.ReflectionUtils;
-import fm.pattern.microstructure.Result;
+import fm.pattern.validation.Result;
 
 @Repository("dataRepository")
 @SuppressWarnings("unchecked")

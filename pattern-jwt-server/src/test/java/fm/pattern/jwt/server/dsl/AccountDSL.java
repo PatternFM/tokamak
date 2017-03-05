@@ -9,7 +9,7 @@ import java.util.Set;
 import fm.pattern.jwt.server.model.Account;
 import fm.pattern.jwt.server.model.Role;
 import fm.pattern.jwt.server.service.AccountService;
-import fm.pattern.microstructure.Result;
+import fm.pattern.validation.Result;
 
 public class AccountDSL extends AbstractDSL<AccountDSL, Account> {
 

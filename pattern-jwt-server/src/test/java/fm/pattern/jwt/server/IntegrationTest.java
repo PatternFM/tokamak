@@ -10,11 +10,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import fm.pattern.jwt.server.config.PersistenceConfiguration;
 import fm.pattern.jwt.server.config.ValidationConfiguration;
-import fm.pattern.microstructure.Result;
-import fm.pattern.microstructure.ValidationService;
-import fm.pattern.microstructure.sequences.Create;
-import fm.pattern.microstructure.sequences.Delete;
-import fm.pattern.microstructure.sequences.Update;
+import fm.pattern.validation.Result;
+import fm.pattern.validation.ValidationService;
+import fm.pattern.validation.sequences.Create;
+import fm.pattern.validation.sequences.Delete;
+import fm.pattern.validation.sequences.Update;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = { PersistenceConfiguration.class, TestConfiguration.class, ValidationConfiguration.class })

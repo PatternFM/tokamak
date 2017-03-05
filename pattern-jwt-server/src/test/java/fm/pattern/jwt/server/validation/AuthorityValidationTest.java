@@ -7,8 +7,8 @@ import org.junit.Test;
 
 import fm.pattern.jwt.server.IntegrationTest;
 import fm.pattern.jwt.server.model.Authority;
-import fm.pattern.microstructure.ResourceConflictException;
-import fm.pattern.microstructure.UnprocessableEntityException;
+import fm.pattern.validation.ResourceConflictException;
+import fm.pattern.validation.UnprocessableEntityException;
 
 public class AuthorityValidationTest extends IntegrationTest {
 

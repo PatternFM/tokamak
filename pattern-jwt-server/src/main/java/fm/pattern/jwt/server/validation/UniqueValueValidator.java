@@ -32,7 +32,7 @@ import com.google.common.base.CaseFormat;
 import fm.pattern.commons.util.ReflectionUtils;
 import fm.pattern.jwt.server.model.PersistentEntity;
 import fm.pattern.jwt.server.repository.DataRepository;
-import fm.pattern.microstructure.ValidatorSupport;
+import fm.pattern.validation.ValidatorSupport;
 
 @Component
 public class UniqueValueValidator extends ValidatorSupport implements ConstraintValidator<UniqueValue, PersistentEntity> {

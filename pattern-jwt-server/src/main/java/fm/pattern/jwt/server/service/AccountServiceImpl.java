@@ -25,9 +25,9 @@ import org.springframework.transaction.annotation.Transactional;
 import fm.pattern.jwt.server.model.Account;
 import fm.pattern.jwt.server.repository.AccountRepository;
 import fm.pattern.jwt.server.security.PasswordEncodingService;
-import fm.pattern.microstructure.Result;
-import fm.pattern.microstructure.ValidationService;
-import fm.pattern.microstructure.sequences.Create;
+import fm.pattern.validation.Result;
+import fm.pattern.validation.ValidationService;
+import fm.pattern.validation.sequences.Create;
 
 @Service
 class AccountServiceImpl extends DataServiceImpl<Account> implements AccountService {

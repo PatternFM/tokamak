@@ -1,5 +1,5 @@
 default:
-  exception: fm.pattern.microstructure.UnprocessableEntityException
+  exception: fm.pattern.validation.UnprocessableEntityException
   
   
 account.id.required: 
@@ -17,7 +17,7 @@ account.username.size:
 account.username.conflict:
   message: "This account username is already in use."
   code: ACC-0003
-  exception: fm.pattern.microstructure.ResourceConflictException
+  exception: fm.pattern.validation.ResourceConflictException
 
 account.password.required: 
   message: "An account password is required."
@@ -30,7 +30,7 @@ account.password.size:
 account.username.not_found: 
   message: "No such username: %s"
   code: ACC-0008
-  exception: fm.pattern.microstructure.EntityNotFoundException
+  exception: fm.pattern.validation.EntityNotFoundException
 
 
 audience.id.required: 
@@ -48,7 +48,7 @@ audience.name.size:
 audience.name.conflict: 
   message: "This audience name is already in use."
   code: AUD-0003
-  exception: fm.pattern.microstructure.ResourceConflictException
+  exception: fm.pattern.validation.ResourceConflictException
 
 audience.description.size: 
   message: "An audience description cannot be greater than {max} characters."
@@ -57,12 +57,12 @@ audience.description.size:
 audience.delete.conflict: 
   message: "This audience cannot be deleted, %d %s linked to this audience."
   code: AUD-0005
-  exception: fm.pattern.microstructure.ResourceConflictException
+  exception: fm.pattern.validation.ResourceConflictException
 
 audience.name.not_found: 
   message: "No such audience name: %s"
   code: AUD-0008
-  exception: fm.pattern.microstructure.EntityNotFoundException
+  exception: fm.pattern.validation.EntityNotFoundException
 
 
 authority.id.required: 
@@ -80,7 +80,7 @@ authority.name.size:
 authority.name.conflict: 
   message: "This authority name is already in use."
   code: ATH-0003
-  exception: fm.pattern.microstructure.ResourceConflictException
+  exception: fm.pattern.validation.ResourceConflictException
 
 authority.description.size: 
   message: "An authority description cannot be greater than {max} characters."
@@ -89,12 +89,12 @@ authority.description.size:
 authority.delete.conflict: 
   message: "This authority cannot be deleted, %d %s linked to this authority."
   code: ATH-0005
-  exception: fm.pattern.microstructure.ResourceConflictException
+  exception: fm.pattern.validation.ResourceConflictException
 
 authority.name.not_found: 
   message: "No such authority name: %s"
   code: ATH-0008
-  exception: fm.pattern.microstructure.EntityNotFoundException
+  exception: fm.pattern.validation.EntityNotFoundException
 
 
 client.id.required: 
@@ -112,7 +112,7 @@ client.clientId.size:
 client.clientId.conflict: 
   message: "This client id is already in use."
   code: "CLI-0003"
-  exception: fm.pattern.microstructure.ResourceConflictException
+  exception: fm.pattern.validation.ResourceConflictException
 
 client.secret.required: 
   message: "A client secret is required."
@@ -129,7 +129,7 @@ client.grantType.required:
 client.clientId.not_found: 
   message: "No such client id: %s"
   code: CLI-0009
-  exception: fm.pattern.microstructure.EntityNotFoundException
+  exception: fm.pattern.validation.EntityNotFoundException
 
 
 grantType.id.required: 
@@ -147,7 +147,7 @@ grantType.name.size:
 grantType.name.conflict: 
   message: "This grant type name is already in use."
   code: GNT-0003
-  exception: fm.pattern.microstructure.ResourceConflictException
+  exception: fm.pattern.validation.ResourceConflictException
 
 grantType.description.size: 
   message: "A grant type description cannot be greater than {max} characters."
@@ -156,12 +156,12 @@ grantType.description.size:
 grantType.name.not_found: 
   message: "No such grant type name: %s"
   code: GNT-0007
-  exception: fm.pattern.microstructure.EntityNotFoundException
+  exception: fm.pattern.validation.EntityNotFoundException
   
 grantType.delete.conflict: 
   message: "This grant type cannot be deleted, %d %s linked to this role."
   code: GNT-0008
-  exception: fm.pattern.microstructure.ResourceConflictException
+  exception: fm.pattern.validation.ResourceConflictException
 
 
 role.id.required: 
@@ -179,7 +179,7 @@ role.name.size:
 role.name.conflict: 
   message: "This role name is already in use."
   code: ROL-0003
-  exception: fm.pattern.microstructure.ResourceConflictException
+  exception: fm.pattern.validation.ResourceConflictException
 
 role.description.size: 
   message: "A role description cannot be greater than {max} characters."
@@ -188,12 +188,12 @@ role.description.size:
 role.delete.conflict: 
   message: "This role cannot be deleted, %d %s linked to this role."
   code: ROL-0007
-  exception: fm.pattern.microstructure.ResourceConflictException
+  exception: fm.pattern.validation.ResourceConflictException
 
 role.name.not_found: 
   message: "No such role name: %s"
   code: ROL-0008
-  exception: fm.pattern.microstructure.EntityNotFoundException
+  exception: fm.pattern.validation.EntityNotFoundException
 
 
 scope.id.required: 
@@ -211,7 +211,7 @@ scope.name.size:
 scope.name.conflict: 
   message: "This scope name is already in use."
   code: SCO-0003
-  exception: fm.pattern.microstructure.ResourceConflictException
+  exception: fm.pattern.validation.ResourceConflictException
 
 scope.description.size: 
   message: "A scope description cannot be greater than {max} characters."
@@ -220,61 +220,61 @@ scope.description.size:
 scope.name.not_found: 
   message: "No such scope name: %s"
   code: SCO-0007
-  exception: fm.pattern.microstructure.EntityNotFoundException
+  exception: fm.pattern.validation.EntityNotFoundException
 
 scope.delete.conflict: 
   message: "This scope cannot be deleted, %d %s linked to this scope."
   code: SCO-0008
-  exception: fm.pattern.microstructure.ResourceConflictException
+  exception: fm.pattern.validation.ResourceConflictException
   
 
 auth.invalid.scope:
   message: "Insufficient scope for this resource."
   code: ATZ-0001
-  exception: fm.pattern.microstructure.AuthorizationException
+  exception: fm.pattern.validation.AuthorizationException
     
 auth.invalid.grant:
   message: "Unauthorized grant type: %s"
   code: ATZ-0002
-  exception: fm.pattern.microstructure.AuthorizationException
+  exception: fm.pattern.validation.AuthorizationException
     
 auth.invalid.role:
   message: "Access is denied."
   code: ATZ-0003
-  exception: fm.pattern.microstructure.AuthorizationException
+  exception: fm.pattern.validation.AuthorizationException
 
 auth.invalid.authority:
   message: "Access is denied."
   code: ATZ-0004
-  exception: fm.pattern.microstructure.AuthorizationException  
+  exception: fm.pattern.validation.AuthorizationException  
   
 auth.not.authenticated:
   message: "Full authentication is required to access this resource."
   code: AUT-0001
-  exception: fm.pattern.microstructure.AuthenticationException  
+  exception: fm.pattern.validation.AuthenticationException  
 
 
 system.not.found: 
   message: "No such %s id: %s"
   code: SYS-0001
-  exception: fm.pattern.microstructure.EntityNotFoundException
+  exception: fm.pattern.validation.EntityNotFoundException
 
 system.query.failed: 
   message: "The query operation failed due to an internal system error: %s"
   code: SYS-0002
-  exception: fm.pattern.microstructure.InternalErrorException
+  exception: fm.pattern.validation.InternalErrorException
 
 system.create.failed: 
   message: "The create operation failed due to an internal system error: %s"
   code: SYS-0003
-  exception: fm.pattern.microstructure.InternalErrorException
+  exception: fm.pattern.validation.InternalErrorException
 
 system.update.failed: 
   message: "The update operation failed due to an internal system error: %s"
   code: SYS-0004
-  exception: fm.pattern.microstructure.InternalErrorException
+  exception: fm.pattern.validation.InternalErrorException
 
 system.delete.failed: 
   message: "The delete operation failed due to an internal system error: %s"
   code: SYS-0005
-  exception: fm.pattern.microstructure.InternalErrorException
+  exception: fm.pattern.validation.InternalErrorException

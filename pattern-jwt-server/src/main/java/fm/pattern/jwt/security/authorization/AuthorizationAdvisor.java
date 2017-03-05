@@ -26,9 +26,9 @@ import org.aspectj.lang.annotation.Before;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import fm.pattern.microstructure.AuthenticationException;
-import fm.pattern.microstructure.AuthorizationException;
-import fm.pattern.microstructure.Reportable;
+import fm.pattern.validation.AuthenticationException;
+import fm.pattern.validation.AuthorizationException;
+import fm.pattern.validation.Reportable;
 
 @Aspect
 @Component

@@ -10,7 +10,7 @@ import fm.pattern.jwt.server.model.Client;
 import fm.pattern.jwt.server.model.GrantType;
 import fm.pattern.jwt.server.model.Scope;
 import fm.pattern.jwt.server.service.ClientService;
-import fm.pattern.microstructure.Result;
+import fm.pattern.validation.Result;
 
 public class ClientDSL extends AbstractDSL<ClientDSL, Client> {
 

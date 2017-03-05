@@ -42,7 +42,7 @@ import fm.pattern.jwt.server.service.AuthorityService;
 import fm.pattern.jwt.server.service.GrantTypeService;
 import fm.pattern.jwt.server.service.RoleService;
 import fm.pattern.jwt.server.service.ScopeService;
-import fm.pattern.microstructure.Result;
+import fm.pattern.validation.Result;
 
 @Service
 class IngressConversionServiceImpl implements IngressConversionService {

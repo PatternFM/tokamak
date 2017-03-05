@@ -8,8 +8,8 @@ import org.junit.Test;
 
 import fm.pattern.jwt.server.IntegrationTest;
 import fm.pattern.jwt.server.model.Account;
-import fm.pattern.microstructure.ResourceConflictException;
-import fm.pattern.microstructure.UnprocessableEntityException;
+import fm.pattern.validation.ResourceConflictException;
+import fm.pattern.validation.UnprocessableEntityException;
 
 public class AccountValidationTest extends IntegrationTest {
 

@@ -13,9 +13,9 @@ import fm.pattern.jwt.server.IntegrationTest;
 import fm.pattern.jwt.server.model.Client;
 import fm.pattern.jwt.server.model.GrantType;
 import fm.pattern.jwt.server.security.PasswordEncodingService;
-import fm.pattern.microstructure.EntityNotFoundException;
-import fm.pattern.microstructure.Result;
-import fm.pattern.microstructure.UnprocessableEntityException;
+import fm.pattern.validation.EntityNotFoundException;
+import fm.pattern.validation.Result;
+import fm.pattern.validation.UnprocessableEntityException;
 
 public class ClientServiceIntegrationTest extends IntegrationTest {
 

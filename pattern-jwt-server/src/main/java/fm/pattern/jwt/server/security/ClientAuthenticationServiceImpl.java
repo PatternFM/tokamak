@@ -24,7 +24,7 @@ import org.springframework.stereotype.Service;
 
 import fm.pattern.jwt.server.model.Client;
 import fm.pattern.jwt.server.service.ClientService;
-import fm.pattern.microstructure.Result;
+import fm.pattern.validation.Result;
 
 @Service
 class ClientAuthenticationServiceImpl implements ClientAuthenticationService {

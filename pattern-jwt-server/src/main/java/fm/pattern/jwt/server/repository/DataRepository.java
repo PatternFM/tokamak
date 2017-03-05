@@ -21,7 +21,7 @@ import org.hibernate.Query;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 
-import fm.pattern.microstructure.Result;
+import fm.pattern.validation.Result;
 
 public interface DataRepository {
 

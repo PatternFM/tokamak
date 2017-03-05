@@ -37,12 +37,12 @@ import com.google.common.base.Objects;
 import fm.pattern.commons.util.IdGenerator;
 import fm.pattern.commons.util.JSON;
 import fm.pattern.jwt.server.validation.UniqueValue;
-import fm.pattern.microstructure.sequences.CreateLevel1;
-import fm.pattern.microstructure.sequences.CreateLevel2;
-import fm.pattern.microstructure.sequences.CreateLevel4;
-import fm.pattern.microstructure.sequences.UpdateLevel1;
-import fm.pattern.microstructure.sequences.UpdateLevel2;
-import fm.pattern.microstructure.sequences.UpdateLevel4;
+import fm.pattern.validation.sequences.CreateLevel1;
+import fm.pattern.validation.sequences.CreateLevel2;
+import fm.pattern.validation.sequences.CreateLevel4;
+import fm.pattern.validation.sequences.UpdateLevel1;
+import fm.pattern.validation.sequences.UpdateLevel2;
+import fm.pattern.validation.sequences.UpdateLevel4;
 
 @Entity(name = "Accounts")
 @UniqueValue(property = "username", message = "{account.username.conflict}", groups = { CreateLevel4.class, UpdateLevel4.class })

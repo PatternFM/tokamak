@@ -6,9 +6,9 @@ import java.util.stream.Collectors;
 import org.assertj.core.api.AbstractAssert;
 import org.assertj.core.api.Assertions;
 
-import fm.pattern.microstructure.Reportable;
-import fm.pattern.microstructure.ReportableException;
-import fm.pattern.microstructure.Result;
+import fm.pattern.validation.Reportable;
+import fm.pattern.validation.ReportableException;
+import fm.pattern.validation.Result;
 
 public class ResultAssertions extends AbstractAssert<ResultAssertions, Result<?>> {
 

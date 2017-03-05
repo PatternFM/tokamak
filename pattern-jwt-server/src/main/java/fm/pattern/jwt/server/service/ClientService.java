@@ -17,7 +17,7 @@
 package fm.pattern.jwt.server.service;
 
 import fm.pattern.jwt.server.model.Client;
-import fm.pattern.microstructure.Result;
+import fm.pattern.validation.Result;
 
 public interface ClientService {
 

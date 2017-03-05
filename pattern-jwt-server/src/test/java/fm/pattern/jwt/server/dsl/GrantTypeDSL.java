@@ -3,7 +3,7 @@ package fm.pattern.jwt.server.dsl;
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
 import fm.pattern.jwt.server.model.GrantType;
 import fm.pattern.jwt.server.service.GrantTypeService;
-import fm.pattern.microstructure.Result;
+import fm.pattern.validation.Result;
 
 public class GrantTypeDSL extends AbstractDSL<GrantTypeDSL, GrantType> {
 
