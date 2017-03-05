@@ -156,6 +156,7 @@ role.description.size:
 role.delete.conflict: 
   message: "This role cannot be deleted, %d %s linked to this role."
   code: ROL-0007
+  exception: fm.pattern.microstructure.ResourceConflictException
 
 role.name.not_found: 
   message: "No such role name: %s"

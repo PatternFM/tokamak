@@ -52,7 +52,7 @@ class GrantTypeServiceImpl extends DataServiceImpl<GrantType> implements GrantTy
 
 		Long count = repository.count(repository.sqlQuery("select count(_id) from ClientGrantTypes where grant_type_id = :id").setString("id", grantType.getId()));
 		if (count != 0) {
-			return Result.reject("grantType.delete.conflict", count, (count != 1 ? " clients are" : " client is"));
+			return Result.reject("grantType.delete.conflict", count, (count != 1 ? "clients are" : "client is"));
 		}
 
 		return repository.delete(grantType);

@@ -48,13 +48,13 @@ public class TokensEndpointAcceptanceTest extends AcceptanceTest {
 	@Test
 	public void aClientShouldNotBeAbleToGetAnAccessTokenUsingAClientCredentialsGrantTypeWhenTheClientIdIsInvalid() {
 		Result<AccessTokenRepresentation> response = tokensClient.getAccessToken(new ClientCredentials("invalid_client_id", TEST_CLIENT_SECRET));
-		assertThat(response).rejected().withResponseCode(401).withDescription(BAD_CREDENTIALS);
+		assertThat(response).rejected().withResponseCode(401).withMessage(BAD_CREDENTIALS);
 	}
 
 	@Test
 	public void aClientShouldNotBeAbleToGetAnAccessTokenUsingAClientCredentialsGrantTypeWhenTheClientSecretIsInvalid() {
 		Result<AccessTokenRepresentation> response = tokensClient.getAccessToken(new ClientCredentials(TEST_CLIENT_ID, "invalid_client_secret"));
-		assertThat(response).rejected().withResponseCode(401).withDescription(BAD_CREDENTIALS);
+		assertThat(response).rejected().withResponseCode(401).withMessage(BAD_CREDENTIALS);
 	}
 
 	@Test
@@ -72,25 +72,25 @@ public class TokensEndpointAcceptanceTest extends AcceptanceTest {
 	@Test
 	public void aClientShouldNotBeAbleToGetAnAccessTokenUsingAResourceOwnerGrantTypeWhenTheClientIdIsInvalid() {
 		Result<AccessTokenRepresentation> response = tokensClient.getAccessToken(new ClientCredentials("invalid_client_id", TEST_CLIENT_SECRET), new UserCredentials(account.getUsername(), password));
-		assertThat(response).rejected().withResponseCode(401).withDescription(BAD_CREDENTIALS);
+		assertThat(response).rejected().withResponseCode(401).withMessage(BAD_CREDENTIALS);
 	}
 
 	@Test
 	public void aClientShouldNotBeAbleToGetAnAccessTokenUsingAResourceOwnerGrantTypeWhenTheClientSecretIsInvalid() {
 		Result<AccessTokenRepresentation> response = tokensClient.getAccessToken(new ClientCredentials(TEST_CLIENT_ID, "invalid_client_secret"), new UserCredentials(account.getUsername(), password));
-		assertThat(response).rejected().withResponseCode(401).withDescription(BAD_CREDENTIALS);
+		assertThat(response).rejected().withResponseCode(401).withMessage(BAD_CREDENTIALS);
 	}
 
 	@Test
 	public void aClientShouldNotBeAbleToGetAnAccessTokenUsingAResourceOwnerGrantTypeWhenTheUsernameIsInvalid() {
 		Result<AccessTokenRepresentation> response = tokensClient.getAccessToken(TEST_CLIENT_CREDENTIALS, new UserCredentials("invalid_username", password));
-		assertThat(response).rejected().withResponseCode(400).withDescription(BAD_CREDENTIALS);
+		assertThat(response).rejected().withResponseCode(400).withMessage(BAD_CREDENTIALS);
 	}
 
 	@Test
 	public void aClientShouldNotBeAbleToGetAnAccessTokenUsingAResourceOwnerGrantTypeWhenThePasswordIsInvalid() {
 		Result<AccessTokenRepresentation> response = tokensClient.getAccessToken(TEST_CLIENT_CREDENTIALS, new UserCredentials(account.getUsername(), "invalid_password"));
-		assertThat(response).rejected().withResponseCode(400).withDescription(BAD_CREDENTIALS);
+		assertThat(response).rejected().withResponseCode(400).withMessage(BAD_CREDENTIALS);
 	}
 
 	@Test
@@ -112,7 +112,7 @@ public class TokensEndpointAcceptanceTest extends AcceptanceTest {
 		assertThat(accessTokenResponse).accepted();
 
 		Result<AccessTokenRepresentation> refreshTokenResponse = tokensClient.refreshAccessToken(new ClientCredentials("invalid_client_id", TEST_CLIENT_SECRET), accessTokenResponse.getInstance());
-		assertThat(refreshTokenResponse).withResponseCode(401).withDescription(BAD_CREDENTIALS);
+		assertThat(refreshTokenResponse).withResponseCode(401).withMessage(BAD_CREDENTIALS);
 	}
 
 	@Test
@@ -121,7 +121,7 @@ public class TokensEndpointAcceptanceTest extends AcceptanceTest {
 		assertThat(accessTokenResponse).accepted();
 
 		Result<AccessTokenRepresentation> refreshTokenResponse = tokensClient.refreshAccessToken(new ClientCredentials(TEST_CLIENT_ID, "invalid_password"), accessTokenResponse.getInstance());
-		assertThat(refreshTokenResponse).rejected().withResponseCode(401).withDescription(BAD_CREDENTIALS);
+		assertThat(refreshTokenResponse).rejected().withResponseCode(401).withMessage(BAD_CREDENTIALS);
 	}
 
 }

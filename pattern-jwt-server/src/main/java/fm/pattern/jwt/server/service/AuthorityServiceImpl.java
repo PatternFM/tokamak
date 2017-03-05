@@ -52,7 +52,7 @@ class AuthorityServiceImpl extends DataServiceImpl<Authority> implements Authori
 
 		Long count = repository.count(repository.sqlQuery("select count(_id) from ClientAuthorities where authority_id = :id").setString("id", authority.getId()));
 		if (count != 0) {
-			return Result.reject("authority.delete.conflict", count, (count != 1 ? " clients are" : " client is"));
+			return Result.reject("authority.delete.conflict", count, (count != 1 ? "clients are" : "client is"));
 		}
 
 		return repository.delete(authority);

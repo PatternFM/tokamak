@@ -52,7 +52,7 @@ class ScopeServiceImpl extends DataServiceImpl<Scope> implements ScopeService {
 
 		Long count = repository.count(repository.sqlQuery("select count(_id) from ClientScopes where scope_id = :id").setString("id", scope.getId()));
 		if (count != 0) {
-			return Result.reject("scope.delete.conflict", count, (count != 1 ? " clients are" : " client is"));
+			return Result.reject("scope.delete.conflict", count, (count != 1 ? "clients are" : "client is"));
 		}
 
 		return repository.delete(scope);

@@ -49,7 +49,7 @@ public class ScopesEndpointAcceptanceTest extends AcceptanceTest {
 		ScopeRepresentation scope = scope().withName("").build();
 
 		Result<ScopeRepresentation> result = client.create(scope, token.getAccessToken());
-		assertThat(result).rejected().withResponseCode(422).withCode("scope.name.required").withDescription("A scope name is required.");
+		assertThat(result).rejected().withResponseCode(422).withCode("SCO-0001").withMessage("A scope name is required.");
 	}
 
 	@Test
@@ -57,7 +57,7 @@ public class ScopesEndpointAcceptanceTest extends AcceptanceTest {
 		ScopeRepresentation scope = scope().thatIs().persistent(token).build();
 
 		Result<ScopeRepresentation> result = client.create(scope, token.getAccessToken());
-		assertThat(result).rejected().withResponseCode(422).withCode("scope.name.conflict").withDescription("This scope name is already in use.");
+		assertThat(result).rejected().withResponseCode(409).withCode("SCO-0003").withMessage("This scope name is already in use.");
 	}
 
 	@Test
@@ -88,7 +88,7 @@ public class ScopesEndpointAcceptanceTest extends AcceptanceTest {
 		scope.setName("");
 
 		Result<ScopeRepresentation> result = client.update(scope, token.getAccessToken());
-		assertThat(result).rejected().withResponseCode(422).withCode("scope.name.required").withDescription("A scope name is required.");
+		assertThat(result).rejected().withResponseCode(422).withCode("SCO-0001").withMessage("A scope name is required.");
 	}
 
 	@Test
@@ -98,7 +98,7 @@ public class ScopesEndpointAcceptanceTest extends AcceptanceTest {
 		scope.setName(existing.getName());
 
 		Result<ScopeRepresentation> result = client.update(scope, token.getAccessToken());
-		assertThat(result).rejected().withResponseCode(422).withCode("scope.name.conflict").withDescription("This scope name is already in use.");
+		assertThat(result).rejected().withResponseCode(409).withCode("SCO-0003").withMessage("This scope name is already in use.");
 	}
 
 	@Test
@@ -117,7 +117,7 @@ public class ScopesEndpointAcceptanceTest extends AcceptanceTest {
 		client().withScopes(scope).withGrantTypes("password", "refresh_token").thatIs().persistent(token).build();
 
 		Result<ScopeRepresentation> result = client.delete(scope.getId(), token.getAccessToken());
-		assertThat(result).rejected().withResponseCode(409).withCode("scope.delete.conflict").withDescription("This scope cannot be deleted, 1 client is linked to this scope.");
+		assertThat(result).rejected().withResponseCode(409).withCode("SCO-0008").withMessage("This scope cannot be deleted, 1 client is linked to this scope.");
 	}
 
 	@Test
@@ -132,7 +132,7 @@ public class ScopesEndpointAcceptanceTest extends AcceptanceTest {
 	@Test
 	public void shouldReturnA404WhenAScopeWithTheSpecifiedIdCannotBeFound() {
 		Result<ScopeRepresentation> result = client.findById("scp_123", token.getAccessToken());
-		assertThat(result).rejected().withResponseCode(404).withDescription("No such scope id: scp_123");
+		assertThat(result).rejected().withResponseCode(404).withMessage("No such scope id: scp_123");
 	}
 
 	@Test
@@ -147,7 +147,7 @@ public class ScopesEndpointAcceptanceTest extends AcceptanceTest {
 	@Test
 	public void shouldReturnA404WhenAScopeWithTheSpecifiedNameCannotBeFound() {
 		Result<ScopeRepresentation> result = client.findByName("scp_123", token.getAccessToken());
-		assertThat(result).rejected().withResponseCode(404).withDescription("No such scope name: scp_123");
+		assertThat(result).rejected().withResponseCode(404).withMessage("No such scope name: scp_123");
 	}
 
 }

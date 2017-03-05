@@ -41,7 +41,7 @@ public class GrantTypesEndpointAcceptanceTest extends AcceptanceTest {
 	@Test
 	public void shouldReturnA404WhenAGrantTypeWithTheSpecifiedIdCannotBeFound() {
 		Result<GrantTypeRepresentation> result = client.findById("scp_123", token.getAccessToken());
-		assertThat(result).rejected().withResponseCode(404).withDescription("No such granttype id: scp_123");
+		assertThat(result).rejected().withResponseCode(404).withMessage("No such granttype id: scp_123");
 	}
 
 	@Test
@@ -58,7 +58,7 @@ public class GrantTypesEndpointAcceptanceTest extends AcceptanceTest {
 	@Test
 	public void shouldReturnA404WhenAGrantTypeWithTheSpecifiedNameCannotBeFound() {
 		Result<GrantTypeRepresentation> result = client.findByName("gnt_123", token.getAccessToken());
-		assertThat(result).rejected().withResponseCode(404).withDescription("No such grant type name: gnt_123");
+		assertThat(result).rejected().withResponseCode(404).withMessage("No such grant type name: gnt_123");
 	}
 
 }

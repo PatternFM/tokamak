@@ -49,7 +49,7 @@ public class AuthoritiesEndpointAcceptanceTest extends AcceptanceTest {
 		AuthorityRepresentation authority = authority().withName("").build();
 
 		Result<AuthorityRepresentation> result = client.create(authority, token.getAccessToken());
-		assertThat(result).rejected().withResponseCode(422).withCode("authority.name.required").withDescription("An authority name is required.");
+		assertThat(result).rejected().withResponseCode(422).withCode("ATH-0001").withMessage("An authority name is required.");
 	}
 
 	@Test
@@ -57,7 +57,7 @@ public class AuthoritiesEndpointAcceptanceTest extends AcceptanceTest {
 		AuthorityRepresentation authority = authority().thatIs().persistent(token).build();
 
 		Result<AuthorityRepresentation> result = client.create(authority, token.getAccessToken());
-		assertThat(result).rejected().withResponseCode(422).withCode("authority.name.conflict").withDescription("This authority name is already in use.");
+		assertThat(result).rejected().withResponseCode(409).withCode("ATH-0003").withMessage("This authority name is already in use.");
 	}
 
 	@Test
@@ -88,7 +88,7 @@ public class AuthoritiesEndpointAcceptanceTest extends AcceptanceTest {
 		authority.setName("");
 
 		Result<AuthorityRepresentation> result = client.update(authority, token.getAccessToken());
-		assertThat(result).rejected().withResponseCode(422).withCode("authority.name.required").withDescription("An authority name is required.");
+		assertThat(result).rejected().withResponseCode(422).withCode("ATH-0001").withMessage("An authority name is required.");
 	}
 
 	@Test
@@ -98,7 +98,7 @@ public class AuthoritiesEndpointAcceptanceTest extends AcceptanceTest {
 		authority.setName(existing.getName());
 
 		Result<AuthorityRepresentation> result = client.update(authority, token.getAccessToken());
-		assertThat(result).rejected().withResponseCode(422).withCode("authority.name.conflict").withDescription("This authority name is already in use.");
+		assertThat(result).rejected().withResponseCode(409).withCode("ATH-0003").withMessage("This authority name is already in use.");
 	}
 
 	@Test
@@ -117,7 +117,7 @@ public class AuthoritiesEndpointAcceptanceTest extends AcceptanceTest {
 		client().withAuthorities(authority).withGrantTypes("password", "refresh_token").thatIs().persistent(token).build();
 
 		Result<AuthorityRepresentation> result = client.delete(authority.getId(), token.getAccessToken());
-		assertThat(result).rejected().withResponseCode(409).withCode("authority.delete.conflict").withDescription("This authority cannot be deleted, 1 client is linked to this authority.");
+		assertThat(result).rejected().withResponseCode(409).withCode("ATH-0005").withMessage("This authority cannot be deleted, 1 client is linked to this authority.");
 	}
 
 	@Test
@@ -132,7 +132,7 @@ public class AuthoritiesEndpointAcceptanceTest extends AcceptanceTest {
 	@Test
 	public void shouldReturnA404WhenAnAuthorityWithTheSpecifiedIdCannotBeFound() {
 		Result<AuthorityRepresentation> result = client.findById("ath_123", token.getAccessToken());
-		assertThat(result).rejected().withResponseCode(404).withDescription("No such authority id: ath_123");
+		assertThat(result).rejected().withResponseCode(404).withMessage("No such authority id: ath_123");
 	}
 
 	@Test
@@ -147,7 +147,7 @@ public class AuthoritiesEndpointAcceptanceTest extends AcceptanceTest {
 	@Test
 	public void shouldReturnA404WhenAnAuthorityWithTheSpecifiedNameCannotBeFound() {
 		Result<AuthorityRepresentation> result = client.findByName("rol_123", token.getAccessToken());
-		assertThat(result).rejected().withResponseCode(404).withDescription("No such authority name: rol_123");
+		assertThat(result).rejected().withResponseCode(404).withMessage("No such authority name: rol_123");
 	}
 
 }

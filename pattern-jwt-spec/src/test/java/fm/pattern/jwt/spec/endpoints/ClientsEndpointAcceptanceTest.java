@@ -66,7 +66,7 @@ public class ClientsEndpointAcceptanceTest extends AcceptanceTest {
 		ClientRepresentation representation = client().withToken(token).build();
 
 		Result<ClientRepresentation> response = clientsClient.create(representation, this.token.getAccessToken());
-		assertThat(response).rejected().withResponseCode(422).withDescription("A client requires at least one grant type.");
+		assertThat(response).rejected().withResponseCode(422).withMessage("A client requires at least one grant type.");
 	}
 
 	@Test
@@ -75,7 +75,7 @@ public class ClientsEndpointAcceptanceTest extends AcceptanceTest {
 		representation.setClientSecret("client_secret");
 
 		Result<ClientRepresentation> response = clientsClient.create(representation, this.token.getAccessToken());
-		assertThat(response).rejected().withResponseCode(422).withDescription("This client id is already in use.");
+		assertThat(response).rejected().withResponseCode(409).withMessage("This client id is already in use.");
 	}
 
 	@Test
@@ -140,7 +140,7 @@ public class ClientsEndpointAcceptanceTest extends AcceptanceTest {
 	@Test
 	public void shouldReturnA404WhenAnClientWithTheSpecifiedIdCannotBeFound() {
 		Result<ClientRepresentation> response = clientsClient.findById("abcdefg", token.getAccessToken());
-		assertThat(response).rejected().withResponseCode(404).withDescription("No such client id: abcdefg");
+		assertThat(response).rejected().withResponseCode(404).withMessage("No such client id: abcdefg");
 	}
 
 }

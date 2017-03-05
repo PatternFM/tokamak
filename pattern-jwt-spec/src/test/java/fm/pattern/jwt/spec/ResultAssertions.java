@@ -1,10 +1,12 @@
 package fm.pattern.jwt.spec;
 
 import java.util.Arrays;
+import java.util.stream.Collectors;
 
 import org.assertj.core.api.AbstractAssert;
 import org.assertj.core.api.Assertions;
 
+import fm.pattern.commons.rest.ErrorRepresentation;
 import fm.pattern.commons.rest.Result;
 
 public class ResultAssertions extends AbstractAssert<ResultAssertions, Result<?>> {
@@ -38,17 +40,33 @@ public class ResultAssertions extends AbstractAssert<ResultAssertions, Result<?>
 
 	public ResultAssertions withCode(String... codes) {
 		Assertions.assertThat(codes.length).describedAs("Expected " + codes.length + " error codes but found " + actual.getErrors().size() + " instead: " + Arrays.toString(actual.getErrors().toArray())).isEqualTo(actual.getErrors().size());
+
 		for (String code : codes) {
 			Assertions.assertThat(actual.getErrors()).extracting("code").contains(code);
 		}
+
 		return this;
 	}
 
-	public ResultAssertions withDescription(String... descriptions) {
-		Assertions.assertThat(descriptions.length).describedAs("Expected " + descriptions.length + " error descriptions but found " + actual.getErrors().size() + " instead: " + Arrays.toString(actual.getErrors().toArray())).isEqualTo(actual.getErrors().size());
-		for (String error : descriptions) {
-			Assertions.assertThat(actual.getErrors()).extracting("description").contains(error);
+	public ResultAssertions withMessage(String... messages) {
+		Assertions.assertThat(messages.length).describedAs("Expected " + messages.length + " error descriptions but found " + actual.getErrors().size() + " instead: " + Arrays.toString(actual.getErrors().toArray())).isEqualTo(actual.getErrors().size());
+
+		for (String message : messages) {
+			Assertions.assertThat(actual.getErrors()).extracting("message").contains(message);
 		}
+
+		return this;
+	}
+
+	public ResultAssertions withError(String code, String message) {
+		for (ErrorRepresentation error : actual.getErrors()) {
+			if (error.getCode().equals(code) && error.getMessage().equals(message)) {
+				return this;
+			}
+		}
+
+		String errors = actual.getErrors().stream().map(error -> error.toString()).collect(Collectors.joining(","));
+		Assertions.fail("Unable to find an error with code '" + code + "', message '" + message + ". Errors are: " + errors);
 		return this;
 	}
 

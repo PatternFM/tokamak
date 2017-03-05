@@ -57,7 +57,7 @@ public class AccountsEndpointAcceptanceTest extends AcceptanceTest {
 	public void shouldNotBeAbleToCreateAnInvalidAccount() {
 		AccountRepresentation account = account().withUsername(null).withPassword("password").build();
 		Result<AccountRepresentation> response = accountsClient.create(account, token.getAccessToken());
-		assertThat(response).rejected().withResponseCode(422).withDescription("An account username is required.");
+		assertThat(response).rejected().withResponseCode(422).withMessage("An account username is required.");
 	}
 
 	@Test
@@ -123,7 +123,7 @@ public class AccountsEndpointAcceptanceTest extends AcceptanceTest {
 		assertThat(updated.isLocked()).isTrue();
 
 		Result<AccessTokenRepresentation> response = tokensClient.getAccessToken(TEST_CLIENT_CREDENTIALS, new UserCredentials(username, "new_password"));
-		assertThat(response).rejected().withResponseCode(400).withDescription(BAD_CREDENTIALS);
+		assertThat(response).rejected().withResponseCode(400).withMessage(BAD_CREDENTIALS);
 	}
 
 	@Test
@@ -148,7 +148,7 @@ public class AccountsEndpointAcceptanceTest extends AcceptanceTest {
 	@Test
 	public void shouldReturnA404WhenAnAccountWithTheSpecifiedIdCannotBeFound() {
 		Result<AccountRepresentation> response = accountsClient.findById("abcdefg", token.getAccessToken());
-		assertThat(response).rejected().withResponseCode(404).withDescription("No such account id: abcdefg");
+		assertThat(response).rejected().withResponseCode(404).withMessage("No such account id: abcdefg");
 	}
 
 	@Test
@@ -163,7 +163,7 @@ public class AccountsEndpointAcceptanceTest extends AcceptanceTest {
 	@Test
 	public void shouldReturnA404WhenAnAccountWithTheSpecifiedUsernameCannotBeFound() {
 		Result<AccountRepresentation> response = accountsClient.findByUsername("abcdefg", token.getAccessToken());
-		assertThat(response).rejected().withResponseCode(404).withDescription("No such username: abcdefg");
+		assertThat(response).rejected().withResponseCode(404).withMessage("No such username: abcdefg");
 	}
 
 }

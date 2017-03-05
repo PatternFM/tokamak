@@ -49,7 +49,7 @@ public class RolesEndpointAcceptanceTest extends AcceptanceTest {
 		RoleRepresentation role = role().withName("").build();
 
 		Result<RoleRepresentation> result = client.create(role, token.getAccessToken());
-		assertThat(result).rejected().withResponseCode(422).withCode("role.name.required").withDescription("A role name is required.");
+		assertThat(result).rejected().withResponseCode(422).withCode("ROL-0001").withMessage("A role name is required.");
 	}
 
 	@Test
@@ -57,7 +57,7 @@ public class RolesEndpointAcceptanceTest extends AcceptanceTest {
 		RoleRepresentation role = role().thatIs().persistent(token).build();
 
 		Result<RoleRepresentation> result = client.create(role, token.getAccessToken());
-		assertThat(result).rejected().withResponseCode(422).withCode("role.name.conflict").withDescription("This role name is already in use.");
+		assertThat(result).rejected().withResponseCode(409).withCode("ROL-0003").withMessage("This role name is already in use.");
 	}
 
 	@Test
@@ -88,7 +88,7 @@ public class RolesEndpointAcceptanceTest extends AcceptanceTest {
 		role.setName("");
 
 		Result<RoleRepresentation> result = client.update(role, token.getAccessToken());
-		assertThat(result).rejected().withResponseCode(422).withCode("role.name.required").withDescription("A role name is required.");
+		assertThat(result).rejected().withResponseCode(422).withCode("ROL-0001").withMessage("A role name is required.");
 	}
 
 	@Test
@@ -98,7 +98,7 @@ public class RolesEndpointAcceptanceTest extends AcceptanceTest {
 		role.setName(existing.getName());
 
 		Result<RoleRepresentation> result = client.update(role, token.getAccessToken());
-		assertThat(result).rejected().withResponseCode(422).withCode("role.name.conflict").withDescription("This role name is already in use.");
+		assertThat(result).rejected().withResponseCode(409).withCode("ROL-0003").withMessage("This role name is already in use.");
 	}
 
 	@Test
@@ -117,7 +117,7 @@ public class RolesEndpointAcceptanceTest extends AcceptanceTest {
 		account().withRoles(role).thatIs().persistent(token).build();
 
 		Result<RoleRepresentation> result = client.delete(role.getId(), token.getAccessToken());
-		assertThat(result).rejected().withResponseCode(409).withCode("role.delete.conflict").withDescription("This role cannot be deleted, 1 account is linked to this role.");
+		assertThat(result).rejected().withResponseCode(409).withCode("ROL-0007").withMessage("This role cannot be deleted, 1 account is linked to this role.");
 	}
 
 	@Test
@@ -132,7 +132,7 @@ public class RolesEndpointAcceptanceTest extends AcceptanceTest {
 	@Test
 	public void shouldReturnA404WhenARoleWithTheSpecifiedIdCannotBeFound() {
 		Result<RoleRepresentation> result = client.findById("rol_123", token.getAccessToken());
-		assertThat(result).rejected().withResponseCode(404).withDescription("No such role id: rol_123");
+		assertThat(result).rejected().withResponseCode(404).withMessage("No such role id: rol_123");
 	}
 
 	@Test
@@ -147,7 +147,7 @@ public class RolesEndpointAcceptanceTest extends AcceptanceTest {
 	@Test
 	public void shouldReturnA404WhenARoleWithTheSpecifiedNameCannotBeFound() {
 		Result<RoleRepresentation> result = client.findByName("rol_123", token.getAccessToken());
-		assertThat(result).rejected().withResponseCode(404).withDescription("No such role name: rol_123");
+		assertThat(result).rejected().withResponseCode(404).withMessage("No such role name: rol_123");
 	}
 
 }

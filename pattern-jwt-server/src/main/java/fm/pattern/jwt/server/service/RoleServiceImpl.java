@@ -52,7 +52,7 @@ class RoleServiceImpl extends DataServiceImpl<Role> implements RoleService {
 
 		Long count = repository.count(repository.sqlQuery("select count(_id) from AccountRoles where role_id = :id").setString("id", role.getId()));
 		if (count != 0) {
-			return Result.reject("role.delete.conflict", count, (count != 1 ? " accounts are" : " account is"));
+			return Result.reject("role.delete.conflict", count, (count != 1 ? "accounts are" : "account is"));
 		}
 
 		return repository.delete(role);
