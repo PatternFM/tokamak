@@ -6,6 +6,8 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.apache.commons.lang3.StringUtils;
+
 import fm.pattern.commons.rest.JwtClientProperties;
 import fm.pattern.commons.rest.Result;
 import fm.pattern.jwt.sdk.AccountsClient;
@@ -16,6 +18,7 @@ public class AccountDSL extends AbstractDSL<AccountDSL, AccountRepresentation> {
 
     private AccountsClient client = new AccountsClient(JwtClientProperties.getEndpoint());
 
+    private String id = null;
     private String username = "usr_" + randomAlphanumeric(15);
     private String password = "pwd_" + randomAlphanumeric(15);
 
@@ -25,8 +28,8 @@ public class AccountDSL extends AbstractDSL<AccountDSL, AccountRepresentation> {
         return new AccountDSL();
     }
 
-    public AccountDSL at(String hostname) {
-        this.client = new AccountsClient(hostname);
+    public AccountDSL withId(String id) {
+        this.id = id;
         return this;
     }
 
@@ -61,6 +64,9 @@ public class AccountDSL extends AbstractDSL<AccountDSL, AccountRepresentation> {
 
     private AccountRepresentation create() {
         AccountRepresentation representation = new AccountRepresentation();
+        if (StringUtils.isNotBlank(id)) {
+            representation.setId(id);
+        }
         representation.setUsername(username);
         representation.setPassword(password);
         representation.setRoles(roles);

@@ -34,7 +34,7 @@ public class AuthorizationAdvisorTest {
 
 	@Before
 	public void before() {
-		this.provider = new SimpleAuthorizationContextProvider();
+		this.provider = new SimpleAuthorizationContextProvider().authenticated(true);
 		this.advisor = new AuthorizationAdvisor(provider);
 	}
 

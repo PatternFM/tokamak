@@ -215,6 +215,11 @@ auth.invalid.authority:
   message: "Access is denied."
   code: ATZ-0004
   exception: fm.pattern.microstructure.AuthorizationException  
+  
+auth.not.authenticated:
+  message: "Full authentication is required to access this resource."
+  code: AUT-0001
+  exception: fm.pattern.microstructure.AuthenticationException  
 
 
 system.not.found: 

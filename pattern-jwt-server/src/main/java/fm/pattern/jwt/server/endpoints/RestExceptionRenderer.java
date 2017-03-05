@@ -47,93 +47,92 @@ import fm.pattern.commons.rest.ErrorsRepresentation;
 
 public class RestExceptionRenderer implements OAuth2ExceptionRenderer {
 
-	private List<HttpMessageConverter<?>> messageConverters = getDefaultMessageConverters();
+    private List<HttpMessageConverter<?>> messageConverters = getDefaultMessageConverters();
 
-	public void setMessageConverters(List<HttpMessageConverter<?>> messageConverters) {
-		this.messageConverters = messageConverters;
-	}
+    public void setMessageConverters(List<HttpMessageConverter<?>> messageConverters) {
+        this.messageConverters = messageConverters;
+    }
 
-	public void handleHttpEntityResponse(HttpEntity<?> responseEntity, ServletWebRequest webRequest) throws Exception {
-		if (responseEntity == null) {
-			return;
-		}
+    public void handleHttpEntityResponse(HttpEntity<?> responseEntity, ServletWebRequest webRequest) throws Exception {
+        if (responseEntity == null) {
+            return;
+        }
 
-		HttpInputMessage inputMessage = createHttpInputMessage(webRequest);
-		HttpOutputMessage outputMessage = createHttpOutputMessage(webRequest);
-		if (responseEntity instanceof ResponseEntity && outputMessage instanceof ServerHttpResponse) {
-			((ServerHttpResponse) outputMessage).setStatusCode(((ResponseEntity<?>) responseEntity).getStatusCode());
-		}
+        HttpInputMessage inputMessage = createHttpInputMessage(webRequest);
+        HttpOutputMessage outputMessage = createHttpOutputMessage(webRequest);
+        if (responseEntity instanceof ResponseEntity && outputMessage instanceof ServerHttpResponse) {
+            ((ServerHttpResponse) outputMessage).setStatusCode(((ResponseEntity<?>) responseEntity).getStatusCode());
+        }
 
-		HttpHeaders entityHeaders = responseEntity.getHeaders();
-		if (!entityHeaders.isEmpty()) {
-			outputMessage.getHeaders().putAll(entityHeaders);
-		}
+        HttpHeaders entityHeaders = responseEntity.getHeaders();
+        if (!entityHeaders.isEmpty()) {
+            outputMessage.getHeaders().putAll(entityHeaders);
+        }
 
-		Object body = responseEntity.getBody();
-		if (body != null) {
-			writeWithMessageConverters(body, inputMessage, outputMessage);
-		}
-		else {
-			outputMessage.getBody();
-		}
-	}
+        Object body = responseEntity.getBody();
+        if (body != null) {
+            writeWithMessageConverters(body, inputMessage, outputMessage);
+        }
+        else {
+            outputMessage.getBody();
+        }
+    }
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	private void writeWithMessageConverters(Object returnValue, HttpInputMessage inputMessage, HttpOutputMessage outputMessage) throws IOException, HttpMediaTypeNotAcceptableException {
-		List<MediaType> acceptedMediaTypes = inputMessage.getHeaders().getAccept();
-		if (acceptedMediaTypes.isEmpty()) {
-			acceptedMediaTypes = Collections.singletonList(MediaType.ALL);
-		}
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    private void writeWithMessageConverters(Object returnValue, HttpInputMessage inputMessage, HttpOutputMessage outputMessage) throws IOException, HttpMediaTypeNotAcceptableException {
+        List<MediaType> acceptedMediaTypes = inputMessage.getHeaders().getAccept();
+        if (acceptedMediaTypes.isEmpty()) {
+            acceptedMediaTypes = Collections.singletonList(MediaType.ALL);
+        }
 
-		ErrorsRepresentation errors = convertToInternal(returnValue);
+        ErrorsRepresentation errors = convertToInternal(returnValue);
 
-		MediaType.sortByQualityValue(acceptedMediaTypes);
-		Class<?> returnValueType = returnValue.getClass();
-		List<MediaType> allSupportedMediaTypes = new ArrayList<MediaType>();
-		for (MediaType acceptedMediaType : acceptedMediaTypes) {
-			for (HttpMessageConverter messageConverter : messageConverters) {
-				if (messageConverter.canWrite(returnValueType, acceptedMediaType)) {
-					messageConverter.write(errors, acceptedMediaType, outputMessage);
-					return;
-				}
-			}
-		}
+        MediaType.sortByQualityValue(acceptedMediaTypes);
+        Class<?> returnValueType = returnValue.getClass();
+        List<MediaType> allSupportedMediaTypes = new ArrayList<MediaType>();
+        for (MediaType acceptedMediaType : acceptedMediaTypes) {
+            for (HttpMessageConverter messageConverter : messageConverters) {
+                if (messageConverter.canWrite(returnValueType, acceptedMediaType)) {
+                    messageConverter.write(errors, acceptedMediaType, outputMessage);
+                    return;
+                }
+            }
+        }
 
-		for (HttpMessageConverter messageConverter : messageConverters) {
-			allSupportedMediaTypes.addAll(messageConverter.getSupportedMediaTypes());
-		}
+        for (HttpMessageConverter messageConverter : messageConverters) {
+            allSupportedMediaTypes.addAll(messageConverter.getSupportedMediaTypes());
+        }
 
-		throw new HttpMediaTypeNotAcceptableException(allSupportedMediaTypes);
-	}
+        throw new HttpMediaTypeNotAcceptableException(allSupportedMediaTypes);
+    }
 
-	private ErrorsRepresentation convertToInternal(Object object) {
-		if (!(object instanceof OAuth2Exception)) {
-			return new ErrorsRepresentation();
-		}
+    private ErrorsRepresentation convertToInternal(Object object) {
+        if (!(object instanceof OAuth2Exception)) {
+            return new ErrorsRepresentation();
+        }
 
-		OAuth2Exception exception = (OAuth2Exception) object;
-		List<String> list = new ArrayList<String>();
-		list.add(exception.getMessage());
+        OAuth2Exception exception = (OAuth2Exception) object;
+        List<String> list = new ArrayList<String>();
+        list.add(exception.getMessage());
 
-		ErrorRepresentation error = new ErrorRepresentation("AUTH001", exception.getMessage());
+        ErrorRepresentation error = new ErrorRepresentation("AUT-0001", exception.getMessage() + ".");
+        return new ErrorsRepresentation(Arrays.asList(error));
+    }
 
-		return new ErrorsRepresentation(Arrays.asList(error));
-	}
+    private List<HttpMessageConverter<?>> getDefaultMessageConverters() {
+        List<HttpMessageConverter<?>> result = new ArrayList<HttpMessageConverter<?>>();
+        result.addAll(new RestTemplate().getMessageConverters());
+        return result;
+    }
 
-	private List<HttpMessageConverter<?>> getDefaultMessageConverters() {
-		List<HttpMessageConverter<?>> result = new ArrayList<HttpMessageConverter<?>>();
-		result.addAll(new RestTemplate().getMessageConverters());
-		return result;
-	}
+    private HttpInputMessage createHttpInputMessage(NativeWebRequest webRequest) throws Exception {
+        HttpServletRequest servletRequest = webRequest.getNativeRequest(HttpServletRequest.class);
+        return new ServletServerHttpRequest(servletRequest);
+    }
 
-	private HttpInputMessage createHttpInputMessage(NativeWebRequest webRequest) throws Exception {
-		HttpServletRequest servletRequest = webRequest.getNativeRequest(HttpServletRequest.class);
-		return new ServletServerHttpRequest(servletRequest);
-	}
-
-	private HttpOutputMessage createHttpOutputMessage(NativeWebRequest webRequest) throws Exception {
-		HttpServletResponse servletResponse = (HttpServletResponse) webRequest.getNativeResponse();
-		return new ServletServerHttpResponse(servletResponse);
-	}
+    private HttpOutputMessage createHttpOutputMessage(NativeWebRequest webRequest) throws Exception {
+        HttpServletResponse servletResponse = (HttpServletResponse) webRequest.getNativeResponse();
+        return new ServletServerHttpResponse(servletResponse);
+    }
 
 }

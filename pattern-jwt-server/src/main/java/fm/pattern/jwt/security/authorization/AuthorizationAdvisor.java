@@ -26,6 +26,7 @@ import org.aspectj.lang.annotation.Before;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import fm.pattern.microstructure.AuthenticationException;
 import fm.pattern.microstructure.AuthorizationException;
 import fm.pattern.microstructure.Reportable;
 
@@ -42,6 +43,10 @@ public class AuthorizationAdvisor {
 
 	@Before("execution(* *(..)) && @annotation(authorize)")
 	public void handle(Authorize authorize) throws Throwable {
+		if (!provider.isAuthenticated()) {
+			throw new AuthenticationException(Reportable.report("auth.not.authenticated"));
+		}
+
 		if (isNotBlank(authorize.scopes())) {
 			checkScopes(authorize.scopes());
 		}

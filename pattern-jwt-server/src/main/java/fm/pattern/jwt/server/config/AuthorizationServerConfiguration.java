@@ -16,11 +16,6 @@
 
 package fm.pattern.jwt.server.config;
 
-import static org.springframework.http.HttpMethod.DELETE;
-import static org.springframework.http.HttpMethod.GET;
-import static org.springframework.http.HttpMethod.POST;
-import static org.springframework.http.HttpMethod.PUT;
-
 import java.security.KeyPair;
 import java.util.Arrays;
 
@@ -32,22 +27,15 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
-import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
-import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
-import org.springframework.security.oauth2.config.annotation.web.configurers.ResourceServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.client.ClientDetailsUserDetailsService;
-import org.springframework.security.oauth2.provider.error.OAuth2AccessDeniedHandler;
-import org.springframework.security.oauth2.provider.error.OAuth2AuthenticationEntryPoint;
-import org.springframework.security.oauth2.provider.error.OAuth2ExceptionRenderer;
 import org.springframework.security.oauth2.provider.token.AuthorizationServerTokenServices;
 import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
 import org.springframework.security.oauth2.provider.token.TokenEnhancerChain;
@@ -55,19 +43,17 @@ import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 import org.springframework.security.oauth2.provider.token.store.KeyStoreKeyFactory;
-import org.springframework.security.web.AuthenticationEntryPoint;
-import org.springframework.security.web.access.AccessDeniedHandler;
 
 import com.google.common.collect.Lists;
 
-import fm.pattern.jwt.server.endpoints.RestExceptionRenderer;
 import fm.pattern.jwt.server.security.AccountAuthenticationService;
 import fm.pattern.jwt.server.security.AccountTokenEnhancer;
 import fm.pattern.jwt.server.security.ClientAuthenticationService;
 import fm.pattern.jwt.server.security.SimpleAccessTokenConverter;
 
 @Configuration
-public class SecurityConfiguration {
+@EnableWebSecurity
+public class AuthorizationServerConfiguration {
 
 	private static final String RESOURCE_ID = "oauth-service";
 
@@ -77,50 +63,11 @@ public class SecurityConfiguration {
 	}
 
 	@Configuration
-	@EnableResourceServer
-	protected static class ResourceServer extends ResourceServerConfigurerAdapter {
-
-		public void configure(HttpSecurity http) throws Exception {
-			http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-
-			http.authorizeRequests().antMatchers(GET, "/v1/accounts/**").access("#oauth2.hasAnyScope('accounts:read')");
-			http.authorizeRequests().antMatchers(POST, "/v1/accounts/**").access("#oauth2.hasAnyScope('accounts:create')");
-			http.authorizeRequests().antMatchers(PUT, "/v1/accounts/**/password").access("#oauth2.hasAnyScope('accounts:update') and #oauth2.isUser()");
-			http.authorizeRequests().antMatchers(DELETE, "/v1/accounts/**").access("#oauth2.hasAnyScope('accounts:delete')");
-			http.authorizeRequests().antMatchers(POST, "/clients/**").access("#oauth2.hasAnyScope('clients:create')");
-		}
-
-		public void configure(ResourceServerSecurityConfigurer resources) throws Exception {
-			resources.accessDeniedHandler(accessDeniedHandler()).authenticationEntryPoint(authenticationEntryPoint()).resourceId(RESOURCE_ID);
-		}
-
-		@Bean
-		public AccessDeniedHandler accessDeniedHandler() {
-			OAuth2AccessDeniedHandler accessDeniedHandler = new OAuth2AccessDeniedHandler();
-			accessDeniedHandler.setExceptionRenderer(exceptionRenderer());
-			return accessDeniedHandler;
-		}
-
-		@Bean
-		public AuthenticationEntryPoint authenticationEntryPoint() {
-			OAuth2AuthenticationEntryPoint authenticationEntryPoint = new OAuth2AuthenticationEntryPoint();
-			authenticationEntryPoint.setExceptionRenderer(exceptionRenderer());
-			return authenticationEntryPoint;
-		}
-
-		@Bean
-		public OAuth2ExceptionRenderer exceptionRenderer() {
-			return new RestExceptionRenderer();
-		}
-
-	}
-
-	@Configuration
 	@EnableAuthorizationServer
 	protected static class OAuth2Config extends AuthorizationServerConfigurerAdapter {
 
 		/** TODO : Configure these attributes via yml file. */
-		
+
 		/** Access tokens are valid for 2 hours. **/
 		private final Integer accessTokenValiditySeconds = 60 * 60 * 2;
 

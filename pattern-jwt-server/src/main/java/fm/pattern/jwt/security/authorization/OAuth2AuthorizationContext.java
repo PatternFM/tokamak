@@ -33,6 +33,11 @@ public class OAuth2AuthorizationContext implements AuthorizationContextProvider 
 
 	}
 
+	public boolean isAuthenticated() {
+		OAuth2Authentication oauth = oauth2Authentication();
+		return oauth == null ? false : oauth.isAuthenticated();
+	}
+
 	public Set<String> getScopes() {
 		OAuth2Authentication oauth = oauth2Authentication();
 		if (oauth == null) {

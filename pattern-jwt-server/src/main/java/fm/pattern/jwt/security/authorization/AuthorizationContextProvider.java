@@ -20,6 +20,8 @@ import java.util.Set;
 
 public interface AuthorizationContextProvider {
 
+	boolean isAuthenticated();
+	
 	Set<String> getScopes();
 
 	Set<String> getAuthorities();

@@ -26,8 +26,19 @@ public class SimpleAuthorizationContextProvider implements AuthorizationContextP
 	private Set<String> authorities = new HashSet<String>();
 	private Set<String> roles = new HashSet<String>();
 
+	private boolean authenticated = false;
+
 	public SimpleAuthorizationContextProvider() {
 
+	}
+
+	public boolean isAuthenticated() {
+		return authenticated;
+	}
+
+	public SimpleAuthorizationContextProvider authenticated(boolean authenticated) {
+		this.authenticated = authenticated;
+		return this;
 	}
 
 	public SimpleAuthorizationContextProvider withScopes(String... scopes) {

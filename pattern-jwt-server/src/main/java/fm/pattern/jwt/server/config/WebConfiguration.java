@@ -23,7 +23,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 
 @Configuration
 @EnableAspectJAutoProxy
-@ComponentScan("fm.pattern.jwt.server.endpoints")
+@ComponentScan({ "fm.pattern.jwt.server.endpoints", "fm.pattern.jwt.security" })
 public class WebConfiguration extends WebMvcConfigurerAdapter {
 
 }
