@@ -8,10 +8,12 @@ import java.util.Set;
 
 import fm.pattern.commons.rest.JwtClientProperties;
 import fm.pattern.commons.rest.Result;
+import fm.pattern.jwt.sdk.AudiencesClient;
 import fm.pattern.jwt.sdk.AuthoritiesClient;
 import fm.pattern.jwt.sdk.ClientsClient;
 import fm.pattern.jwt.sdk.GrantTypesClient;
 import fm.pattern.jwt.sdk.ScopesClient;
+import fm.pattern.jwt.sdk.model.AudienceRepresentation;
 import fm.pattern.jwt.sdk.model.AuthorityRepresentation;
 import fm.pattern.jwt.sdk.model.ClientRepresentation;
 import fm.pattern.jwt.sdk.model.GrantTypeRepresentation;
@@ -23,6 +25,7 @@ public class ClientDSL extends AbstractDSL<ClientDSL, ClientRepresentation> {
     private ScopesClient scopesClient = new ScopesClient(JwtClientProperties.getEndpoint());
     private GrantTypesClient grantTypesClient = new GrantTypesClient(JwtClientProperties.getEndpoint());
     private AuthoritiesClient authoritiesClient = new AuthoritiesClient(JwtClientProperties.getEndpoint());
+    private AudiencesClient audiencesClient = new AudiencesClient(JwtClientProperties.getEndpoint());
 
     private String clientId = "cli_" + randomAlphanumeric(15);
     private String clientSecret = "pwd_" + randomAlphanumeric(15);
@@ -33,10 +36,12 @@ public class ClientDSL extends AbstractDSL<ClientDSL, ClientRepresentation> {
     private Set<ScopeRepresentation> scopes = new HashSet<ScopeRepresentation>();
     private Set<GrantTypeRepresentation> grantTypes = new HashSet<GrantTypeRepresentation>();
     private Set<AuthorityRepresentation> authorities = new HashSet<AuthorityRepresentation>();
+    private Set<AudienceRepresentation> audiences = new HashSet<AudienceRepresentation>();
 
     private Set<String> scopesLookup = new HashSet<String>();
     private Set<String> grantTypesLookup = new HashSet<String>();
     private Set<String> authoritiesLookup = new HashSet<String>();
+    private Set<String> audiencesLookup = new HashSet<String>();
 
     public static ClientDSL client() {
         return new ClientDSL();
@@ -65,6 +70,18 @@ public class ClientDSL extends AbstractDSL<ClientDSL, ClientRepresentation> {
     public ClientDSL withAuthorities(String... authorities) {
         this.authoritiesLookup.clear();
         this.authoritiesLookup.addAll(Arrays.asList(authorities));
+        return this;
+    }
+
+    public ClientDSL withAudiences(AudienceRepresentation... audiences) {
+        this.audiences.clear();
+        this.audiences.addAll(Arrays.asList(audiences));
+        return this;
+    }
+
+    public ClientDSL withAudiences(String... audiences) {
+        this.audiencesLookup.clear();
+        this.audiencesLookup.addAll(Arrays.asList(audiences));
         return this;
     }
 
@@ -125,6 +142,7 @@ public class ClientDSL extends AbstractDSL<ClientDSL, ClientRepresentation> {
         client.setScopes(scopes);
         client.setGrantTypes(grantTypes);
         client.setAuthorities(authorities);
+        client.setAudiences(audiences);
         client.setAccessTokenValiditySeconds(accessTokenValiditySeconds);
         client.setRefreshTokenValiditySeconds(refreshTokenValiditySeconds);
         return client;
@@ -153,6 +171,13 @@ public class ClientDSL extends AbstractDSL<ClientDSL, ClientRepresentation> {
             Result<AuthorityRepresentation> result = authoritiesClient.findByName(name, super.getToken().getAccessToken());
             if (result.accepted()) {
                 authorities.add(result.getInstance());
+            }
+        }
+
+        for (String name : audiencesLookup) {
+            Result<AudienceRepresentation> result = audiencesClient.findByName(name, super.getToken().getAccessToken());
+            if (result.accepted()) {
+                audiences.add(result.getInstance());
             }
         }
     }
