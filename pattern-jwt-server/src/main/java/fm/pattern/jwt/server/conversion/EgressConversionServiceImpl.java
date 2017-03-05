@@ -25,12 +25,14 @@ import org.springframework.stereotype.Service;
 import fm.pattern.commons.rest.ErrorRepresentation;
 import fm.pattern.commons.rest.ErrorsRepresentation;
 import fm.pattern.jwt.sdk.model.AccountRepresentation;
+import fm.pattern.jwt.sdk.model.AudienceRepresentation;
 import fm.pattern.jwt.sdk.model.AuthorityRepresentation;
 import fm.pattern.jwt.sdk.model.ClientRepresentation;
 import fm.pattern.jwt.sdk.model.GrantTypeRepresentation;
 import fm.pattern.jwt.sdk.model.RoleRepresentation;
 import fm.pattern.jwt.sdk.model.ScopeRepresentation;
 import fm.pattern.jwt.server.model.Account;
+import fm.pattern.jwt.server.model.Audience;
 import fm.pattern.jwt.server.model.Authority;
 import fm.pattern.jwt.server.model.Client;
 import fm.pattern.jwt.server.model.GrantType;
@@ -62,6 +64,7 @@ class EgressConversionServiceImpl implements EgressConversionService {
 		representation.setCreated(client.getCreated());
 		representation.setUpdated(client.getUpdated());
 		representation.setClientId(client.getClientId());
+		representation.setAudiences(client.getAudiences().stream().map(audience -> convert(audience)).collect(Collectors.toCollection(HashSet::new)));
 		representation.setAuthorities(client.getAuthorities().stream().map(authority -> convert(authority)).collect(Collectors.toCollection(HashSet::new)));
 		representation.setGrantTypes(client.getGrantTypes().stream().map(grantType -> convert(grantType)).collect(Collectors.toCollection(HashSet::new)));
 		representation.setScopes(client.getScopes().stream().map(scope -> convert(scope)).collect(Collectors.toCollection(HashSet::new)));
@@ -90,6 +93,15 @@ class EgressConversionServiceImpl implements EgressConversionService {
 		representation.setUpdated(authority.getUpdated());
 		representation.setName(authority.getName());
 		representation.setDescription(authority.getDescription());
+		return representation;
+	}
+
+	public AudienceRepresentation convert(Audience audience) {
+		AudienceRepresentation representation = new AudienceRepresentation(audience.getId());
+		representation.setCreated(audience.getCreated());
+		representation.setUpdated(audience.getUpdated());
+		representation.setName(audience.getName());
+		representation.setDescription(audience.getDescription());
 		return representation;
 	}
 

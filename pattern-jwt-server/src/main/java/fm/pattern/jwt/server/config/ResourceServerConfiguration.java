@@ -16,6 +16,7 @@
 
 package fm.pattern.jwt.server.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -34,18 +35,19 @@ import fm.pattern.jwt.server.endpoints.RestExceptionRenderer;
 @EnableWebSecurity
 public class ResourceServerConfiguration {
 
-	private static final String RESOURCE_ID = "oauth-service";
-
 	@Configuration
 	@EnableResourceServer
 	protected static class ResourceServerConfig extends ResourceServerConfigurerAdapter {
+
+		@Value("${oauth2.audience}")
+		private String audience;
 
 		public void configure(HttpSecurity http) throws Exception {
 			http.authorizeRequests().anyRequest().authenticated();
 		}
 
 		public void configure(ResourceServerSecurityConfigurer resources) throws Exception {
-			resources.accessDeniedHandler(accessDeniedHandler()).authenticationEntryPoint(authenticationEntryPoint()).resourceId(RESOURCE_ID);
+			resources.accessDeniedHandler(accessDeniedHandler()).authenticationEntryPoint(authenticationEntryPoint()).resourceId(audience);
 		}
 
 		@Bean

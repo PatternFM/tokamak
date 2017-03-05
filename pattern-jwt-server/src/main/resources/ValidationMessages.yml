@@ -33,6 +33,38 @@ account.username.not_found:
   exception: fm.pattern.microstructure.EntityNotFoundException
 
 
+audience.id.required: 
+  message: "An audience id is required."
+  code: AUD-0006
+
+audience.name.required: 
+  message: "An audience name is required."
+  code: AUD-0001
+
+audience.name.size: 
+  message: "An audience name cannot be greater than {max} characters."
+  code: AUD-0002
+
+audience.name.conflict: 
+  message: "This audience name is already in use."
+  code: AUD-0003
+  exception: fm.pattern.microstructure.ResourceConflictException
+
+audience.description.size: 
+  message: "An audience description cannot be greater than {max} characters."
+  code: AUD-0004
+
+audience.delete.conflict: 
+  message: "This audience cannot be deleted, %d %s linked to this audience."
+  code: AUD-0005
+  exception: fm.pattern.microstructure.ResourceConflictException
+
+audience.name.not_found: 
+  message: "No such audience name: %s"
+  code: AUD-0008
+  exception: fm.pattern.microstructure.EntityNotFoundException
+
+
 authority.id.required: 
   message: "An authority id is required."
   code: ATH-0006

@@ -24,17 +24,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import fm.pattern.jwt.sdk.model.AccountRepresentation;
+import fm.pattern.jwt.sdk.model.AudienceRepresentation;
 import fm.pattern.jwt.sdk.model.AuthorityRepresentation;
 import fm.pattern.jwt.sdk.model.ClientRepresentation;
 import fm.pattern.jwt.sdk.model.GrantTypeRepresentation;
 import fm.pattern.jwt.sdk.model.RoleRepresentation;
 import fm.pattern.jwt.sdk.model.ScopeRepresentation;
 import fm.pattern.jwt.server.model.Account;
+import fm.pattern.jwt.server.model.Audience;
 import fm.pattern.jwt.server.model.Authority;
 import fm.pattern.jwt.server.model.Client;
 import fm.pattern.jwt.server.model.GrantType;
 import fm.pattern.jwt.server.model.Role;
 import fm.pattern.jwt.server.model.Scope;
+import fm.pattern.jwt.server.service.AudienceService;
 import fm.pattern.jwt.server.service.AuthorityService;
 import fm.pattern.jwt.server.service.GrantTypeService;
 import fm.pattern.jwt.server.service.RoleService;
@@ -46,13 +49,15 @@ class IngressConversionServiceImpl implements IngressConversionService {
 
 	private final RoleService roleService;
 	private final AuthorityService authorityService;
+	private final AudienceService audienceService;
 	private final ScopeService scopeService;
 	private final GrantTypeService grantTypeService;
 
 	@Autowired
-	public IngressConversionServiceImpl(RoleService roleService, AuthorityService authorityService, ScopeService scopeService, GrantTypeService grantTypeService) {
+	public IngressConversionServiceImpl(RoleService roleService, AuthorityService authorityService, AudienceService audienceService, ScopeService scopeService, GrantTypeService grantTypeService) {
 		this.roleService = roleService;
 		this.authorityService = authorityService;
+		this.audienceService = audienceService;
 		this.scopeService = scopeService;
 		this.grantTypeService = grantTypeService;
 	}
@@ -66,8 +71,9 @@ class IngressConversionServiceImpl implements IngressConversionService {
 		Set<Scope> scopes = representation.getScopes() == null ? new HashSet<Scope>() : representation.getScopes().stream().map(scope -> lookup(scope)).filter(scope -> scope != null).collect(Collectors.toSet());
 		Set<GrantType> grantTypes = representation.getGrantTypes() == null ? new HashSet<GrantType>() : representation.getGrantTypes().stream().map(grant -> lookup(grant)).filter(grant -> grant != null).collect(Collectors.toSet());
 		Set<Authority> authorities = representation.getAuthorities() == null ? new HashSet<Authority>() : representation.getAuthorities().stream().map(auth -> lookup(auth)).filter(auth -> auth != null).collect(Collectors.toSet());
+		Set<Audience> audiences = representation.getAudiences() == null ? new HashSet<Audience>() : representation.getAudiences().stream().map(aud -> lookup(aud)).filter(aud -> aud != null).collect(Collectors.toSet());
 
-		Client client = new Client(representation.getClientId(), representation.getClientSecret(), authorities, grantTypes, scopes);
+		Client client = new Client(representation.getClientId(), representation.getClientSecret(), authorities, audiences, grantTypes, scopes);
 
 		if (representation.getAccessTokenValiditySeconds() != null) {
 			client.setAccessTokenValiditySeconds(representation.getAccessTokenValiditySeconds());
@@ -90,6 +96,12 @@ class IngressConversionServiceImpl implements IngressConversionService {
 		Authority authority = new Authority(representation.getName());
 		authority.setDescription(representation.getDescription());
 		return authority;
+	}
+
+	public Audience convert(AudienceRepresentation representation) {
+		Audience audience = new Audience(representation.getName());
+		audience.setDescription(representation.getDescription());
+		return audience;
 	}
 
 	public Scope convert(ScopeRepresentation representation) {
@@ -138,6 +150,12 @@ class IngressConversionServiceImpl implements IngressConversionService {
 		return authority;
 	}
 
+	public Audience update(AudienceRepresentation representation, Audience audience) {
+		audience.setName(representation.getName());
+		audience.setDescription(representation.getDescription());
+		return audience;
+	}
+
 	public Scope update(ScopeRepresentation representation, Scope scope) {
 		scope.setName(representation.getName());
 		scope.setDescription(representation.getDescription());
@@ -148,6 +166,11 @@ class IngressConversionServiceImpl implements IngressConversionService {
 		grantType.setName(representation.getName());
 		grantType.setDescription(representation.getDescription());
 		return grantType;
+	}
+
+	private Audience lookup(AudienceRepresentation representation) {
+		Result<Audience> result = audienceService.findById(representation.getId());
+		return result.accepted() ? result.getInstance() : null;
 	}
 
 	private Role lookup(RoleRepresentation representation) {

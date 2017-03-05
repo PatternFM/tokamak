@@ -17,12 +17,14 @@
 package fm.pattern.jwt.server.conversion;
 
 import fm.pattern.jwt.sdk.model.AccountRepresentation;
+import fm.pattern.jwt.sdk.model.AudienceRepresentation;
 import fm.pattern.jwt.sdk.model.AuthorityRepresentation;
 import fm.pattern.jwt.sdk.model.ClientRepresentation;
 import fm.pattern.jwt.sdk.model.GrantTypeRepresentation;
 import fm.pattern.jwt.sdk.model.RoleRepresentation;
 import fm.pattern.jwt.sdk.model.ScopeRepresentation;
 import fm.pattern.jwt.server.model.Account;
+import fm.pattern.jwt.server.model.Audience;
 import fm.pattern.jwt.server.model.Authority;
 import fm.pattern.jwt.server.model.Client;
 import fm.pattern.jwt.server.model.GrantType;
@@ -39,6 +41,8 @@ public interface IngressConversionService {
 
 	Authority convert(AuthorityRepresentation representation);
 
+	Audience convert(AudienceRepresentation representation);
+
 	Scope convert(ScopeRepresentation representation);
 
 	GrantType convert(GrantTypeRepresentation representation);
@@ -50,6 +54,8 @@ public interface IngressConversionService {
 	Role update(RoleRepresentation representation, Role role);
 
 	Authority update(AuthorityRepresentation representation, Authority authority);
+
+	Audience update(AudienceRepresentation representation, Audience audience);
 
 	Scope update(ScopeRepresentation representation, Scope scope);
 

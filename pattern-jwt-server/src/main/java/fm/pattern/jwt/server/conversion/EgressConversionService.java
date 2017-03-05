@@ -18,12 +18,14 @@ package fm.pattern.jwt.server.conversion;
 
 import fm.pattern.commons.rest.ErrorsRepresentation;
 import fm.pattern.jwt.sdk.model.AccountRepresentation;
+import fm.pattern.jwt.sdk.model.AudienceRepresentation;
 import fm.pattern.jwt.sdk.model.AuthorityRepresentation;
 import fm.pattern.jwt.sdk.model.ClientRepresentation;
 import fm.pattern.jwt.sdk.model.GrantTypeRepresentation;
 import fm.pattern.jwt.sdk.model.RoleRepresentation;
 import fm.pattern.jwt.sdk.model.ScopeRepresentation;
 import fm.pattern.jwt.server.model.Account;
+import fm.pattern.jwt.server.model.Audience;
 import fm.pattern.jwt.server.model.Authority;
 import fm.pattern.jwt.server.model.Client;
 import fm.pattern.jwt.server.model.GrantType;
@@ -40,6 +42,8 @@ public interface EgressConversionService {
 	RoleRepresentation convert(Role role);
 
 	AuthorityRepresentation convert(Authority authority);
+
+	AudienceRepresentation convert(Audience audience);
 
 	ScopeRepresentation convert(Scope scope);
 

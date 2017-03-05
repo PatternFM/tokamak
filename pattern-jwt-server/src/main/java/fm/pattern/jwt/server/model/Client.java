@@ -32,8 +32,6 @@ import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.NotBlank;
 
-import com.google.common.collect.Sets;
-
 import fm.pattern.commons.util.IdGenerator;
 import fm.pattern.commons.util.JSON;
 import fm.pattern.jwt.server.validation.UniqueValue;
@@ -61,6 +59,10 @@ public class Client extends PersistentEntity {
 	private String clientSecret;
 
 	@OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+	@JoinTable(name = "ClientAudiences", joinColumns = { @JoinColumn(name = "client_id", referencedColumnName = "id") }, inverseJoinColumns = { @JoinColumn(name = "audience_id", referencedColumnName = "id") })
+	private Set<Audience> audiences = new HashSet<Audience>();
+
+	@OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
 	@JoinTable(name = "ClientAuthorities", joinColumns = { @JoinColumn(name = "client_id", referencedColumnName = "id") }, inverseJoinColumns = { @JoinColumn(name = "authority_id", referencedColumnName = "id") })
 	private Set<Authority> authorities = new HashSet<Authority>();
 
@@ -84,11 +86,14 @@ public class Client extends PersistentEntity {
 		super(IdGenerator.generateId("cli", 30));
 	}
 
-	public Client(String clientId, String clientSecret, Set<Authority> authorities, Set<GrantType> grantTypes, Set<Scope> scope) {
+	public Client(String clientId, String clientSecret, Set<Authority> authorities, Set<Audience> audiences, Set<GrantType> grantTypes, Set<Scope> scope) {
 		this();
+
 		this.clientId = clientId;
 		this.clientSecret = clientSecret;
+
 		this.authorities.addAll(authorities.stream().filter(a -> a != null).collect(Collectors.toList()));
+		this.audiences.addAll(audiences.stream().filter(a -> a != null).collect(Collectors.toList()));
 		this.grantTypes.addAll(grantTypes.stream().filter(a -> a != null).collect(Collectors.toList()));
 		this.scopes.addAll(scope.stream().filter(a -> a != null).collect(Collectors.toList()));
 	}
@@ -117,6 +122,14 @@ public class Client extends PersistentEntity {
 		this.authorities = authorities;
 	}
 
+	public Set<Audience> getAudiences() {
+		return audiences;
+	}
+
+	public void setAudiences(Set<Audience> audiences) {
+		this.audiences = audiences;
+	}
+
 	public Set<Scope> getScopes() {
 		return scopes;
 	}
@@ -131,11 +144,6 @@ public class Client extends PersistentEntity {
 
 	public void setGrantTypes(Set<GrantType> grantTypes) {
 		this.grantTypes = grantTypes;
-	}
-
-	// TODO: Remove hard-coded value.
-	public Set<String> getResourceIds() {
-		return Sets.newHashSet("oauth-service");
 	}
 
 	public Integer getAccessTokenValiditySeconds() {

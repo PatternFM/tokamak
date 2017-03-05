@@ -61,8 +61,8 @@ public class AuthorizationServerConfiguration {
 	@EnableAuthorizationServer
 	protected static class OAuth2Config extends AuthorizationServerConfigurerAdapter {
 
-		@Value("${oauth2.resourceId}")
-		private String resourceId;
+		@Value("${oauth2.audience}")
+		private String audience;
 
 		@Value("${oauth2.privateKey}")
 		private String privateKey;
@@ -148,7 +148,7 @@ public class AuthorizationServerConfiguration {
 		}
 
 		public void configure(AuthorizationServerSecurityConfigurer oauthServer) throws Exception {
-			oauthServer.passwordEncoder(new BCryptPasswordEncoder()).realm(resourceId);
+			oauthServer.passwordEncoder(new BCryptPasswordEncoder()).realm(audience);
 		}
 
 	}

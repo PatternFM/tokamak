@@ -49,6 +49,22 @@ CREATE TABLE Roles (
 
 
 
+DROP TABLE IF EXISTS Audiences;
+
+CREATE TABLE Audiences (
+  id varchar(64) NOT NULL,
+  _id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  created datetime NOT NULL,
+  updated datetime NOT NULL,
+  name varchar(128) NOT NULL,
+  description varchar(255), 
+  KEY(_id),
+  PRIMARY KEY(id),
+  UNIQUE KEY UK_AUDIENCE_NAME (name)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
 DROP TABLE IF EXISTS Authorities;
 
 CREATE TABLE Authorities (
@@ -118,9 +134,23 @@ CREATE TABLE ClientAuthorities (
   client_id varchar(64) NOT NULL,
   authority_id varchar(64) NOT NULL,
   PRIMARY KEY (_id),
-  UNIQUE KEY UK_CA_CLIENT_AUTHORITY (client_id,authority_id),
-  CONSTRAINT FK_CA_CLIENT FOREIGN KEY (client_id) REFERENCES Clients (id),
-  CONSTRAINT FK_CA_AUTHORTIY FOREIGN KEY (authority_id) REFERENCES Authorities (id)
+  UNIQUE KEY UK_CLIAUT_CLIENT_AUTHORITY (client_id,authority_id),
+  CONSTRAINT FK_CLIAUT_CLIENT FOREIGN KEY (client_id) REFERENCES Clients (id),
+  CONSTRAINT FK_CLIAUT_AUTHORTIY FOREIGN KEY (authority_id) REFERENCES Authorities (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
+DROP TABLE IF EXISTS ClientAudiences;
+
+CREATE TABLE ClientAudiences (
+  _id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  client_id varchar(64) NOT NULL,
+  audience_id varchar(64) NOT NULL,
+  PRIMARY KEY (_id),
+  UNIQUE KEY UK_CLIAUD_CLIENT_AUDIENCE (client_id,audience_id),
+  CONSTRAINT FK_CLIAUD_CLIENT FOREIGN KEY (client_id) REFERENCES Clients (id),
+  CONSTRAINT FK_CLIAUD_AUDIENCE FOREIGN KEY (audience_id) REFERENCES Audiences (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 

@@ -38,7 +38,7 @@ public class AuthenticatedClient extends BaseClientDetails implements ClientDeta
 		super.setScope(client.getScopes().stream().map(scope -> scope.getName()).collect(Collectors.toCollection(HashSet::new)));
 		super.setAuthorities(client.getAuthorities().stream().map(authority -> new SimpleGrantedAuthority(authority.getName())).collect(Collectors.toCollection(HashSet::new)));
 		super.setAuthorizedGrantTypes(client.getGrantTypes().stream().map(grantType -> grantType.getName().toLowerCase()).collect(Collectors.toCollection(HashSet::new)));
-		super.setResourceIds(client.getResourceIds());
+		super.setResourceIds(client.getAudiences().stream().map(audience -> audience.getName().toLowerCase()).collect(Collectors.toCollection(HashSet::new)));
 		super.setAccessTokenValiditySeconds(client.getAccessTokenValiditySeconds());
 		super.setRefreshTokenValiditySeconds(client.getRefreshTokenValiditySeconds());
 

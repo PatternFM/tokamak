@@ -11,7 +11,7 @@ database:
 
 oauth2:
     issuer: https://auth.pattern.fm
-    resourceId: oauth-service
+    audience: oauth-service
     accessTokenValiditySeconds: 7200
     refreshTokenValiditySeconds: 31536000
     
