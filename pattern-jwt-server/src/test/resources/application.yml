@@ -10,6 +10,7 @@ database:
     migrations: classpath:db/migration
 
 oauth2:
+    issuer: https://auth.pattern.fm
     resourceId: oauth-service
     accessTokenValiditySeconds: 7200
     refreshTokenValiditySeconds: 31536000

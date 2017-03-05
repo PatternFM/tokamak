@@ -20,6 +20,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.common.DefaultOAuth2AccessToken;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
@@ -34,6 +35,9 @@ import fm.pattern.microstructure.Result;
 @Component
 public class CustomJwtTokenEnhancer extends JwtAccessTokenConverter {
 
+	@Value("${oauth2.issuer}")
+	private String issuer;
+	
 	private final AccountService accountService;
 
 	@Autowired
@@ -46,21 +50,22 @@ public class CustomJwtTokenEnhancer extends JwtAccessTokenConverter {
 		DefaultOAuth2AccessToken customAccessToken = new DefaultOAuth2AccessToken(accessToken);
 
 		Map<String, Object> additionalInformation = new LinkedHashMap<String, Object>(accessToken.getAdditionalInformation());
-		additionalInformation.put("client_id", authentication.getOAuth2Request().getClientId());
-
+		additionalInformation.put("sub", authentication.getOAuth2Request().getClientId());
+		additionalInformation.put("iss", issuer);
+		
 		Authentication userAuthentication = authentication.getUserAuthentication();
 		if (userAuthentication == null) {
 			customAccessToken.setAdditionalInformation(additionalInformation);
 			return super.enhance(customAccessToken, authentication);
 		}
 
-		AuthenticatedAccount user = getUser(userAuthentication);
-		if (user == null) {
+		AuthenticatedAccount account = getUser(userAuthentication);
+		if (account == null) {
 			customAccessToken.setAdditionalInformation(additionalInformation);
 			return super.enhance(customAccessToken, authentication);
 		}
 
-		additionalInformation.put("account_id", user.getIdentfifier());
+		additionalInformation.put("sub", account.getIdentfifier());
 
 		customAccessToken.setAdditionalInformation(additionalInformation);
 		return super.enhance(customAccessToken, authentication);
