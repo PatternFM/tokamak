@@ -32,12 +32,12 @@ import fm.pattern.jwt.server.service.AccountService;
 import fm.pattern.microstructure.Result;
 
 @Component
-public class AccountTokenEnhancer extends JwtAccessTokenConverter {
+public class CustomJwtTokenEnhancer extends JwtAccessTokenConverter {
 
 	private final AccountService accountService;
 
 	@Autowired
-	public AccountTokenEnhancer(AccountService accountService) {
+	public CustomJwtTokenEnhancer(AccountService accountService) {
 		this.accountService = accountService;
 	}
 
