@@ -30,7 +30,6 @@ public class DatabaseProperties {
 	@NotEmpty(message = "The database username cannot be empty")
 	private String username;
 
-	@NotEmpty(message = "The database password cannot be empty")
 	private String password;
 
 	@NotEmpty(message = "The database driver class cannot be empty")
