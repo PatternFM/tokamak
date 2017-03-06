@@ -50,7 +50,7 @@ public class UniqueValueValidator extends ValidatorSupport implements Constraint
 	}
 
 	public boolean isValid(PersistentEntity entity, ConstraintValidatorContext constraint) {
-		final String value = ReflectionUtils.getString(entity, property);
+		final String value = (String) ReflectionUtils.getValue(entity, property);
 		if (isBlank(value)) {
 			return true;
 		}

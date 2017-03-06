@@ -1,164 +1,172 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <name>Pattern JWT</name>
-    <modelVersion>4.0.0</modelVersion>
+   <name>Pattern JWT</name>
+   <modelVersion>4.0.0</modelVersion>
 
-    <groupId>fm.pattern</groupId>
-    <artifactId>pattern-jwt</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
-    <packaging>pom</packaging>
+   <groupId>fm.pattern</groupId>
+   <artifactId>pattern-jwt</artifactId>
+   <version>1.0.0-SNAPSHOT</version>
+   <packaging>pom</packaging>
 
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <spring.version>4.3.6.RELEASE</spring.version>
-        <spring.boot.version>1.4.4.RELEASE</spring.boot.version>
-        <spring.security.version>3.2.4.RELEASE</spring.security.version>
-        <spring.oauth.version>2.0.7.RELEASE</spring.oauth.version>
-        <jersey.version>2.14</jersey.version>
-        <java.version>1.8</java.version>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
-        <maven.javadoc.skip>true</maven.javadoc.skip>
-    </properties>
+   <properties>
+      <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+      <spring.version>4.3.6.RELEASE</spring.version>
+      <spring.boot.version>1.4.4.RELEASE</spring.boot.version>
+      <spring.security.version>3.2.4.RELEASE</spring.security.version>
+      <spring.oauth.version>2.0.7.RELEASE</spring.oauth.version>
+      <jersey.version>2.14</jersey.version>
+      <java.version>1.8</java.version>
+      <maven.compiler.source>1.8</maven.compiler.source>
+      <maven.compiler.target>1.8</maven.compiler.target>
+      <maven.javadoc.skip>true</maven.javadoc.skip>
+   </properties>
 
-    <scm>
-        <developerConnection>scm:git:https://rocketbuilder@bitbucket.org/deliveryrocket/rocket-accounts-platform.git</developerConnection>
-        <tag>HEAD</tag>
-    </scm>
+   <scm>
+      <developerConnection>scm:git:https://rocketbuilder@bitbucket.org/deliveryrocket/rocket-accounts-platform.git</developerConnection>
+      <tag>HEAD</tag>
+   </scm>
 
-    <licenses>
-        <license>
-            <name>Apache License, Version 2.0</name>
-            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
-            <distribution>repo</distribution>
-        </license>
-    </licenses>
+   <licenses>
+      <license>
+         <name>Apache License, Version 2.0</name>
+         <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+         <distribution>repo</distribution>
+      </license>
+   </licenses>
 
-    <distributionManagement>
-         <repository>
-             <id>pattern-release-repo</id>
-             <name>Pattern Release Repository</name>
-             <url>s3://repository.pattern.fm/releases</url>
-         </repository>
+   <distributionManagement>
+      <repository>
+         <id>pattern-release-repo</id>
+         <name>Pattern Release Repository</name>
+         <url>s3://repository.pattern.fm/releases</url>
+      </repository>
 
-         <snapshotRepository>
-             <id>pattern-snapshot-repo</id>
-             <name>Pattern Snapshot Repository</name>
-             <url>s3://repository.pattern.fm/snapshots</url>
-         </snapshotRepository>
-     </distributionManagement>
+      <snapshotRepository>
+         <id>pattern-snapshot-repo</id>
+         <name>Pattern Snapshot Repository</name>
+         <url>s3://repository.pattern.fm/snapshots</url>
+      </snapshotRepository>
+   </distributionManagement>
 
-    <modules>
-        <module>pattern-jwt-sdk</module>
-        <module>pattern-jwt-server</module>
-        <module>pattern-jwt-spec</module>
-    </modules>
+   <modules>
+      <module>pattern-jwt-sdk</module>
+      <module>pattern-jwt-server</module>
+      <module>pattern-jwt-spec</module>
+   </modules>
 
-    <repositories>
-        <repository>
-            <id>pattern-release-repo</id>
-            <name>Pattern Release Repository</name>
-            <url>http://repository.pattern.fm/releases</url>
-        </repository>
+   <repositories>
+      <repository>
+         <id>pattern-release-repo</id>
+         <name>Pattern Release Repository</name>
+         <url>http://repository.pattern.fm/releases</url>
+      </repository>
 
-        <repository>
-            <id>pattern-snapshot-repo</id>
-            <name>Pattern Snapshot Repository</name>
-            <url>http://repository.pattern.fm/snapshots</url>
-        </repository>
+      <repository>
+         <id>pattern-snapshot-repo</id>
+         <name>Pattern Snapshot Repository</name>
+         <url>http://repository.pattern.fm/snapshots</url>
+      </repository>
 
-        <repository>
-            <id>spring-maven-release</id>
-            <name>Spring Maven Release Repository</name>
-            <url>http://maven.springframework.org/release</url>
-        </repository>
+      <repository>
+         <id>spring-maven-release</id>
+         <name>Spring Maven Release Repository</name>
+         <url>http://maven.springframework.org/release</url>
+      </repository>
 
-        <repository>
-            <id>spring-maven-milestone</id>
-            <name>Spring Maven Milestone Repository</name>
-            <url>http://maven.springframework.org/milestone</url>
-        </repository>
+      <repository>
+         <id>spring-maven-milestone</id>
+         <name>Spring Maven Milestone Repository</name>
+         <url>http://maven.springframework.org/milestone</url>
+      </repository>
 
-        <repository>
-            <id>Sonatype-public</id>
-            <name>SnakeYAML repository</name>
-            <url>http://oss.sonatype.org/content/groups/public/</url>
-        </repository>
+      <repository>
+         <id>Sonatype-public</id>
+         <name>SnakeYAML repository</name>
+         <url>http://oss.sonatype.org/content/groups/public/</url>
+      </repository>
 
-        <repository>
-            <id>jcenter-release</id>
-            <name>jcenter</name>
-            <url>http://oss.jfrog.org/artifactory/oss-release-local/</url>
-        </repository>
-    </repositories>
+      <repository>
+         <id>jcenter-release</id>
+         <name>jcenter</name>
+         <url>http://oss.jfrog.org/artifactory/oss-release-local/</url>
+      </repository>
+   </repositories>
 
-    <pluginRepositories>
-        <pluginRepository>
-            <id>spring-maven-release</id>
-            <name>Spring Maven Release Repository</name>
-            <url>http://maven.springframework.org/release</url>
-        </pluginRepository>
-    </pluginRepositories>
+   <pluginRepositories>
+      <pluginRepository>
+         <id>spring-maven-release</id>
+         <name>Spring Maven Release Repository</name>
+         <url>http://maven.springframework.org/release</url>
+      </pluginRepository>
+   </pluginRepositories>
 
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-release-plugin</artifactId>
-                <version>2.5.1</version>
-                <configuration>
-                    <goals>deploy</goals>
-                    <autoversionsubmodules>true</autoversionsubmodules>
-                    <tagNameFormat>pattern-jwt-@{project.version}.RELEASE</tagNameFormat>
-                </configuration>
-                <dependencies>
-                    <dependency>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-scm-plugin</artifactId>
-                        <version>1.8.1</version>
-                    </dependency>
-                </dependencies>
-            </plugin>
+   <build>
+      <plugins>
+         <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-release-plugin</artifactId>
+            <version>2.5.1</version>
+            <configuration>
+               <goals>deploy</goals>
+               <autoversionsubmodules>true</autoversionsubmodules>
+               <tagNameFormat>pattern-jwt-@{project.version}.RELEASE</tagNameFormat>
+            </configuration>
+            <dependencies>
+               <dependency>
+                  <groupId>org.apache.maven.plugins</groupId>
+                  <artifactId>maven-scm-plugin</artifactId>
+                  <version>1.8.1</version>
+               </dependency>
+            </dependencies>
+         </plugin>
 
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <version>2.5</version>
-                <configuration>
-                    <archive>
-                        <manifestEntries>
-                            <rocket-accounts-service-version>${project.version}</rocket-accounts-service-version>
-                            <rocket-accounts-service-timestamp>${maven.build.timestamp}</rocket-accounts-service-timestamp>
-                        </manifestEntries>
-                    </archive>
-                </configuration>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>test-jar</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
+         <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-jar-plugin</artifactId>
+            <version>2.5</version>
+            <configuration>
+               <archive>
+                  <manifestEntries>
+                     <rocket-accounts-service-version>${project.version}</rocket-accounts-service-version>
+                     <rocket-accounts-service-timestamp>${maven.build.timestamp}</rocket-accounts-service-timestamp>
+                  </manifestEntries>
+               </archive>
+            </configuration>
+            <executions>
+               <execution>
+                  <goals>
+                     <goal>test-jar</goal>
+                  </goals>
+               </execution>
+            </executions>
+         </plugin>
 
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.1</version>
-                <configuration>
-                    <source>${java.version}</source>
-                    <target>${java.version}</target>
-                </configuration>
-            </plugin>
+         <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <version>3.1</version>
+            <configuration>
+               <source>${java.version}</source>
+               <target>${java.version}</target>
+            </configuration>
+         </plugin>
 
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
-                <version>2.10.1</version>
-                <configuration>
-                    <skip>true</skip>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
+         <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-javadoc-plugin</artifactId>
+            <version>2.10.1</version>
+            <configuration>
+               <skip>true</skip>
+            </configuration>
+         </plugin>
+      </plugins>
+
+      <extensions>
+         <extension>
+            <groupId>org.kuali.maven.wagons</groupId>
+            <artifactId>maven-s3-wagon</artifactId>
+            <version>1.2.1</version>
+         </extension>
+      </extensions>
+   </build>
 </project>
