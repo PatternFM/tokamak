@@ -1,19 +1,14 @@
 language: java
+
 jdk:
   - oraclejdk8
 
 cache:
   directories:
-  - $HOME/.m2/repository
-  - $HOME/.sonar/cache
-
-addons:
-  sonarqube:
-    token:
-      secure: Xnz8PVUzR8Hd2dIvYB/LciCY/e4Csb0Fc55pxzHArE0+G3kbQ4F/pu9AQZc0fvjA7HA8HsTHoLxvTUP+M9GDE/bRE/IiZ466I4o1DcAh0XQyvFmxI0LJ6OKiqL0nBrTxa7Qk92HftxKflXHp8IAgrcvcG1skvrKnpi0IJaV76QCXSWx7hhpz5y3nLrR1izYRhe/MIbBGmYMkd1tXjMUhlDhu/ih9rniT/sjNZyFvX7nNZneNNeA0zNB5PpAOTZE/6+thwWBUMsLYBISKcZymLRqkYNElIRjT5Q74e15SbXAA9Ysa5YKfyh5PsRyl0Fwv1iyQ+YfzoYeSnfQowAou1xK8oPRv++kaG3U7p1porkdjceN/x/t6d4+YDcc6Lf23GxQlz6rNjcTmNj0nofGOuB1A9eYLKSXxpU8g5MHsz+c4+TnpyeOO1fDpEyaFnr3C57giXUofof8LlLtibF+LFY/nR56OWkXoh9LYH90jDBnVkOMFZ325xLqaZpiQ84e8WxiMKi6BfOmdR09S/dJx2V40EfVw66zx+9FGDnxpL4eLDvS1tV8+ev+m8bf1ODv7TVnyLvg7Chh+0Tl7WGMaJvP5FqCKQ8A2mv5QEWk9gjATrX2UenE5FgqO+pMi/qKccnH5JNO7e9hHeNq8SI8PPPQqhKNO8nqajyXM18t7rEc=
+  - $HOME/.m2
 
 script:
-  - mvn -f pattern-jwt-server/pom.xml test -B -Dspring.profiles.active=ci
-  - mvn org.jacoco:jacoco-maven-plugin:prepare-agent sonar:sonar -DskipTests=true
+  - mvn clean test jacoco:report coveralls:report -Dspring.profiles.active=ci
 
-after_success: ./release.sh
+after_success:
+ - ./deploy.sh
