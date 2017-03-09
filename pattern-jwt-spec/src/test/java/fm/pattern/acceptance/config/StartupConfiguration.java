@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package fm.pattern.acceptance;
+package fm.pattern.acceptance.config;
 
 public class StartupConfiguration {
 

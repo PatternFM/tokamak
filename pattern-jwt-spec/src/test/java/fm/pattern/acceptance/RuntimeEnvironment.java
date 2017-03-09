@@ -16,6 +16,8 @@
 
 package fm.pattern.acceptance;
 
+import fm.pattern.acceptance.config.ConfigurationRepository;
+
 public class RuntimeEnvironment {
 
 	private RuntimeEnvironment() {
@@ -23,18 +25,24 @@ public class RuntimeEnvironment {
 	}
 
 	public static void start() {
-		AcceptanceConfiguration.instances().forEach(instance -> instance.start());
+		ConfigurationRepository.instances().forEach(instance -> instance.start());
+
+		Integer count = 0;
 		while (!running()) {
-			pause(1000);
+			if (count > ConfigurationRepository.getStartupConfiguration().getRetryCount()) {
+				throw new IllegalStateException("Took longer than one minute to boot up.");
+			}
+			pause(ConfigurationRepository.getStartupConfiguration().getPollingInterval());
+			count++;
 		}
 	}
 
 	public static void stop() {
-		AcceptanceConfiguration.instances().forEach(instance -> instance.stop());
+		ConfigurationRepository.instances().forEach(instance -> instance.stop());
 	}
 
 	public static boolean running() {
-		return AcceptanceConfiguration.instances().stream().filter(instance -> !instance.running()).count() == 0;
+		return ConfigurationRepository.instances().stream().filter(instance -> !instance.running()).count() == 0;
 	}
 
 	public static void pause(Integer milliseconds) {

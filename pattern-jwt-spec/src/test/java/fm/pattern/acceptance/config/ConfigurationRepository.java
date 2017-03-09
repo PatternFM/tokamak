@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package fm.pattern.acceptance;
+package fm.pattern.acceptance.config;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -25,10 +25,12 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.yaml.snakeyaml.Yaml;
 
-@SuppressWarnings("unchecked")
-public class AcceptanceConfiguration {
+import fm.pattern.acceptance.Instance;
 
-	private static final Log log = LogFactory.getLog(AcceptanceConfiguration.class);
+@SuppressWarnings("unchecked")
+public class ConfigurationRepository {
+
+	private static final Log log = LogFactory.getLog(ConfigurationRepository.class);
 	private static final String FILENAME = "acceptance.yml";
 
 	private static Map<String, Map<String, String>> config;
@@ -38,7 +40,7 @@ public class AcceptanceConfiguration {
 	}
 
 	public static void load(String filename) {
-		InputStream inputStream = AcceptanceConfiguration.class.getClassLoader().getResourceAsStream(filename);
+		InputStream inputStream = ConfigurationRepository.class.getClassLoader().getResourceAsStream(filename);
 
 		try {
 			if (inputStream != null) {

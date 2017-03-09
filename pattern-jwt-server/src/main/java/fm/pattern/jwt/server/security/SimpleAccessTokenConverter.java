@@ -35,6 +35,7 @@ public class SimpleAccessTokenConverter extends DefaultAccessTokenConverter {
 	public Map<String, ?> convertAccessToken(OAuth2AccessToken token, OAuth2Authentication authentication) {
 		Map<String, Object> response = (Map<String, Object>) super.convertAccessToken(token, authentication);
 		OAuth2Request clientToken = authentication.getOAuth2Request();
+		// TODO: Is this the correct attribute for client authorities?
 		response.put("clientAuthorities", clientToken.getAuthorities());
 		return response;
 	}
@@ -54,9 +55,10 @@ public class SimpleAccessTokenConverter extends DefaultAccessTokenConverter {
 		OAuth2Request request = authentication.getOAuth2Request();
 		OAuth2Request enhancedRequest = new OAuth2Request(request.getRequestParameters(), request.getClientId(), grantedAuthorities, request.isApproved(), request.getScope(), request.getResourceIds(), request.getRedirectUri(), request.getResponseTypes(), request.getExtensions());
 
-		if (map.containsKey("account_id")) {
-			request.getExtensions().put("account_id", (String) map.get("account_id"));
-		}
+		// TOOD: Add custome token attributes here.
+//		if (map.containsKey("account_id")) {
+//			request.getExtensions().put("account_id", (String) map.get("account_id"));
+//		}
 
 		return new OAuth2Authentication(enhancedRequest, authentication.getUserAuthentication());
 	}
