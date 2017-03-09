@@ -16,13 +16,22 @@
 
 package fm.pattern.acceptance;
 
-public class BootConfiguration {
+public class StartupConfiguration {
 
 	private Integer pollingInterval = 1000;
 	private Integer retryCount = 60;
 
-	public BootConfiguration() {
+	public StartupConfiguration() {
 
+	}
+
+	public StartupConfiguration(Integer pollingInterval, Integer retryCount) {
+		if (pollingInterval != null) {
+			this.pollingInterval = pollingInterval;
+		}
+		if (retryCount != null) {
+			this.retryCount = retryCount;
+		}
 	}
 
 	public Integer getPollingInterval() {

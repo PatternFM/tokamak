@@ -23,18 +23,18 @@ public class RuntimeEnvironment {
 	}
 
 	public static void start() {
-		InstanceConfiguration.instances().forEach(instance -> instance.start());
+		AcceptanceConfiguration.instances().forEach(instance -> instance.start());
 		while (!running()) {
 			pause(1000);
 		}
 	}
 
 	public static void stop() {
-		InstanceConfiguration.instances().forEach(instance -> instance.stop());
+		AcceptanceConfiguration.instances().forEach(instance -> instance.stop());
 	}
 
 	public static boolean running() {
-		return InstanceConfiguration.instances().stream().filter(instance -> !instance.running()).count() == 0;
+		return AcceptanceConfiguration.instances().stream().filter(instance -> !instance.running()).count() == 0;
 	}
 
 	public static void pause(Integer milliseconds) {

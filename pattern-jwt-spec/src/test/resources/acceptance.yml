@@ -1,4 +1,4 @@
-services:
+startup:
   ping_interval: 1000
   retry_count: 60
  

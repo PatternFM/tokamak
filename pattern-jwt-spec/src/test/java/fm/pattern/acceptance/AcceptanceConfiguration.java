@@ -26,9 +26,9 @@ import org.apache.commons.logging.LogFactory;
 import org.yaml.snakeyaml.Yaml;
 
 @SuppressWarnings("unchecked")
-public class InstanceConfiguration {
+public class AcceptanceConfiguration {
 
-	private static final Log log = LogFactory.getLog(InstanceConfiguration.class);
+	private static final Log log = LogFactory.getLog(AcceptanceConfiguration.class);
 	private static final String FILENAME = "acceptance.yml";
 
 	private static Map<String, Map<String, String>> config;
@@ -38,7 +38,7 @@ public class InstanceConfiguration {
 	}
 
 	public static void load(String filename) {
-		InputStream inputStream = InstanceConfiguration.class.getClassLoader().getResourceAsStream(filename);
+		InputStream inputStream = AcceptanceConfiguration.class.getClassLoader().getResourceAsStream(filename);
 
 		try {
 			if (inputStream != null) {
@@ -50,11 +50,29 @@ public class InstanceConfiguration {
 		}
 	}
 
+	public static StartupConfiguration getStartupConfiguration() {
+		for (Map.Entry<String, Map<String, String>> entry : config.entrySet()) {
+			String service = entry.getKey();
+
+			if (service.equals("startup")) {
+				Map<String, String> map = entry.getValue();
+				return new StartupConfiguration(Integer.valueOf(map.get("polling_interval")), Integer.valueOf(map.get("retry_count")));
+			}
+
+		}
+
+		return null;
+	}
+
 	public static List<Instance> instances() {
 		List<Instance> instances = new ArrayList<>();
 
 		for (Map.Entry<String, Map<String, String>> entry : config.entrySet()) {
 			String service = entry.getKey();
+
+			if (service.equals("startup")) {
+				continue;
+			}
 
 			Map<String, String> map = entry.getValue();
 			String path = map.get("path");
@@ -68,7 +86,7 @@ public class InstanceConfiguration {
 			if (map.containsKey("stop")) {
 				instance.setStop(map.get("stop"));
 			}
-			
+
 			instances.add(instance);
 		}
 
