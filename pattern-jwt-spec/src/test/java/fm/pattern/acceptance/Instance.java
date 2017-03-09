@@ -22,9 +22,6 @@ public class Instance {
 	private String path;
 	private String ping;
 
-	private Integer pingInterval = 1000;
-	private Integer retryCount = 60;
-	
 	private String start = "start.sh";
 	private String stop = "stop.sh";
 
@@ -72,22 +69,6 @@ public class Instance {
 
 	public void setStop(String stop) {
 		this.stop = stop;
-	}
-
-	public Integer getPingInterval() {
-		return pingInterval;
-	}
-
-	public void setPingInterval(Integer pingInterval) {
-		this.pingInterval = pingInterval;
-	}
-
-	public Integer getRetryCount() {
-		return retryCount;
-	}
-
-	public void setRetryCount(Integer retryCount) {
-		this.retryCount = retryCount;
 	}
 
 	public boolean running() {
