@@ -25,7 +25,7 @@ public class RuntimeEnvironment {
 	public static void start() {
 		InstanceConfiguration.instances().forEach(instance -> instance.start());
 		while (!running()) {
-			pause(2000);
+			pause(1000);
 		}
 	}
 

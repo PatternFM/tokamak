@@ -8,7 +8,6 @@ public class AcceptanceTestRunner extends BlockJUnit4ClassRunner {
 
 	public AcceptanceTestRunner(Class<?> klass) throws InitializationError {
 		super(klass);
-		System.out.println("TEST STARTED");
 		TestExecutionMonitor.testStarted();
 	}
 

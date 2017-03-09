@@ -1,6 +1,7 @@
 package fm.pattern.acceptance;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Map;
@@ -21,17 +22,17 @@ public final class InstanceManagementService {
 	}
 
 	public static void start(Instance instance) {
-		String userDirectory = getRootDirectory(System.getProperty("user.dir"));
-		String startScript = userDirectory + instance.getPath() + instance.getStart();
-		log.info("using start script: " + startScript);
-		execute(startScript);
+		String directory = getRootDirectory(System.getProperty("user.dir"));
+		String script = directory + instance.getPath() + instance.getStart();
+		log.info("using start script: " + script);
+		execute(script, directory + instance.getPath());
 	}
 
 	public static void stop(Instance instance) {
-		String userDirectory = getRootDirectory(System.getProperty("user.dir"));
-		String startScript = userDirectory + instance.getPath() + instance.getStop();
-		log.info("using stop script: " + startScript);
-		execute(startScript);
+		String directory = getRootDirectory(System.getProperty("user.dir"));
+		String script = directory + instance.getPath() + instance.getStop();
+		log.info("using stop script: " + script);
+		execute(script, directory + instance.getPath());
 	}
 
 	public static boolean isRunning(Instance instance) {
@@ -47,7 +48,7 @@ public final class InstanceManagementService {
 
 	}
 
-	private static void execute(String command) {
+	private static void execute(String script, String directory) {
 		try {
 
 			Map<String, String> map = new HashMap<>();
@@ -59,7 +60,10 @@ public final class InstanceManagementService {
 
 			EnvironmentVariable.setEnv(map);
 
-			ProcessBuilder builder = new ProcessBuilder("bash", "-c", command);
+			System.out.println("script: " + script);
+			System.out.println("directory: " + directory);
+			ProcessBuilder builder = new ProcessBuilder("/bin/sh", script);
+			builder.directory(new File(directory));
 			builder.environment();
 			builder.redirectErrorStream(true);
 
