@@ -1,3 +1,4 @@
 #!/bin/bash
 
-nohup mvn spring-boot:run >/dev/null 2>&1 &
+mvn spring-boot:run
+#nohup mvn spring-boot:run >/dev/null 2>&1 &

@@ -24,33 +24,35 @@ public final class InstanceManagementService {
 	public static void start(Instance instance) {
 		String directory = getRootDirectory(System.getProperty("user.dir"));
 		String script = directory + instance.getPath() + instance.getStart();
-		log.info("using start script: " + script);
+
+		log.info("Starting " + instance.getName());
+		log.info("Using start script: " + script);
+
 		execute(script, directory + instance.getPath());
 	}
 
 	public static void stop(Instance instance) {
 		String directory = getRootDirectory(System.getProperty("user.dir"));
 		String script = directory + instance.getPath() + instance.getStop();
-		log.info("using stop script: " + script);
+
+		log.info("Stopping " + instance.getName());
+		log.info("Using stop script: " + script);
+
 		execute(script, directory + instance.getPath());
 	}
 
 	public static boolean isRunning(Instance instance) {
-		HttpResponse<String> response;
-
 		try {
-			response = Unirest.get(instance.getPing()).asString();
+			HttpResponse<String> response = Unirest.get(instance.getPing()).asString();
 			return response.getStatus() == 200;
 		}
 		catch (UnirestException e) {
 			return false;
 		}
-
 	}
 
 	private static void execute(String script, String directory) {
 		try {
-
 			Map<String, String> map = new HashMap<>();
 			map.putAll(System.getenv());
 
@@ -60,8 +62,6 @@ public final class InstanceManagementService {
 
 			EnvironmentVariable.setEnv(map);
 
-			System.out.println("script: " + script);
-			System.out.println("directory: " + directory);
 			ProcessBuilder builder = new ProcessBuilder("/bin/sh", script);
 			builder.directory(new File(directory));
 			builder.environment();
@@ -71,11 +71,8 @@ public final class InstanceManagementService {
 			BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
 
 			String line;
-
-			StringBuilder sb = new StringBuilder();
 			while ((line = reader.readLine()) != null) {
 				log.info(line);
-				sb.append(line);
 			}
 
 			process.waitFor();
@@ -83,11 +80,11 @@ public final class InstanceManagementService {
 			process.destroy();
 
 			if (exitValue != 0 && exitValue != 7) {
-				throw new IllegalStateException("The script finished with exit code: " + exitValue + sb.toString());
+				throw new IllegalStateException("The script finished with exit code: " + exitValue);
 			}
 		}
 		catch (Exception e) {
-			throw new IllegalStateException("Cannot start tests due to build failure: ", e);
+			throw new IllegalStateException("Failed to execute script: ", e);
 		}
 	}
 
