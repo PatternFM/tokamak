@@ -65,11 +65,16 @@ public class InstanceConfiguration {
 			if (map.containsKey("start")) {
 				instance.setStart(map.get("start"));
 			}
-			
 			if (map.containsKey("stop")) {
 				instance.setStop(map.get("stop"));
 			}
-
+			if (map.containsKey("ping_interval")) {
+				instance.setPingInterval(Integer.valueOf(map.get("ping_interval")));
+			}
+			if (map.containsKey("retry_count")) {
+				instance.setPingInterval(Integer.valueOf(map.get("retry_count")));
+			}
+			
 			instances.add(instance);
 		}
 
