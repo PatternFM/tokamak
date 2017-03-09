@@ -84,7 +84,7 @@ public class GrantType extends PersistentEntity {
 		if (this == obj) {
 			return true;
 		}
-		if (!(obj instanceof Role)) {
+		if (!(obj instanceof GrantType)) {
 			return false;
 		}
 

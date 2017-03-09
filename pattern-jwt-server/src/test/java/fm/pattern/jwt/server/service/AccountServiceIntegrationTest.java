@@ -38,7 +38,7 @@ public class AccountServiceIntegrationTest extends IntegrationTest {
 		assertThat(created.isLocked()).isFalse();
 		assertThat(created.getUsername()).isEqualTo("email@address.com");
 		assertThat(created.getPassword()).isNotNull();
-		assertThat(passwordEncodingService.matches("password", created.getPassword()));
+		assertThat(passwordEncodingService.matches("password", created.getPassword())).isTrue();
 	}
 
 	@Test
@@ -79,7 +79,7 @@ public class AccountServiceIntegrationTest extends IntegrationTest {
 	public void shouldEncryptTheAccountPasswordBeforeSavingTheAccount() {
 		Account account = account().withPassword("password1234").thatIs().persistent().build();
 		assertThat(account.getPassword()).startsWith("$2a$");
-		assertThat(passwordEncodingService.matches("password1234", account.getPassword()));
+		assertThat(passwordEncodingService.matches("password1234", account.getPassword())).isTrue();
 	}
 
 	@Test

@@ -52,7 +52,7 @@
       <module>pattern-jwt-sdk</module>
       <module>pattern-jwt-server</module>
       <module>pattern-jwt-spec</module>
-   </modules>
+  </modules>
 
    <repositories>
       <repository>

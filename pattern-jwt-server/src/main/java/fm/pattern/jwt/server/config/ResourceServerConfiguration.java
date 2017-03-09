@@ -43,7 +43,7 @@ public class ResourceServerConfiguration {
 		private String audience;
 
 		public void configure(HttpSecurity http) throws Exception {
-			http.authorizeRequests().anyRequest().authenticated();
+			http.authorizeRequests().anyRequest().permitAll();
 		}
 
 		public void configure(ResourceServerSecurityConfigurer resources) throws Exception {

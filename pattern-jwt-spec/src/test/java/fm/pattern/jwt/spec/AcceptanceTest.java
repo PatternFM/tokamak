@@ -1,12 +1,10 @@
 package fm.pattern.jwt.spec;
 
-import org.junit.runner.RunWith;
-
+import fm.pattern.acceptance.AutomatedAcceptanceTest;
 import fm.pattern.commons.rest.JwtClientProperties;
 import fm.pattern.jwt.sdk.ClientCredentials;
 
-@RunWith(AcceptanceTestRunner.class)
-public abstract class AcceptanceTest {
+public abstract class AcceptanceTest extends AutomatedAcceptanceTest {
 
 	public static final String TEST_CLIENT_ID = "test-client";
 	public static final String TEST_CLIENT_SECRET = "bm46bksylwt2imkfbhgb";
@@ -22,7 +20,7 @@ public abstract class AcceptanceTest {
 	public static final String UNAUTHORIZED_ERROR = "User is not authorized to perform the requested operation.";
 
 	public static String HOSTNAME = JwtClientProperties.getEndpoint();
-	
+
 	public static void pause(Integer milliseconds) {
 		try {
 			Thread.sleep(milliseconds);

@@ -1,4 +1,4 @@
-package fm.pattern.jwt.spec;
+package fm.pattern.acceptance.junit;
 
 import org.junit.runner.notification.RunNotifier;
 import org.junit.runners.BlockJUnit4ClassRunner;
@@ -8,9 +8,12 @@ public class AcceptanceTestRunner extends BlockJUnit4ClassRunner {
 
 	public AcceptanceTestRunner(Class<?> klass) throws InitializationError {
 		super(klass);
+		System.out.println("TEST STARTED");
+		TestExecutionMonitor.testStarted();
 	}
 
 	public void run(RunNotifier notifier) {
+		notifier.addListener(new AfterTestRunListener());
 		super.run(notifier);
 	}
 
