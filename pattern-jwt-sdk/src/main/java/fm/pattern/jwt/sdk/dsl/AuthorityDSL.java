@@ -1,9 +1,9 @@
 package fm.pattern.jwt.sdk.dsl;
 
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
-import fm.pattern.commons.rest.JwtClientProperties;
 import fm.pattern.commons.rest.Result;
 import fm.pattern.jwt.sdk.AuthoritiesClient;
+import fm.pattern.jwt.sdk.JwtClientProperties;
 import fm.pattern.jwt.sdk.model.AuthorityRepresentation;
 
 public class AuthorityDSL extends AbstractDSL<AuthorityDSL, AuthorityRepresentation> {

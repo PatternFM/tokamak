@@ -9,9 +9,9 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
-import fm.pattern.commons.rest.JwtClientProperties;
 import fm.pattern.commons.rest.Result;
 import fm.pattern.jwt.sdk.GrantTypesClient;
+import fm.pattern.jwt.sdk.JwtClientProperties;
 import fm.pattern.jwt.sdk.model.AccessTokenRepresentation;
 import fm.pattern.jwt.sdk.model.GrantTypeRepresentation;
 import fm.pattern.jwt.spec.AcceptanceTest;

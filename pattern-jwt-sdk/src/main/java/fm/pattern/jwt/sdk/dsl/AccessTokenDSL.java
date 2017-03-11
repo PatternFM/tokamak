@@ -1,7 +1,7 @@
 package fm.pattern.jwt.sdk.dsl;
 
-import fm.pattern.commons.rest.JwtClientProperties;
 import fm.pattern.jwt.sdk.ClientCredentials;
+import fm.pattern.jwt.sdk.JwtClientProperties;
 import fm.pattern.jwt.sdk.TokensClient;
 import fm.pattern.jwt.sdk.UserCredentials;
 import fm.pattern.jwt.sdk.model.AccessTokenRepresentation;

@@ -8,9 +8,9 @@ import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
 
-import fm.pattern.commons.rest.JwtClientProperties;
 import fm.pattern.commons.rest.Result;
 import fm.pattern.jwt.sdk.AccountsClient;
+import fm.pattern.jwt.sdk.JwtClientProperties;
 import fm.pattern.jwt.sdk.model.AccountRepresentation;
 import fm.pattern.jwt.sdk.model.RoleRepresentation;
 

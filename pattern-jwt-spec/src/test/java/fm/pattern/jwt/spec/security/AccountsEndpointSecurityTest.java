@@ -24,9 +24,9 @@ import static fm.pattern.jwt.spec.PatternAssertions.assertThat;
 import org.junit.Before;
 import org.junit.Test;
 
-import fm.pattern.commons.rest.JwtClientProperties;
 import fm.pattern.commons.rest.Result;
 import fm.pattern.jwt.sdk.AccountsClient;
+import fm.pattern.jwt.sdk.JwtClientProperties;
 import fm.pattern.jwt.sdk.model.AccessTokenRepresentation;
 import fm.pattern.jwt.sdk.model.AccountRepresentation;
 import fm.pattern.jwt.sdk.model.ClientRepresentation;

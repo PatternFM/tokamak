@@ -6,12 +6,12 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-import fm.pattern.commons.rest.JwtClientProperties;
 import fm.pattern.commons.rest.Result;
 import fm.pattern.jwt.sdk.AudiencesClient;
 import fm.pattern.jwt.sdk.AuthoritiesClient;
 import fm.pattern.jwt.sdk.ClientsClient;
 import fm.pattern.jwt.sdk.GrantTypesClient;
+import fm.pattern.jwt.sdk.JwtClientProperties;
 import fm.pattern.jwt.sdk.ScopesClient;
 import fm.pattern.jwt.sdk.model.AudienceRepresentation;
 import fm.pattern.jwt.sdk.model.AuthorityRepresentation;

@@ -12,9 +12,9 @@ import static org.assertj.core.api.StrictAssertions.assertThat;
 import org.junit.Before;
 import org.junit.Test;
 
-import fm.pattern.commons.rest.JwtClientProperties;
 import fm.pattern.commons.rest.Result;
 import fm.pattern.jwt.sdk.ClientsClient;
+import fm.pattern.jwt.sdk.JwtClientProperties;
 import fm.pattern.jwt.sdk.model.AccessTokenRepresentation;
 import fm.pattern.jwt.sdk.model.AudienceRepresentation;
 import fm.pattern.jwt.sdk.model.AuthorityRepresentation;

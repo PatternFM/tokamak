@@ -1,4 +1,4 @@
-package fm.pattern.commons.rest;
+package fm.pattern.jwt.sdk;
 
 import java.util.Properties;
 

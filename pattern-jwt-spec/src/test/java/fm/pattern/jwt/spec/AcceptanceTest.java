@@ -1,8 +1,8 @@
 package fm.pattern.jwt.spec;
 
 import fm.pattern.acceptance.AutomatedAcceptanceTest;
-import fm.pattern.commons.rest.JwtClientProperties;
 import fm.pattern.jwt.sdk.ClientCredentials;
+import fm.pattern.jwt.sdk.JwtClientProperties;
 
 public abstract class AcceptanceTest extends AutomatedAcceptanceTest {
 
