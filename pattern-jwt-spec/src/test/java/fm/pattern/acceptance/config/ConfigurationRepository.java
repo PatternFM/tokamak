@@ -33,7 +33,7 @@ public class ConfigurationRepository {
 	private static final Log log = LogFactory.getLog(ConfigurationRepository.class);
 	private static final String FILENAME = "acceptance.yml";
 
-	private static Map<String, Map<String, String>> config;
+	private static Map<String, Map<String, Object>> config;
 
 	static {
 		load(FILENAME);
@@ -44,7 +44,7 @@ public class ConfigurationRepository {
 
 		try {
 			if (inputStream != null) {
-				config = (Map<String, Map<String, String>>) new Yaml().load(inputStream);
+				config = (Map<String, Map<String, Object>>) new Yaml().load(inputStream);
 			}
 		}
 		catch (Exception e) {
@@ -53,12 +53,14 @@ public class ConfigurationRepository {
 	}
 
 	public static StartupConfiguration getStartupConfiguration() {
-		for (Map.Entry<String, Map<String, String>> entry : config.entrySet()) {
+		for (Map.Entry<String, Map<String, Object>> entry : config.entrySet()) {
 			String service = entry.getKey();
 
 			if (service.equals("startup")) {
-				Map<String, String> map = entry.getValue();
-				return new StartupConfiguration(Integer.valueOf(map.get("polling_interval")), Integer.valueOf(map.get("retry_count")));
+				Map<String, Object> map = entry.getValue();
+				Integer pollingInterval = (Integer) map.get("polling_interval");
+				Integer retryCount = (Integer) map.get("retry_count");
+				return new StartupConfiguration(pollingInterval, retryCount);
 			}
 
 		}
@@ -69,24 +71,24 @@ public class ConfigurationRepository {
 	public static List<Instance> instances() {
 		List<Instance> instances = new ArrayList<>();
 
-		for (Map.Entry<String, Map<String, String>> entry : config.entrySet()) {
+		for (Map.Entry<String, Map<String, Object>> entry : config.entrySet()) {
 			String service = entry.getKey();
 
 			if (service.equals("startup")) {
 				continue;
 			}
 
-			Map<String, String> map = entry.getValue();
-			String path = map.get("path");
-			String ping = map.get("ping");
+			Map<String, Object> map = entry.getValue();
+			String path = (String) map.get("path");
+			String ping = (String) map.get("ping");
 
 			Instance instance = new Instance(service, path, ping);
 
 			if (map.containsKey("start")) {
-				instance.setStart(map.get("start"));
+				instance.setStart((String) map.get("start"));
 			}
 			if (map.containsKey("stop")) {
-				instance.setStop(map.get("stop"));
+				instance.setStop((String) map.get("stop"));
 			}
 
 			instances.add(instance);

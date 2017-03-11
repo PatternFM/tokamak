@@ -1,5 +1,5 @@
 startup:
-  ping_interval: 1000
+  polling_interval: 1000
   retry_count: 60
  
 Authentication Service: 

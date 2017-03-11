@@ -30,7 +30,7 @@ public class RuntimeEnvironment {
 		Integer count = 0;
 		while (!running()) {
 			if (count > ConfigurationRepository.getStartupConfiguration().getRetryCount()) {
-				throw new IllegalStateException("Took longer than one minute to boot up.");
+				throw new IllegalStateException("Timeout occurred while waiting for the runtime environment to boot.");
 			}
 			pause(ConfigurationRepository.getStartupConfiguration().getPollingInterval());
 			count++;
