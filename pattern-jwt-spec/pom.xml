@@ -12,20 +12,6 @@
    </parent>
 
    <dependencies>
-      <!-- TODO: Remove this dependency after acceptance testing library is factored out. -->
-      <dependency>
-         <groupId>org.yaml</groupId>
-         <artifactId>snakeyaml</artifactId>
-         <version>1.17</version>
-      </dependency>
-
-        <!-- TODO: Remove this dependency after acceptance testing library is factored out. -->
-      <dependency>
-         <groupId>com.mashape.unirest</groupId>
-         <artifactId>unirest-java</artifactId>
-         <version>1.4.9</version>
-      </dependency>
-
       <dependency>
          <groupId>fm.pattern</groupId>
          <artifactId>pattern-jwt-sdk</artifactId>
@@ -33,6 +19,13 @@
          <scope>test</scope>
       </dependency>
 
+      <dependency>
+         <groupId>fm.pattern</groupId>
+         <artifactId>pattern-acceptance</artifactId>
+         <version>1.0.34</version>
+         <scope>test</scope>
+      </dependency>       
+      
       <dependency>
          <groupId>commons-logging</groupId>
          <artifactId>commons-logging</artifactId>
