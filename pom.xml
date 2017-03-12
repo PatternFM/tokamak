@@ -109,7 +109,7 @@
             <configuration>
                <goals>deploy</goals>
                <autoversionsubmodules>true</autoversionsubmodules>
-               <tagNameFormat>pattern-jwt-@{project.version}.RELEASE</tagNameFormat>
+               <tagNameFormat>pattern-tokamak-@{project.version}.RELEASE</tagNameFormat>
             </configuration>
             <dependencies>
                <dependency>
