@@ -24,6 +24,7 @@ import org.assertj.core.api.Assertions;
 import org.junit.Before;
 import org.junit.Test;
 
+import fm.pattern.valex.AuthenticationException;
 import fm.pattern.valex.AuthorizationException;
 import fm.pattern.valex.Reportable;
 
@@ -38,6 +39,22 @@ public class AuthorizationAdvisorTest {
 		this.advisor = new AuthorizationAdvisor(provider);
 	}
 
+	@Test
+	public void shouldThrowAnAuthenticationErrorIfTheCurrentAuthenticationContextIsNotAuthenticated() throws Throwable {
+		this.provider = new SimpleAuthorizationContextProvider().authenticated(false);
+		this.advisor = new AuthorizationAdvisor(provider);
+		
+		try {
+			advisor.handle(authorize().withRoles("role:user").build());
+		}
+		catch (AuthenticationException e) {
+			List<Reportable> errors = e.getErrors();
+			Assertions.assertThat(errors).hasSize(1);
+			Assertions.assertThat(errors.get(0).getCode()).isEqualTo("AUT-0001");
+			Assertions.assertThat(errors.get(0).getMessage()).isEqualTo("Full authentication is required to access this resource.");
+		}
+	}
+	
 	@Test
 	public void shouldThrowAnAuthorizationErrorIfTheCurrentAuthorizationContextDoesNotHaveTheSpecifiedAnnoationRole() throws Throwable {
 		try {

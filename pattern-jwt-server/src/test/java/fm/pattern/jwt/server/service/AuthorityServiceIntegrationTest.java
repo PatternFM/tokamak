@@ -10,6 +10,7 @@ import java.util.List;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import fm.pattern.commons.util.ReflectionUtils;
 import fm.pattern.jwt.server.IntegrationTest;
 import fm.pattern.jwt.server.model.Authority;
 import fm.pattern.valex.EntityNotFoundException;
@@ -68,6 +69,13 @@ public class AuthorityServiceIntegrationTest extends IntegrationTest {
 
 		assertThat(authorityService.delete(authority)).accepted();
 		assertThat(authorityService.findById(authority.getId())).rejected();
+	}
+
+	@Test
+	public void shouldNotBeAbleToDeleteAnAuthorityIfTheAuthorityIsInvalid() {
+		Authority authority = authority().thatIs().persistent().build();
+		ReflectionUtils.setValue(authority, "id", null, 1);
+		assertThat(authorityService.delete(authority)).rejected().withError("ENT-0001", "An id is required.", UnprocessableEntityException.class);
 	}
 
 	@Test

@@ -254,6 +254,19 @@ auth.not.authenticated:
   exception: fm.pattern.valex.AuthenticationException  
 
 
+entity.id.required:
+  message: "An id is required."
+  code: ENT-0001
+
+entity.created.required:
+  message: "A created date is required."
+  code: ENT-0002
+  
+entity.updated.required:
+  message: "An updated date is required."
+  code: ENT-0003
+
+
 system.not.found: 
   message: "No such %s id: %s"
   code: SYS-0001

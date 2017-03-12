@@ -10,6 +10,7 @@ import java.util.List;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import fm.pattern.commons.util.ReflectionUtils;
 import fm.pattern.jwt.server.IntegrationTest;
 import fm.pattern.jwt.server.model.Role;
 import fm.pattern.valex.EntityNotFoundException;
@@ -68,6 +69,13 @@ public class RoleServiceIntegrationTest extends IntegrationTest {
 
 		assertThat(roleService.delete(role)).accepted();
 		assertThat(roleService.findById(role.getId())).rejected();
+	}
+
+	@Test
+	public void shouldNotBeAbleToDeleteARoleIfTheRoleIsInvalid() {
+		Role role = role().thatIs().persistent().build();
+		ReflectionUtils.setValue(role, "id", null, 1);
+		assertThat(roleService.delete(role)).rejected().withError("ENT-0001", "An id is required.", UnprocessableEntityException.class);
 	}
 
 	@Test

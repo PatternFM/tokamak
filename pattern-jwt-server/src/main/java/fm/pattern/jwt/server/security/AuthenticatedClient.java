@@ -29,8 +29,6 @@ public class AuthenticatedClient extends BaseClientDetails implements ClientDeta
 
 	private static final long serialVersionUID = 782533447342660L;
 
-	private Client client;
-
 	public AuthenticatedClient(Client client) {
 		super.setClientId(client.getClientId());
 		super.setClientSecret(client.getClientSecret());
@@ -41,12 +39,6 @@ public class AuthenticatedClient extends BaseClientDetails implements ClientDeta
 		super.setResourceIds(client.getAudiences().stream().map(audience -> audience.getName().toLowerCase()).collect(Collectors.toCollection(HashSet::new)));
 		super.setAccessTokenValiditySeconds(client.getAccessTokenValiditySeconds());
 		super.setRefreshTokenValiditySeconds(client.getRefreshTokenValiditySeconds());
-
-		this.client = client;
-	}
-
-	public Client getClient() {
-		return client;
 	}
 
 }

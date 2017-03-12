@@ -10,6 +10,7 @@ import java.util.List;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import fm.pattern.commons.util.ReflectionUtils;
 import fm.pattern.jwt.server.IntegrationTest;
 import fm.pattern.jwt.server.model.Scope;
 import fm.pattern.valex.EntityNotFoundException;
@@ -68,6 +69,13 @@ public class ScopeServiceIntegrationTest extends IntegrationTest {
 
 		assertThat(scopeService.delete(scope)).accepted();
 		assertThat(scopeService.findById(scope.getId())).rejected();
+	}
+
+	@Test
+	public void shouldNotBeAbleToDeleteAScopeIfTheScopeIsInvalid() {
+		Scope scope = scope().thatIs().persistent().build();
+		ReflectionUtils.setValue(scope, "id", null, 1);
+		assertThat(scopeService.delete(scope)).rejected().withError("ENT-0001", "An id is required.", UnprocessableEntityException.class);
 	}
 
 	@Test

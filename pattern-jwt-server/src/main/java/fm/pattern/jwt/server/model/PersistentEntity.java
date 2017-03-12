@@ -77,8 +77,4 @@ public class PersistentEntity implements Serializable {
 		return new Date(updated.getTime());
 	}
 
-	public String toString() {
-		return "\"type\":\"" + this.getClass().getSimpleName() + "\", \"id\":" + getId() + "\", \"created\":" + getCreated().getTime() + ", \"updated\":" + getUpdated().getTime();
-	}
-
 }
