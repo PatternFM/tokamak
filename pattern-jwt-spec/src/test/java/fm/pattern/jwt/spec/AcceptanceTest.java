@@ -1,6 +1,6 @@
 package fm.pattern.jwt.spec;
 
-import fm.pattern.acceptance.AutomatedAcceptanceTest;
+import fm.pattern.cycle.AutomatedAcceptanceTest;
 import fm.pattern.jwt.sdk.ClientCredentials;
 import fm.pattern.jwt.sdk.JwtClientProperties;
 
