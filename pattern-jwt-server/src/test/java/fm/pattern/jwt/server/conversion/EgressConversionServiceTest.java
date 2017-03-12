@@ -19,6 +19,7 @@ package fm.pattern.jwt.server.conversion;
 import static fm.pattern.jwt.server.dsl.AccountDSL.account;
 import static fm.pattern.jwt.server.dsl.AudienceDSL.audience;
 import static fm.pattern.jwt.server.dsl.AuthorityDSL.authority;
+import static fm.pattern.jwt.server.dsl.ClientDSL.client;
 import static fm.pattern.jwt.server.dsl.GrantTypeDSL.grantType;
 import static fm.pattern.jwt.server.dsl.RoleDSL.role;
 import static fm.pattern.jwt.server.dsl.ScopeDSL.scope;
@@ -30,6 +31,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import fm.pattern.jwt.sdk.model.AccountRepresentation;
 import fm.pattern.jwt.sdk.model.AudienceRepresentation;
 import fm.pattern.jwt.sdk.model.AuthorityRepresentation;
+import fm.pattern.jwt.sdk.model.ClientRepresentation;
 import fm.pattern.jwt.sdk.model.GrantTypeRepresentation;
 import fm.pattern.jwt.sdk.model.RoleRepresentation;
 import fm.pattern.jwt.sdk.model.ScopeRepresentation;
@@ -37,6 +39,7 @@ import fm.pattern.jwt.server.IntegrationTest;
 import fm.pattern.jwt.server.model.Account;
 import fm.pattern.jwt.server.model.Audience;
 import fm.pattern.jwt.server.model.Authority;
+import fm.pattern.jwt.server.model.Client;
 import fm.pattern.jwt.server.model.GrantType;
 import fm.pattern.jwt.server.model.Role;
 import fm.pattern.jwt.server.model.Scope;
@@ -59,6 +62,32 @@ public class EgressConversionServiceTest extends IntegrationTest {
 
 		for (RoleRepresentation role : representation.getRoles()) {
 			assertThat(account.getRoles()).extracting("id").contains(role.getId());
+		}
+	}
+
+	@Test
+	public void shouldBeAbleToConvertAClientIntoAClientRepresentation() {
+		Client client = client().withGrantType(grantType().thatIs().persistent().build()).withAudience(audience().thatIs().persistent().build()).withAuthority(authority().thatIs().persistent().build()).withScope(scope().thatIs().persistent().build()).build();
+		ClientRepresentation representation = egress.convert(client);
+
+		assertThat(representation.getId()).isEqualTo(client.getId());
+		assertThat(representation.getCreated()).isEqualTo(client.getCreated());
+		assertThat(representation.getUpdated()).isEqualTo(client.getUpdated());
+
+		for (ScopeRepresentation scope : representation.getScopes()) {
+			assertThat(client.getScopes()).extracting("id").contains(scope.getId());
+		}
+
+		for (AuthorityRepresentation authority : representation.getAuthorities()) {
+			assertThat(client.getAuthorities()).extracting("id").contains(authority.getId());
+		}
+
+		for (AudienceRepresentation audience : representation.getAudiences()) {
+			assertThat(client.getAudiences()).extracting("id").contains(audience.getId());
+		}
+
+		for (GrantTypeRepresentation grantType : representation.getGrantTypes()) {
+			assertThat(client.getGrantTypes()).extracting("id").contains(grantType.getId());
 		}
 	}
 
