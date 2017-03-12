@@ -5,7 +5,7 @@
 
    <groupId>fm.pattern</groupId>
    <artifactId>pattern-tokamak</artifactId>
-   <version>1.0.0</version>
+   <version>1.0.1-SNAPSHOT</version>
    <packaging>pom</packaging>
 
    <properties>
@@ -23,7 +23,7 @@
 
    <scm>
       <developerConnection>scm:git:https://github.com/BrandonJohnGrenier/pattern-tokamak.git</developerConnection>
-      <tag>pattern-tokamak-1.0.0.RELEASE</tag>
+      <tag>HEAD</tag>
    </scm>
 
    <licenses>
