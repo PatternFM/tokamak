@@ -28,6 +28,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import fm.pattern.commons.rest.ErrorsRepresentation;
 import fm.pattern.jwt.sdk.model.AccountRepresentation;
 import fm.pattern.jwt.sdk.model.AudienceRepresentation;
 import fm.pattern.jwt.sdk.model.AuthorityRepresentation;
@@ -43,6 +44,9 @@ import fm.pattern.jwt.server.model.Client;
 import fm.pattern.jwt.server.model.GrantType;
 import fm.pattern.jwt.server.model.Role;
 import fm.pattern.jwt.server.model.Scope;
+import fm.pattern.valex.Reportable;
+import fm.pattern.valex.ReportableException;
+import fm.pattern.valex.UnprocessableEntityException;
 
 public class EgressConversionServiceTest extends IntegrationTest {
 
@@ -140,7 +144,7 @@ public class EgressConversionServiceTest extends IntegrationTest {
 	}
 
 	@Test
-	public void shouldBeAbleToConvertAAudienceIntoAAudienceRepresentation() {
+	public void shouldBeAbleToConvertAnAudienceIntoAAudienceRepresentation() {
 		Audience audience = audience().thatIs().persistent().build();
 		AudienceRepresentation representation = egress.convert(audience);
 
@@ -149,6 +153,14 @@ public class EgressConversionServiceTest extends IntegrationTest {
 		assertThat(representation.getUpdated()).isEqualTo(audience.getUpdated());
 		assertThat(representation.getName()).isEqualTo(audience.getName());
 		assertThat(representation.getDescription()).isEqualTo(audience.getDescription());
+	}
+
+	@Test
+	public void shouldBeAbleToConvertAReportableExceptionIntoAnErrorsRepresentation() {
+		ReportableException exception = new UnprocessableEntityException(Reportable.report("client.id.required"));
+		ErrorsRepresentation errors = egress.convert(exception);
+
+		assertThat(errors.getErrors()).hasSize(1);
 	}
 
 }
