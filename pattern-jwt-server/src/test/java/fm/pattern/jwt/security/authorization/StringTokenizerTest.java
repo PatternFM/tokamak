@@ -22,6 +22,8 @@ import java.util.Set;
 
 import org.junit.Test;
 
+import fm.pattern.jwt.server.PatternAssertions;
+
 public class StringTokenizerTest {
 
 	@Test
@@ -47,11 +49,16 @@ public class StringTokenizerTest {
 		Set<String> set = StringTokenizer.tokenize("first,,,second,,third,,");
 		assertThat(set).contains("first", "second", "third");
 	}
-	
+
 	@Test
 	public void shouldReturnAnEmptyListIfTheStringToTokenizeIsNull() {
 		Set<String> set = StringTokenizer.tokenize("   ");
 		assertThat(set).isEmpty();
 	}
-	
+
+	@Test
+	public void theClassShouldBeAWellDefinedUtilityClass() {
+		PatternAssertions.assertClass(StringTokenizer.class).isAWellDefinedUtilityClass();
+	}
+
 }

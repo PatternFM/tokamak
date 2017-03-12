@@ -10,4 +10,8 @@ public class PatternAssertions extends Assertions {
 		return new ResultAssertions(result);
 	}
 
+	public static UtilityClassAssertions assertClass(Class<?> clazz) {
+		return new UtilityClassAssertions(clazz);
+	}
+
 }

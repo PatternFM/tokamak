@@ -22,7 +22,11 @@ import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
 
-public class StringTokenizer {
+public final class StringTokenizer {
+
+	private StringTokenizer() {
+
+	}
 
 	public static Set<String> tokenize(String input) {
 		return StringUtils.isBlank(input) ? new HashSet<String>() : new HashSet<String>(Arrays.asList(input.trim().split("\\s*,\\s*")));
