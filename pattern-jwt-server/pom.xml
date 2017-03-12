@@ -44,14 +44,14 @@
 
       <dependency>
          <groupId>fm.pattern</groupId>
-         <artifactId>valex</artifactId>
-         <version>1.0.0</version>
+         <artifactId>pattern-valex</artifactId>
+         <version>1.0.1</version>
       </dependency>
 
       <dependency>
-         <groupId>fm.pattern.commons</groupId>
-         <artifactId>commons-util</artifactId>
-         <version>1.0.0</version>
+         <groupId>fm.pattern</groupId>
+         <artifactId>pattern-commons-util</artifactId>
+         <version>1.0.1</version>
       </dependency>      
       
       <dependency>
