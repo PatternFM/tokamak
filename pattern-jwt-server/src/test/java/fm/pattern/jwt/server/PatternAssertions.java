@@ -2,7 +2,7 @@ package fm.pattern.jwt.server;
 
 import org.assertj.core.api.Assertions;
 
-import fm.pattern.validation.Result;
+import fm.pattern.valex.Result;
 
 public class PatternAssertions extends Assertions {
 

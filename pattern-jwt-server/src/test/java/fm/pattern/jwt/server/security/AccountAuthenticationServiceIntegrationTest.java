@@ -10,7 +10,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import fm.pattern.jwt.server.IntegrationTest;
 import fm.pattern.jwt.server.model.Account;
-import fm.pattern.jwt.server.security.AccountAuthenticationService;
 
 public class AccountAuthenticationServiceIntegrationTest extends IntegrationTest {
 

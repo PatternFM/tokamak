@@ -27,9 +27,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import fm.pattern.jwt.server.model.Scope;
 import fm.pattern.jwt.server.repository.DataRepository;
-import fm.pattern.validation.Result;
-import fm.pattern.validation.ValidationService;
-import fm.pattern.validation.sequences.Delete;
+import fm.pattern.valex.Result;
+import fm.pattern.valex.ValidationService;
+import fm.pattern.valex.sequences.Delete;
 
 @Service
 class ScopeServiceImpl extends DataServiceImpl<Scope> implements ScopeService {

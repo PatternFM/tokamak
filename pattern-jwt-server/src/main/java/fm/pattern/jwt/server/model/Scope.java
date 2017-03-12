@@ -29,12 +29,12 @@ import com.google.common.base.Objects;
 import fm.pattern.commons.util.IdGenerator;
 import fm.pattern.commons.util.JSON;
 import fm.pattern.jwt.server.validation.UniqueValue;
-import fm.pattern.validation.sequences.CreateLevel1;
-import fm.pattern.validation.sequences.CreateLevel2;
-import fm.pattern.validation.sequences.CreateLevel3;
-import fm.pattern.validation.sequences.UpdateLevel1;
-import fm.pattern.validation.sequences.UpdateLevel2;
-import fm.pattern.validation.sequences.UpdateLevel3;
+import fm.pattern.valex.sequences.CreateLevel1;
+import fm.pattern.valex.sequences.CreateLevel2;
+import fm.pattern.valex.sequences.CreateLevel3;
+import fm.pattern.valex.sequences.UpdateLevel1;
+import fm.pattern.valex.sequences.UpdateLevel2;
+import fm.pattern.valex.sequences.UpdateLevel3;
 
 @Entity(name = "Scopes")
 @UniqueValue(property = "name", message = "{scope.name.conflict}", groups = { CreateLevel3.class, UpdateLevel3.class })

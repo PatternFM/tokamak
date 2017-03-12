@@ -26,9 +26,9 @@ import fm.pattern.commons.util.ReflectionUtils;
 import fm.pattern.jwt.server.model.Client;
 import fm.pattern.jwt.server.repository.ClientRepository;
 import fm.pattern.jwt.server.security.PasswordEncodingService;
-import fm.pattern.validation.Result;
-import fm.pattern.validation.ValidationService;
-import fm.pattern.validation.sequences.Create;
+import fm.pattern.valex.Result;
+import fm.pattern.valex.ValidationService;
+import fm.pattern.valex.sequences.Create;
 
 @Service
 class ClientServiceImpl extends DataServiceImpl<Client> implements ClientService {

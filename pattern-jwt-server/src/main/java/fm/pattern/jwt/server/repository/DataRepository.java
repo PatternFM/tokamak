@@ -21,7 +21,7 @@ import org.hibernate.Query;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 
-import fm.pattern.validation.Result;
+import fm.pattern.valex.Result;
 
 public interface DataRepository {
 

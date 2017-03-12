@@ -29,9 +29,9 @@ import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.NotBlank;
 
 import fm.pattern.commons.util.IdGenerator;
-import fm.pattern.validation.sequences.CreateLevel1;
-import fm.pattern.validation.sequences.DeleteLevel1;
-import fm.pattern.validation.sequences.UpdateLevel1;
+import fm.pattern.valex.sequences.CreateLevel1;
+import fm.pattern.valex.sequences.DeleteLevel1;
+import fm.pattern.valex.sequences.UpdateLevel1;
 
 @MappedSuperclass
 public class PersistentEntity implements Serializable {

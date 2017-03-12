@@ -6,7 +6,6 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import fm.pattern.jwt.server.IntegrationTest;
-import fm.pattern.jwt.server.security.PasswordEncodingService;
 
 public class PasswordEncodingServiceIntegrationTest extends IntegrationTest {
 

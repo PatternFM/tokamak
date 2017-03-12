@@ -18,7 +18,7 @@ package fm.pattern.jwt.server.service;
 
 import java.util.List;
 
-import fm.pattern.validation.Result;
+import fm.pattern.valex.Result;
 
 public interface DataService<T> {
 

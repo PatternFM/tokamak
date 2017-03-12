@@ -22,8 +22,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
-import fm.pattern.validation.SimpleValidationService;
-import fm.pattern.validation.ValidationService;
+import fm.pattern.valex.SimpleValidationService;
+import fm.pattern.valex.ValidationService;
 
 @Configuration
 public class ValidationConfiguration {

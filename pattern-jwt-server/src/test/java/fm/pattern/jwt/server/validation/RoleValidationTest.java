@@ -8,8 +8,8 @@ import org.junit.Test;
 
 import fm.pattern.jwt.server.IntegrationTest;
 import fm.pattern.jwt.server.model.Role;
-import fm.pattern.validation.ResourceConflictException;
-import fm.pattern.validation.UnprocessableEntityException;
+import fm.pattern.valex.ResourceConflictException;
+import fm.pattern.valex.UnprocessableEntityException;
 
 public class RoleValidationTest extends IntegrationTest {
 

@@ -14,8 +14,8 @@ import fm.pattern.commons.util.ReflectionUtils;
 import fm.pattern.jwt.server.IntegrationTest;
 import fm.pattern.jwt.server.model.Client;
 import fm.pattern.jwt.server.model.GrantType;
-import fm.pattern.validation.ResourceConflictException;
-import fm.pattern.validation.UnprocessableEntityException;
+import fm.pattern.valex.ResourceConflictException;
+import fm.pattern.valex.UnprocessableEntityException;
 
 public class ClientValidationTest extends IntegrationTest {
 

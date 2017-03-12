@@ -13,7 +13,6 @@ import org.springframework.security.oauth2.provider.ClientDetails;
 import fm.pattern.jwt.server.IntegrationTest;
 import fm.pattern.jwt.server.model.Client;
 import fm.pattern.jwt.server.model.GrantType;
-import fm.pattern.jwt.server.security.ClientAuthenticationService;
 
 public class ClientAuthenticationServiceIntegrationTest extends IntegrationTest {
 

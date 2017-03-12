@@ -11,9 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import fm.pattern.jwt.server.IntegrationTest;
 import fm.pattern.jwt.server.model.Account;
 import fm.pattern.jwt.server.security.PasswordEncodingService;
-import fm.pattern.validation.EntityNotFoundException;
-import fm.pattern.validation.Result;
-import fm.pattern.validation.UnprocessableEntityException;
+import fm.pattern.valex.EntityNotFoundException;
+import fm.pattern.valex.Result;
+import fm.pattern.valex.UnprocessableEntityException;
 
 public class AccountServiceIntegrationTest extends IntegrationTest {
 

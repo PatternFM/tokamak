@@ -30,7 +30,7 @@ import org.springframework.stereotype.Component;
 
 import fm.pattern.jwt.server.model.Account;
 import fm.pattern.jwt.server.service.AccountService;
-import fm.pattern.validation.Result;
+import fm.pattern.valex.Result;
 
 @Component
 public class CustomJwtTokenEnhancer extends JwtAccessTokenConverter {

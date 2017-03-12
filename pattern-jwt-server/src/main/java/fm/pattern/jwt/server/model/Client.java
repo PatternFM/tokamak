@@ -35,12 +35,12 @@ import org.hibernate.validator.constraints.NotBlank;
 import fm.pattern.commons.util.IdGenerator;
 import fm.pattern.commons.util.JSON;
 import fm.pattern.jwt.server.validation.UniqueValue;
-import fm.pattern.validation.sequences.CreateLevel1;
-import fm.pattern.validation.sequences.CreateLevel2;
-import fm.pattern.validation.sequences.CreateLevel4;
-import fm.pattern.validation.sequences.UpdateLevel1;
-import fm.pattern.validation.sequences.UpdateLevel2;
-import fm.pattern.validation.sequences.UpdateLevel4;
+import fm.pattern.valex.sequences.CreateLevel1;
+import fm.pattern.valex.sequences.CreateLevel2;
+import fm.pattern.valex.sequences.CreateLevel4;
+import fm.pattern.valex.sequences.UpdateLevel1;
+import fm.pattern.valex.sequences.UpdateLevel2;
+import fm.pattern.valex.sequences.UpdateLevel4;
 
 @Entity(name = "Clients")
 @UniqueValue(property = "clientId", message = "{client.clientId.conflict}", groups = { CreateLevel4.class, UpdateLevel4.class })

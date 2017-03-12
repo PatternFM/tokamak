@@ -3,7 +3,7 @@ package fm.pattern.jwt.server.dsl;
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
 import fm.pattern.jwt.server.model.Role;
 import fm.pattern.jwt.server.service.RoleService;
-import fm.pattern.validation.Result;
+import fm.pattern.valex.Result;
 
 public class RoleDSL extends AbstractDSL<RoleDSL, Role> {
 

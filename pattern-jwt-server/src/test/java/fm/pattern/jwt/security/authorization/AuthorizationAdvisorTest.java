@@ -24,8 +24,8 @@ import org.assertj.core.api.Assertions;
 import org.junit.Before;
 import org.junit.Test;
 
-import fm.pattern.validation.AuthorizationException;
-import fm.pattern.validation.Reportable;
+import fm.pattern.valex.AuthorizationException;
+import fm.pattern.valex.Reportable;
 
 public class AuthorizationAdvisorTest {
 

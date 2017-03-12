@@ -27,12 +27,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import fm.pattern.commons.rest.ErrorsRepresentation;
 import fm.pattern.jwt.server.conversion.EgressConversionService;
-import fm.pattern.validation.AuthenticationException;
-import fm.pattern.validation.AuthorizationException;
-import fm.pattern.validation.EntityNotFoundException;
-import fm.pattern.validation.InternalErrorException;
-import fm.pattern.validation.ResourceConflictException;
-import fm.pattern.validation.UnprocessableEntityException;
+import fm.pattern.valex.AuthenticationException;
+import fm.pattern.valex.AuthorizationException;
+import fm.pattern.valex.EntityNotFoundException;
+import fm.pattern.valex.InternalErrorException;
+import fm.pattern.valex.ResourceConflictException;
+import fm.pattern.valex.UnprocessableEntityException;
 
 @RestController
 public class Endpoint {

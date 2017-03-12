@@ -45,8 +45,8 @@ import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 import com.google.common.collect.Lists;
 
 import fm.pattern.jwt.server.security.AccountAuthenticationService;
-import fm.pattern.jwt.server.security.CustomJwtTokenEnhancer;
 import fm.pattern.jwt.server.security.ClientAuthenticationService;
+import fm.pattern.jwt.server.security.CustomJwtTokenEnhancer;
 
 @Configuration
 @EnableWebSecurity

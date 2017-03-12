@@ -16,6 +16,7 @@
 
 package fm.pattern.jwt.security.authorization;
 
+import static fm.pattern.valex.Reportable.report;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 import java.util.Collections;
@@ -26,9 +27,9 @@ import org.aspectj.lang.annotation.Before;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import fm.pattern.validation.AuthenticationException;
-import fm.pattern.validation.AuthorizationException;
-import fm.pattern.validation.Reportable;
+import fm.pattern.valex.AuthenticationException;
+import fm.pattern.valex.AuthorizationException;
+import fm.pattern.valex.Reportable;
 
 @Aspect
 @Component
@@ -65,7 +66,7 @@ public class AuthorizationAdvisor {
 		Set<String> grantedScopes = provider.getScopes();
 
 		if (Collections.disjoint(scopes, grantedScopes)) {
-			throw new AuthorizationException(Reportable.report("auth.invalid.scope"));
+			throw new AuthorizationException(report("auth.invalid.scope"));
 		}
 	}
 
@@ -74,7 +75,7 @@ public class AuthorizationAdvisor {
 		Set<String> grantedRoles = provider.getRoles();
 
 		if (Collections.disjoint(roles, grantedRoles)) {
-			throw new AuthorizationException(Reportable.report("auth.invalid.role"));
+			throw new AuthorizationException(report("auth.invalid.role"));
 		}
 	}
 
@@ -83,7 +84,7 @@ public class AuthorizationAdvisor {
 		Set<String> grantedAuthorities = provider.getAuthorities();
 
 		if (Collections.disjoint(authorities, grantedAuthorities)) {
-			throw new AuthorizationException(Reportable.report("auth.invalid.authority"));
+			throw new AuthorizationException(report("auth.invalid.authority"));
 		}
 	}
 

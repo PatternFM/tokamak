@@ -3,7 +3,7 @@ package fm.pattern.jwt.server.dsl;
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
 import fm.pattern.jwt.server.model.Authority;
 import fm.pattern.jwt.server.service.AuthorityService;
-import fm.pattern.validation.Result;
+import fm.pattern.valex.Result;
 
 public class AuthorityDSL extends AbstractDSL<AuthorityDSL, Authority> {
 
