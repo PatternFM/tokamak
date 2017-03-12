@@ -11,4 +11,4 @@ script:
   - mvn clean test jacoco:report coveralls:report -Dspring.profiles.active=ci
 
 after_success:
- - ./deploy.sh
+  - mvn deploy -DskipTests=true --settings settings.xml
