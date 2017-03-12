@@ -1,5 +1,5 @@
- Authentication Service: 
-  path: ../pattern-jwt-server
+ Tokamak Server: 
+  path: ../pattern-tokamak-server
   ping: http://localhost:9600/v1/ping
   environment: 
     SPRING_PROFILE: ci
