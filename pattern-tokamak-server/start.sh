@@ -1,7 +1,9 @@
 #!/bin/bash
 
-mvn install -DskipTests=true
+if [ "$MYVAR" = "ci" ]
+then
+   echo "Running CI Environment"
+   mvn install -DskipTests=true
+fi
 
-# TODO: Remove hard coded profile.
-nohup mvn spring-boot:run -Dspring.profiles.active=ci >/dev/null 2>&1 &
-# nohup mvn spring-boot:run -Dspring.profiles.active= >/dev/null 2>&1 &
+nohup mvn spring-boot:run -Dspring.profiles.active=$SPRING_PROFILE >/dev/null 2>&1 &

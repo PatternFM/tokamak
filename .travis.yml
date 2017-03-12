@@ -8,7 +8,7 @@ cache:
   - $HOME/.m2
 
 script:
-  - mvn clean test jacoco:report coveralls:report -Dspring.profiles.active=ci
+  - mvn clean test jacoco:report coveralls:report -Dspring.profiles.active=ci -Dcycle.config=cycle-ci.yml
 
 after_success:
   - mvn deploy -DskipTests=true --settings settings.xml
