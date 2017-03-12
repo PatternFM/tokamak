@@ -1,3 +1,0 @@
- Authentication Service: 
-  path: ../pattern-jwt-server
-  ping: http://localhost:9600/v1/ping
