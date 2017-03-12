@@ -1,7 +1,3 @@
-startup:
-  polling_interval: 1000
-  retry_count: 60
- 
-Authentication Service: 
-  path: pattern-jwt/pattern-jwt-server/
+ Authentication Service: 
+  path: ../pattern-jwt-server
   ping: http://localhost:9600/v1/ping
