@@ -16,21 +16,21 @@
 
 package fm.pattern.jwt.spec.security;
 
-import static fm.pattern.jwt.sdk.dsl.AccessTokenDSL.token;
-import static fm.pattern.jwt.sdk.dsl.AccountDSL.account;
-import static fm.pattern.jwt.sdk.dsl.ClientDSL.client;
 import static fm.pattern.jwt.spec.PatternAssertions.assertThat;
+import static fm.pattern.tokamak.sdk.dsl.AccessTokenDSL.token;
+import static fm.pattern.tokamak.sdk.dsl.AccountDSL.account;
+import static fm.pattern.tokamak.sdk.dsl.ClientDSL.client;
 
 import org.junit.Before;
 import org.junit.Test;
 
-import fm.pattern.commons.rest.Result;
-import fm.pattern.jwt.sdk.AccountsClient;
-import fm.pattern.jwt.sdk.JwtClientProperties;
-import fm.pattern.jwt.sdk.model.AccessTokenRepresentation;
-import fm.pattern.jwt.sdk.model.AccountRepresentation;
-import fm.pattern.jwt.sdk.model.ClientRepresentation;
 import fm.pattern.jwt.spec.AcceptanceTest;
+import fm.pattern.tokamak.sdk.AccountsClient;
+import fm.pattern.tokamak.sdk.JwtClientProperties;
+import fm.pattern.tokamak.sdk.commons.Result;
+import fm.pattern.tokamak.sdk.model.AccessTokenRepresentation;
+import fm.pattern.tokamak.sdk.model.AccountRepresentation;
+import fm.pattern.tokamak.sdk.model.ClientRepresentation;
 
 public class AccountsEndpointSecurityTest extends AcceptanceTest {
 

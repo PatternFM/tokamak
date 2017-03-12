@@ -6,8 +6,8 @@ import java.util.stream.Collectors;
 import org.assertj.core.api.AbstractAssert;
 import org.assertj.core.api.Assertions;
 
-import fm.pattern.commons.rest.ErrorRepresentation;
-import fm.pattern.commons.rest.Result;
+import fm.pattern.tokamak.sdk.commons.ErrorRepresentation;
+import fm.pattern.tokamak.sdk.commons.Result;
 
 public class ResultAssertions extends AbstractAssert<ResultAssertions, Result<?>> {
 

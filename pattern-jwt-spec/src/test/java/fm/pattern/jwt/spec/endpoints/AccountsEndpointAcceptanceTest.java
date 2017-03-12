@@ -1,9 +1,9 @@
 package fm.pattern.jwt.spec.endpoints;
 
-import static fm.pattern.jwt.sdk.dsl.AccessTokenDSL.token;
-import static fm.pattern.jwt.sdk.dsl.AccountDSL.account;
-import static fm.pattern.jwt.sdk.dsl.RoleDSL.role;
 import static fm.pattern.jwt.spec.PatternAssertions.assertThat;
+import static fm.pattern.tokamak.sdk.dsl.AccessTokenDSL.token;
+import static fm.pattern.tokamak.sdk.dsl.AccountDSL.account;
+import static fm.pattern.tokamak.sdk.dsl.RoleDSL.role;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.StrictAssertions.assertThat;
 
@@ -14,15 +14,15 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Before;
 import org.junit.Test;
 
-import fm.pattern.commons.rest.Result;
-import fm.pattern.jwt.sdk.AccountsClient;
-import fm.pattern.jwt.sdk.JwtClientProperties;
-import fm.pattern.jwt.sdk.TokensClient;
-import fm.pattern.jwt.sdk.UserCredentials;
-import fm.pattern.jwt.sdk.model.AccessTokenRepresentation;
-import fm.pattern.jwt.sdk.model.AccountRepresentation;
-import fm.pattern.jwt.sdk.model.RoleRepresentation;
 import fm.pattern.jwt.spec.AcceptanceTest;
+import fm.pattern.tokamak.sdk.AccountsClient;
+import fm.pattern.tokamak.sdk.JwtClientProperties;
+import fm.pattern.tokamak.sdk.TokensClient;
+import fm.pattern.tokamak.sdk.UserCredentials;
+import fm.pattern.tokamak.sdk.commons.Result;
+import fm.pattern.tokamak.sdk.model.AccessTokenRepresentation;
+import fm.pattern.tokamak.sdk.model.AccountRepresentation;
+import fm.pattern.tokamak.sdk.model.RoleRepresentation;
 
 public class AccountsEndpointAcceptanceTest extends AcceptanceTest {
 

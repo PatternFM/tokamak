@@ -2,7 +2,7 @@ package fm.pattern.jwt.spec;
 
 import org.assertj.core.api.Assertions;
 
-import fm.pattern.commons.rest.Result;
+import fm.pattern.tokamak.sdk.commons.Result;
 
 public class PatternAssertions extends Assertions {
 

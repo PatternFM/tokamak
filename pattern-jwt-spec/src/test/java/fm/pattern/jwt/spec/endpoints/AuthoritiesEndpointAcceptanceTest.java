@@ -1,21 +1,21 @@
 package fm.pattern.jwt.spec.endpoints;
 
-import static fm.pattern.jwt.sdk.dsl.AccessTokenDSL.token;
-import static fm.pattern.jwt.sdk.dsl.AuthorityDSL.authority;
-import static fm.pattern.jwt.sdk.dsl.ClientDSL.client;
 import static fm.pattern.jwt.spec.PatternAssertions.assertThat;
+import static fm.pattern.tokamak.sdk.dsl.AccessTokenDSL.token;
+import static fm.pattern.tokamak.sdk.dsl.AuthorityDSL.authority;
+import static fm.pattern.tokamak.sdk.dsl.ClientDSL.client;
 import static org.assertj.core.api.StrictAssertions.assertThat;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Before;
 import org.junit.Test;
 
-import fm.pattern.commons.rest.Result;
-import fm.pattern.jwt.sdk.AuthoritiesClient;
-import fm.pattern.jwt.sdk.JwtClientProperties;
-import fm.pattern.jwt.sdk.model.AccessTokenRepresentation;
-import fm.pattern.jwt.sdk.model.AuthorityRepresentation;
 import fm.pattern.jwt.spec.AcceptanceTest;
+import fm.pattern.tokamak.sdk.AuthoritiesClient;
+import fm.pattern.tokamak.sdk.JwtClientProperties;
+import fm.pattern.tokamak.sdk.commons.Result;
+import fm.pattern.tokamak.sdk.model.AccessTokenRepresentation;
+import fm.pattern.tokamak.sdk.model.AuthorityRepresentation;
 
 public class AuthoritiesEndpointAcceptanceTest extends AcceptanceTest {
 
