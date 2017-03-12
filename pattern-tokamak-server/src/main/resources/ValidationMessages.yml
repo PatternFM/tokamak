@@ -1,0 +1,293 @@
+default:
+  exception: fm.pattern.valex.UnprocessableEntityException
+  
+  
+account.id.required: 
+  message: "An account id is required."
+  code: ACC-0006
+
+account.username.required: 
+  message: "An account username is required."
+  code: ACC-0001
+
+account.username.size: 
+  message: "An account username must be between {min} and {max} characters."
+  code: ACC-0002
+
+account.username.conflict:
+  message: "This account username is already in use."
+  code: ACC-0003
+  exception: fm.pattern.valex.ResourceConflictException
+
+account.password.required: 
+  message: "An account password is required."
+  code: ACC-0004
+
+account.password.size: 
+  message: "An account password must be between {min} and {max} characters."
+  code: ACC-0005
+
+account.username.not_found: 
+  message: "No such username: %s"
+  code: ACC-0008
+  exception: fm.pattern.valex.EntityNotFoundException
+
+
+audience.id.required: 
+  message: "An audience id is required."
+  code: AUD-0006
+
+audience.name.required: 
+  message: "An audience name is required."
+  code: AUD-0001
+
+audience.name.size: 
+  message: "An audience name cannot be greater than {max} characters."
+  code: AUD-0002
+
+audience.name.conflict: 
+  message: "This audience name is already in use."
+  code: AUD-0003
+  exception: fm.pattern.valex.ResourceConflictException
+
+audience.description.size: 
+  message: "An audience description cannot be greater than {max} characters."
+  code: AUD-0004
+
+audience.delete.conflict: 
+  message: "This audience cannot be deleted, %d %s linked to this audience."
+  code: AUD-0005
+  exception: fm.pattern.valex.ResourceConflictException
+
+audience.name.not_found: 
+  message: "No such audience name: %s"
+  code: AUD-0008
+  exception: fm.pattern.valex.EntityNotFoundException
+
+
+authority.id.required: 
+  message: "An authority id is required."
+  code: ATH-0006
+
+authority.name.required: 
+  message: "An authority name is required."
+  code: ATH-0001
+
+authority.name.size: 
+  message: "An authority name cannot be greater than {max} characters."
+  code: ATH-0002
+
+authority.name.conflict: 
+  message: "This authority name is already in use."
+  code: ATH-0003
+  exception: fm.pattern.valex.ResourceConflictException
+
+authority.description.size: 
+  message: "An authority description cannot be greater than {max} characters."
+  code: ATH-0004
+
+authority.delete.conflict: 
+  message: "This authority cannot be deleted, %d %s linked to this authority."
+  code: ATH-0005
+  exception: fm.pattern.valex.ResourceConflictException
+
+authority.name.not_found: 
+  message: "No such authority name: %s"
+  code: ATH-0008
+  exception: fm.pattern.valex.EntityNotFoundException
+
+
+client.id.required: 
+  message: "A client id is required."
+  code: CLI-0007
+
+client.clientId.required: 
+  message: "A client id is required."
+  code: CLI-0001
+
+client.clientId.size: 
+  message: "A client id must be between {min} and {max} characters."
+  code: CLI-0002
+
+client.clientId.conflict: 
+  message: "This client id is already in use."
+  code: "CLI-0003"
+  exception: fm.pattern.valex.ResourceConflictException
+
+client.secret.required: 
+  message: "A client secret is required."
+  code: CLI-0004
+
+client.secret.size: 
+  message: "A client secret must be between {min} and {max} characters."
+  code: CLI-0005
+
+client.grantType.required: 
+  message: "A client requires at least one grant type."
+  code: CLI-0006
+
+client.clientId.not_found: 
+  message: "No such client id: %s"
+  code: CLI-0009
+  exception: fm.pattern.valex.EntityNotFoundException
+
+
+grantType.id.required: 
+  message: "The grant type id to retrieve cannot be null or empty."
+  code: GNT-0005
+
+grantType.name.required: 
+  message: "A grant type name is required."
+  code: GNT-0001
+
+grantType.name.size: 
+  message: "A grant type name cannot be greater than {max} characters."
+  code: GNT-0002
+
+grantType.name.conflict: 
+  message: "This grant type name is already in use."
+  code: GNT-0003
+  exception: fm.pattern.valex.ResourceConflictException
+
+grantType.description.size: 
+  message: "A grant type description cannot be greater than {max} characters."
+  code: GNT-0004
+
+grantType.name.not_found: 
+  message: "No such grant type name: %s"
+  code: GNT-0007
+  exception: fm.pattern.valex.EntityNotFoundException
+  
+grantType.delete.conflict: 
+  message: "This grant type cannot be deleted, %d %s linked to this role."
+  code: GNT-0008
+  exception: fm.pattern.valex.ResourceConflictException
+
+
+role.id.required: 
+  message: "A role id is required."
+  code: ROL-0005
+
+role.name.required: 
+  message: "A role name is required."
+  code: ROL-0001
+
+role.name.size: 
+  message: "A role name cannot be greater than {max} characters."
+  code: ROL-0002
+
+role.name.conflict: 
+  message: "This role name is already in use."
+  code: ROL-0003
+  exception: fm.pattern.valex.ResourceConflictException
+
+role.description.size: 
+  message: "A role description cannot be greater than {max} characters."
+  code: ROL-0004
+
+role.delete.conflict: 
+  message: "This role cannot be deleted, %d %s linked to this role."
+  code: ROL-0007
+  exception: fm.pattern.valex.ResourceConflictException
+
+role.name.not_found: 
+  message: "No such role name: %s"
+  code: ROL-0008
+  exception: fm.pattern.valex.EntityNotFoundException
+
+
+scope.id.required: 
+  message: "A scope id is required."
+  code: SCO-0005
+
+scope.name.required: 
+  message: "A scope name is required."
+  code: SCO-0001
+
+scope.name.size:
+  message: "A scope name cannot be greater than {max} characters."
+  code: SCO-0002
+
+scope.name.conflict: 
+  message: "This scope name is already in use."
+  code: SCO-0003
+  exception: fm.pattern.valex.ResourceConflictException
+
+scope.description.size: 
+  message: "A scope description cannot be greater than {max} characters."
+  code: SCO-0004
+
+scope.name.not_found: 
+  message: "No such scope name: %s"
+  code: SCO-0007
+  exception: fm.pattern.valex.EntityNotFoundException
+
+scope.delete.conflict: 
+  message: "This scope cannot be deleted, %d %s linked to this scope."
+  code: SCO-0008
+  exception: fm.pattern.valex.ResourceConflictException
+  
+
+auth.invalid.scope:
+  message: "Insufficient scope for this resource."
+  code: ATZ-0001
+  exception: fm.pattern.valex.AuthorizationException
+    
+auth.invalid.grant:
+  message: "Unauthorized grant type: %s"
+  code: ATZ-0002
+  exception: fm.pattern.valex.AuthorizationException
+    
+auth.invalid.role:
+  message: "Access is denied."
+  code: ATZ-0003
+  exception: fm.pattern.valex.AuthorizationException
+
+auth.invalid.authority:
+  message: "Access is denied."
+  code: ATZ-0004
+  exception: fm.pattern.valex.AuthorizationException  
+  
+auth.not.authenticated:
+  message: "Full authentication is required to access this resource."
+  code: AUT-0001
+  exception: fm.pattern.valex.AuthenticationException  
+
+
+entity.id.required:
+  message: "An id is required."
+  code: ENT-0001
+
+entity.created.required:
+  message: "A created date is required."
+  code: ENT-0002
+  
+entity.updated.required:
+  message: "An updated date is required."
+  code: ENT-0003
+
+
+system.not.found: 
+  message: "No such %s id: %s"
+  code: SYS-0001
+  exception: fm.pattern.valex.EntityNotFoundException
+
+system.query.failed: 
+  message: "The query operation failed due to an internal system error: %s"
+  code: SYS-0002
+  exception: fm.pattern.valex.InternalErrorException
+
+system.create.failed: 
+  message: "The create operation failed due to an internal system error: %s"
+  code: SYS-0003
+  exception: fm.pattern.valex.InternalErrorException
+
+system.update.failed: 
+  message: "The update operation failed due to an internal system error: %s"
+  code: SYS-0004
+  exception: fm.pattern.valex.InternalErrorException
+
+system.delete.failed: 
+  message: "The delete operation failed due to an internal system error: %s"
+  code: SYS-0005
+  exception: fm.pattern.valex.InternalErrorException

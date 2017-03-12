@@ -1,0 +1,60 @@
+database:
+    schema: pattern-jwt
+    url: jdbc:mysql://localhost:3306
+    username: username
+    password: password
+    encrypted: false
+    driver: com.mysql.jdbc.Driver
+    dialect: org.hibernate.dialect.MySQLDialect
+    ddl: validate 
+    migrations: classpath:db/migration
+
+oauth2:
+    issuer: https://auth.pattern.fm
+    audience: oauth-service
+    accessTokenValiditySeconds: 7200
+    refreshTokenValiditySeconds: 31536000
+    
+    privateKey: |
+      -----BEGIN RSA PRIVATE KEY-----
+      MIIEpQIBAAKCAQEAzYFHFXlzwBJRhu4kA7unDH+WZHdO/KGBYxkybvbmUWfn2ju7
+      miBS5vPPZVIEAP+Ln3yl5tTn+EyFzn7wfRIsSB6vW7rhWKaFjRfc2Ig2QQUuJnvj
+      FJyPq0InggEZK+oJBecCvW/jy8m0282w4m8H/AZE4MfOlUVcRXDrwb9QZm11PvfK
+      kGo2CGNIE/fn2YqUKlR6n6MjTtx/bDmjpjpMrIZuTzeWOoepIvA5VbkSuxMdQn4Y
+      nci1vUvbyYwWsdD2um94ecDuPxt+JFSbdr1/vph3adlzkvfhyJNdXPUfn3v/ZR74
+      Bxqd/wxuuSunMW+hzU+28CseIChno34/NKJd6wIDAQABAoIBAFZGogs39Ap9JlEZ
+      hXEzxQwQPJltJXIWc/WgzHWdnlAq6UHLthUc4PEpBrco2Zl5r6qDcDsaw1CQ/9QT
+      ou8/Q+v7Re+i45yOPJ9hl0wo0240uI1bkZhDqmVh3qhLwb+X/7XEqHfTk7Uot49Y
+      KZzGtHlwQFaGTAqLFhPpNnEe2qhFJoJpEdbspCtBNraqAQWD/EjSDQ4v6JQSkSzY
+      FiVKdQM7w5TINbzZG5jieSWy6faRU8jrBk+T8zMI9YQ1WIzL5REK2/d6sZCEvx29
+      wzeXemJLuKfeCyy4F0NX/+or7AkEaTMv+4vtsmwmG/p9YpvqDln1isW2afN5IBga
+      ThlHt/ECgYEA+zpy2tkgINZcjxipxKYk4AazuDi0OtkXYb4ns4354Ta+pUuQHTjA
+      wRNmNQYBcLjlzzQFeG0/FvcgOjXH2Wm18L1cJ/Bcs9sFrSfF6JvjPCtUeZWluHrs
+      Yx4eHSWBKqtRlCdmR5hekX8CurHN0ucomuaBYgzqm3AHyv6IiJntGr8CgYEA0WiB
+      /m9+FX5+xIUro89duO7Gr2G7gPCh89We1XPuXwOEBfiojBIulw6bqFh2fKWkeMej
+      kC41hS2PFu51FujAGj6nOc/zGJYVfBuR6Lbpp1Ht752dwOlOgUH6GvXb2OuZ/qT4
+      XIITeCJk2PYkCfuX+O0iSYsXbPQ+bVRhYaQNI9UCgYEArN3IACyc/dtibxhSYLzN
+      7NTPvzhNU5zjiN8WZGeSBFTuE8EN1f2iLHiTwHJ0dULU5qFuDjJl0gCTzVoKPOCP
+      T6qMifLLZvqTSlVuyaLSVimeg9bj5C+5Dm6/2+Bdo6WkiaQera77i3PwxdPow3FJ
+      sGRhrL0khXYt9pD0E8KOsvMCgYEAiL3QnP/a+lgmmVdIfuhLEBbDoQSVtwXrC1lE
+      JahVUK/wByIvlX/N8o/0bwKNJKnZc5ERqnWyNyvf0x6VUQddYgXllufGmxhuISOz
+      rJ28h6kFUUHAIJd4zwjxM6e2DrkSTukU0PuTkRAMgGyCbg5fV4opqJJuEpSPKz89
+      c8/3UJ0CgYEAn2AqWdVCiiYPcA7ame+1I0RdUC+wm5ltFG1ix7jSfe+9Wdwv6Xbg
+      trRDNWn/NAbpSyhJ2Zj3ACWFl2ALtW1CDsB8VKWwnRGlA6aZRDuEu5SQIvz5i2m9
+      ZY5gMtvRah5CjOJoZazGgS1XTzrmADcBFLi18DmgP+f3yukkLBI6vi8=
+      -----END RSA PRIVATE KEY-----
+
+    publicKey: |
+      -----BEGIN PUBLIC KEY-----
+      MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAzYFHFXlzwBJRhu4kA7un
+      DH+WZHdO/KGBYxkybvbmUWfn2ju7miBS5vPPZVIEAP+Ln3yl5tTn+EyFzn7wfRIs
+      SB6vW7rhWKaFjRfc2Ig2QQUuJnvjFJyPq0InggEZK+oJBecCvW/jy8m0282w4m8H
+      /AZE4MfOlUVcRXDrwb9QZm11PvfKkGo2CGNIE/fn2YqUKlR6n6MjTtx/bDmjpjpM
+      rIZuTzeWOoepIvA5VbkSuxMdQn4Ynci1vUvbyYwWsdD2um94ecDuPxt+JFSbdr1/
+      vph3adlzkvfhyJNdXPUfn3v/ZR74Bxqd/wxuuSunMW+hzU+28CseIChno34/NKJd
+      6wIDAQAB
+      -----END PUBLIC KEY-----
+
+logging.config: classpath:logback.xml  
+
+  

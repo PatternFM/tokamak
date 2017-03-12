@@ -1,0 +1,14 @@
+.metadata
+.gradle
+bin/
+tmp/
+target/
+*.tmp
+*.swp
+.settings/
+.project
+.classpath
+.externalToolBuilders/
+.DS_Store
+*.launch
+.cproject

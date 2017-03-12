@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-   <name>Pattern JWT</name>
+   <name>Pattern Tokamak</name>
    <modelVersion>4.0.0</modelVersion>
 
    <groupId>fm.pattern</groupId>
-   <artifactId>pattern-jwt</artifactId>
+   <artifactId>pattern-tokamak</artifactId>
    <version>1.0.0-SNAPSHOT</version>
    <packaging>pom</packaging>
 
@@ -22,7 +22,7 @@
    </properties>
 
    <scm>
-      <developerConnection>scm:git:https://rocketbuilder@bitbucket.org/deliveryrocket/rocket-accounts-platform.git</developerConnection>
+      <developerConnection>scm:git:https://github.com/BrandonJohnGrenier/pattern-tokamak.git</developerConnection>
       <tag>HEAD</tag>
    </scm>
 
@@ -49,9 +49,9 @@
    </distributionManagement>
 
    <modules>
-      <module>pattern-jwt-sdk</module>
-      <module>pattern-jwt-server</module>
-      <module>pattern-jwt-spec</module>
+      <module>pattern-tokamak-sdk</module>
+      <module>pattern-tokamak-server</module>
+      <module>pattern-tokamak-spec</module>
   </modules>
 
    <repositories>
@@ -159,8 +159,8 @@
             <groupId>org.eluder.coveralls</groupId>
             <artifactId>coveralls-maven-plugin</artifactId>
             <version>4.3.0</version>
-         </plugin>         
-         
+         </plugin>
+
          <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-compiler-plugin</artifactId>
