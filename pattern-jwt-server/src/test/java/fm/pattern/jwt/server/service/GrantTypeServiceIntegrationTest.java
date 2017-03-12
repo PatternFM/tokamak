@@ -10,6 +10,7 @@ import java.util.List;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import fm.pattern.commons.util.ReflectionUtils;
 import fm.pattern.jwt.server.IntegrationTest;
 import fm.pattern.jwt.server.model.GrantType;
 import fm.pattern.valex.EntityNotFoundException;
@@ -68,6 +69,13 @@ public class GrantTypeServiceIntegrationTest extends IntegrationTest {
 
 		assertThat(grantTypeService.delete(grantType)).accepted();
 		assertThat(grantTypeService.findById(grantType.getId())).rejected();
+	}
+
+	@Test
+	public void shouldNotBeAbleToDeleteAGrantTypeIfTheGrantTypeIsInvalid() {
+		GrantType grantType = grantType().thatIs().persistent().build();
+		ReflectionUtils.setValue(grantType, "id", null, 1);
+		assertThat(grantTypeService.delete(grantType)).rejected().withError("ENT-0001", "An id is required.", UnprocessableEntityException.class);
 	}
 
 	@Test
