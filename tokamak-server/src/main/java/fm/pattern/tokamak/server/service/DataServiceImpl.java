@@ -25,75 +25,67 @@ import java.util.List;
 import javax.annotation.Resource;
 import javax.persistence.Entity;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import fm.pattern.tokamak.server.repository.DataRepository;
 import fm.pattern.valex.Result;
-import fm.pattern.valex.ValidationService;
-import fm.pattern.valex.sequences.Create;
-import fm.pattern.valex.sequences.Delete;
-import fm.pattern.valex.sequences.Update;
+import fm.pattern.valex.annotations.Create;
+import fm.pattern.valex.annotations.Delete;
+import fm.pattern.valex.annotations.Update;
 
 @Service
 @SuppressWarnings({ "unchecked", "hiding" })
 class DataServiceImpl<T> implements DataService<T> {
 
-	@Resource(name = "dataRepository")
-	private DataRepository repository;
+    @Resource(name = "dataRepository")
+    private DataRepository repository;
 
-	@Autowired
-	private ValidationService validationService;
+    DataServiceImpl() {
 
-	DataServiceImpl() {
+    }
 
-	}
+    @Transactional
+    public Result<T> create(@Create T entity) {
+        return repository.save(entity);
+    }
 
-	@Transactional
-	public Result<T> create(T entity) {
-		Result<T> result = validationService.validate(entity, Create.class);
-		return result.rejected() ? result : repository.save(entity);
-	}
+    @Transactional
+    public Result<T> update(@Update T entity) {
+        return repository.update(entity);
+    }
 
-	@Transactional
-	public Result<T> update(T entity) {
-		Result<T> result = validationService.validate(entity, Update.class);
-		return result.rejected() ? result : repository.update(entity);
-	}
+    @Transactional
+    public Result<T> delete(@Delete T entity) {
+        return repository.delete(entity);
+    }
 
-	@Transactional
-	public Result<T> delete(T entity) {
-		Result<T> result = validationService.validate(entity, Delete.class);
-		return result.rejected() ? result : repository.delete(entity);
-	}
+    @Transactional(readOnly = true)
+    public Result<T> findById(String id, Class<T> type) {
+        String name = type.getSimpleName().toLowerCase();
+        if (isBlank(id)) {
+            return Result.reject(report(uncapitalize(type.getSimpleName()) + ".id.required"));
+        }
 
-	@Transactional(readOnly = true)
-	public Result<T> findById(String id, Class<T> type) {
-		String name = type.getSimpleName().toLowerCase();
-		if (isBlank(id)) {
-			return Result.reject(report(uncapitalize(type.getSimpleName()) + ".id.required"));
-		}
+        T entity = repository.findById(id, type);
+        return entity != null ? Result.accept(entity) : Result.reject(report("system.not.found", name, id));
+    }
 
-		T entity = repository.findById(id, type);
-		return entity != null ? Result.accept(entity) : Result.reject(report("system.not.found", name, id));
-	}
+    @Transactional(readOnly = true)
+    public Result<List<T>> list(Class<T> type) {
+        try {
+            return Result.accept(repository.query("from " + entity(type) + " order by created").list());
+        }
+        catch (Exception e) {
+            return Result.reject(report("system.query.failed", e.getMessage()));
+        }
+    }
 
-	@Transactional(readOnly = true)
-	public Result<List<T>> list(Class<T> type) {
-		try {
-			return Result.accept(repository.query("from " + entity(type) + " order by created").list());
-		}
-		catch (Exception e) {
-			return Result.reject(report("system.query.failed", e.getMessage()));
-		}
-	}
-
-	private <T> String entity(Class<T> entity) {
-		if (entity.isAnnotationPresent(Entity.class)) {
-			return entity.getAnnotation(Entity.class).name();
-		}
-		throw new IllegalStateException(entity.getClass().getSimpleName() + " must have an @Entity annotation configured with the entity name.");
-	}
+    private <T> String entity(Class<T> entity) {
+        if (entity.isAnnotationPresent(Entity.class)) {
+            return entity.getAnnotation(Entity.class).name();
+        }
+        throw new IllegalStateException(entity.getClass().getSimpleName() + " must have an @Entity annotation configured with the entity name.");
+    }
 
 }

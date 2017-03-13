@@ -28,54 +28,45 @@ import org.springframework.transaction.annotation.Transactional;
 import fm.pattern.tokamak.server.model.GrantType;
 import fm.pattern.tokamak.server.repository.DataRepository;
 import fm.pattern.valex.Result;
-import fm.pattern.valex.ValidationService;
-import fm.pattern.valex.sequences.Delete;
+import fm.pattern.valex.annotations.Delete;
 
 @Service
 class GrantTypeServiceImpl extends DataServiceImpl<GrantType> implements GrantTypeService {
 
-	private final DataRepository repository;
-	private final ValidationService validationService;
+    private final DataRepository repository;
 
-	@Autowired
-	GrantTypeServiceImpl(@Qualifier("dataRepository") DataRepository repository, ValidationService validationService) {
-		this.repository = repository;
-		this.validationService = validationService;
-	}
+    @Autowired
+    GrantTypeServiceImpl(@Qualifier("dataRepository") DataRepository repository) {
+        this.repository = repository;
+    }
 
-	@Transactional
-	public Result<GrantType> delete(GrantType grantType) {
-		Result<GrantType> result = validationService.validate(grantType, Delete.class);
-		if (result.rejected()) {
-			return result;
-		}
+    @Transactional
+    public Result<GrantType> delete(@Delete GrantType grantType) {
+        Long count = repository.count(repository.sqlQuery("select count(_id) from ClientGrantTypes where grant_type_id = :id").setString("id", grantType.getId()));
+        if (count != 0) {
+            return Result.reject("grantType.delete.conflict", count, (count != 1 ? "clients are" : "client is"));
+        }
+        return repository.delete(grantType);
+    }
 
-		Long count = repository.count(repository.sqlQuery("select count(_id) from ClientGrantTypes where grant_type_id = :id").setString("id", grantType.getId()));
-		if (count != 0) {
-			return Result.reject("grantType.delete.conflict", count, (count != 1 ? "clients are" : "client is"));
-		}
+    @Transactional(readOnly = true)
+    public Result<GrantType> findById(String id) {
+        return super.findById(id, GrantType.class);
+    }
 
-		return repository.delete(grantType);
-	}
+    @Transactional(readOnly = true)
+    public Result<GrantType> findByName(String name) {
+        if (isBlank(name)) {
+            return Result.reject("grantType.name.required");
+        }
 
-	@Transactional(readOnly = true)
-	public Result<GrantType> findById(String id) {
-		return super.findById(id, GrantType.class);
-	}
+        GrantType grantType = (GrantType) repository.query("from GrantTypes where name = :name").setString("name", name).uniqueResult();
+        return grantType == null ? Result.reject("grantType.name.not_found", name) : Result.accept(grantType);
+    }
 
-	@Transactional(readOnly = true)
-	public Result<GrantType> findByName(String name) {
-		if (isBlank(name)) {
-			return Result.reject("grantType.name.required");
-		}
-
-		GrantType grantType = (GrantType) repository.query("from GrantTypes where name = :name").setString("name", name).uniqueResult();
-		return grantType == null ? Result.reject("grantType.name.not_found", name) : Result.accept(grantType);
-	}
-
-	@Transactional(readOnly = true)
-	public Result<List<GrantType>> list() {
-		return super.list(GrantType.class);
-	}
+    @Transactional(readOnly = true)
+    public Result<List<GrantType>> list() {
+        return super.list(GrantType.class);
+    }
 
 }

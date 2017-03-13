@@ -22,59 +22,43 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import fm.pattern.commons.util.ReflectionUtils;
 import fm.pattern.tokamak.server.model.Client;
 import fm.pattern.tokamak.server.repository.ClientRepository;
 import fm.pattern.tokamak.server.security.PasswordEncodingService;
 import fm.pattern.valex.Result;
-import fm.pattern.valex.ValidationService;
-import fm.pattern.valex.sequences.Create;
+import fm.pattern.valex.annotations.Create;
 
 @Service
 class ClientServiceImpl extends DataServiceImpl<Client> implements ClientService {
 
-	private PasswordEncodingService passwordEncodingService;
-	private ValidationService validationService;
-	private ClientRepository clientRepository;
+    private final PasswordEncodingService passwordEncodingService;
+    private final ClientRepository clientRepository;
 
-	@Transactional(readOnly = false)
-	public Result<Client> create(Client client) {
-		Result<Client> result = validationService.validate(client, Create.class);
-		if (result.rejected()) {
-			return result;
-		}
-		ReflectionUtils.setValue(client, "clientSecret", passwordEncodingService.encode(client.getClientSecret()));
-		return clientRepository.save(client);
-	}
+    @Autowired
+    public ClientServiceImpl(PasswordEncodingService passwordEncodingService, ClientRepository clientRepository) {
+        this.passwordEncodingService = passwordEncodingService;
+        this.clientRepository = clientRepository;
+    }
 
-	@Transactional(readOnly = true)
-	public Result<Client> findById(String id) {
-		return super.findById(id, Client.class);
-	}
+    @Transactional(readOnly = false)
+    public Result<Client> create(@Create Client client) {
+        client.setClientSecret(passwordEncodingService.encode(client.getClientSecret()));
+        return clientRepository.save(client);
+    }
 
-	@Transactional(readOnly = true)
-	public Result<Client> findByClientId(String clientId) {
-		if (isBlank(clientId)) {
-			return Result.reject("client.clientId.required");
-		}
+    @Transactional(readOnly = true)
+    public Result<Client> findById(String id) {
+        return super.findById(id, Client.class);
+    }
 
-		Client client = clientRepository.findByClientId(clientId);
-		return client != null ? Result.accept(client) : Result.reject("client.clientId.not_found", clientId);
-	}
+    @Transactional(readOnly = true)
+    public Result<Client> findByClientId(String clientId) {
+        if (isBlank(clientId)) {
+            return Result.reject("client.clientId.required");
+        }
 
-	@Autowired
-	public void setPasswordEncodingService(PasswordEncodingService passwordEncodingService) {
-		this.passwordEncodingService = passwordEncodingService;
-	}
-
-	@Autowired
-	public void setValidationService(ValidationService validationService) {
-		this.validationService = validationService;
-	}
-
-	@Autowired
-	public void setClientRepository(ClientRepository clientRepository) {
-		this.clientRepository = clientRepository;
-	}
+        Client client = clientRepository.findByClientId(clientId);
+        return client != null ? Result.accept(client) : Result.reject("client.clientId.not_found", clientId);
+    }
 
 }

@@ -28,54 +28,45 @@ import org.springframework.transaction.annotation.Transactional;
 import fm.pattern.tokamak.server.model.Audience;
 import fm.pattern.tokamak.server.repository.DataRepository;
 import fm.pattern.valex.Result;
-import fm.pattern.valex.ValidationService;
-import fm.pattern.valex.sequences.Delete;
+import fm.pattern.valex.annotations.Delete;
 
 @Service
 class AudienceServiceImpl extends DataServiceImpl<Audience> implements AudienceService {
 
-	private final DataRepository repository;
-	private final ValidationService validationService;
+    private final DataRepository repository;
 
-	@Autowired
-	AudienceServiceImpl(@Qualifier("dataRepository") DataRepository repository, ValidationService validationService) {
-		this.repository = repository;
-		this.validationService = validationService;
-	}
+    @Autowired
+    AudienceServiceImpl(@Qualifier("dataRepository") DataRepository repository) {
+        this.repository = repository;
+    }
 
-	@Transactional
-	public Result<Audience> delete(Audience audience) {
-		Result<Audience> result = validationService.validate(audience, Delete.class);
-		if (result.rejected()) {
-			return result;
-		}
+    @Transactional
+    public Result<Audience> delete(@Delete Audience audience) {
+        Long count = repository.count(repository.sqlQuery("select count(_id) from ClientAudiences where audience_id = :id").setString("id", audience.getId()));
+        if (count != 0) {
+            return Result.reject("audience.delete.conflict", count, (count != 1 ? "clients are" : "client is"));
+        }
+        return repository.delete(audience);
+    }
 
-		Long count = repository.count(repository.sqlQuery("select count(_id) from ClientAudiences where audience_id = :id").setString("id", audience.getId()));
-		if (count != 0) {
-			return Result.reject("audience.delete.conflict", count, (count != 1 ? "clients are" : "client is"));
-		}
+    @Transactional(readOnly = true)
+    public Result<Audience> findById(String id) {
+        return super.findById(id, Audience.class);
+    }
 
-		return repository.delete(audience);
-	}
+    @Transactional(readOnly = true)
+    public Result<Audience> findByName(String name) {
+        if (isBlank(name)) {
+            return Result.reject("audience.name.required");
+        }
 
-	@Transactional(readOnly = true)
-	public Result<Audience> findById(String id) {
-		return super.findById(id, Audience.class);
-	}
+        Audience audience = (Audience) repository.query("from Audiences where name = :name").setString("name", name).uniqueResult();
+        return audience == null ? Result.reject("audience.name.not_found", name) : Result.accept(audience);
+    }
 
-	@Transactional(readOnly = true)
-	public Result<Audience> findByName(String name) {
-		if (isBlank(name)) {
-			return Result.reject("audience.name.required");
-		}
-
-		Audience audience = (Audience) repository.query("from Audiences where name = :name").setString("name", name).uniqueResult();
-		return audience == null ? Result.reject("audience.name.not_found", name) : Result.accept(audience);
-	}
-
-	@Transactional(readOnly = true)
-	public Result<List<Audience>> list() {
-		return super.list(Audience.class);
-	}
+    @Transactional(readOnly = true)
+    public Result<List<Audience>> list() {
+        return super.list(Audience.class);
+    }
 
 }

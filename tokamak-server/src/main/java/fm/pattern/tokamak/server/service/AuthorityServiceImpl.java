@@ -28,54 +28,45 @@ import org.springframework.transaction.annotation.Transactional;
 import fm.pattern.tokamak.server.model.Authority;
 import fm.pattern.tokamak.server.repository.DataRepository;
 import fm.pattern.valex.Result;
-import fm.pattern.valex.ValidationService;
-import fm.pattern.valex.sequences.Delete;
+import fm.pattern.valex.annotations.Delete;
 
 @Service
 class AuthorityServiceImpl extends DataServiceImpl<Authority> implements AuthorityService {
 
-	private final DataRepository repository;
-	private final ValidationService validationService;
+    private final DataRepository repository;
 
-	@Autowired
-	AuthorityServiceImpl(@Qualifier("dataRepository") DataRepository repository, ValidationService validationService) {
-		this.repository = repository;
-		this.validationService = validationService;
-	}
+    @Autowired
+    AuthorityServiceImpl(@Qualifier("dataRepository") DataRepository repository) {
+        this.repository = repository;
+    }
 
-	@Transactional
-	public Result<Authority> delete(Authority authority) {
-		Result<Authority> result = validationService.validate(authority, Delete.class);
-		if (result.rejected()) {
-			return result;
-		}
+    @Transactional
+    public Result<Authority> delete(@Delete Authority authority) {
+        Long count = repository.count(repository.sqlQuery("select count(_id) from ClientAuthorities where authority_id = :id").setString("id", authority.getId()));
+        if (count != 0) {
+            return Result.reject("authority.delete.conflict", count, (count != 1 ? "clients are" : "client is"));
+        }
+        return repository.delete(authority);
+    }
 
-		Long count = repository.count(repository.sqlQuery("select count(_id) from ClientAuthorities where authority_id = :id").setString("id", authority.getId()));
-		if (count != 0) {
-			return Result.reject("authority.delete.conflict", count, (count != 1 ? "clients are" : "client is"));
-		}
+    @Transactional(readOnly = true)
+    public Result<Authority> findById(String id) {
+        return super.findById(id, Authority.class);
+    }
 
-		return repository.delete(authority);
-	}
+    @Transactional(readOnly = true)
+    public Result<Authority> findByName(String name) {
+        if (isBlank(name)) {
+            return Result.reject("authority.name.required");
+        }
 
-	@Transactional(readOnly = true)
-	public Result<Authority> findById(String id) {
-		return super.findById(id, Authority.class);
-	}
+        Authority authority = (Authority) repository.query("from Authorities where name = :name").setString("name", name).uniqueResult();
+        return authority == null ? Result.reject("authority.name.not_found", name) : Result.accept(authority);
+    }
 
-	@Transactional(readOnly = true)
-	public Result<Authority> findByName(String name) {
-		if (isBlank(name)) {
-			return Result.reject("authority.name.required");
-		}
-
-		Authority authority = (Authority) repository.query("from Authorities where name = :name").setString("name", name).uniqueResult();
-		return authority == null ? Result.reject("authority.name.not_found", name) : Result.accept(authority);
-	}
-
-	@Transactional(readOnly = true)
-	public Result<List<Authority>> list() {
-		return super.list(Authority.class);
-	}
+    @Transactional(readOnly = true)
+    public Result<List<Authority>> list() {
+        return super.list(Authority.class);
+    }
 
 }
