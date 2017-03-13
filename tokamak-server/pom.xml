@@ -1,13 +1,13 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-   <name>Pattern Tokamak Server</name>
+   <name>Tokamak Server</name>
    <modelVersion>4.0.0</modelVersion>
 
-   <artifactId>pattern-tokamak-server</artifactId>
+   <artifactId>tokamak-server</artifactId>
 
    <parent>
       <groupId>fm.pattern</groupId>
-      <artifactId>pattern-tokamak</artifactId>
-      <version>1.0.1-SNAPSHOT</version>
+      <artifactId>tokamak</artifactId>
+      <version>1.0.0-SNAPSHOT</version>
       <relativePath>../pom.xml</relativePath>
    </parent>
 
@@ -38,20 +38,20 @@
    <dependencies>
       <dependency>
          <groupId>fm.pattern</groupId>
-         <artifactId>pattern-tokamak-sdk</artifactId>
+         <artifactId>tokamak-sdk</artifactId>
          <version>${project.version}</version>
       </dependency>
 
       <dependency>
          <groupId>fm.pattern</groupId>
-         <artifactId>pattern-valex</artifactId>
-         <version>1.0.2</version>
+         <artifactId>valex</artifactId>
+         <version>1.0.0</version>
       </dependency>
 
       <dependency>
          <groupId>fm.pattern</groupId>
-         <artifactId>pattern-commons-util</artifactId>
-         <version>1.0.1</version>
+         <artifactId>commons-util</artifactId>
+         <version>1.0.0</version>
       </dependency>
 
       <dependency>

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-   <name>Pattern Tokamak</name>
+   <name>Tokamak</name>
    <modelVersion>4.0.0</modelVersion>
 
    <groupId>fm.pattern</groupId>
-   <artifactId>pattern-tokamak</artifactId>
-   <version>1.0.1-SNAPSHOT</version>
+   <artifactId>tokamak</artifactId>
+   <version>1.0.0-SNAPSHOT</version>
    <packaging>pom</packaging>
 
    <properties>
@@ -22,7 +22,7 @@
    </properties>
 
    <scm>
-      <developerConnection>scm:git:https://github.com/BrandonJohnGrenier/pattern-tokamak.git</developerConnection>
+      <developerConnection>scm:git:https://github.com/PatternFM/tokamak.git</developerConnection>
       <tag>HEAD</tag>
    </scm>
 
@@ -49,9 +49,9 @@
    </distributionManagement>
 
    <modules>
-      <module>pattern-tokamak-sdk</module>
-      <module>pattern-tokamak-server</module>
-      <module>pattern-tokamak-spec</module>
+      <module>tokamak-sdk</module>
+      <module>tokamak-server</module>
+      <module>tokamak-spec</module>
   </modules>
 
    <repositories>
@@ -109,7 +109,7 @@
             <configuration>
                <goals>deploy</goals>
                <autoversionsubmodules>true</autoversionsubmodules>
-               <tagNameFormat>pattern-tokamak-@{project.version}.RELEASE</tagNameFormat>
+               <tagNameFormat>tokamak-@{project.version}</tagNameFormat>
             </configuration>
             <dependencies>
                <dependency>
