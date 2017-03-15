@@ -1,4 +1,8 @@
- Tokamak Server: 
+startup:
+  polling_interval: 5000
+  retry_count: 20
+
+Tokamak Server: 
   path: ../tokamak-server
   ping: http://localhost:9600/v1/ping
   environment: 
