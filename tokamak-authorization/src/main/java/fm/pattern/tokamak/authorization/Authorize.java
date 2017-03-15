@@ -22,18 +22,15 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import org.springframework.web.bind.annotation.Mapping;
-
 @Target({ ElementType.METHOD, ElementType.TYPE })
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-@Mapping
 public @interface Authorize {
 
-	String scopes() default "";
+    String scopes() default "";
 
-	String authorities() default "";
+    String authorities() default "";
 
-	String roles() default "";
+    String roles() default "";
 
 }

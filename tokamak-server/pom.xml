@@ -44,6 +44,12 @@
 
       <dependency>
          <groupId>fm.pattern</groupId>
+         <artifactId>tokamak-authorization</artifactId>
+         <version>${project.version}</version>
+      </dependency>      
+      
+      <dependency>
+         <groupId>fm.pattern</groupId>
          <artifactId>valex</artifactId>
          <version>1.0.1</version>
       </dependency>

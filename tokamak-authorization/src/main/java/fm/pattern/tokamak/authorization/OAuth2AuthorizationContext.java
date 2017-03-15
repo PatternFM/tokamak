@@ -24,12 +24,10 @@ import java.util.stream.Collectors;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
-import org.springframework.stereotype.Component;
 
-@Component
 public class OAuth2AuthorizationContext implements AuthorizationContextProvider {
 
-	private OAuth2AuthorizationContext() {
+	public OAuth2AuthorizationContext() {
 
 	}
 

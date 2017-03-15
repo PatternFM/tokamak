@@ -29,41 +29,48 @@ import org.springframework.security.oauth2.provider.error.OAuth2AuthenticationEn
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.access.AccessDeniedHandler;
 
+import fm.pattern.tokamak.authorization.AuthorizationContextProvider;
+import fm.pattern.tokamak.authorization.OAuth2AuthorizationContext;
 import fm.pattern.tokamak.server.endpoints.RestExceptionRenderer;
 
 @Configuration
 @EnableWebSecurity
 public class ResourceServerConfiguration {
 
-	@Configuration
-	@EnableResourceServer
-	protected static class ResourceServerConfig extends ResourceServerConfigurerAdapter {
+    @Bean
+    public AuthorizationContextProvider authorizationContextProvider() {
+        return new OAuth2AuthorizationContext();
+    }
 
-		@Value("${oauth2.audience}")
-		private String audience;
+    @Configuration
+    @EnableResourceServer
+    protected static class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 
-		public void configure(HttpSecurity http) throws Exception {
-			http.authorizeRequests().anyRequest().permitAll();
-		}
+        @Value("${oauth2.audience}")
+        private String audience;
 
-		public void configure(ResourceServerSecurityConfigurer resources) throws Exception {
-			resources.accessDeniedHandler(accessDeniedHandler()).authenticationEntryPoint(authenticationEntryPoint()).resourceId(audience);
-		}
+        public void configure(HttpSecurity http) throws Exception {
+            http.authorizeRequests().anyRequest().permitAll();
+        }
 
-		@Bean
-		public AccessDeniedHandler accessDeniedHandler() {
-			OAuth2AccessDeniedHandler accessDeniedHandler = new OAuth2AccessDeniedHandler();
-			accessDeniedHandler.setExceptionRenderer(new RestExceptionRenderer());
-			return accessDeniedHandler;
-		}
+        public void configure(ResourceServerSecurityConfigurer resources) throws Exception {
+            resources.accessDeniedHandler(accessDeniedHandler()).authenticationEntryPoint(authenticationEntryPoint()).resourceId(audience);
+        }
 
-		@Bean
-		public AuthenticationEntryPoint authenticationEntryPoint() {
-			OAuth2AuthenticationEntryPoint authenticationEntryPoint = new OAuth2AuthenticationEntryPoint();
-			authenticationEntryPoint.setExceptionRenderer(new RestExceptionRenderer());
-			return authenticationEntryPoint;
-		}
+        @Bean
+        public AccessDeniedHandler accessDeniedHandler() {
+            OAuth2AccessDeniedHandler accessDeniedHandler = new OAuth2AccessDeniedHandler();
+            accessDeniedHandler.setExceptionRenderer(new RestExceptionRenderer());
+            return accessDeniedHandler;
+        }
 
-	}
+        @Bean
+        public AuthenticationEntryPoint authenticationEntryPoint() {
+            OAuth2AuthenticationEntryPoint authenticationEntryPoint = new OAuth2AuthenticationEntryPoint();
+            authenticationEntryPoint.setExceptionRenderer(new RestExceptionRenderer());
+            return authenticationEntryPoint;
+        }
+
+    }
 
 }

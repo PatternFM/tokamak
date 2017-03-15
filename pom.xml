@@ -52,6 +52,7 @@
       <module>tokamak-sdk</module>
       <module>tokamak-server</module>
       <module>tokamak-spec</module>
+      <module>tokamak-authorization</module>
   </modules>
 
    <repositories>
