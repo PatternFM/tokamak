@@ -1,8 +1,6 @@
-package fm.pattern.tokamak.server.dsl;
+package fm.pattern.tokamak.authorization;
 
 import java.lang.annotation.Annotation;
-
-import fm.pattern.tokamak.authorization.Authorize;
 
 @SuppressWarnings("all")
 public class AuthorizationDSL extends AbstractDSL<AuthorizationDSL, Authorize> {

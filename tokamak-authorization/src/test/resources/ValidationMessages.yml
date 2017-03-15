@@ -1,0 +1,27 @@
+default:
+  exception: fm.pattern.valex.UnprocessableEntityException
+
+auth.invalid.scope:
+  message: "Insufficient scope for this resource."
+  code: ATZ-0001
+  exception: fm.pattern.valex.AuthorizationException
+    
+auth.invalid.grant:
+  message: "Unauthorized grant type: %s"
+  code: ATZ-0002
+  exception: fm.pattern.valex.AuthorizationException
+    
+auth.invalid.role:
+  message: "Access is denied."
+  code: ATZ-0003
+  exception: fm.pattern.valex.AuthorizationException
+
+auth.invalid.authority:
+  message: "Access is denied."
+  code: ATZ-0004
+  exception: fm.pattern.valex.AuthorizationException  
+  
+auth.not.authenticated:
+  message: "Full authentication is required to access this resource."
+  code: AUT-0001
+  exception: fm.pattern.valex.AuthenticationException  
