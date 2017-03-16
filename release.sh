@@ -16,4 +16,4 @@
 #
 
 mvn release:clean release:prepare -B -Dusername=$GIT_REPO_USERNAME -Dpassword=$GIT_REPO_PASSWORD -DautoVersionSubmodules=true -DscmCommentPrefix="[skip ci] " -Darguments="-DskipTests"
-mvn release:perform -B -Dusername=$GIT_REPO_USERNAME -Dpassword=$GIT_REPO_PASSWORD -Darguments="-DskipTests"
+mvn release:perform -P release -B -Dusername=$GIT_REPO_USERNAME -Dpassword=$GIT_REPO_PASSWORD -Darguments="-DskipTests"

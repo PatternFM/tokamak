@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
    <name>Tokamak</name>
-   <modelVersion>4.0.0</modelVersion>
+   <description>A stateless Spring Boot JWT Authentication and OAuth2 Authorization Server, with RESTful interfaces to create and manage MySQL-backed clients and resource owners.</description>
+   <url>https://github.com/PatternFM/tokamak</url>
 
    <groupId>fm.pattern</groupId>
    <artifactId>tokamak</artifactId>
    <version>1.0.0-SNAPSHOT</version>
+   <modelVersion>4.0.0</modelVersion>
    <packaging>pom</packaging>
 
    <properties>
@@ -18,11 +20,11 @@
       <java.version>1.8</java.version>
       <maven.compiler.source>1.8</maven.compiler.source>
       <maven.compiler.target>1.8</maven.compiler.target>
-      <maven.javadoc.skip>true</maven.javadoc.skip>
    </properties>
 
    <scm>
       <developerConnection>scm:git:https://github.com/PatternFM/tokamak.git</developerConnection>
+      <url>scm:git:https://github.com/PatternFM/tokamak.git</url>
       <tag>HEAD</tag>
    </scm>
 
@@ -34,11 +36,17 @@
       </license>
    </licenses>
 
+   <developers>
+      <developer>
+         <id>brandon.john.grenier</id>
+         <name>Brandon Grenier</name>
+      </developer>
+   </developers>
+
    <distributionManagement>
       <repository>
-         <id>pattern-release-repo</id>
-         <name>Pattern Release Repository</name>
-         <url>s3://repository.pattern.fm/releases</url>
+         <id>ossrh</id>
+         <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
       </repository>
 
       <snapshotRepository>
@@ -53,31 +61,13 @@
       <module>tokamak-server</module>
       <module>tokamak-spec</module>
       <module>tokamak-authorization</module>
-  </modules>
+   </modules>
 
    <repositories>
-      <repository>
-         <id>pattern-release-repo</id>
-         <name>Pattern Release Repository</name>
-         <url>http://repository.pattern.fm/releases</url>
-      </repository>
-
       <repository>
          <id>pattern-snapshot-repo</id>
          <name>Pattern Snapshot Repository</name>
          <url>http://repository.pattern.fm/snapshots</url>
-      </repository>
-
-      <repository>
-         <id>spring-maven-release</id>
-         <name>Spring Maven Release Repository</name>
-         <url>http://maven.springframework.org/release</url>
-      </repository>
-
-      <repository>
-         <id>spring-maven-milestone</id>
-         <name>Spring Maven Milestone Repository</name>
-         <url>http://maven.springframework.org/milestone</url>
       </repository>
 
       <repository>
@@ -100,6 +90,70 @@
          <url>http://maven.springframework.org/release</url>
       </pluginRepository>
    </pluginRepositories>
+
+   <profiles>
+      <profile>
+         <id>release</id>
+         <build>
+            <plugins>
+               <plugin>
+                  <groupId>org.apache.maven.plugins</groupId>
+                  <artifactId>maven-source-plugin</artifactId>
+                  <version>2.2.1</version>
+                  <executions>
+                     <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                           <goal>jar-no-fork</goal>
+                        </goals>
+                     </execution>
+                  </executions>
+               </plugin>
+
+               <plugin>
+                  <groupId>org.apache.maven.plugins</groupId>
+                  <artifactId>maven-gpg-plugin</artifactId>
+                  <version>1.5</version>
+                  <executions>
+                     <execution>
+                        <id>sign-artifacts</id>
+                        <phase>verify</phase>
+                        <goals>
+                           <goal>sign</goal>
+                        </goals>
+                     </execution>
+                  </executions>
+               </plugin>
+
+               <plugin>
+                  <groupId>org.apache.maven.plugins</groupId>
+                  <artifactId>maven-javadoc-plugin</artifactId>
+                  <version>2.9.1</version>
+                  <executions>
+                     <execution>
+                        <id>attach-javadocs</id>
+                        <goals>
+                           <goal>jar</goal>
+                        </goals>
+                     </execution>
+                  </executions>
+               </plugin>
+
+               <plugin>
+                  <groupId>org.sonatype.plugins</groupId>
+                  <artifactId>nexus-staging-maven-plugin</artifactId>
+                  <version>1.6.3</version>
+                  <extensions>true</extensions>
+                  <configuration>
+                     <serverId>ossrh</serverId>
+                     <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+                     <autoReleaseAfterClose>true</autoReleaseAfterClose>
+                  </configuration>
+               </plugin>
+            </plugins>
+         </build>
+      </profile>
+   </profiles>
 
    <build>
       <plugins>
@@ -169,15 +223,6 @@
             <configuration>
                <source>${java.version}</source>
                <target>${java.version}</target>
-            </configuration>
-         </plugin>
-
-         <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-javadoc-plugin</artifactId>
-            <version>2.10.1</version>
-            <configuration>
-               <skip>true</skip>
             </configuration>
          </plugin>
       </plugins>
