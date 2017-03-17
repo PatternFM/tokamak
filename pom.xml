@@ -6,7 +6,7 @@
 
    <groupId>fm.pattern</groupId>
    <artifactId>tokamak</artifactId>
-   <version>1.0.1-SNAPSHOT</version>
+   <version>1.0.1</version>
    <modelVersion>4.0.0</modelVersion>
    <packaging>pom</packaging>
 
@@ -25,7 +25,7 @@
    <scm>
       <developerConnection>scm:git:https://github.com/PatternFM/tokamak.git</developerConnection>
       <url>scm:git:https://github.com/PatternFM/tokamak.git</url>
-      <tag>HEAD</tag>
+      <tag>tokamak-1.0.1</tag>
    </scm>
 
    <licenses>
