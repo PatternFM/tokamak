@@ -37,53 +37,53 @@ import fm.pattern.valex.UnprocessableEntityException;
 @RestController
 public class Endpoint {
 
-	private EgressConversionService egress;
+	private EgressConversionService converter;
 
 	@ResponseBody
 	@ResponseStatus(value = HttpStatus.UNPROCESSABLE_ENTITY)
 	@ExceptionHandler(UnprocessableEntityException.class)
 	public ErrorsRepresentation handleUnprocessableEntity(UnprocessableEntityException exception, HttpServletRequest request) {
-		return egress.convert(exception);
+		return converter.convert(exception);
 	}
 
 	@ResponseBody
 	@ResponseStatus(value = HttpStatus.UNAUTHORIZED)
 	@ExceptionHandler(AuthenticationException.class)
 	public ErrorsRepresentation handleAuthentication(AuthenticationException exception) {
-		return egress.convert(exception);
+		return converter.convert(exception);
 	}
 
 	@ResponseBody
 	@ResponseStatus(value = HttpStatus.FORBIDDEN)
 	@ExceptionHandler(AuthorizationException.class)
 	public ErrorsRepresentation handleAuthorization(AuthorizationException exception) {
-		return egress.convert(exception);
+		return converter.convert(exception);
 	}
 
 	@ResponseBody
 	@ResponseStatus(value = HttpStatus.NOT_FOUND)
 	@ExceptionHandler(EntityNotFoundException.class)
 	public ErrorsRepresentation handleEntityNotFound(EntityNotFoundException exception) {
-		return egress.convert(exception);
+		return converter.convert(exception);
 	}
 
 	@ResponseBody
 	@ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
 	@ExceptionHandler(InternalErrorException.class)
 	public ErrorsRepresentation handleInternalError(EntityNotFoundException exception) {
-		return egress.convert(exception);
+		return converter.convert(exception);
 	}
 
 	@ResponseBody
 	@ResponseStatus(value = HttpStatus.CONFLICT)
 	@ExceptionHandler(ResourceConflictException.class)
 	public ErrorsRepresentation handleResourceConflict(ResourceConflictException exception) {
-		return egress.convert(exception);
+		return converter.convert(exception);
 	}
 
 	@Autowired
 	public void setEgressConversionService(EgressConversionService egress) {
-		this.egress = egress;
+		this.converter = egress;
 	}
 
 }

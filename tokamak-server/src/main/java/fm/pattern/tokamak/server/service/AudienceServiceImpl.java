@@ -20,7 +20,6 @@ import static org.apache.commons.lang3.StringUtils.isBlank;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,7 +34,6 @@ class AudienceServiceImpl extends DataServiceImpl<Audience> implements AudienceS
 
     private final DataRepository repository;
 
-    @Autowired
     AudienceServiceImpl(@Qualifier("dataRepository") DataRepository repository) {
         this.repository = repository;
     }
