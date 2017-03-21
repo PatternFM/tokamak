@@ -2,7 +2,7 @@ package fm.pattern.jwt.spec.endpoints;
 
 import static fm.pattern.jwt.spec.PatternAssertions.assertThat;
 import static fm.pattern.tokamak.sdk.dsl.AccessTokenDSL.token;
-import static org.assertj.core.api.StrictAssertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
 

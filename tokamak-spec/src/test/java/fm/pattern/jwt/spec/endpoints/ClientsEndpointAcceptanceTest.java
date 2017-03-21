@@ -7,7 +7,6 @@ import static fm.pattern.tokamak.sdk.dsl.AuthorityDSL.authority;
 import static fm.pattern.tokamak.sdk.dsl.ClientDSL.client;
 import static fm.pattern.tokamak.sdk.dsl.ScopeDSL.scope;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.StrictAssertions.assertThat;
 
 import org.junit.Before;
 import org.junit.Test;

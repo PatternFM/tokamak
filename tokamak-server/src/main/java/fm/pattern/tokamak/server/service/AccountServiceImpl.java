@@ -25,34 +25,22 @@ import fm.pattern.tokamak.server.model.Account;
 import fm.pattern.tokamak.server.repository.AccountRepository;
 import fm.pattern.tokamak.server.security.PasswordEncodingService;
 import fm.pattern.valex.Result;
-import fm.pattern.valex.ValidationService;
 import fm.pattern.valex.annotations.Create;
-import fm.pattern.valex.sequences.Update;
 
 @Service
 class AccountServiceImpl extends DataServiceImpl<Account> implements AccountService {
 
     private final AccountRepository accountRepository;
     private final PasswordEncodingService passwordEncodingService;
-    private final ValidationService validationService;
 
-    public AccountServiceImpl(AccountRepository accountRepository, PasswordEncodingService passwordEncodingService, ValidationService validationService) {
+    public AccountServiceImpl(AccountRepository accountRepository, PasswordEncodingService passwordEncodingService) {
         this.accountRepository = accountRepository;
         this.passwordEncodingService = passwordEncodingService;
-        this.validationService = validationService;
     }
 
     @Transactional
     public Result<Account> create(@Create Account account) {
         account.setPassword(passwordEncodingService.encode(account.getPassword()));
-        return accountRepository.save(account);
-    }
-
-    public Result<Account> update(Account account) {
-        Result<Account> result = validationService.validate(account, Update.class);
-        if (result.rejected()) {
-            return result;
-        }
         return accountRepository.save(account);
     }
 
