@@ -18,14 +18,17 @@ package fm.pattern.tokamak.server.service;
 
 import fm.pattern.tokamak.server.model.Client;
 import fm.pattern.valex.Result;
+import fm.pattern.valex.annotations.Create;
+import fm.pattern.valex.annotations.Delete;
+import fm.pattern.valex.annotations.Update;
 
 public interface ClientService {
 
-	Result<Client> create(Client client);
+	Result<Client> create(@Create Client client);
 
-	Result<Client> update(Client client);
+	Result<Client> update(@Update Client client);
 	
-	Result<Client> delete(Client client);
+	Result<Client> delete(@Delete Client client);
 
 	Result<Client> findById(String id);
 

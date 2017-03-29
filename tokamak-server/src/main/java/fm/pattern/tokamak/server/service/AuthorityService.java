@@ -20,14 +20,17 @@ import java.util.List;
 
 import fm.pattern.tokamak.server.model.Authority;
 import fm.pattern.valex.Result;
+import fm.pattern.valex.annotations.Create;
+import fm.pattern.valex.annotations.Delete;
+import fm.pattern.valex.annotations.Update;
 
 public interface AuthorityService {
 
-	Result<Authority> create(Authority authority);
+	Result<Authority> create(@Create Authority authority);
 
-	Result<Authority> update(Authority authority);
+	Result<Authority> update(@Update Authority authority);
 
-	Result<Authority> delete(Authority authority);
+	Result<Authority> delete(@Delete Authority authority);
 
 	Result<Authority> findById(String id);
 

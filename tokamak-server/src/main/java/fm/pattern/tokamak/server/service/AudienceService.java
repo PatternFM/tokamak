@@ -20,14 +20,17 @@ import java.util.List;
 
 import fm.pattern.tokamak.server.model.Audience;
 import fm.pattern.valex.Result;
+import fm.pattern.valex.annotations.Create;
+import fm.pattern.valex.annotations.Delete;
+import fm.pattern.valex.annotations.Update;
 
 public interface AudienceService {
 
-	Result<Audience> create(Audience audience);
+	Result<Audience> create(@Create Audience audience);
 
-	Result<Audience> update(Audience audience);
+	Result<Audience> update(@Update Audience audience);
 
-	Result<Audience> delete(Audience audience);
+	Result<Audience> delete(@Delete Audience audience);
 
 	Result<Audience> findById(String id);
 

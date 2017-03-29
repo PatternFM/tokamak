@@ -30,9 +30,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import fm.pattern.tokamak.server.repository.DataRepository;
 import fm.pattern.valex.Result;
-import fm.pattern.valex.annotations.Create;
-import fm.pattern.valex.annotations.Delete;
-import fm.pattern.valex.annotations.Update;
 
 @Service
 @SuppressWarnings({ "unchecked", "hiding" })
@@ -46,17 +43,17 @@ class DataServiceImpl<T> implements DataService<T> {
     }
 
     @Transactional
-    public Result<T> create(@Create T entity) {
+    public Result<T> create(T entity) {
         return repository.save(entity);
     }
 
     @Transactional
-    public Result<T> update(@Update T entity) {
+    public Result<T> update(T entity) {
         return repository.update(entity);
     }
 
     @Transactional
-    public Result<T> delete(@Delete T entity) {
+    public Result<T> delete(T entity) {
         return repository.delete(entity);
     }
 

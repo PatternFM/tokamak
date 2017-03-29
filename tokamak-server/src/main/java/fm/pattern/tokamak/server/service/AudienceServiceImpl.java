@@ -27,7 +27,6 @@ import org.springframework.transaction.annotation.Transactional;
 import fm.pattern.tokamak.server.model.Audience;
 import fm.pattern.tokamak.server.repository.DataRepository;
 import fm.pattern.valex.Result;
-import fm.pattern.valex.annotations.Delete;
 
 @Service
 class AudienceServiceImpl extends DataServiceImpl<Audience> implements AudienceService {
@@ -39,7 +38,7 @@ class AudienceServiceImpl extends DataServiceImpl<Audience> implements AudienceS
     }
 
     @Transactional
-    public Result<Audience> delete(@Delete Audience audience) {
+    public Result<Audience> delete(Audience audience) {
         Long count = repository.count(repository.sqlQuery("select count(_id) from ClientAudiences where audience_id = :id").setString("id", audience.getId()));
         if (count != 0) {
             return Result.reject("audience.delete.conflict", count, (count != 1 ? "clients are" : "client is"));

@@ -28,7 +28,6 @@ import org.springframework.transaction.annotation.Transactional;
 import fm.pattern.tokamak.server.model.GrantType;
 import fm.pattern.tokamak.server.repository.DataRepository;
 import fm.pattern.valex.Result;
-import fm.pattern.valex.annotations.Delete;
 
 @Service
 class GrantTypeServiceImpl extends DataServiceImpl<GrantType> implements GrantTypeService {
@@ -41,7 +40,7 @@ class GrantTypeServiceImpl extends DataServiceImpl<GrantType> implements GrantTy
     }
 
     @Transactional
-    public Result<GrantType> delete(@Delete GrantType grantType) {
+    public Result<GrantType> delete(GrantType grantType) {
         Long count = repository.count(repository.sqlQuery("select count(_id) from ClientGrantTypes where grant_type_id = :id").setString("id", grantType.getId()));
         if (count != 0) {
             return Result.reject("grantType.delete.conflict", count, (count != 1 ? "clients are" : "client is"));

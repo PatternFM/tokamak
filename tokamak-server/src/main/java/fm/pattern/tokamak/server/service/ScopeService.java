@@ -20,14 +20,17 @@ import java.util.List;
 
 import fm.pattern.tokamak.server.model.Scope;
 import fm.pattern.valex.Result;
+import fm.pattern.valex.annotations.Create;
+import fm.pattern.valex.annotations.Delete;
+import fm.pattern.valex.annotations.Update;
 
 public interface ScopeService {
 
-	Result<Scope> create(Scope scope);
+	Result<Scope> create(@Create Scope scope);
 
-	Result<Scope> update(Scope scope);
+	Result<Scope> update(@Update Scope scope);
 
-	Result<Scope> delete(Scope scope);
+	Result<Scope> delete(@Delete Scope scope);
 
 	Result<Scope> findById(String id);
 

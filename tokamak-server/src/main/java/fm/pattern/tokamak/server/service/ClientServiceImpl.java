@@ -26,7 +26,6 @@ import fm.pattern.tokamak.server.model.Client;
 import fm.pattern.tokamak.server.repository.ClientRepository;
 import fm.pattern.tokamak.server.security.PasswordEncodingService;
 import fm.pattern.valex.Result;
-import fm.pattern.valex.annotations.Create;
 
 @Service
 class ClientServiceImpl extends DataServiceImpl<Client> implements ClientService {
@@ -41,7 +40,7 @@ class ClientServiceImpl extends DataServiceImpl<Client> implements ClientService
     }
 
     @Transactional(readOnly = false)
-    public Result<Client> create(@Create Client client) {
+    public Result<Client> create(Client client) {
         client.setClientSecret(passwordEncodingService.encode(client.getClientSecret()));
         return clientRepository.save(client);
     }

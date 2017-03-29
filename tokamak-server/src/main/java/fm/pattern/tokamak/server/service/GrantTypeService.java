@@ -20,14 +20,17 @@ import java.util.List;
 
 import fm.pattern.tokamak.server.model.GrantType;
 import fm.pattern.valex.Result;
+import fm.pattern.valex.annotations.Create;
+import fm.pattern.valex.annotations.Delete;
+import fm.pattern.valex.annotations.Update;
 
 public interface GrantTypeService {
 
-	Result<GrantType> create(GrantType grantType);
+	Result<GrantType> create(@Create GrantType grantType);
 
-	Result<GrantType> update(GrantType grantType);
+	Result<GrantType> update(@Update GrantType grantType);
 
-	Result<GrantType> delete(GrantType grantType);
+	Result<GrantType> delete(@Delete GrantType grantType);
 
 	Result<GrantType> findById(String id);
 

@@ -25,7 +25,6 @@ import fm.pattern.tokamak.server.model.Account;
 import fm.pattern.tokamak.server.repository.AccountRepository;
 import fm.pattern.tokamak.server.security.PasswordEncodingService;
 import fm.pattern.valex.Result;
-import fm.pattern.valex.annotations.Create;
 
 @Service
 class AccountServiceImpl extends DataServiceImpl<Account> implements AccountService {
@@ -39,7 +38,7 @@ class AccountServiceImpl extends DataServiceImpl<Account> implements AccountServ
     }
 
     @Transactional
-    public Result<Account> create(@Create Account account) {
+    public Result<Account> create(Account account) {
         account.setPassword(passwordEncodingService.encode(account.getPassword()));
         return accountRepository.save(account);
     }

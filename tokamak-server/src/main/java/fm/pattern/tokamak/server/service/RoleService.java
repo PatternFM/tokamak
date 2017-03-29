@@ -20,14 +20,17 @@ import java.util.List;
 
 import fm.pattern.tokamak.server.model.Role;
 import fm.pattern.valex.Result;
+import fm.pattern.valex.annotations.Create;
+import fm.pattern.valex.annotations.Delete;
+import fm.pattern.valex.annotations.Update;
 
 public interface RoleService {
 
-	Result<Role> create(Role role);
+	Result<Role> create(@Create Role role);
 
-	Result<Role> update(Role role);
+	Result<Role> update(@Update Role role);
 
-	Result<Role> delete(Role role);
+	Result<Role> delete(@Delete Role role);
 
 	Result<Role> findById(String id);
 

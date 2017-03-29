@@ -19,17 +19,20 @@ package fm.pattern.tokamak.server.service;
 import java.util.List;
 
 import fm.pattern.valex.Result;
+import fm.pattern.valex.annotations.Create;
+import fm.pattern.valex.annotations.Delete;
+import fm.pattern.valex.annotations.Update;
 
 public interface DataService<T> {
 
-	Result<T> create(T role);
+    Result<T> create(@Create T entity);
 
-	Result<T> update(T role);
+    Result<T> update(@Update T entity);
 
-	Result<T> delete(T role);
+    Result<T> delete(@Delete T entity);
 
-	Result<T> findById(String id, Class<T> type);
+    Result<T> findById(String id, Class<T> type);
 
-	Result<List<T>> list(Class<T> type);
+    Result<List<T>> list(Class<T> type);
 
 }

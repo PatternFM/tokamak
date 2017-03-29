@@ -18,20 +18,23 @@ package fm.pattern.tokamak.server.service;
 
 import fm.pattern.tokamak.server.model.Account;
 import fm.pattern.valex.Result;
+import fm.pattern.valex.annotations.Create;
+import fm.pattern.valex.annotations.Delete;
+import fm.pattern.valex.annotations.Update;
 
 public interface AccountService {
 
-	Result<Account> create(Account account);
+	Result<Account> create(@Create Account account);
 
-	Result<Account> update(Account account);
+	Result<Account> update(@Update Account account);
 
-	Result<Account> delete(Account account);
+	Result<Account> delete(@Delete Account account);
 
 	Result<Account> findById(String id);
 
 	Result<Account> findByUsername(String username);
 
-	// TODO: Create UpdatePasswordRequest object, with JSR validations
+	// TODO: Create UpdatePasswordRequest object with JSR-303 annotations.
 	Result<Account> updatePassword(Account account, String currentPassword, String newPassword);
 
 }

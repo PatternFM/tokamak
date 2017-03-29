@@ -27,7 +27,6 @@ import org.springframework.transaction.annotation.Transactional;
 import fm.pattern.tokamak.server.model.Authority;
 import fm.pattern.tokamak.server.repository.DataRepository;
 import fm.pattern.valex.Result;
-import fm.pattern.valex.annotations.Delete;
 
 @Service
 class AuthorityServiceImpl extends DataServiceImpl<Authority> implements AuthorityService {
@@ -39,7 +38,7 @@ class AuthorityServiceImpl extends DataServiceImpl<Authority> implements Authori
     }
 
     @Transactional
-    public Result<Authority> delete(@Delete Authority authority) {
+    public Result<Authority> delete(Authority authority) {
         Long count = repository.count(repository.sqlQuery("select count(_id) from ClientAuthorities where authority_id = :id").setString("id", authority.getId()));
         if (count != 0) {
             return Result.reject("authority.delete.conflict", count, (count != 1 ? "clients are" : "client is"));

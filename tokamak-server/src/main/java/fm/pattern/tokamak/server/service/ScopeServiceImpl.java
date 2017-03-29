@@ -28,7 +28,6 @@ import org.springframework.transaction.annotation.Transactional;
 import fm.pattern.tokamak.server.model.Scope;
 import fm.pattern.tokamak.server.repository.DataRepository;
 import fm.pattern.valex.Result;
-import fm.pattern.valex.annotations.Delete;
 
 @Service
 class ScopeServiceImpl extends DataServiceImpl<Scope> implements ScopeService {
@@ -41,7 +40,7 @@ class ScopeServiceImpl extends DataServiceImpl<Scope> implements ScopeService {
     }
 
     @Transactional
-    public Result<Scope> delete(@Delete Scope scope) {
+    public Result<Scope> delete(Scope scope) {
         Long count = repository.count(repository.sqlQuery("select count(_id) from ClientScopes where scope_id = :id").setString("id", scope.getId()));
         if (count != 0) {
             return Result.reject("scope.delete.conflict", count, (count != 1 ? "clients are" : "client is"));

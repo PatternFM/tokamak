@@ -28,7 +28,6 @@ import org.springframework.transaction.annotation.Transactional;
 import fm.pattern.tokamak.server.model.Role;
 import fm.pattern.tokamak.server.repository.DataRepository;
 import fm.pattern.valex.Result;
-import fm.pattern.valex.annotations.Delete;
 
 @Service
 class RoleServiceImpl extends DataServiceImpl<Role> implements RoleService {
@@ -41,7 +40,7 @@ class RoleServiceImpl extends DataServiceImpl<Role> implements RoleService {
     }
 
     @Transactional
-    public Result<Role> delete(@Delete Role role) {
+    public Result<Role> delete(Role role) {
         Long count = repository.count(repository.sqlQuery("select count(_id) from AccountRoles where role_id = :id").setString("id", role.getId()));
         if (count != 0) {
             return Result.reject("role.delete.conflict", count, (count != 1 ? "accounts are" : "account is"));
