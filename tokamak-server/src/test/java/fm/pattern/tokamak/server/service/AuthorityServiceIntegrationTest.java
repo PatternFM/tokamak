@@ -10,10 +10,8 @@ import java.util.List;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import fm.pattern.commons.util.ReflectionUtils;
 import fm.pattern.tokamak.server.IntegrationTest;
 import fm.pattern.tokamak.server.model.Authority;
-import fm.pattern.tokamak.server.service.AuthorityService;
 import fm.pattern.valex.EntityNotFoundException;
 import fm.pattern.valex.Result;
 import fm.pattern.valex.UnprocessableEntityException;
@@ -75,7 +73,7 @@ public class AuthorityServiceIntegrationTest extends IntegrationTest {
 	@Test
 	public void shouldNotBeAbleToDeleteAnAuthorityIfTheAuthorityIsInvalid() {
 		Authority authority = authority().thatIs().persistent().build();
-		ReflectionUtils.setValue(authority, "id", null, 1);
+		authority.setId(null);
 		assertThat(authorityService.delete(authority)).rejected().withError("ENT-0001", "An id is required.", UnprocessableEntityException.class);
 	}
 

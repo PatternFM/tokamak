@@ -10,10 +10,8 @@ import java.util.List;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import fm.pattern.commons.util.ReflectionUtils;
 import fm.pattern.tokamak.server.IntegrationTest;
 import fm.pattern.tokamak.server.model.Role;
-import fm.pattern.tokamak.server.service.RoleService;
 import fm.pattern.valex.EntityNotFoundException;
 import fm.pattern.valex.Result;
 import fm.pattern.valex.UnprocessableEntityException;
@@ -75,7 +73,7 @@ public class RoleServiceIntegrationTest extends IntegrationTest {
 	@Test
 	public void shouldNotBeAbleToDeleteARoleIfTheRoleIsInvalid() {
 		Role role = role().thatIs().persistent().build();
-		ReflectionUtils.setValue(role, "id", null, 1);
+		role.setId(null);
 		assertThat(roleService.delete(role)).rejected().withError("ENT-0001", "An id is required.", UnprocessableEntityException.class);
 	}
 

@@ -16,7 +16,6 @@
 
 package fm.pattern.tokamak.authorization;
 
-import static fm.pattern.valex.Reportable.report;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 import java.util.Collections;
@@ -35,57 +34,57 @@ import fm.pattern.valex.Reportable;
 @Component
 public class AuthorizationAdvisor {
 
-	private final AuthorizationContextProvider provider;
+    private final AuthorizationContextProvider provider;
 
-	@Autowired
-	public AuthorizationAdvisor(AuthorizationContextProvider provider) {
-		this.provider = provider;
-	}
+    @Autowired
+    public AuthorizationAdvisor(AuthorizationContextProvider provider) {
+        this.provider = provider;
+    }
 
-	@Before("execution(* *(..)) && @annotation(authorize)")
-	public void handle(Authorize authorize) throws Throwable {
-		if (!provider.isAuthenticated()) {
-			throw new AuthenticationException(Reportable.report("auth.not.authenticated"));
-		}
+    @Before("execution(* *(..)) && @annotation(authorize)")
+    public void handle(Authorize authorize) throws Throwable {
+        if (!provider.isAuthenticated()) {
+            throw new AuthenticationException(new Reportable("auth.not.authenticated"));
+        }
 
-		if (isNotBlank(authorize.scopes())) {
-			checkScopes(authorize.scopes());
-		}
+        if (isNotBlank(authorize.scopes())) {
+            checkScopes(authorize.scopes());
+        }
 
-		if (isNotBlank(authorize.roles())) {
-			checkRoles(authorize.roles());
-		}
+        if (isNotBlank(authorize.roles())) {
+            checkRoles(authorize.roles());
+        }
 
-		if (isNotBlank(authorize.authorities())) {
-			checkAuthorities(authorize.authorities());
-		}
-	}
+        if (isNotBlank(authorize.authorities())) {
+            checkAuthorities(authorize.authorities());
+        }
+    }
 
-	private void checkScopes(String input) {
-		Set<String> scopes = StringTokenizer.tokenize(input);
-		Set<String> grantedScopes = provider.getScopes();
+    private void checkScopes(String input) {
+        Set<String> scopes = StringTokenizer.tokenize(input);
+        Set<String> grantedScopes = provider.getScopes();
 
-		if (Collections.disjoint(scopes, grantedScopes)) {
-			throw new AuthorizationException(report("auth.invalid.scope"));
-		}
-	}
+        if (Collections.disjoint(scopes, grantedScopes)) {
+            throw new AuthorizationException(new Reportable("auth.invalid.scope"));
+        }
+    }
 
-	private void checkRoles(String input) {
-		Set<String> roles = StringTokenizer.tokenize(input);
-		Set<String> grantedRoles = provider.getRoles();
+    private void checkRoles(String input) {
+        Set<String> roles = StringTokenizer.tokenize(input);
+        Set<String> grantedRoles = provider.getRoles();
 
-		if (Collections.disjoint(roles, grantedRoles)) {
-			throw new AuthorizationException(report("auth.invalid.role"));
-		}
-	}
+        if (Collections.disjoint(roles, grantedRoles)) {
+            throw new AuthorizationException(new Reportable("auth.invalid.role"));
+        }
+    }
 
-	private void checkAuthorities(String input) {
-		Set<String> authorities = StringTokenizer.tokenize(input);
-		Set<String> grantedAuthorities = provider.getAuthorities();
+    private void checkAuthorities(String input) {
+        Set<String> authorities = StringTokenizer.tokenize(input);
+        Set<String> grantedAuthorities = provider.getAuthorities();
 
-		if (Collections.disjoint(authorities, grantedAuthorities)) {
-			throw new AuthorizationException(report("auth.invalid.authority"));
-		}
-	}
+        if (Collections.disjoint(authorities, grantedAuthorities)) {
+            throw new AuthorizationException(new Reportable("auth.invalid.authority"));
+        }
+    }
 
 }

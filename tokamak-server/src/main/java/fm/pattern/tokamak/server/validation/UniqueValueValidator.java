@@ -29,7 +29,7 @@ import org.springframework.stereotype.Component;
 
 import com.google.common.base.CaseFormat;
 
-import fm.pattern.commons.util.ReflectionUtils;
+import fm.pattern.minimal.Reflection;
 import fm.pattern.tokamak.server.model.PersistentEntity;
 import fm.pattern.tokamak.server.repository.DataRepository;
 import fm.pattern.valex.ValidatorSupport;
@@ -50,7 +50,7 @@ public class UniqueValueValidator extends ValidatorSupport implements Constraint
 	}
 
 	public boolean isValid(PersistentEntity entity, ConstraintValidatorContext constraint) {
-		final String value = (String) ReflectionUtils.getValue(entity, property);
+		final String value = (String) Reflection.get(entity, property);
 		if (isBlank(value)) {
 			return true;
 		}

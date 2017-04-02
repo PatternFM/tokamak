@@ -16,7 +16,6 @@
 
 package fm.pattern.tokamak.server.service;
 
-import static fm.pattern.valex.Reportable.report;
 import static org.apache.commons.lang3.StringUtils.isBlank;
 import static org.apache.commons.lang3.text.WordUtils.uncapitalize;
 
@@ -61,11 +60,11 @@ class DataServiceImpl<T> implements DataService<T> {
     public Result<T> findById(String id, Class<T> type) {
         String name = type.getSimpleName().toLowerCase();
         if (isBlank(id)) {
-            return Result.reject(report(uncapitalize(type.getSimpleName()) + ".id.required"));
+            return Result.reject(uncapitalize(type.getSimpleName()) + ".id.required");
         }
 
         T entity = repository.findById(id, type);
-        return entity != null ? Result.accept(entity) : Result.reject(report("system.not.found", name, id));
+        return entity != null ? Result.accept(entity) : Result.reject("system.not.found", name, id);
     }
 
     @Transactional(readOnly = true)
@@ -74,7 +73,7 @@ class DataServiceImpl<T> implements DataService<T> {
             return Result.accept(repository.query("from " + entity(type) + " order by created").list());
         }
         catch (Exception e) {
-            return Result.reject(report("system.query.failed", e.getMessage()));
+            return Result.reject("system.query.failed", e.getMessage());
         }
     }
 

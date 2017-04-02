@@ -29,7 +29,7 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import fm.pattern.commons.util.ReflectionUtils;
+import fm.pattern.minimal.Reflection;
 import fm.pattern.valex.Result;
 
 @Repository("dataRepository")
@@ -60,7 +60,7 @@ class DataRepositoryImpl implements DataRepository {
 
 	public <T> Result<T> update(T instance) {
 		try {
-			ReflectionUtils.setValue(instance, "updated", new Date(), 1);
+			Reflection.set(instance, "updated", new Date());
 			sessionFactory.getCurrentSession().update(instance);
 			sessionFactory.getCurrentSession().flush();
 			return Result.accept(instance);

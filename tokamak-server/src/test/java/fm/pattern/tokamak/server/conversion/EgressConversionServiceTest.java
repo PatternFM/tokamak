@@ -158,7 +158,7 @@ public class EgressConversionServiceTest extends IntegrationTest {
 
 	@Test
 	public void shouldBeAbleToConvertAReportableExceptionIntoAnErrorsRepresentation() {
-		ReportableException exception = new UnprocessableEntityException(Reportable.report("client.id.required"));
+		ReportableException exception = new UnprocessableEntityException(new Reportable("client.id.required"));
 		ErrorsRepresentation errors = egress.convert(exception);
 
 		assertThat(errors.getErrors()).hasSize(1);

@@ -10,10 +10,8 @@ import java.util.List;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import fm.pattern.commons.util.ReflectionUtils;
 import fm.pattern.tokamak.server.IntegrationTest;
 import fm.pattern.tokamak.server.model.Audience;
-import fm.pattern.tokamak.server.service.AudienceService;
 import fm.pattern.valex.EntityNotFoundException;
 import fm.pattern.valex.Result;
 import fm.pattern.valex.UnprocessableEntityException;
@@ -75,7 +73,7 @@ public class AudienceServiceIntegrationTest extends IntegrationTest {
 	@Test
 	public void shouldNotBeAbleToDeleteAnAudienceIfTheAudienceIsInvalid() {
 		Audience audience = audience().thatIs().persistent().build();
-		ReflectionUtils.setValue(audience, "id", null, 1);
+		audience.setId(null);
 		assertThat(audienceService.delete(audience)).rejected().withError("ENT-0001", "An id is required.", UnprocessableEntityException.class);
 	}
 

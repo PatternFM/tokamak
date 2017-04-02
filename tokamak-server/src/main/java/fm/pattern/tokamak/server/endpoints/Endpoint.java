@@ -21,7 +21,6 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -39,42 +38,36 @@ public class Endpoint {
 
 	private EgressConversionService converter;
 
-	@ResponseBody
 	@ResponseStatus(value = HttpStatus.UNPROCESSABLE_ENTITY)
 	@ExceptionHandler(UnprocessableEntityException.class)
 	public ErrorsRepresentation handleUnprocessableEntity(UnprocessableEntityException exception, HttpServletRequest request) {
 		return converter.convert(exception);
 	}
 
-	@ResponseBody
 	@ResponseStatus(value = HttpStatus.UNAUTHORIZED)
 	@ExceptionHandler(AuthenticationException.class)
 	public ErrorsRepresentation handleAuthentication(AuthenticationException exception) {
 		return converter.convert(exception);
 	}
 
-	@ResponseBody
 	@ResponseStatus(value = HttpStatus.FORBIDDEN)
 	@ExceptionHandler(AuthorizationException.class)
 	public ErrorsRepresentation handleAuthorization(AuthorizationException exception) {
 		return converter.convert(exception);
 	}
 
-	@ResponseBody
 	@ResponseStatus(value = HttpStatus.NOT_FOUND)
 	@ExceptionHandler(EntityNotFoundException.class)
 	public ErrorsRepresentation handleEntityNotFound(EntityNotFoundException exception) {
 		return converter.convert(exception);
 	}
 
-	@ResponseBody
 	@ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
 	@ExceptionHandler(InternalErrorException.class)
 	public ErrorsRepresentation handleInternalError(EntityNotFoundException exception) {
 		return converter.convert(exception);
 	}
 
-	@ResponseBody
 	@ResponseStatus(value = HttpStatus.CONFLICT)
 	@ExceptionHandler(ResourceConflictException.class)
 	public ErrorsRepresentation handleResourceConflict(ResourceConflictException exception) {
