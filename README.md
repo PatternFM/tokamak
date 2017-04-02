@@ -1,6 +1,5 @@
 [![Build Status](https://travis-ci.org/PatternFM/tokamak.svg?branch=master)](https://travis-ci.org/PatternFM/tokamak)
-[![Coverage Status](https://coveralls.io/repos/github/PatternFM/tokamak/badge.svg?branch=master)](https://coveralls.io/github/PatternFM/tokamak?branch=master)  
-[![codebeat badge](https://codebeat.co/badges/fa267db4-aaa5-4057-afcf-91a8633e32b1)](https://codebeat.co/projects/github-com-patternfm-tokamak-master)  
+[![Coverage Status](https://coveralls.io/repos/github/PatternFM/tokamak/badge.svg?branch=master)](https://coveralls.io/github/PatternFM/tokamak?branch=master)  [![codebeat badge](https://codebeat.co/badges/fa267db4-aaa5-4057-afcf-91a8633e32b1)](https://codebeat.co/projects/github-com-patternfm-tokamak-master)  
 
 # Introduction
 
