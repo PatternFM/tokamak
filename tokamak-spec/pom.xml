@@ -21,8 +21,8 @@
 
       <dependency>
          <groupId>fm.pattern</groupId>
-         <artifactId>cycle</artifactId>
-         <version>1.0.3</version>
+         <artifactId>spin</artifactId>
+         <version>1.0.0</version>
          <scope>test</scope>
       </dependency>
 

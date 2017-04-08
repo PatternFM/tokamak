@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if [ "$MYVAR" = "ci" ]
+if [ "$SPRING_PROFILE" = "ci" ]
 then
    echo "Running CI Environment"
    mvn install -DskipTests=true

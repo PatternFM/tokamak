@@ -1,6 +1,6 @@
 package fm.pattern.jwt.spec;
 
-import fm.pattern.cycle.junit.AutomatedAcceptanceTest;
+import fm.pattern.spin.junit.AutomatedAcceptanceTest;
 import fm.pattern.tokamak.sdk.ClientCredentials;
 import fm.pattern.tokamak.sdk.JwtClientProperties;
 
