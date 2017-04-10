@@ -1,3 +1,4 @@
 Tokamak Server: 
-  path: ../tokamak-server
+  start: ../tokamak-server/start.sh
+  stop: ../tokamak-server/stop.sh
   ping: http://localhost:9600/v1/ping
