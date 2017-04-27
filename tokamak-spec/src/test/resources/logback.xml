@@ -17,7 +17,7 @@
     <logger name="org.jboss" level="ERROR" />
     <logger name="org.apache" level="ERROR" />
     <logger name="org.flywaydb" level="ERROR" />
-    <logger name="fm.pattern" level="INFO" />
+    <logger name="fm.pattern" level="DEBUG" />
 
     <root>
         <appender-ref ref="CONSOLE" />

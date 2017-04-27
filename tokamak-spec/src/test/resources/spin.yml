@@ -2,3 +2,4 @@ Tokamak Server:
   start: ../tokamak-server/start.sh
   stop: ../tokamak-server/stop.sh
   ping: http://localhost:9600/v1/ping
+  path: ":/usr/local/bin"
