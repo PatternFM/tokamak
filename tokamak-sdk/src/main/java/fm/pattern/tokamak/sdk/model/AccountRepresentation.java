@@ -1,85 +1,54 @@
 package fm.pattern.tokamak.sdk.model;
 
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-import fm.pattern.tokamak.sdk.commons.Representation;
+public class AccountRepresentation extends EntityRepresentation {
 
-public class AccountRepresentation extends Representation {
+    private String username;
+    private String password;
+    private boolean locked;
 
-	private String id;
-	private Date created;
-	private Date updated;
+    private Set<RoleRepresentation> roles = new HashSet<RoleRepresentation>();
 
-	private String username;
-	private String password;
-	private boolean locked;
+    public AccountRepresentation() {
 
-	private Set<RoleRepresentation> roles = new HashSet<RoleRepresentation>();
+    }
 
-	public AccountRepresentation() {
+    public AccountRepresentation(String id) {
+        super(id);
+    }
 
-	}
+    public String getUsername() {
+        return username;
+    }
 
-	public AccountRepresentation(String id) {
-		this.id = id;
-	}
+    public void setUsername(String username) {
+        this.username = username;
+    }
 
-	public String getId() {
-		return id;
-	}
+    public String getPassword() {
+        return password;
+    }
 
-	public void setId(String id) {
-		this.id = id;
-	}
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
-	public Date getCreated() {
-		return created;
-	}
+    public boolean isLocked() {
+        return locked;
+    }
 
-	public void setCreated(Date created) {
-		this.created = created;
-	}
+    public void setLocked(boolean locked) {
+        this.locked = locked;
+    }
 
-	public Date getUpdated() {
-		return updated;
-	}
+    public Set<RoleRepresentation> getRoles() {
+        return roles;
+    }
 
-	public void setUpdated(Date updated) {
-		this.updated = updated;
-	}
-
-	public String getUsername() {
-		return username;
-	}
-
-	public void setUsername(String username) {
-		this.username = username;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
-	public boolean isLocked() {
-		return locked;
-	}
-
-	public void setLocked(boolean locked) {
-		this.locked = locked;
-	}
-
-	public Set<RoleRepresentation> getRoles() {
-		return roles;
-	}
-
-	public void setRoles(Set<RoleRepresentation> roles) {
-		this.roles = roles;
-	}
+    public void setRoles(Set<RoleRepresentation> roles) {
+        this.roles = roles;
+    }
 
 }

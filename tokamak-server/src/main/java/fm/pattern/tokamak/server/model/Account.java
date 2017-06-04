@@ -43,27 +43,40 @@ import fm.pattern.valex.sequences.CreateLevel4;
 import fm.pattern.valex.sequences.UpdateLevel1;
 import fm.pattern.valex.sequences.UpdateLevel2;
 import fm.pattern.valex.sequences.UpdateLevel4;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity(name = "Accounts")
-@UniqueValue(property = "username", message = "{account.username.conflict}", groups = { CreateLevel4.class, UpdateLevel4.class })
+@UniqueValue(property = "username", message = "{account.username.conflict}", groups = { CreateLevel4.class,
+		UpdateLevel4.class })
 public class Account extends PersistentEntity {
 
 	private static final long serialVersionUID = 2435019868978460407L;
 
+	@Getter
+	@Setter
 	@Column(name = "username", nullable = false, unique = true)
 	@NotBlank(message = "{account.username.required}", groups = { CreateLevel1.class, UpdateLevel1.class })
 	@Size(min = 3, max = 128, message = "{account.username.size}", groups = { CreateLevel2.class, UpdateLevel2.class })
 	private String username;
 
+	@Getter
+	@Setter
 	@Column(name = "password", nullable = false)
 	@NotBlank(message = "{account.password.required}", groups = { CreateLevel1.class, UpdateLevel1.class })
 	@Size(min = 8, max = 255, message = "{account.password.size}", groups = { CreateLevel2.class, UpdateLevel2.class })
 	private String password;
 
+	@Getter
+	@Setter
 	@OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
-	@JoinTable(name = "AccountRoles", joinColumns = { @JoinColumn(name = "account_id", referencedColumnName = "id") }, inverseJoinColumns = { @JoinColumn(name = "role_id", referencedColumnName = "id") })
+	@JoinTable(name = "AccountRoles", joinColumns = {
+			@JoinColumn(name = "account_id", referencedColumnName = "id") }, inverseJoinColumns = {
+					@JoinColumn(name = "role_id", referencedColumnName = "id") })
 	private Set<Role> roles = new HashSet<Role>();
 
+	@Getter
+	@Setter
 	@Column(name = "locked", nullable = false)
 	private boolean locked;
 
@@ -80,22 +93,6 @@ public class Account extends PersistentEntity {
 		this.locked = false;
 	}
 
-	public String getUsername() {
-		return username;
-	}
-
-	public void setUsername(String username) {
-		this.username = username;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
 	public Account addRole(Role role) {
 		if (role != null) {
 			this.roles.add(role);
@@ -105,22 +102,6 @@ public class Account extends PersistentEntity {
 
 	public boolean hasRole(Role role) {
 		return roles.stream().filter(r -> r.equals(role)).count() != 0;
-	}
-
-	public Set<Role> getRoles() {
-		return roles;
-	}
-
-	public void setRoles(Set<Role> roles) {
-		this.roles = roles;
-	}
-
-	public boolean isLocked() {
-		return locked;
-	}
-
-	public void setLocked(boolean locked) {
-		this.locked = locked;
 	}
 
 	public int hashCode() {

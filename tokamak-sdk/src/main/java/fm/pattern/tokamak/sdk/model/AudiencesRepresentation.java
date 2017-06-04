@@ -3,7 +3,9 @@ package fm.pattern.tokamak.sdk.model;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AudiencesRepresentation {
+import fm.pattern.tokamak.sdk.commons.Representation;
+
+public class AudiencesRepresentation extends Representation {
 
     private List<AudienceRepresentation> audiences = new ArrayList<AudienceRepresentation>();
 

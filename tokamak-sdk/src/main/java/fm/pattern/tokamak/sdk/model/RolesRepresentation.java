@@ -3,7 +3,9 @@ package fm.pattern.tokamak.sdk.model;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RolesRepresentation {
+import fm.pattern.tokamak.sdk.commons.Representation;
+
+public class RolesRepresentation extends Representation {
 
 	private List<RoleRepresentation> roles = new ArrayList<RoleRepresentation>();
 
