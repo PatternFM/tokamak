@@ -35,6 +35,8 @@ import fm.pattern.valex.sequences.CreateLevel3;
 import fm.pattern.valex.sequences.UpdateLevel1;
 import fm.pattern.valex.sequences.UpdateLevel2;
 import fm.pattern.valex.sequences.UpdateLevel3;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity(name = "Roles")
 @UniqueValue(property = "name", message = "{role.name.conflict}", groups = { CreateLevel3.class, UpdateLevel3.class })
@@ -42,11 +44,15 @@ public class Role extends PersistentEntity {
 
 	private static final long serialVersionUID = -5647907379923624257L;
 
+	@Getter
+	@Setter
 	@Column(name = "name", nullable = false, unique = true)
 	@NotBlank(message = "{role.name.required}", groups = { CreateLevel1.class, UpdateLevel1.class })
 	@Size(max = 128, message = "{role.name.size}", groups = { CreateLevel2.class, UpdateLevel2.class })
 	private String name;
 
+	@Getter
+	@Setter
 	@Column(name = "description")
 	@Size(max = 255, message = "{role.description.size}", groups = { CreateLevel2.class, UpdateLevel2.class })
 	private String description;
@@ -58,22 +64,6 @@ public class Role extends PersistentEntity {
 	public Role(String name) {
 		this();
 		this.name = name;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
 	}
 
 	public int hashCode() {

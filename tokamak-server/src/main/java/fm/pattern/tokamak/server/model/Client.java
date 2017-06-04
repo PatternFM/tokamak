@@ -41,6 +41,8 @@ import fm.pattern.valex.sequences.CreateLevel4;
 import fm.pattern.valex.sequences.UpdateLevel1;
 import fm.pattern.valex.sequences.UpdateLevel2;
 import fm.pattern.valex.sequences.UpdateLevel4;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity(name = "Clients")
 @UniqueValue(property = "clientId", message = "{client.clientId.conflict}", groups = { CreateLevel4.class, UpdateLevel4.class })
@@ -48,37 +50,53 @@ public class Client extends PersistentEntity {
 
 	private static final long serialVersionUID = -229014499144213599L;
 
+	@Getter
+	@Setter
 	@Column(name = "client_id", nullable = false, updatable = false, unique = true)
 	@NotBlank(message = "{client.clientId.required}", groups = { CreateLevel1.class, UpdateLevel1.class })
 	@Size(min = 10, max = 128, message = "{client.clientId.size}", groups = { CreateLevel2.class, UpdateLevel2.class })
 	private String clientId;
 
+	@Getter
+	@Setter
 	@Column(name = "client_secret", nullable = false, updatable = false)
 	@NotBlank(message = "{client.secret.required}", groups = { CreateLevel1.class, UpdateLevel1.class })
 	@Size(min = 10, max = 255, message = "{client.secret.size}", groups = { CreateLevel2.class, UpdateLevel2.class })
 	private String clientSecret;
 
+	@Getter
+	@Setter
 	@OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
 	@JoinTable(name = "ClientAudiences", joinColumns = { @JoinColumn(name = "client_id", referencedColumnName = "id") }, inverseJoinColumns = { @JoinColumn(name = "audience_id", referencedColumnName = "id") })
 	private Set<Audience> audiences = new HashSet<Audience>();
 
+	@Getter
+	@Setter
 	@OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
 	@JoinTable(name = "ClientAuthorities", joinColumns = { @JoinColumn(name = "client_id", referencedColumnName = "id") }, inverseJoinColumns = { @JoinColumn(name = "authority_id", referencedColumnName = "id") })
 	private Set<Authority> authorities = new HashSet<Authority>();
 
+	@Getter
+	@Setter
 	@OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
 	@JoinTable(name = "ClientScopes", joinColumns = { @JoinColumn(name = "client_id", referencedColumnName = "id") }, inverseJoinColumns = { @JoinColumn(name = "scope_id", referencedColumnName = "id") })
 	private Set<Scope> scopes = new HashSet<Scope>();
 
+	@Getter
+	@Setter
 	@OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
 	@JoinTable(name = "ClientGrantTypes", joinColumns = { @JoinColumn(name = "client_id", referencedColumnName = "id") }, inverseJoinColumns = { @JoinColumn(name = "grant_type_id", referencedColumnName = "id") })
 	@NotNull(message = "{client.grantType.required}", groups = { CreateLevel1.class, UpdateLevel1.class })
 	@Size(min = 1, message = "{client.grantType.required}", groups = { CreateLevel1.class, UpdateLevel1.class })
 	private Set<GrantType> grantTypes = new HashSet<GrantType>();
 
+	@Getter
+	@Setter
 	@Column(name = "access_token_validity_seconds")
 	private Integer accessTokenValiditySeconds;
 
+	@Getter
+	@Setter
 	@Column(name = "refresh_token_validity_seconds")
 	private Integer refreshTokenValiditySeconds;
 
@@ -96,70 +114,6 @@ public class Client extends PersistentEntity {
 		this.audiences.addAll(audiences.stream().filter(a -> a != null).collect(Collectors.toList()));
 		this.grantTypes.addAll(grantTypes.stream().filter(a -> a != null).collect(Collectors.toList()));
 		this.scopes.addAll(scope.stream().filter(a -> a != null).collect(Collectors.toList()));
-	}
-
-	public String getClientId() {
-		return clientId;
-	}
-
-	public void setClientId(String clientId) {
-		this.clientId = clientId;
-	}
-
-	public String getClientSecret() {
-		return clientSecret;
-	}
-
-	public void setClientSecret(String clientSecret) {
-		this.clientSecret = clientSecret;
-	}
-
-	public Set<Authority> getAuthorities() {
-		return authorities;
-	}
-
-	public void setAuthorities(Set<Authority> authorities) {
-		this.authorities = authorities;
-	}
-
-	public Set<Audience> getAudiences() {
-		return audiences;
-	}
-
-	public void setAudiences(Set<Audience> audiences) {
-		this.audiences = audiences;
-	}
-
-	public Set<Scope> getScopes() {
-		return scopes;
-	}
-
-	public void setScopes(Set<Scope> scopes) {
-		this.scopes = scopes;
-	}
-
-	public Set<GrantType> getGrantTypes() {
-		return grantTypes;
-	}
-
-	public void setGrantTypes(Set<GrantType> grantTypes) {
-		this.grantTypes = grantTypes;
-	}
-
-	public Integer getAccessTokenValiditySeconds() {
-		return accessTokenValiditySeconds;
-	}
-
-	public void setAccessTokenValiditySeconds(Integer accessTokenValiditySeconds) {
-		this.accessTokenValiditySeconds = accessTokenValiditySeconds;
-	}
-
-	public Integer getRefreshTokenValiditySeconds() {
-		return refreshTokenValiditySeconds;
-	}
-
-	public void setRefreshTokenValiditySeconds(Integer refreshTokenValiditySeconds) {
-		this.refreshTokenValiditySeconds = refreshTokenValiditySeconds;
 	}
 
 	public int hashCode() {

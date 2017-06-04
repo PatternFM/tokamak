@@ -47,8 +47,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity(name = "Accounts")
-@UniqueValue(property = "username", message = "{account.username.conflict}", groups = { CreateLevel4.class,
-		UpdateLevel4.class })
+@UniqueValue(property = "username", message = "{account.username.conflict}", groups = { CreateLevel4.class, UpdateLevel4.class })
 public class Account extends PersistentEntity {
 
 	private static final long serialVersionUID = 2435019868978460407L;
@@ -70,9 +69,7 @@ public class Account extends PersistentEntity {
 	@Getter
 	@Setter
 	@OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
-	@JoinTable(name = "AccountRoles", joinColumns = {
-			@JoinColumn(name = "account_id", referencedColumnName = "id") }, inverseJoinColumns = {
-					@JoinColumn(name = "role_id", referencedColumnName = "id") })
+	@JoinTable(name = "AccountRoles", joinColumns = { @JoinColumn(name = "account_id", referencedColumnName = "id") }, inverseJoinColumns = { @JoinColumn(name = "role_id", referencedColumnName = "id") })
 	private Set<Role> roles = new HashSet<Role>();
 
 	@Getter
