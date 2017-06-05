@@ -16,6 +16,9 @@
 
 package fm.pattern.tokamak.server.repository;
 
+import javax.persistence.NoResultException;
+
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Repository;
 
 import fm.pattern.tokamak.server.model.Account;
@@ -24,7 +27,12 @@ import fm.pattern.tokamak.server.model.Account;
 class AccountRepositoryImpl extends DataRepositoryImpl implements AccountRepository {
 
 	public Account findByUsername(String username) {
-		return (Account) query("from Accounts where username = :username").setString("username", username).uniqueResult();
+		try {
+			return (Account) query("from Accounts where username = :username").setParameter("username", username).getSingleResult();
+		}
+		catch (EmptyResultDataAccessException | NoResultException e) {
+			return null;
+		}
 	}
 
 }

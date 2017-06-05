@@ -29,6 +29,10 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
+import org.springframework.orm.jpa.JpaTransactionManager;
+import org.springframework.orm.jpa.JpaVendorAdapter;
+import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
+import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
@@ -41,6 +45,19 @@ public class PersistenceConfiguration {
 
 	@Autowired
 	private DatabaseProperties databaseProperties;
+
+	@Bean
+	public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
+		LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
+		em.setDataSource(dataSource());
+		em.setPackagesToScan(new String[] { MODEL_PACKAGE });
+
+		JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
+		em.setJpaVendorAdapter(vendorAdapter);
+		em.setJpaProperties(getHibernateProperties());
+
+		return em;
+	}
 
 	@Bean(name = "dataSource")
 	public DataSource dataSource() {
@@ -80,7 +97,8 @@ public class PersistenceConfiguration {
 
 	@Bean(name = "transactionManager")
 	public PlatformTransactionManager transactionManager() {
-		return new HibernateTransactionManager(sessionFactory().getObject());
+		return new JpaTransactionManager();
+		//return new JPATransactionManager(sessionFactory().getObject());
 	}
 
 	private Properties getHibernateProperties() {

@@ -35,7 +35,7 @@ public class AudienceDSL extends AbstractDSL<AudienceDSL, Audience> {
 		if (result.accepted()) {
 			return result.getInstance();
 		}
-		throw new IllegalStateException("Unable to create audience, errors:" + result.toString());
+		throw new IllegalStateException("Unable to create audience, errors:" + result.getErrors().toString());
 	}
 
 }

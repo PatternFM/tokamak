@@ -147,8 +147,8 @@ public class AccountsEndpointAcceptanceTest extends AcceptanceTest {
     @Test
     public void shouldBeAbleToFindAnAccountById() {
         AccountRepresentation account = account().thatIs().persistent(token).build();
-        Result<AccountRepresentation> response = accountsClient.findById(account.getId(), token.getAccessToken());
-
+        
+        Result<AccountRepresentation> response = accountsClient.findById(account.getId(), token.getAccessToken()); 
         assertThat(response).accepted().withResponseCode(200);
         assertThat(response.getInstance()).isEqualToComparingFieldByField(account);
     }

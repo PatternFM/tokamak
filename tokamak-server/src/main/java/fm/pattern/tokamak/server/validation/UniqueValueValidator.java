@@ -19,10 +19,10 @@ package fm.pattern.tokamak.server.validation;
 import static org.apache.commons.lang3.StringUtils.isBlank;
 
 import javax.persistence.Entity;
+import javax.persistence.Query;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
-import org.hibernate.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
@@ -58,11 +58,14 @@ public class UniqueValueValidator extends ValidatorSupport implements Constraint
 		String columnName = CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, property);
 		
 		String query = "select count(id) from " + getTableName(entity) + " where " + columnName + " = :value and id != :id";
-		return repository.count(resolve(query, value, entity)) == 0;
+		Long count = repository.count(resolve(query, value, entity));
+		System.out.println("COUNT IS: " + count);
+		return count == 0;
 	}
 
 	private Query resolve(String base, String value, PersistentEntity entity) {
-		return repository.getCurrentSession().createSQLQuery(base).setString("value", value).setString("id", entity.getId());
+		return repository.sqlQuery(base).setParameter("value", value).setParameter("id", entity.getId());
+		//return repository.getCurrentSession().createQuery(base).setParameter("value", value).setParameter("id", entity.getId());
 	}
 
 	private String getTableName(PersistentEntity entity) {

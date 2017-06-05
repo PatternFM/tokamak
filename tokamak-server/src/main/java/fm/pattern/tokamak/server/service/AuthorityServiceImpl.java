@@ -20,7 +20,10 @@ import static org.apache.commons.lang3.StringUtils.isBlank;
 
 import java.util.List;
 
+import javax.persistence.NoResultException;
+
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,39 +34,44 @@ import fm.pattern.valex.Result;
 @Service
 class AuthorityServiceImpl extends DataServiceImpl<Authority> implements AuthorityService {
 
-    private final DataRepository repository;
+	private final DataRepository repository;
 
-    AuthorityServiceImpl(@Qualifier("dataRepository") DataRepository repository) {
-        this.repository = repository;
-    }
+	AuthorityServiceImpl(@Qualifier("dataRepository") DataRepository repository) {
+		this.repository = repository;
+	}
 
-    @Transactional
-    public Result<Authority> delete(Authority authority) {
-        Long count = repository.count(repository.sqlQuery("select count(_id) from ClientAuthorities where authority_id = :id").setString("id", authority.getId()));
-        if (count != 0) {
-            return Result.reject("authority.delete.conflict", count, (count != 1 ? "clients are" : "client is"));
-        }
-        return repository.delete(authority);
-    }
+	@Transactional
+	public Result<Authority> delete(Authority authority) {
+		Long count = repository.count(repository.sqlQuery("select count(_id) from ClientAuthorities where authority_id = :id").setParameter("id", authority.getId()));
+		if (count != 0) {
+			return Result.reject("authority.delete.conflict", count, (count != 1 ? "clients are" : "client is"));
+		}
+		return repository.delete(authority);
+	}
 
-    @Transactional(readOnly = true)
-    public Result<Authority> findById(String id) {
-        return super.findById(id, Authority.class);
-    }
+	@Transactional(readOnly = true)
+	public Result<Authority> findById(String id) {
+		return super.findById(id, Authority.class);
+	}
 
-    @Transactional(readOnly = true)
-    public Result<Authority> findByName(String name) {
-        if (isBlank(name)) {
-            return Result.reject("authority.name.required");
-        }
+	@Transactional(readOnly = true)
+	public Result<Authority> findByName(String name) {
+		if (isBlank(name)) {
+			return Result.reject("authority.name.required");
+		}
 
-        Authority authority = (Authority) repository.query("from Authorities where name = :name").setString("name", name).uniqueResult();
-        return authority == null ? Result.reject("authority.name.not_found", name) : Result.accept(authority);
-    }
+		try {
+			Authority authority = (Authority) repository.query("from Authorities where name = :name").setParameter("name", name).getSingleResult();
+			return authority == null ? Result.reject("authority.name.not_found", name) : Result.accept(authority);
+		}
+		catch (EmptyResultDataAccessException | NoResultException e) {
+			return Result.reject("authority.name.not_found", name);
+		}
+	}
 
-    @Transactional(readOnly = true)
-    public Result<List<Authority>> list() {
-        return super.list(Authority.class);
-    }
+	@Transactional(readOnly = true)
+	public Result<List<Authority>> list() {
+		return super.list(Authority.class);
+	}
 
 }

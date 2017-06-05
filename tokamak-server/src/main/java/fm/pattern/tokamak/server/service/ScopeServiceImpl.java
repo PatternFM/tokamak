@@ -20,8 +20,11 @@ import static org.apache.commons.lang3.StringUtils.isBlank;
 
 import java.util.List;
 
+import javax.persistence.NoResultException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,40 +35,45 @@ import fm.pattern.valex.Result;
 @Service
 class ScopeServiceImpl extends DataServiceImpl<Scope> implements ScopeService {
 
-    private final DataRepository repository;
+	private final DataRepository repository;
 
-    @Autowired
-    ScopeServiceImpl(@Qualifier("dataRepository") DataRepository repository) {
-        this.repository = repository;
-    }
+	@Autowired
+	ScopeServiceImpl(@Qualifier("dataRepository") DataRepository repository) {
+		this.repository = repository;
+	}
 
-    @Transactional
-    public Result<Scope> delete(Scope scope) {
-        Long count = repository.count(repository.sqlQuery("select count(_id) from ClientScopes where scope_id = :id").setString("id", scope.getId()));
-        if (count != 0) {
-            return Result.reject("scope.delete.conflict", count, (count != 1 ? "clients are" : "client is"));
-        }
-        return repository.delete(scope);
-    }
+	@Transactional
+	public Result<Scope> delete(Scope scope) {
+		Long count = repository.count(repository.sqlQuery("select count(_id) from ClientScopes where scope_id = :id").setParameter("id", scope.getId()));
+		if (count != 0) {
+			return Result.reject("scope.delete.conflict", count, (count != 1 ? "clients are" : "client is"));
+		}
+		return repository.delete(scope);
+	}
 
-    @Transactional(readOnly = true)
-    public Result<Scope> findById(String id) {
-        return super.findById(id, Scope.class);
-    }
+	@Transactional(readOnly = true)
+	public Result<Scope> findById(String id) {
+		return super.findById(id, Scope.class);
+	}
 
-    @Transactional(readOnly = true)
-    public Result<Scope> findByName(String name) {
-        if (isBlank(name)) {
-            return Result.reject("scope.name.required");
-        }
+	@Transactional(readOnly = true)
+	public Result<Scope> findByName(String name) {
+		if (isBlank(name)) {
+			return Result.reject("scope.name.required");
+		}
 
-        Scope scope = (Scope) repository.query("from Scopes where name = :name").setString("name", name).uniqueResult();
-        return scope == null ? Result.reject("scope.name.not_found", name) : Result.accept(scope);
-    }
+		try {
+			Scope scope = (Scope) repository.query("from Scopes where name = :name").setParameter("name", name).getSingleResult();
+			return scope == null ? Result.reject("scope.name.not_found", name) : Result.accept(scope);
+		}
+		catch (EmptyResultDataAccessException | NoResultException e) {
+			return Result.reject("scope.name.not_found", name);
+		}
+	}
 
-    @Transactional(readOnly = true)
-    public Result<List<Scope>> list() {
-        return super.list(Scope.class);
-    }
+	@Transactional(readOnly = true)
+	public Result<List<Scope>> list() {
+		return super.list(Scope.class);
+	}
 
 }

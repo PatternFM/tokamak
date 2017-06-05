@@ -34,54 +34,62 @@ import fm.pattern.valex.Result;
 @SuppressWarnings({ "unchecked", "hiding" })
 class DataServiceImpl<T> implements DataService<T> {
 
-    @Resource(name = "dataRepository")
-    private DataRepository repository;
+	@Resource(name = "dataRepository")
+	private DataRepository repository;
 
-    DataServiceImpl() {
+	DataServiceImpl() {
 
-    }
+	}
 
-    @Transactional
-    public Result<T> create(T entity) {
-        return repository.save(entity);
-    }
+	@Transactional
+	public Result<T> create(T entity) {
+		return repository.save(entity);
+	}
 
-    @Transactional
-    public Result<T> update(T entity) {
-        return repository.update(entity);
-    }
+	@Transactional
+	public Result<T> update(T entity) {
+		return repository.update(entity);
+	}
 
-    @Transactional
-    public Result<T> delete(T entity) {
-        return repository.delete(entity);
-    }
+	@Transactional
+	public Result<T> delete(T entity) {
+		return repository.delete(entity);
+	}
 
-    @Transactional(readOnly = true)
-    public Result<T> findById(String id, Class<T> type) {
-        String name = type.getSimpleName().toLowerCase();
-        if (isBlank(id)) {
-            return Result.reject(uncapitalize(type.getSimpleName()) + ".id.required");
-        }
+	@Transactional(readOnly = true)
+	public Result<T> findById(String id, Class<T> type) {
+		String name = type.getSimpleName().toLowerCase();
+		if (isBlank(id)) {
+			return Result.reject(uncapitalize(type.getSimpleName()) + ".id.required");
+		}
 
-        T entity = repository.findById(id, type);
-        return entity != null ? Result.accept(entity) : Result.reject("system.not.found", name, id);
-    }
+		T entity = repository.findById(id, type);
+		return entity != null ? Result.accept(entity) : Result.reject("system.not.found", name, id);
+	}
 
-    @Transactional(readOnly = true)
-    public Result<List<T>> list(Class<T> type) {
-        try {
-            return Result.accept(repository.query("from " + entity(type) + " order by created").list());
-        }
-        catch (Exception e) {
-            return Result.reject("system.query.failed", e.getMessage());
-        }
-    }
+	@Transactional(readOnly = true)
+	public Result<T> findBy(String key, String value, Class<T> type) {
+		String name = type.getSimpleName().toLowerCase();
 
-    private <T> String entity(Class<T> entity) {
-        if (entity.isAnnotationPresent(Entity.class)) {
-            return entity.getAnnotation(Entity.class).name();
-        }
-        throw new IllegalStateException(entity.getClass().getSimpleName() + " must have an @Entity annotation configured with the entity name.");
-    }
+		T entity = repository.findBy(key, value, type);
+		return entity != null ? Result.accept(entity) : Result.reject("system.not.found", name, key);
+	}
+
+	@Transactional(readOnly = true)
+	public Result<List<T>> list(Class<T> type) {
+		try {
+			return Result.accept(repository.query("from " + entity(type) + " order by created").getResultList());
+		}
+		catch (Exception e) {
+			return Result.reject("system.query.failed", e.getMessage());
+		}
+	}
+
+	private <T> String entity(Class<T> entity) {
+		if (entity.isAnnotationPresent(Entity.class)) {
+			return entity.getAnnotation(Entity.class).name();
+		}
+		throw new IllegalStateException(entity.getClass().getSimpleName() + " must have an @Entity annotation configured with the entity name.");
+	}
 
 }

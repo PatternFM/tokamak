@@ -20,37 +20,55 @@ import java.math.BigInteger;
 import java.util.Date;
 
 import javax.persistence.Entity;
+import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 import org.flywaydb.core.Flyway;
-import org.hibernate.Query;
-import org.hibernate.SQLQuery;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Repository;
 
 import fm.pattern.minimal.Reflection;
 import fm.pattern.valex.Result;
 
+// TODO: Wrap all methods in try/catch blocks.
 @Repository("dataRepository")
 @SuppressWarnings("unchecked")
 class DataRepositoryImpl implements DataRepository {
 
-	private SessionFactory sessionFactory;
 	private Flyway flyway;
+
+	@PersistenceContext
+	private EntityManager em;
 
 	DataRepositoryImpl() {
 
 	}
 
+	public <T> T findBy(String key, String value, Class<T> type) {
+		try {
+			return (T) query("from " + entityName(type) + " where " + key + " = :value").setParameter("value", value).getSingleResult();
+		}
+		catch (EmptyResultDataAccessException | NoResultException e) {
+			return null;
+		}
+	}
+	
 	public <T> T findById(String id, Class<T> type) {
-		return (T) query("from " + entityName(type) + " where id = :id").setString("id", id).uniqueResult();
+		try {
+			return (T) query("from " + entityName(type) + " where id = :id").setParameter("id", id).getSingleResult();
+		}
+		catch (EmptyResultDataAccessException | NoResultException e) {
+			return null;
+		}
 	}
 
 	public <T> Result<T> save(T instance) {
 		try {
-			sessionFactory.getCurrentSession().save(instance);
-			sessionFactory.getCurrentSession().flush();
+			em.persist(instance);
+			em.flush();
 			return Result.accept(instance);
 		}
 		catch (Exception e) {
@@ -61,8 +79,8 @@ class DataRepositoryImpl implements DataRepository {
 	public <T> Result<T> update(T instance) {
 		try {
 			Reflection.set(instance, "updated", new Date());
-			sessionFactory.getCurrentSession().update(instance);
-			sessionFactory.getCurrentSession().flush();
+			em.persist(instance);
+			em.flush();
 			return Result.accept(instance);
 		}
 		catch (Exception e) {
@@ -72,8 +90,8 @@ class DataRepositoryImpl implements DataRepository {
 
 	public <T> Result<T> delete(T instance) {
 		try {
-			sessionFactory.getCurrentSession().delete(instance);
-			sessionFactory.getCurrentSession().flush();
+			em.remove(instance);
+			em.flush();
 			return Result.accept(instance);
 		}
 		catch (Exception e) {
@@ -82,38 +100,29 @@ class DataRepositoryImpl implements DataRepository {
 	}
 
 	public Query query(String query) {
-		return sessionFactory.getCurrentSession().createQuery(query);
+		return em.createQuery(query);
 	}
 
 	public Query namedQuery(String namedQuery) {
-		return sessionFactory.getCurrentSession().getNamedQuery(namedQuery);
+		return em.createNamedQuery(namedQuery);
 	}
 
-	public SQLQuery sqlQuery(String sqlQuery) {
-		return sessionFactory.getCurrentSession().createSQLQuery(sqlQuery).addSynchronizedQuerySpace("");
-	}
-
-	public SQLQuery namedSqlQuery(String namedQuery) {
-		SQLQuery query = (SQLQuery) sessionFactory.getCurrentSession().getNamedQuery(namedQuery);
-		return query.addSynchronizedQuerySpace("");
+	public Query sqlQuery(String sqlQuery) {
+		return em.createNativeQuery(sqlQuery);
 	}
 
 	public Long count(Query query) {
-		Object count = query.uniqueResult();
-		return (count instanceof Long) ? (Long) count : ((BigInteger) query.uniqueResult()).longValue();
+		try {
+			Object count = query.getSingleResult();
+			return (count instanceof Long) ? (Long) count : ((BigInteger) count).longValue();
+		}
+		catch (EmptyResultDataAccessException | NoResultException e) {
+			return 0L;
+		}
 	}
 
 	public Flyway getFlyway() {
 		return flyway;
-	}
-
-	public Session getCurrentSession() {
-		return this.sessionFactory.getCurrentSession();
-	}
-
-	@Autowired
-	public void setSessionFactory(SessionFactory sessionFactory) {
-		this.sessionFactory = sessionFactory;
 	}
 
 	@Autowired

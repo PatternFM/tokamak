@@ -16,6 +16,9 @@
 
 package fm.pattern.tokamak.server.repository;
 
+import javax.persistence.NoResultException;
+
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -23,7 +26,10 @@ class DatabaseHealthCheckRepositoryImpl extends DataRepositoryImpl implements Da
 
 	public boolean isHealthy() {
 		try {
-			sqlQuery("SELECT 1 FROM HeartBeat").uniqueResult();
+			sqlQuery("SELECT 1 FROM HeartBeat").getSingleResult();
+			return true;
+		}
+		catch (EmptyResultDataAccessException | NoResultException e) {
 			return true;
 		}
 		catch (Exception e) {

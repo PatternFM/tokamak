@@ -16,10 +16,9 @@
 
 package fm.pattern.tokamak.server.repository;
 
+import javax.persistence.Query;
+
 import org.flywaydb.core.Flyway;
-import org.hibernate.Query;
-import org.hibernate.SQLQuery;
-import org.hibernate.Session;
 
 import fm.pattern.valex.Result;
 
@@ -33,13 +32,13 @@ public interface DataRepository {
 
 	<T> T findById(String id, Class<T> type);
 
+	<T> T findBy(String key, String value, Class<T> type);
+
 	Query query(String query);
 
-	SQLQuery sqlQuery(String query);
+	Query sqlQuery(String query);
 
 	Long count(Query query);
-
-	Session getCurrentSession();
 
 	Flyway getFlyway();
 

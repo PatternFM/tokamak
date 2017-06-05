@@ -16,10 +16,9 @@
 
 package fm.pattern.tokamak.server.repository;
 
+import javax.persistence.Query;
+
 import org.flywaydb.core.Flyway;
-import org.hibernate.Query;
-import org.hibernate.SQLQuery;
-import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
@@ -57,24 +56,24 @@ class TransactionalDataRepository implements DataRepository {
 		return repository.findById(id, type);
 	}
 
+	@Transactional(readOnly = true)
+	public <T> T findBy(String key, String value, Class<T> type) {
+		return repository.findBy(key, value, type);
+	}
+
 	@Transactional
 	public Query query(String query) {
 		return repository.query(query);
 	}
 
 	@Transactional
-	public SQLQuery sqlQuery(String query) {
+	public Query sqlQuery(String query) {
 		return repository.sqlQuery(query);
 	}
 
 	@Transactional(readOnly = true)
 	public Long count(Query query) {
 		return repository.count(query);
-	}
-
-	@Transactional
-	public Session getCurrentSession() {
-		return repository.getCurrentSession();
 	}
 
 	@Transactional

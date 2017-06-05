@@ -1,12 +1,12 @@
 database:
-    schema: pattern-jwt
+    schema: pattern-tokamak
     url: jdbc:mysql://localhost:3306
     username: username
     password: password
     encrypted: false
     driver: com.mysql.jdbc.Driver
     dialect: org.hibernate.dialect.MySQLDialect
-    ddl: validate 
+    ddl: validate
     migrations: classpath:db/migration
 
 oauth2:
@@ -14,7 +14,7 @@ oauth2:
     audience: oauth-service
     accessTokenValiditySeconds: 7200
     refreshTokenValiditySeconds: 31536000
-    
+
     privateKey: |
       -----BEGIN RSA PRIVATE KEY-----
       MIIEpQIBAAKCAQEAzYFHFXlzwBJRhu4kA7unDH+WZHdO/KGBYxkybvbmUWfn2ju7
@@ -55,6 +55,4 @@ oauth2:
       6wIDAQAB
       -----END PUBLIC KEY-----
 
-logging.config: classpath:logback.xml  
-
-  
+logging.config: classpath:logback.xml

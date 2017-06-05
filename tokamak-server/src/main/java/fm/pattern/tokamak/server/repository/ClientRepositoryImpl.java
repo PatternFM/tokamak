@@ -16,6 +16,9 @@
 
 package fm.pattern.tokamak.server.repository;
 
+import javax.persistence.NoResultException;
+
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Repository;
 
 import fm.pattern.tokamak.server.model.Client;
@@ -24,7 +27,12 @@ import fm.pattern.tokamak.server.model.Client;
 class ClientRepositoryImpl extends DataRepositoryImpl implements ClientRepository {
 
 	public Client findByClientId(String clientId) {
-		return (Client) query("from Clients where client_id = :clientId").setString("clientId", clientId).uniqueResult();
+		try {
+			return (Client) query("from Clients where client_id = :clientId").setParameter("clientId", clientId).getSingleResult();
+		}
+		catch (EmptyResultDataAccessException | NoResultException e) {
+			return null;
+		}
 	}
 
 }

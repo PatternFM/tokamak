@@ -20,8 +20,11 @@ import static org.apache.commons.lang3.StringUtils.isBlank;
 
 import java.util.List;
 
+import javax.persistence.NoResultException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,40 +35,45 @@ import fm.pattern.valex.Result;
 @Service
 class RoleServiceImpl extends DataServiceImpl<Role> implements RoleService {
 
-    private final DataRepository repository;
+	private final DataRepository repository;
 
-    @Autowired
-    RoleServiceImpl(@Qualifier("dataRepository") DataRepository repository) {
-        this.repository = repository;
-    }
+	@Autowired
+	RoleServiceImpl(@Qualifier("dataRepository") DataRepository repository) {
+		this.repository = repository;
+	}
 
-    @Transactional
-    public Result<Role> delete(Role role) {
-        Long count = repository.count(repository.sqlQuery("select count(_id) from AccountRoles where role_id = :id").setString("id", role.getId()));
-        if (count != 0) {
-            return Result.reject("role.delete.conflict", count, (count != 1 ? "accounts are" : "account is"));
-        }
-        return repository.delete(role);
-    }
+	@Transactional
+	public Result<Role> delete(Role role) {
+		Long count = repository.count(repository.sqlQuery("select count(_id) from AccountRoles where role_id = :id").setParameter("id", role.getId()));
+		if (count != 0) {
+			return Result.reject("role.delete.conflict", count, (count != 1 ? "accounts are" : "account is"));
+		}
+		return repository.delete(role);
+	}
 
-    @Transactional(readOnly = true)
-    public Result<Role> findById(String id) {
-        return super.findById(id, Role.class);
-    }
+	@Transactional(readOnly = true)
+	public Result<Role> findById(String id) {
+		return super.findById(id, Role.class);
+	}
 
-    @Transactional(readOnly = true)
-    public Result<Role> findByName(String name) {
-        if (isBlank(name)) {
-            return Result.reject("role.name.required");
-        }
+	@Transactional(readOnly = true)
+	public Result<Role> findByName(String name) {
+		if (isBlank(name)) {
+			return Result.reject("role.name.required");
+		}
 
-        Role role = (Role) repository.query("from Roles where name = :name").setString("name", name).uniqueResult();
-        return role == null ? Result.reject("role.name.not_found", name) : Result.accept(role);
-    }
+		try {
+			Role role = (Role) repository.query("from Roles where name = :name").setParameter("name", name).getSingleResult();
+			return role == null ? Result.reject("role.name.not_found", name) : Result.accept(role);
+		}
+		catch (EmptyResultDataAccessException | NoResultException e) {
+			return Result.reject("role.name.not_found", name);
+		}
+	}
 
-    @Transactional(readOnly = true)
-    public Result<List<Role>> list() {
-        return super.list(Role.class);
-    }
+	@Transactional(readOnly = true)
+	public Result<List<Role>> list() {
+		return super.list(Role.class);
+	}
 
 }

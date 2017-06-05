@@ -31,39 +31,39 @@ import fm.pattern.valex.Result;
 @Service
 class AudienceServiceImpl extends DataServiceImpl<Audience> implements AudienceService {
 
-    private final DataRepository repository;
+	private final DataRepository repository;
 
-    AudienceServiceImpl(@Qualifier("dataRepository") DataRepository repository) {
-        this.repository = repository;
-    }
+	AudienceServiceImpl(@Qualifier("dataRepository") DataRepository repository) {
+		this.repository = repository;
+	}
 
-    @Transactional
-    public Result<Audience> delete(Audience audience) {
-        Long count = repository.count(repository.sqlQuery("select count(_id) from ClientAudiences where audience_id = :id").setString("id", audience.getId()));
-        if (count != 0) {
-            return Result.reject("audience.delete.conflict", count, (count != 1 ? "clients are" : "client is"));
-        }
-        return repository.delete(audience);
-    }
+	@Transactional
+	public Result<Audience> delete(Audience audience) {
+		Long count = repository.count(repository.sqlQuery("select count(_id) from ClientAudiences where audience_id = :id").setParameter("id", audience.getId()));
+		if (count != 0) {
+			return Result.reject("audience.delete.conflict", count, (count != 1 ? "clients are" : "client is"));
+		}
+		return repository.delete(audience);
+	}
 
-    @Transactional(readOnly = true)
-    public Result<Audience> findById(String id) {
-        return super.findById(id, Audience.class);
-    }
+	@Transactional(readOnly = true)
+	public Result<Audience> findById(String id) {
+		return super.findById(id, Audience.class);
+	}
 
-    @Transactional(readOnly = true)
-    public Result<Audience> findByName(String name) {
-        if (isBlank(name)) {
-            return Result.reject("audience.name.required");
-        }
+	@Transactional(readOnly = true)
+	public Result<Audience> findByName(String name) {
+		if (isBlank(name)) {
+			return Result.reject("audience.name.required");
+		}
 
-        Audience audience = (Audience) repository.query("from Audiences where name = :name").setString("name", name).uniqueResult();
-        return audience == null ? Result.reject("audience.name.not_found", name) : Result.accept(audience);
-    }
+		Result<Audience> result = super.findBy("name", name, Audience.class);
+		return result.accepted() ? result : Result.reject("audience.name.not_found", name);
+	}
 
-    @Transactional(readOnly = true)
-    public Result<List<Audience>> list() {
-        return super.list(Audience.class);
-    }
+	@Transactional(readOnly = true)
+	public Result<List<Audience>> list() {
+		return super.list(Audience.class);
+	}
 
 }
