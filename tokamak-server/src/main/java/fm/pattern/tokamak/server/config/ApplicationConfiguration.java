@@ -20,6 +20,7 @@ import javax.validation.Validator;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
 import fm.pattern.valex.SimpleValidationService;
@@ -27,21 +28,22 @@ import fm.pattern.valex.ValidationService;
 import fm.pattern.valex.annotations.ValidationAdvisor;
 
 @Configuration
-public class ValidationConfiguration {
+@EnableTransactionManagement
+public class ApplicationConfiguration {
 
-    @Bean(name = "validator")
-    public Validator validator() {
-        return new LocalValidatorFactoryBean();
-    }
+	@Bean(name = "validator")
+	public Validator validator() {
+		return new LocalValidatorFactoryBean();
+	}
 
-    @Bean
-    public ValidationService validationService() {
-        return new SimpleValidationService(validator());
-    }
+	@Bean
+	public ValidationService validationService() {
+		return new SimpleValidationService(validator());
+	}
 
-    @Bean
-    public ValidationAdvisor validationAdvisor() {
-        return new ValidationAdvisor(validationService());
-    }
+	@Bean
+	public ValidationAdvisor validationAdvisor() {
+		return new ValidationAdvisor(validationService());
+	}
 
 }

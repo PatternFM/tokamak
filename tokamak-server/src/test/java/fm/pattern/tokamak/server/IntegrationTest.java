@@ -5,19 +5,18 @@ import static fm.pattern.tokamak.server.PatternAssertions.assertThat;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import fm.pattern.tokamak.server.config.PersistenceConfiguration;
-import fm.pattern.tokamak.server.config.ValidationConfiguration;
+import fm.pattern.tokamak.server.config.ApplicationConfiguration;
 import fm.pattern.valex.Result;
 import fm.pattern.valex.ValidationService;
 import fm.pattern.valex.sequences.Create;
 import fm.pattern.valex.sequences.Delete;
 import fm.pattern.valex.sequences.Update;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = { PersistenceConfiguration.class, TestConfiguration.class, ValidationConfiguration.class })
+@RunWith(SpringRunner.class)
+@SpringBootTest(classes = { ApplicationConfiguration.class, TestConfiguration.class })
 @Transactional
 public abstract class IntegrationTest {
 
