@@ -20,11 +20,8 @@ import static org.apache.commons.lang3.StringUtils.isBlank;
 
 import java.util.List;
 
-import javax.persistence.NoResultException;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -62,13 +59,8 @@ class GrantTypeServiceImpl extends DataServiceImpl<GrantType> implements GrantTy
 			return Result.reject("grantType.name.required");
 		}
 
-		try {
-			GrantType grantType = (GrantType) repository.query("from GrantTypes where name = :name").setParameter("name", name).getSingleResult();
-			return grantType == null ? Result.reject("grantType.name.not_found", name) : Result.accept(grantType);
-		}
-		catch (EmptyResultDataAccessException | NoResultException e) {
-			return Result.reject("grantType.name.not_found", name);
-		}
+		Result<GrantType> result = super.findBy("name", name, GrantType.class);
+		return result.accepted() ? result : Result.reject("grantType.name.not_found", name);
 	}
 
 	@Transactional(readOnly = true)

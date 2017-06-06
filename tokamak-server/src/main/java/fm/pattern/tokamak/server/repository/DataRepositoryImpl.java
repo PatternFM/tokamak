@@ -55,7 +55,7 @@ class DataRepositoryImpl implements DataRepository {
 			return null;
 		}
 	}
-	
+
 	public <T> T findById(String id, Class<T> type) {
 		try {
 			return (T) query("from " + entityName(type) + " where id = :id").setParameter("id", id).getSingleResult();
@@ -69,6 +69,7 @@ class DataRepositoryImpl implements DataRepository {
 		try {
 			em.persist(instance);
 			em.flush();
+			em.clear();
 			return Result.accept(instance);
 		}
 		catch (Exception e) {
@@ -79,8 +80,9 @@ class DataRepositoryImpl implements DataRepository {
 	public <T> Result<T> update(T instance) {
 		try {
 			Reflection.set(instance, "updated", new Date());
-			em.persist(instance);
+			em.merge(instance);
 			em.flush();
+			em.clear();
 			return Result.accept(instance);
 		}
 		catch (Exception e) {
@@ -90,7 +92,7 @@ class DataRepositoryImpl implements DataRepository {
 
 	public <T> Result<T> delete(T instance) {
 		try {
-			em.remove(instance);
+			em.remove(em.contains(instance) ? instance : em.merge(instance));
 			em.flush();
 			return Result.accept(instance);
 		}
@@ -117,6 +119,9 @@ class DataRepositoryImpl implements DataRepository {
 			return (count instanceof Long) ? (Long) count : ((BigInteger) count).longValue();
 		}
 		catch (EmptyResultDataAccessException | NoResultException e) {
+			return 0L;
+		}
+		catch (Exception e) {
 			return 0L;
 		}
 	}

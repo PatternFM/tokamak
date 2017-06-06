@@ -56,16 +56,11 @@ public class UniqueValueValidator extends ValidatorSupport implements Constraint
 		}
 
 		String columnName = CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, property);
-		
-		String query = "select count(id) from " + getTableName(entity) + " where " + columnName + " = :value and id != :id";
-		Long count = repository.count(resolve(query, value, entity));
-		System.out.println("COUNT IS: " + count);
-		return count == 0;
-	}
 
-	private Query resolve(String base, String value, PersistentEntity entity) {
-		return repository.sqlQuery(base).setParameter("value", value).setParameter("id", entity.getId());
-		//return repository.getCurrentSession().createQuery(base).setParameter("value", value).setParameter("id", entity.getId());
+		String query = "select count(id) from " + getTableName(entity) + " where " + columnName + " = :value and id != :id";
+		Query q = repository.query(query).setParameter("value", value).setParameter("id", entity.getId());
+
+		return repository.count(q) == 0;
 	}
 
 	private String getTableName(PersistentEntity entity) {

@@ -61,7 +61,7 @@ public class GrantTypeValidationTest extends IntegrationTest {
 
 		GrantType grantType = grantType().thatIs().persistent().build();
 		grantType.setName(name);
-
+		
 		onUpdate(grantType).rejected().withError("GNT-0003", "This grant type name is already in use.", ResourceConflictException.class);
 	}
 

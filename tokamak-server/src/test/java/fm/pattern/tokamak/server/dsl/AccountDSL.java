@@ -53,7 +53,7 @@ public class AccountDSL extends AbstractDSL<AccountDSL, Account> {
 		if (result.accepted()) {
 			return result.getInstance();
 		}
-		throw new IllegalStateException("Unable to create account, errors:" + result.toString());
+		throw new IllegalStateException("Unable to create account, errors:" + result.getErrors().toString());
 	}
 
 }

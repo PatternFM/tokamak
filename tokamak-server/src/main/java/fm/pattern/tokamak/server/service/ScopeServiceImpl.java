@@ -20,11 +20,8 @@ import static org.apache.commons.lang3.StringUtils.isBlank;
 
 import java.util.List;
 
-import javax.persistence.NoResultException;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -62,13 +59,8 @@ class ScopeServiceImpl extends DataServiceImpl<Scope> implements ScopeService {
 			return Result.reject("scope.name.required");
 		}
 
-		try {
-			Scope scope = (Scope) repository.query("from Scopes where name = :name").setParameter("name", name).getSingleResult();
-			return scope == null ? Result.reject("scope.name.not_found", name) : Result.accept(scope);
-		}
-		catch (EmptyResultDataAccessException | NoResultException e) {
-			return Result.reject("scope.name.not_found", name);
-		}
+		Result<Scope> result = super.findBy("name", name, Scope.class);
+		return result.accepted() ? result : Result.reject("scope.name.not_found", name);
 	}
 
 	@Transactional(readOnly = true)

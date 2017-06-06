@@ -20,11 +20,8 @@ import static org.apache.commons.lang3.StringUtils.isBlank;
 
 import java.util.List;
 
-import javax.persistence.NoResultException;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -62,13 +59,8 @@ class RoleServiceImpl extends DataServiceImpl<Role> implements RoleService {
 			return Result.reject("role.name.required");
 		}
 
-		try {
-			Role role = (Role) repository.query("from Roles where name = :name").setParameter("name", name).getSingleResult();
-			return role == null ? Result.reject("role.name.not_found", name) : Result.accept(role);
-		}
-		catch (EmptyResultDataAccessException | NoResultException e) {
-			return Result.reject("role.name.not_found", name);
-		}
+		Result<Role> result = super.findBy("name", name, Role.class);
+		return result.accepted() ? result : Result.reject("role.name.not_found", name);
 	}
 
 	@Transactional(readOnly = true)

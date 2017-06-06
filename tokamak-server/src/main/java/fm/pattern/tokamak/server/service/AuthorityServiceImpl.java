@@ -20,10 +20,7 @@ import static org.apache.commons.lang3.StringUtils.isBlank;
 
 import java.util.List;
 
-import javax.persistence.NoResultException;
-
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -60,13 +57,8 @@ class AuthorityServiceImpl extends DataServiceImpl<Authority> implements Authori
 			return Result.reject("authority.name.required");
 		}
 
-		try {
-			Authority authority = (Authority) repository.query("from Authorities where name = :name").setParameter("name", name).getSingleResult();
-			return authority == null ? Result.reject("authority.name.not_found", name) : Result.accept(authority);
-		}
-		catch (EmptyResultDataAccessException | NoResultException e) {
-			return Result.reject("authority.name.not_found", name);
-		}
+		Result<Authority> result = super.findBy("name", name, Authority.class);
+		return result.accepted() ? result : Result.reject("authority.name.not_found", name);
 	}
 
 	@Transactional(readOnly = true)

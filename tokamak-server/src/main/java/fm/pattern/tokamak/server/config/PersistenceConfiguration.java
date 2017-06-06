@@ -27,8 +27,6 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
-import org.springframework.orm.hibernate5.HibernateTransactionManager;
-import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
@@ -46,6 +44,7 @@ public class PersistenceConfiguration {
 	@Autowired
 	private DatabaseProperties databaseProperties;
 
+	@DependsOn("flyway")
 	@Bean
 	public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
 		LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
@@ -84,21 +83,9 @@ public class PersistenceConfiguration {
 		return flyway;
 	}
 
-	@DependsOn("flyway")
-	@Bean(name = "sessionFactory")
-	public LocalSessionFactoryBean sessionFactory() {
-		LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
-		sessionFactory.setDataSource(dataSource());
-		sessionFactory.setPackagesToScan(new String[] { MODEL_PACKAGE });
-		sessionFactory.setAnnotatedPackages(new String[] { MODEL_PACKAGE });
-		sessionFactory.setHibernateProperties(getHibernateProperties());
-		return sessionFactory;
-	}
-
 	@Bean(name = "transactionManager")
 	public PlatformTransactionManager transactionManager() {
 		return new JpaTransactionManager();
-		//return new JPATransactionManager(sessionFactory().getObject());
 	}
 
 	private Properties getHibernateProperties() {
