@@ -65,26 +65,22 @@ public class Client extends PersistentEntity {
 	private String clientSecret;
 
 	@Getter
-	@Setter
-	@OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+	@OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER, orphanRemoval = true)
 	@JoinTable(name = "ClientAudiences", joinColumns = { @JoinColumn(name = "client_id", referencedColumnName = "id") }, inverseJoinColumns = { @JoinColumn(name = "audience_id", referencedColumnName = "id") })
 	private Set<Audience> audiences = new HashSet<Audience>();
 
 	@Getter
-	@Setter
-	@OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+	@OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER, orphanRemoval = true)
 	@JoinTable(name = "ClientAuthorities", joinColumns = { @JoinColumn(name = "client_id", referencedColumnName = "id") }, inverseJoinColumns = { @JoinColumn(name = "authority_id", referencedColumnName = "id") })
 	private Set<Authority> authorities = new HashSet<Authority>();
 
 	@Getter
-	@Setter
-	@OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+	@OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER, orphanRemoval = true)
 	@JoinTable(name = "ClientScopes", joinColumns = { @JoinColumn(name = "client_id", referencedColumnName = "id") }, inverseJoinColumns = { @JoinColumn(name = "scope_id", referencedColumnName = "id") })
 	private Set<Scope> scopes = new HashSet<Scope>();
 
 	@Getter
-	@Setter
-	@OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+	@OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER, orphanRemoval = true)
 	@JoinTable(name = "ClientGrantTypes", joinColumns = { @JoinColumn(name = "client_id", referencedColumnName = "id") }, inverseJoinColumns = { @JoinColumn(name = "grant_type_id", referencedColumnName = "id") })
 	@NotNull(message = "{client.grantType.required}", groups = { CreateLevel1.class, UpdateLevel1.class })
 	@Size(min = 1, message = "{client.grantType.required}", groups = { CreateLevel1.class, UpdateLevel1.class })
@@ -114,6 +110,34 @@ public class Client extends PersistentEntity {
 		this.audiences.addAll(audiences.stream().filter(a -> a != null).collect(Collectors.toList()));
 		this.grantTypes.addAll(grantTypes.stream().filter(a -> a != null).collect(Collectors.toList()));
 		this.scopes.addAll(scope.stream().filter(a -> a != null).collect(Collectors.toList()));
+	}
+
+	public void setAudiences(Set<Audience> audiences) {
+		this.audiences.clear();
+		if (audiences != null) {
+			this.audiences.addAll(audiences);
+		}
+	}
+
+	public void setAuthorities(Set<Authority> authorities) {
+		this.authorities.clear();
+		if (authorities != null) {
+			this.authorities.addAll(authorities);
+		}
+	}
+
+	public void setScopes(Set<Scope> scopes) {
+		this.scopes.clear();
+		if (scopes != null) {
+			this.scopes.addAll(scopes);
+		}
+	}
+
+	public void setGrantTypes(Set<GrantType> grantTypes) {
+		this.grantTypes.clear();
+		if (grantTypes != null) {
+			this.grantTypes.addAll(grantTypes);
+		}
 	}
 
 	public int hashCode() {

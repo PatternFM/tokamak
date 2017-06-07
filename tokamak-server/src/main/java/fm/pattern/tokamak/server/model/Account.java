@@ -67,8 +67,7 @@ public class Account extends PersistentEntity {
 	private String password;
 
 	@Getter
-	@Setter
-	@OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+	@OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER, orphanRemoval = true)
 	@JoinTable(name = "AccountRoles", joinColumns = { @JoinColumn(name = "account_id", referencedColumnName = "id") }, inverseJoinColumns = { @JoinColumn(name = "role_id", referencedColumnName = "id") })
 	private Set<Role> roles = new HashSet<Role>();
 
@@ -103,6 +102,13 @@ public class Account extends PersistentEntity {
 
 	public int hashCode() {
 		return Objects.hashCode(getId());
+	}
+
+	public void setRoles(Set<Role> roles) {
+		this.roles.clear();
+		if (roles != null) {
+			this.roles.addAll(roles);
+		}
 	}
 
 	public boolean equals(Object obj) {

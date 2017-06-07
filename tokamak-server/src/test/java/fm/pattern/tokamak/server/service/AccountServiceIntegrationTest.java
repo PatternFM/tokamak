@@ -2,7 +2,11 @@ package fm.pattern.tokamak.server.service;
 
 import static fm.pattern.tokamak.server.PatternAssertions.assertThat;
 import static fm.pattern.tokamak.server.dsl.AccountDSL.account;
+import static fm.pattern.tokamak.server.dsl.RoleDSL.role;
 import static org.assertj.core.api.Assertions.assertThat;
+
+import java.util.Arrays;
+import java.util.HashSet;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Test;
@@ -10,8 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import fm.pattern.tokamak.server.IntegrationTest;
 import fm.pattern.tokamak.server.model.Account;
+import fm.pattern.tokamak.server.model.Role;
 import fm.pattern.tokamak.server.security.PasswordEncodingService;
-import fm.pattern.tokamak.server.service.AccountService;
 import fm.pattern.valex.EntityNotFoundException;
 import fm.pattern.valex.Result;
 import fm.pattern.valex.UnprocessableEntityException;
@@ -56,6 +60,21 @@ public class AccountServiceIntegrationTest extends IntegrationTest {
 		Result<Account> result = accountService.update(account);
 		assertThat(result).accepted();
 		assertThat(result.getInstance().isLocked()).isTrue();
+	}
+
+	@Test
+	public void shouldBeAbleToUpdateAnAccountWithRoles() {
+		Role role1 = role().thatIs().persistent().build();
+		Role role2 = role().thatIs().persistent().build();
+		Role role3 = role().thatIs().persistent().build();
+
+		Account account = account().withRole(role1).withRole(role2).withRole(role3).thatIs().persistent().build();
+		account.setRoles(new HashSet<>(Arrays.asList(role2)));
+		
+		Result<Account> result = accountService.update(account);
+		assertThat(result).accepted();
+		assertThat(result.getInstance().getRoles()).hasSize(1);
+		assertThat(result.getInstance().getRoles()).contains(role2);
 	}
 
 	@Test
