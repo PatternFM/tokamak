@@ -136,7 +136,8 @@ public class AccountsEndpointAcceptanceTest extends AcceptanceTest {
 
     @Test
     public void shouldBeAbleToDeleteAnAccount() {
-        AccountRepresentation account = account().thatIs().persistent(token).build();
+        RoleRepresentation role1 = role().thatIs().persistent(token).build();
+        AccountRepresentation account = account().withRoles(role1).thatIs().persistent(token).build();
 
         Result<AccountRepresentation> result = accountsClient.delete(account.getId(), token.getAccessToken());
         assertThat(result).accepted().withResponseCode(204);

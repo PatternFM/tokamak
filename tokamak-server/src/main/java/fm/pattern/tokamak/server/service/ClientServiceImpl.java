@@ -23,41 +23,38 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import fm.pattern.tokamak.server.model.Client;
-import fm.pattern.tokamak.server.repository.ClientRepository;
 import fm.pattern.tokamak.server.security.PasswordEncodingService;
 import fm.pattern.valex.Result;
 
 @Service
 class ClientServiceImpl extends DataServiceImpl<Client> implements ClientService {
 
-    private final PasswordEncodingService passwordEncodingService;
-    private final ClientRepository clientRepository;
+	private final PasswordEncodingService passwordEncodingService;
 
-    @Autowired
-    public ClientServiceImpl(PasswordEncodingService passwordEncodingService, ClientRepository clientRepository) {
-        this.passwordEncodingService = passwordEncodingService;
-        this.clientRepository = clientRepository;
-    }
+	@Autowired
+	public ClientServiceImpl(PasswordEncodingService passwordEncodingService) {
+		this.passwordEncodingService = passwordEncodingService;
+	}
 
-    @Transactional(readOnly = false)
-    public Result<Client> create(Client client) {
-        client.setClientSecret(passwordEncodingService.encode(client.getClientSecret()));
-        return clientRepository.save(client);
-    }
+	@Transactional(readOnly = false)
+	public Result<Client> create(Client client) {
+		client.setClientSecret(passwordEncodingService.encode(client.getClientSecret()));
+		return super.create(client);
+	}
 
-    @Transactional(readOnly = true)
-    public Result<Client> findById(String id) {
-        return super.findById(id, Client.class);
-    }
+	@Transactional(readOnly = true)
+	public Result<Client> findById(String id) {
+		return super.findById(id, Client.class);
+	}
 
-    @Transactional(readOnly = true)
-    public Result<Client> findByClientId(String clientId) {
-        if (isBlank(clientId)) {
-            return Result.reject("client.clientId.required");
-        }
+	@Transactional(readOnly = true)
+	public Result<Client> findByClientId(String clientId) {
+		if (isBlank(clientId)) {
+			return Result.reject("client.clientId.required");
+		}
 
-        Client client = clientRepository.findByClientId(clientId);
-        return client != null ? Result.accept(client) : Result.reject("client.clientId.not_found", clientId);
-    }
+		Result<Client> result = super.findBy("clientId", clientId, Client.class);
+		return result.accepted() ? result : Result.reject("client.clientId.not_found", clientId);
+	}
 
 }
