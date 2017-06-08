@@ -34,6 +34,8 @@ public interface GrantTypeService {
 
 	Result<GrantType> findById(String id);
 
+	Result<List<GrantType>> findExistingById(List<String> ids);
+
 	Result<GrantType> findByName(String name);
 
 	Result<List<GrantType>> list();

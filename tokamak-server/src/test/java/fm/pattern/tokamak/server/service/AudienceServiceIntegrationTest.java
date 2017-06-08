@@ -167,4 +167,23 @@ public class AudienceServiceIntegrationTest extends IntegrationTest {
 		assertThat(audienceService.findExistingById(new ArrayList<String>()).getInstance()).isEmpty();
 	}
 
+	@Test
+	public void shouldIgnoreEmptyAudienceEntries() {
+		Audience audience1 = audience().thatIs().persistent().build();
+		Audience audience2 = audience().thatIs().persistent().build();
+		Audience audience3 = audience().thatIs().persistent().build();
+
+		List<String> ids = new ArrayList<>();
+		ids.add(audience1.getId());
+		ids.add(null);
+		ids.add(audience2.getId());
+		ids.add("");
+		ids.add(audience3.getId());
+
+		Result<List<Audience>> result = audienceService.findExistingById(ids);
+		assertThat(result).accepted();
+		assertThat(result.getInstance()).hasSize(3);
+		assertThat(result.getInstance()).contains(audience1, audience2, audience3);
+	}
+
 }

@@ -6,6 +6,7 @@ import static fm.pattern.tokamak.server.dsl.GrantTypeDSL.grantType;
 import static java.util.stream.IntStream.range;
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Test;
@@ -137,6 +138,51 @@ public class GrantTypeServiceIntegrationTest extends IntegrationTest {
 		Result<List<GrantType>> result = grantTypeService.list();
 		assertThat(result).accepted();
 		assertThat(result.getInstance().size()).isGreaterThanOrEqualTo(5);
+	}
+
+	@Test
+	public void shouldBeAbleToFindMultipleGrantTypesById() {
+		GrantType grantType1 = grantType().thatIs().persistent().build();
+		GrantType grantType2 = grantType().thatIs().persistent().build();
+		GrantType grantType3 = grantType().thatIs().persistent().build();
+
+		List<String> ids = new ArrayList<>();
+		ids.add(grantType1.getId());
+		ids.add(grantType2.getId());
+		ids.add(grantType3.getId());
+
+		Result<List<GrantType>> result = grantTypeService.findExistingById(ids);
+		assertThat(result).accepted();
+		assertThat(result.getInstance()).hasSize(3);
+		assertThat(result.getInstance()).contains(grantType1, grantType2, grantType3);
+	}
+
+	@Test
+	public void shouldReturnAnEmptyListOfGrantTypesIfTheGrantTypeIdListIsNullOrEmpty() {
+		assertThat(grantTypeService.findExistingById(null)).accepted();
+		assertThat(grantTypeService.findExistingById(null).getInstance()).isEmpty();
+
+		assertThat(grantTypeService.findExistingById(new ArrayList<String>())).accepted();
+		assertThat(grantTypeService.findExistingById(new ArrayList<String>()).getInstance()).isEmpty();
+	}
+
+	@Test
+	public void shouldIgnoreEmptyGrantTypeEntries() {
+		GrantType grantType1 = grantType().thatIs().persistent().build();
+		GrantType grantType2 = grantType().thatIs().persistent().build();
+		GrantType grantType3 = grantType().thatIs().persistent().build();
+
+		List<String> ids = new ArrayList<>();
+		ids.add(grantType1.getId());
+		ids.add(null);
+		ids.add(grantType2.getId());
+		ids.add("");
+		ids.add(grantType3.getId());
+
+		Result<List<GrantType>> result = grantTypeService.findExistingById(ids);
+		assertThat(result).accepted();
+		assertThat(result.getInstance()).hasSize(3);
+		assertThat(result.getInstance()).contains(grantType1, grantType2, grantType3);
 	}
 
 }

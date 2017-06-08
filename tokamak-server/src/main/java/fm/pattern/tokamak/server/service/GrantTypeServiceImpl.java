@@ -17,8 +17,11 @@
 package fm.pattern.tokamak.server.service;
 
 import static org.apache.commons.lang3.StringUtils.isBlank;
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -30,6 +33,7 @@ import fm.pattern.tokamak.server.repository.DataRepository;
 import fm.pattern.valex.Result;
 
 @Service
+@SuppressWarnings("unchecked")
 class GrantTypeServiceImpl extends DataServiceImpl<GrantType> implements GrantTypeService {
 
 	private final DataRepository repository;
@@ -51,6 +55,20 @@ class GrantTypeServiceImpl extends DataServiceImpl<GrantType> implements GrantTy
 	@Transactional(readOnly = true)
 	public Result<GrantType> findById(String id) {
 		return super.findById(id, GrantType.class);
+	}
+
+	@Transactional(readOnly = true)
+	public Result<List<GrantType>> findExistingById(List<String> ids) {
+		if (ids == null || ids.isEmpty()) {
+			return Result.accept(new ArrayList<>());
+		}
+
+		List<String> parameters = ids.stream().filter(id -> isNotBlank(id)).collect(Collectors.toList());
+		if (parameters == null || parameters.isEmpty()) {
+			return Result.accept(new ArrayList<>());
+		}
+
+		return Result.accept(query("from GrantTypes where id in (:ids)").setParameter("ids", parameters).getResultList());
 	}
 
 	@Transactional(readOnly = true)

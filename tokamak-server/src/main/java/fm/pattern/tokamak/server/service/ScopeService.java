@@ -34,6 +34,8 @@ public interface ScopeService {
 
 	Result<Scope> findById(String id);
 
+	Result<List<Scope>> findExistingById(List<String> ids);
+
 	Result<Scope> findByName(String name);
 
 	Result<List<Scope>> list();

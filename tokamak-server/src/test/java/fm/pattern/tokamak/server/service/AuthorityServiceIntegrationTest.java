@@ -7,6 +7,7 @@ import static fm.pattern.tokamak.server.dsl.GrantTypeDSL.grantType;
 import static java.util.stream.IntStream.range;
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Test;
@@ -138,6 +139,51 @@ public class AuthorityServiceIntegrationTest extends IntegrationTest {
 		Result<List<Authority>> result = authorityService.list();
 		assertThat(result).accepted();
 		assertThat(result.getInstance().size()).isGreaterThanOrEqualTo(5);
+	}
+
+	@Test
+	public void shouldBeAbleToFindMultipleAuthoritiesById() {
+		Authority authority1 = authority().thatIs().persistent().build();
+		Authority authority2 = authority().thatIs().persistent().build();
+		Authority authority3 = authority().thatIs().persistent().build();
+
+		List<String> ids = new ArrayList<String>();
+		ids.add(authority1.getId());
+		ids.add(authority2.getId());
+		ids.add(authority3.getId());
+
+		Result<List<Authority>> result = authorityService.findExistingById(ids);
+		assertThat(result).accepted();
+		assertThat(result.getInstance()).hasSize(3);
+		assertThat(result.getInstance()).contains(authority1, authority2, authority3);
+	}
+
+	@Test
+	public void shouldReturnAnEmptyListOfAuthoritiesIfTheAuthorityIdListIsNullOrEmpty() {
+		assertThat(authorityService.findExistingById(null)).accepted();
+		assertThat(authorityService.findExistingById(null).getInstance()).isEmpty();
+
+		assertThat(authorityService.findExistingById(new ArrayList<String>())).accepted();
+		assertThat(authorityService.findExistingById(new ArrayList<String>()).getInstance()).isEmpty();
+	}
+
+	@Test
+	public void shouldIgnoreEmptyAuthorityEntries() {
+		Authority authority1 = authority().thatIs().persistent().build();
+		Authority authority2 = authority().thatIs().persistent().build();
+		Authority authority3 = authority().thatIs().persistent().build();
+
+		List<String> ids = new ArrayList<>();
+		ids.add(authority1.getId());
+		ids.add(null);
+		ids.add(authority2.getId());
+		ids.add("");
+		ids.add(authority3.getId());
+
+		Result<List<Authority>> result = authorityService.findExistingById(ids);
+		assertThat(result).accepted();
+		assertThat(result.getInstance()).hasSize(3);
+		assertThat(result.getInstance()).contains(authority1, authority2, authority3);
 	}
 
 }

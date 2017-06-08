@@ -7,6 +7,7 @@ import static fm.pattern.tokamak.server.dsl.ScopeDSL.scope;
 import static java.util.stream.IntStream.range;
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Test;
@@ -138,6 +139,51 @@ public class ScopeServiceIntegrationTest extends IntegrationTest {
 		Result<List<Scope>> result = scopeService.list();
 		assertThat(result).accepted();
 		assertThat(result.getInstance().size()).isGreaterThanOrEqualTo(5);
+	}
+
+	@Test
+	public void shouldBeAbleToFindMultipleScopesById() {
+		Scope scope1 = scope().thatIs().persistent().build();
+		Scope scope2 = scope().thatIs().persistent().build();
+		Scope scope3 = scope().thatIs().persistent().build();
+
+		List<String> ids = new ArrayList<>();
+		ids.add(scope1.getId());
+		ids.add(scope2.getId());
+		ids.add(scope3.getId());
+
+		Result<List<Scope>> result = scopeService.findExistingById(ids);
+		assertThat(result).accepted();
+		assertThat(result.getInstance()).hasSize(3);
+		assertThat(result.getInstance()).contains(scope1, scope2, scope3);
+	}
+
+	@Test
+	public void shouldReturnAnEmptyListOfScopesIfTheScopeIdListIsNullOrEmpty() {
+		assertThat(scopeService.findExistingById(null)).accepted();
+		assertThat(scopeService.findExistingById(null).getInstance()).isEmpty();
+
+		assertThat(scopeService.findExistingById(new ArrayList<String>())).accepted();
+		assertThat(scopeService.findExistingById(new ArrayList<String>()).getInstance()).isEmpty();
+	}
+
+	@Test
+	public void shouldIgnoreEmptyScopeEntries() {
+		Scope scope1 = scope().thatIs().persistent().build();
+		Scope scope2 = scope().thatIs().persistent().build();
+		Scope scope3 = scope().thatIs().persistent().build();
+
+		List<String> ids = new ArrayList<>();
+		ids.add(scope1.getId());
+		ids.add(null);
+		ids.add(scope2.getId());
+		ids.add("");
+		ids.add(scope3.getId());
+
+		Result<List<Scope>> result = scopeService.findExistingById(ids);
+		assertThat(result).accepted();
+		assertThat(result.getInstance()).hasSize(3);
+		assertThat(result.getInstance()).contains(scope1, scope2, scope3);
 	}
 
 }
