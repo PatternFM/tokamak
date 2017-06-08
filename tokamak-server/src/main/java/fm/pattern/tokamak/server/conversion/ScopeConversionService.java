@@ -14,19 +14,19 @@ public class ScopeConversionService {
 		return audience;
 	}
 
-	public ScopeRepresentation convert(Scope audience) {
-		ScopeRepresentation representation = new ScopeRepresentation(audience.getId());
-		representation.setCreated(audience.getCreated());
-		representation.setUpdated(audience.getUpdated());
-		representation.setName(audience.getName());
-		representation.setDescription(audience.getDescription());
+	public ScopeRepresentation convert(Scope scope) {
+		ScopeRepresentation representation = new ScopeRepresentation(scope.getId());
+		representation.setCreated(scope.getCreated());
+		representation.setUpdated(scope.getUpdated());
+		representation.setName(scope.getName());
+		representation.setDescription(scope.getDescription());
 		return representation;
 	}
 
-	public Scope convert(ScopeRepresentation representation, Scope audience) {
-		audience.setName(representation.getName());
-		audience.setDescription(representation.getDescription());
-		return audience;
+	public Scope convert(ScopeRepresentation representation, Scope scope) {
+		scope.setName(representation.getName());
+		scope.setDescription(representation.getDescription());
+		return scope;
 	}
 
 }

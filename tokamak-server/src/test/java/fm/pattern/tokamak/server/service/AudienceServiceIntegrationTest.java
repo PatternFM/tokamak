@@ -7,6 +7,7 @@ import static fm.pattern.tokamak.server.dsl.GrantTypeDSL.grantType;
 import static java.util.stream.IntStream.range;
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Test;
@@ -132,12 +133,38 @@ public class AudienceServiceIntegrationTest extends IntegrationTest {
 	}
 
 	@Test
-	public void shouldBeAbleToListAllAuthorities() {
+	public void shouldBeAbleToListAllAudiences() {
 		range(0, 5).forEach(i -> audience().thatIs().persistent().build());
 
 		Result<List<Audience>> result = audienceService.list();
 		assertThat(result).accepted();
 		assertThat(result.getInstance().size()).isGreaterThanOrEqualTo(5);
+	}
+
+	@Test
+	public void shouldBeAbleToFindMultipleAudiencesById() {
+		Audience audience1 = audience().thatIs().persistent().build();
+		Audience audience2 = audience().thatIs().persistent().build();
+		Audience audience3 = audience().thatIs().persistent().build();
+
+		List<String> ids = new ArrayList<>();
+		ids.add(audience1.getId());
+		ids.add(audience2.getId());
+		ids.add(audience3.getId());
+
+		Result<List<Audience>> result = audienceService.findExistingById(ids);
+		assertThat(result).accepted();
+		assertThat(result.getInstance()).hasSize(3);
+		assertThat(result.getInstance()).contains(audience1, audience2, audience3);
+	}
+
+	@Test
+	public void shouldReturnAnEmptyListOfAudiencesIfTheAudienceIdListIsNullOrEmpty() {
+		assertThat(audienceService.findExistingById(null)).accepted();
+		assertThat(audienceService.findExistingById(null).getInstance()).isEmpty();
+
+		assertThat(audienceService.findExistingById(new ArrayList<String>())).accepted();
+		assertThat(audienceService.findExistingById(new ArrayList<String>()).getInstance()).isEmpty();
 	}
 
 }

@@ -7,7 +7,6 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import fm.pattern.tokamak.sdk.model.AudienceRepresentation;
 import fm.pattern.tokamak.sdk.model.AuthorityRepresentation;
 import fm.pattern.tokamak.sdk.model.ClientRepresentation;
 import fm.pattern.tokamak.sdk.model.GrantTypeRepresentation;
@@ -68,7 +67,7 @@ public class ClientConversionService {
 		Set<Scope> scopes = representation.getScopes() == null ? new HashSet<Scope>() : representation.getScopes().stream().map(scope -> lookup(scope)).filter(scope -> scope != null).collect(Collectors.toSet());
 		Set<GrantType> grantTypes = representation.getGrantTypes() == null ? new HashSet<GrantType>() : representation.getGrantTypes().stream().map(grant -> lookup(grant)).filter(grant -> grant != null).collect(Collectors.toSet());
 		Set<Authority> authorities = representation.getAuthorities() == null ? new HashSet<Authority>() : representation.getAuthorities().stream().map(auth -> lookup(auth)).filter(auth -> auth != null).collect(Collectors.toSet());
-		Set<Audience> audiences = representation.getAudiences() == null ? new HashSet<Audience>() : representation.getAudiences().stream().map(aud -> lookup(aud)).filter(aud -> aud != null).collect(Collectors.toSet());
+		Set<Audience> audiences = representation.getAudiences() == null ? new HashSet<Audience>() : new HashSet<Audience>(audienceService.findExistingById(representation.getAudiences().stream().map(aud -> aud.getId()).collect(Collectors.toList())).getInstance());
 
 		Client client = new Client(representation.getClientId(), representation.getClientSecret(), authorities, audiences, grantTypes, scopes);
 
@@ -87,20 +86,17 @@ public class ClientConversionService {
 		Set<Scope> scopes = representation.getScopes() == null ? new HashSet<Scope>() : representation.getScopes().stream().map(scope -> lookup(scope)).filter(scope -> scope != null).collect(Collectors.toSet());
 		Set<GrantType> grantTypes = representation.getGrantTypes() == null ? new HashSet<GrantType>() : representation.getGrantTypes().stream().map(grant -> lookup(grant)).filter(grant -> grant != null).collect(Collectors.toSet());
 		Set<Authority> authorities = representation.getAuthorities() == null ? new HashSet<Authority>() : representation.getAuthorities().stream().map(auth -> lookup(auth)).filter(auth -> auth != null).collect(Collectors.toSet());
-
+		Set<Audience> audiences = representation.getAudiences() == null ? new HashSet<Audience>() : new HashSet<Audience>(audienceService.findExistingById(representation.getAudiences().stream().map(aud -> aud.getId()).collect(Collectors.toList())).getInstance());
+		
 		client.setScopes(scopes);
 		client.setGrantTypes(grantTypes);
 		client.setAuthorities(authorities);
+		client.setAudiences(audiences);
 
 		client.setAccessTokenValiditySeconds(representation.getAccessTokenValiditySeconds());
 		client.setRefreshTokenValiditySeconds(representation.getRefreshTokenValiditySeconds());
 
 		return client;
-	}
-
-	private Audience lookup(AudienceRepresentation representation) {
-		Result<Audience> result = audienceService.findById(representation.getId());
-		return result.accepted() ? result.getInstance() : null;
 	}
 
 	private Authority lookup(AuthorityRepresentation representation) {

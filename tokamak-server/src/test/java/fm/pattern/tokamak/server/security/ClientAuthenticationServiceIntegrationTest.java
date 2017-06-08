@@ -33,8 +33,8 @@ public class ClientAuthenticationServiceIntegrationTest extends IntegrationTest 
 		ClientDetails clientDetails = clientAuthenticationService.loadClientByClientId(client.getClientId());
 
 		assertThat(clientDetails).isNotNull();
-		assertThat(clientDetails.getAccessTokenValiditySeconds()).isNull();
-		assertThat(clientDetails.getRefreshTokenValiditySeconds()).isNull();
+		assertThat(clientDetails.getAccessTokenValiditySeconds()).isEqualTo(600);
+		assertThat(clientDetails.getRefreshTokenValiditySeconds()).isEqualTo(3600);
 	}
 
 	@Test
@@ -43,8 +43,8 @@ public class ClientAuthenticationServiceIntegrationTest extends IntegrationTest 
 		ClientDetails clientDetails = clientAuthenticationService.loadClientByClientId(client.getClientId());
 
 		assertThat(clientDetails).isNotNull();
-		assertThat(clientDetails.getAccessTokenValiditySeconds()).isNull();
-		assertThat(clientDetails.getRefreshTokenValiditySeconds()).isNull();
+		assertThat(clientDetails.getAccessTokenValiditySeconds()).isEqualTo(600);
+		assertThat(clientDetails.getRefreshTokenValiditySeconds()).isEqualTo(3600);
 	}
 
 	@Test

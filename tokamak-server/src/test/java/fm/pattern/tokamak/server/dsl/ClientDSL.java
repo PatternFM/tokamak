@@ -21,6 +21,9 @@ public class ClientDSL extends AbstractDSL<ClientDSL, Client> {
 	private Set<GrantType> grantTypes = new HashSet<GrantType>();
 	private Set<Scope> scopes = new HashSet<>();
 
+	private Integer accessTokenValiditySeconds = 600;
+	private Integer refreshTokenValiditySeconds = 3600;
+
 	public static ClientDSL client() {
 		ClientDSL clientDSL = new ClientDSL();
 		return clientDSL;
@@ -56,8 +59,20 @@ public class ClientDSL extends AbstractDSL<ClientDSL, Client> {
 		return this;
 	}
 
+	public ClientDSL withAccessTokenValiditySeconds(Integer accessTokenValiditySeconds) {
+		this.accessTokenValiditySeconds = accessTokenValiditySeconds;
+		return this;
+	}
+
+	public ClientDSL withRefreshTokenValiditySeconds(Integer refreshTokenValiditySeconds) {
+		this.refreshTokenValiditySeconds = refreshTokenValiditySeconds;
+		return this;
+	}
+
 	public Client build() {
 		Client client = new Client(clientId, clientSecret, authorities, audiences, grantTypes, scopes);
+		client.setAccessTokenValiditySeconds(accessTokenValiditySeconds);
+		client.setRefreshTokenValiditySeconds(refreshTokenValiditySeconds);
 		return shouldPersist() ? persist(client) : client;
 	}
 

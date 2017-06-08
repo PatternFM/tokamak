@@ -36,6 +36,8 @@ public interface AudienceService {
 
 	Result<Audience> findByName(String name);
 
+	Result<List<Audience>> findExistingById(List<String> ids);
+
 	Result<List<Audience>> list();
 
 }
