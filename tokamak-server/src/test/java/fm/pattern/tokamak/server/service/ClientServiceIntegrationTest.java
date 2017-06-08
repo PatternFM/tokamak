@@ -52,7 +52,7 @@ public class ClientServiceIntegrationTest extends IntegrationTest {
 
 	@Test
 	public void shouldNotBeAbleToCreateAnInvalidClient() {
-		Client client = client().withGrantType(null).build();
+		Client client = client().build();
 
 		Result<Client> result = clientService.create(client);
 		assertThat(result).rejected().withMessage("A client requires at least one grant type.");

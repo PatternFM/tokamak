@@ -1,5 +1,6 @@
 package fm.pattern.tokamak.server.dsl;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -39,23 +40,23 @@ public class ClientDSL extends AbstractDSL<ClientDSL, Client> {
 		return this;
 	}
 
-	public ClientDSL withScope(Scope scope) {
-		this.scopes.add(scope);
+	public ClientDSL withScope(Scope... scopes) {
+		this.scopes.addAll(Arrays.asList(scopes));
 		return this;
 	}
 
-	public ClientDSL withAuthority(Authority authority) {
-		this.authorities.add(authority);
+	public ClientDSL withAuthority(Authority... authorities) {
+		this.authorities.addAll(Arrays.asList(authorities));
 		return this;
 	}
 
-	public ClientDSL withAudience(Audience audience) {
-		this.audiences.add(audience);
+	public ClientDSL withAudience(Audience... audiences) {
+		this.audiences.addAll(Arrays.asList(audiences));
 		return this;
 	}
 
-	public ClientDSL withGrantType(GrantType grantType) {
-		this.grantTypes.add(grantType);
+	public ClientDSL withGrantType(GrantType... grantTypes) {
+		this.grantTypes.addAll(Arrays.asList(grantTypes));
 		return this;
 	}
 
