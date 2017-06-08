@@ -32,60 +32,57 @@ import org.springframework.web.bind.annotation.RestController;
 
 import fm.pattern.tokamak.authorization.Authorize;
 import fm.pattern.tokamak.sdk.model.AccountRepresentation;
-import fm.pattern.tokamak.server.conversion.EgressConversionService;
-import fm.pattern.tokamak.server.conversion.IngressConversionService;
+import fm.pattern.tokamak.server.conversion.AccountConversionService;
 import fm.pattern.tokamak.server.model.Account;
 import fm.pattern.tokamak.server.service.AccountService;
 
 @RestController
 public class AccountsEndpoint extends Endpoint {
 
-    private final AccountService accountService;
-    private final IngressConversionService ingress;
-    private final EgressConversionService egress;
+	private final AccountService accountService;
+	private final AccountConversionService accountConversionService;
 
-    @Autowired
-    public AccountsEndpoint(AccountService accountService, IngressConversionService ingress, EgressConversionService egress) {
-        this.accountService = accountService;
-        this.ingress = ingress;
-        this.egress = egress;
-    }
+	@Autowired
+	public AccountsEndpoint(AccountService accountService, AccountConversionService accountConversionService) {
+		this.accountService = accountService;
+		this.accountConversionService = accountConversionService;
+	}
 
-    @Authorize(scopes = "accounts:create")
-    @ResponseStatus(value = HttpStatus.CREATED)
-    @RequestMapping(value = "/v1/accounts", method = POST, consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
-    public AccountRepresentation create(@RequestBody AccountRepresentation representation) {
-        Account account = ingress.convert(representation);
-        Account created = accountService.create(account).orThrow();
-        return egress.convert(accountService.findById(created.getId()).orThrow());
-    }
+	@Authorize(scopes = "accounts:create")
+	@ResponseStatus(value = HttpStatus.CREATED)
+	@RequestMapping(value = "/v1/accounts", method = POST, consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
+	public AccountRepresentation create(@RequestBody AccountRepresentation representation) {
+		Account account = accountConversionService.convert(representation);
+		Account created = accountService.create(account).orThrow();
+		return accountConversionService.convert(accountService.findById(created.getId()).orThrow());
+	}
 
-    @Authorize(scopes = "accounts:update")
-    @RequestMapping(value = "/v1/accounts/{id}", method = PUT, consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
-    public AccountRepresentation update(@PathVariable String id, @RequestBody AccountRepresentation representation) {
-        Account account = ingress.convert(representation, accountService.findById(id).orThrow());
-        Account updated = accountService.update(account).orThrow();
-        return egress.convert(accountService.findById(updated.getId()).orThrow());
-    }
+	@Authorize(scopes = "accounts:update")
+	@RequestMapping(value = "/v1/accounts/{id}", method = PUT, consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
+	public AccountRepresentation update(@PathVariable String id, @RequestBody AccountRepresentation representation) {
+		Account account = accountConversionService.convert(representation, accountService.findById(id).orThrow());
+		Account updated = accountService.update(account).orThrow();
+		return accountConversionService.convert(accountService.findById(updated.getId()).orThrow());
+	}
 
-    @Authorize(scopes = "accounts:delete")
-    @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    @RequestMapping(value = "/v1/accounts/{id}", method = DELETE)
-    public void delete(@PathVariable String id) {
-        Account account = accountService.findById(id).orThrow();
-        accountService.delete(account).orThrow();
-    }
+	@Authorize(scopes = "accounts:delete")
+	@ResponseStatus(value = HttpStatus.NO_CONTENT)
+	@RequestMapping(value = "/v1/accounts/{id}", method = DELETE)
+	public void delete(@PathVariable String id) {
+		Account account = accountService.findById(id).orThrow();
+		accountService.delete(account).orThrow();
+	}
 
-    @Authorize(scopes = "accounts:read")
-    @RequestMapping(value = "/v1/accounts/{id}", method = GET, produces = APPLICATION_JSON_VALUE)
-    public AccountRepresentation findById(@PathVariable String id) {
-        return egress.convert(accountService.findById(id).orThrow());
-    }
+	@Authorize(scopes = "accounts:read")
+	@RequestMapping(value = "/v1/accounts/{id}", method = GET, produces = APPLICATION_JSON_VALUE)
+	public AccountRepresentation findById(@PathVariable String id) {
+		return accountConversionService.convert(accountService.findById(id).orThrow());
+	}
 
-    @Authorize(scopes = "accounts:read")
-    @RequestMapping(value = "/v1/accounts/username/{username}", method = GET, produces = APPLICATION_JSON_VALUE)
-    public AccountRepresentation findByUsername(@PathVariable String username) {
-        return egress.convert(accountService.findByUsername(username).orThrow());
-    }
+	@Authorize(scopes = "accounts:read")
+	@RequestMapping(value = "/v1/accounts/username/{username}", method = GET, produces = APPLICATION_JSON_VALUE)
+	public AccountRepresentation findByUsername(@PathVariable String username) {
+		return accountConversionService.convert(accountService.findByUsername(username).orThrow());
+	}
 
 }

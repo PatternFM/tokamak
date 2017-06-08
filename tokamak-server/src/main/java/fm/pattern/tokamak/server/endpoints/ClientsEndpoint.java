@@ -32,8 +32,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import fm.pattern.tokamak.authorization.Authorize;
 import fm.pattern.tokamak.sdk.model.ClientRepresentation;
-import fm.pattern.tokamak.server.conversion.EgressConversionService;
-import fm.pattern.tokamak.server.conversion.IngressConversionService;
+import fm.pattern.tokamak.server.conversion.ClientConversionService;
 import fm.pattern.tokamak.server.model.Client;
 import fm.pattern.tokamak.server.service.ClientService;
 
@@ -41,31 +40,29 @@ import fm.pattern.tokamak.server.service.ClientService;
 public class ClientsEndpoint extends Endpoint {
 
 	private final ClientService clientService;
-	private final IngressConversionService ingress;
-	private final EgressConversionService egress;
+	private final ClientConversionService clientConversionService;
 
 	@Autowired
-	public ClientsEndpoint(ClientService clientService, IngressConversionService ingress, EgressConversionService egress) {
+	public ClientsEndpoint(ClientService clientService, ClientConversionService clientConversionService) {
 		this.clientService = clientService;
-		this.ingress = ingress;
-		this.egress = egress;
+		this.clientConversionService = clientConversionService;
 	}
 
 	@Authorize(scopes = "clients:create")
 	@ResponseStatus(value = HttpStatus.CREATED)
 	@RequestMapping(value = "/v1/clients", method = POST, consumes = "application/json", produces = "application/json")
 	public ClientRepresentation create(@RequestBody ClientRepresentation representation) {
-		Client client = ingress.convert(representation);
+		Client client = clientConversionService.convert(representation);
 		Client created = clientService.create(client).orThrow();
-		return egress.convert(clientService.findById(created.getId()).orThrow());
+		return clientConversionService.convert(clientService.findById(created.getId()).orThrow());
 	}
 
 	@Authorize(scopes = "clients:update")
 	@RequestMapping(value = "/v1/clients/{id}", method = PUT, consumes = "application/json", produces = "application/json")
 	public ClientRepresentation update(@PathVariable String id, @RequestBody ClientRepresentation representation) {
-		Client client = ingress.update(representation, clientService.findById(id).orThrow());
+		Client client = clientConversionService.convert(representation, clientService.findById(id).orThrow());
 		Client updated = clientService.update(client).orThrow();
-		return egress.convert(clientService.findById(updated.getId()).orThrow());
+		return clientConversionService.convert(clientService.findById(updated.getId()).orThrow());
 	}
 
 	@Authorize(scopes = "clients:delete")
@@ -79,7 +76,7 @@ public class ClientsEndpoint extends Endpoint {
 	@Authorize(scopes = "clients:read")
 	@RequestMapping(value = "/v1/clients/{id}", method = GET, produces = APPLICATION_JSON_VALUE)
 	public ClientRepresentation findById(@PathVariable String id) {
-		return egress.convert(clientService.findById(id).orThrow());
+		return clientConversionService.convert(clientService.findById(id).orThrow());
 	}
 
 }

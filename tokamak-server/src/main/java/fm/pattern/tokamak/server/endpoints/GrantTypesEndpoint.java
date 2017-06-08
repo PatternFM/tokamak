@@ -29,7 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import fm.pattern.tokamak.sdk.model.GrantTypeRepresentation;
 import fm.pattern.tokamak.sdk.model.GrantTypesRepresentation;
-import fm.pattern.tokamak.server.conversion.EgressConversionService;
+import fm.pattern.tokamak.server.conversion.GrantTypeConversionService;
 import fm.pattern.tokamak.server.model.GrantType;
 import fm.pattern.tokamak.server.service.GrantTypeService;
 
@@ -37,30 +37,30 @@ import fm.pattern.tokamak.server.service.GrantTypeService;
 public class GrantTypesEndpoint extends Endpoint {
 
 	private final GrantTypeService grantTypeService;
-	private final EgressConversionService egress;
+	private final GrantTypeConversionService grantTypeConversionService;
 
 	@Autowired
-	public GrantTypesEndpoint(GrantTypeService grantTypeService, EgressConversionService egress) {
+	public GrantTypesEndpoint(GrantTypeService grantTypeService, GrantTypeConversionService grantTypeConversionService) {
 		this.grantTypeService = grantTypeService;
-		this.egress = egress;
+		this.grantTypeConversionService = grantTypeConversionService;
 	}
 
 	@RequestMapping(value = "/v1/grant_types/{id}", method = GET, produces = APPLICATION_JSON_VALUE)
 	public GrantTypeRepresentation findById(@PathVariable String id) {
 		GrantType grantType = grantTypeService.findById(id).orThrow();
-		return egress.convert(grantType);
+		return grantTypeConversionService.convert(grantType);
 	}
 
 	@RequestMapping(value = "/v1/grant_types/name/{name}", method = GET, produces = APPLICATION_JSON_VALUE)
 	public GrantTypeRepresentation findByName(@PathVariable String name) {
 		GrantType grantType = grantTypeService.findByName(name).orThrow();
-		return egress.convert(grantType);
+		return grantTypeConversionService.convert(grantType);
 	}
 
 	@RequestMapping(value = "/v1/grant_types", method = GET, produces = APPLICATION_JSON_VALUE)
 	public GrantTypesRepresentation list() {
 		List<GrantType> grantTypes = grantTypeService.list().orThrow();
-		return new GrantTypesRepresentation(grantTypes.stream().map(grant -> egress.convert(grant)).collect(Collectors.toList()));
+		return new GrantTypesRepresentation(grantTypes.stream().map(grant -> grantTypeConversionService.convert(grant)).collect(Collectors.toList()));
 	}
 
 }
