@@ -17,19 +17,9 @@
 package fm.pattern.tokamak.server.conversion;
 
 import fm.pattern.tokamak.sdk.model.AccountRepresentation;
-import fm.pattern.tokamak.sdk.model.AudienceRepresentation;
-import fm.pattern.tokamak.sdk.model.AuthorityRepresentation;
 import fm.pattern.tokamak.sdk.model.ClientRepresentation;
-import fm.pattern.tokamak.sdk.model.GrantTypeRepresentation;
-import fm.pattern.tokamak.sdk.model.RoleRepresentation;
-import fm.pattern.tokamak.sdk.model.ScopeRepresentation;
 import fm.pattern.tokamak.server.model.Account;
-import fm.pattern.tokamak.server.model.Audience;
-import fm.pattern.tokamak.server.model.Authority;
 import fm.pattern.tokamak.server.model.Client;
-import fm.pattern.tokamak.server.model.GrantType;
-import fm.pattern.tokamak.server.model.Role;
-import fm.pattern.tokamak.server.model.Scope;
 
 public interface IngressConversionService {
 
@@ -37,28 +27,8 @@ public interface IngressConversionService {
 
 	Client convert(ClientRepresentation representation);
 
-	Role convert(RoleRepresentation representation);
-
-	Authority convert(AuthorityRepresentation representation);
-
-	Audience convert(AudienceRepresentation representation);
-
-	Scope convert(ScopeRepresentation representation);
-
-	GrantType convert(GrantTypeRepresentation representation);
-
 	Account convert(AccountRepresentation representation, Account account);
 
 	Client update(ClientRepresentation representation, Client client);
-
-	Role update(RoleRepresentation representation, Role role);
-
-	Authority update(AuthorityRepresentation representation, Authority authority);
-
-	Audience update(AudienceRepresentation representation, Audience audience);
-
-	Scope update(ScopeRepresentation representation, Scope scope);
-
-	GrantType update(GrantTypeRepresentation representation, GrantType grantType);
 
 }

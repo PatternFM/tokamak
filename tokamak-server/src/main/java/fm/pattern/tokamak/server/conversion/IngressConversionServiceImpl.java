@@ -86,36 +86,6 @@ class IngressConversionServiceImpl implements IngressConversionService {
 
 	}
 
-	public Role convert(RoleRepresentation representation) {
-		Role role = new Role(representation.getName());
-		role.setDescription(representation.getDescription());
-		return role;
-	}
-
-	public Authority convert(AuthorityRepresentation representation) {
-		Authority authority = new Authority(representation.getName());
-		authority.setDescription(representation.getDescription());
-		return authority;
-	}
-
-	public Audience convert(AudienceRepresentation representation) {
-		Audience audience = new Audience(representation.getName());
-		audience.setDescription(representation.getDescription());
-		return audience;
-	}
-
-	public Scope convert(ScopeRepresentation representation) {
-		Scope scope = new Scope(representation.getName());
-		scope.setDescription(representation.getDescription());
-		return scope;
-	}
-
-	public GrantType convert(GrantTypeRepresentation representation) {
-		GrantType grantType = new GrantType(representation.getName());
-		grantType.setDescription(representation.getDescription());
-		return grantType;
-	}
-
 	public Account convert(AccountRepresentation representation, Account account) {
 		Set<Role> roles = representation.getRoles() == null ? new HashSet<Role>() : representation.getRoles().stream().map(role -> lookup(role)).filter(role -> role != null).collect(Collectors.toSet());
 		account.setRoles(roles);
@@ -136,36 +106,6 @@ class IngressConversionServiceImpl implements IngressConversionService {
 		client.setRefreshTokenValiditySeconds(representation.getRefreshTokenValiditySeconds());
 
 		return client;
-	}
-
-	public Role update(RoleRepresentation representation, Role role) {
-		role.setName(representation.getName());
-		role.setDescription(representation.getDescription());
-		return role;
-	}
-
-	public Authority update(AuthorityRepresentation representation, Authority authority) {
-		authority.setName(representation.getName());
-		authority.setDescription(representation.getDescription());
-		return authority;
-	}
-
-	public Audience update(AudienceRepresentation representation, Audience audience) {
-		audience.setName(representation.getName());
-		audience.setDescription(representation.getDescription());
-		return audience;
-	}
-
-	public Scope update(ScopeRepresentation representation, Scope scope) {
-		scope.setName(representation.getName());
-		scope.setDescription(representation.getDescription());
-		return scope;
-	}
-
-	public GrantType update(GrantTypeRepresentation representation, GrantType grantType) {
-		grantType.setName(representation.getName());
-		grantType.setDescription(representation.getDescription());
-		return grantType;
 	}
 
 	private Audience lookup(AudienceRepresentation representation) {

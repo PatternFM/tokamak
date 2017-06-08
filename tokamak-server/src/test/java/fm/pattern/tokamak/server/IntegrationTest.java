@@ -4,7 +4,6 @@ import static fm.pattern.tokamak.server.PatternAssertions.assertThat;
 
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,7 +18,6 @@ import fm.pattern.valex.sequences.Update;
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = { ApplicationConfiguration.class, TestConfiguration.class })
 @Transactional
-@AutoConfigureMockMvc
 public abstract class IntegrationTest {
 
 	@Autowired

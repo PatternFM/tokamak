@@ -35,8 +35,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import fm.pattern.tokamak.sdk.model.AudienceRepresentation;
 import fm.pattern.tokamak.sdk.model.AudiencesRepresentation;
-import fm.pattern.tokamak.server.conversion.EgressConversionService;
-import fm.pattern.tokamak.server.conversion.IngressConversionService;
+import fm.pattern.tokamak.server.conversion.AudienceConversionService;
 import fm.pattern.tokamak.server.model.Audience;
 import fm.pattern.tokamak.server.service.AudienceService;
 
@@ -44,28 +43,26 @@ import fm.pattern.tokamak.server.service.AudienceService;
 public class AudiencesEndpoint extends Endpoint {
 
 	private final AudienceService audienceService;
-	private final IngressConversionService ingress;
-	private final EgressConversionService egress;
+	private final AudienceConversionService converter;
 
 	@Autowired
-	public AudiencesEndpoint(AudienceService audienceService, IngressConversionService ingress, EgressConversionService egress) {
+	public AudiencesEndpoint(AudienceService audienceService, AudienceConversionService converter) {
 		this.audienceService = audienceService;
-		this.ingress = ingress;
-		this.egress = egress;
+		this.converter = converter;
 	}
 
 	@ResponseStatus(value = HttpStatus.CREATED)
 	@RequestMapping(value = "/v1/audiences", method = POST, consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
 	public AudienceRepresentation create(@RequestBody AudienceRepresentation representation) {
-		Audience audience = ingress.convert(representation);
+		Audience audience = converter.convert(representation);
 		Audience created = audienceService.create(audience).orThrow();
-		return egress.convert(audienceService.findById(created.getId()).orThrow());
+		return converter.convert(audienceService.findById(created.getId()).orThrow());
 	}
 
 	@RequestMapping(value = "/v1/audiences/{id}", method = PUT, consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
 	public AudienceRepresentation update(@PathVariable String id, @RequestBody AudienceRepresentation representation) {
-		Audience audience = ingress.update(representation, audienceService.findById(id).orThrow());
-		return egress.convert(audienceService.update(audience).orThrow());
+		Audience audience = converter.convert(representation, audienceService.findById(id).orThrow());
+		return converter.convert(audienceService.update(audience).orThrow());
 	}
 
 	@ResponseStatus(value = HttpStatus.NO_CONTENT)
@@ -78,19 +75,19 @@ public class AudiencesEndpoint extends Endpoint {
 	@RequestMapping(value = "/v1/audiences/{id}", method = GET, produces = APPLICATION_JSON_VALUE)
 	public AudienceRepresentation findById(@PathVariable String id) {
 		Audience audience = audienceService.findById(id).orThrow();
-		return egress.convert(audience);
+		return converter.convert(audience);
 	}
 
 	@RequestMapping(value = "/v1/audiences/name/{name}", method = GET, produces = APPLICATION_JSON_VALUE)
 	public AudienceRepresentation findByName(@PathVariable String name) {
 		Audience audience = audienceService.findByName(name).orThrow();
-		return egress.convert(audience);
+		return converter.convert(audience);
 	}
 
 	@RequestMapping(value = "/v1/audiences", method = GET, produces = APPLICATION_JSON_VALUE)
 	public AudiencesRepresentation list() {
 		List<Audience> audiences = audienceService.list().orThrow();
-		return new AudiencesRepresentation(audiences.stream().map(audience -> egress.convert(audience)).collect(Collectors.toList()));
+		return new AudiencesRepresentation(audiences.stream().map(audience -> converter.convert(audience)).collect(Collectors.toList()));
 	}
 
 }

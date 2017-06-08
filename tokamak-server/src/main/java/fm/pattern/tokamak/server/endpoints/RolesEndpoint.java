@@ -35,8 +35,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import fm.pattern.tokamak.sdk.model.RoleRepresentation;
 import fm.pattern.tokamak.sdk.model.RolesRepresentation;
-import fm.pattern.tokamak.server.conversion.EgressConversionService;
-import fm.pattern.tokamak.server.conversion.IngressConversionService;
+import fm.pattern.tokamak.server.conversion.RoleConversionService;
 import fm.pattern.tokamak.server.model.Role;
 import fm.pattern.tokamak.server.service.RoleService;
 
@@ -44,28 +43,26 @@ import fm.pattern.tokamak.server.service.RoleService;
 public class RolesEndpoint extends Endpoint {
 
 	private final RoleService roleService;
-	private final IngressConversionService ingress;
-	private final EgressConversionService egress;
+	private final RoleConversionService roleConversionService;
 
 	@Autowired
-	public RolesEndpoint(RoleService roleService, IngressConversionService ingress, EgressConversionService egress) {
+	public RolesEndpoint(RoleService roleService, RoleConversionService roleConversionService) {
 		this.roleService = roleService;
-		this.ingress = ingress;
-		this.egress = egress;
+		this.roleConversionService = roleConversionService;
 	}
 
 	@ResponseStatus(value = HttpStatus.CREATED)
 	@RequestMapping(value = "/v1/roles", method = POST, consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
 	public RoleRepresentation create(@RequestBody RoleRepresentation representation) {
-		Role role = ingress.convert(representation);
+		Role role = roleConversionService.convert(representation);
 		Role created = roleService.create(role).orThrow();
-		return egress.convert(roleService.findById(created.getId()).orThrow());
+		return roleConversionService.convert(roleService.findById(created.getId()).orThrow());
 	}
 
 	@RequestMapping(value = "/v1/roles/{id}", method = PUT, consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
 	public RoleRepresentation update(@PathVariable String id, @RequestBody RoleRepresentation representation) {
-		Role role = ingress.update(representation, roleService.findById(id).orThrow());
-		return egress.convert(roleService.update(role).orThrow());
+		Role role = roleConversionService.convert(representation, roleService.findById(id).orThrow());
+		return roleConversionService.convert(roleService.update(role).orThrow());
 	}
 
 	@ResponseStatus(value = HttpStatus.NO_CONTENT)
@@ -78,19 +75,19 @@ public class RolesEndpoint extends Endpoint {
 	@RequestMapping(value = "/v1/roles/{id}", method = GET, produces = APPLICATION_JSON_VALUE)
 	public RoleRepresentation findById(@PathVariable String id) {
 		Role role = roleService.findById(id).orThrow();
-		return egress.convert(role);
+		return roleConversionService.convert(role);
 	}
 
 	@RequestMapping(value = "/v1/roles/name/{name}", method = GET, produces = APPLICATION_JSON_VALUE)
 	public RoleRepresentation findByName(@PathVariable String name) {
 		Role role = roleService.findByName(name).orThrow();
-		return egress.convert(role);
+		return roleConversionService.convert(role);
 	}
 
 	@RequestMapping(value = "/v1/roles", method = GET, produces = APPLICATION_JSON_VALUE)
 	public RolesRepresentation list() {
 		List<Role> roles = roleService.list().orThrow();
-		return new RolesRepresentation(roles.stream().map(role -> egress.convert(role)).collect(Collectors.toList()));
+		return new RolesRepresentation(roles.stream().map(role -> roleConversionService.convert(role)).collect(Collectors.toList()));
 	}
 
 }

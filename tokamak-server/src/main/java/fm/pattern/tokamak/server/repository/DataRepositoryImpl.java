@@ -33,7 +33,6 @@ import org.springframework.stereotype.Repository;
 import fm.pattern.minimal.Reflection;
 import fm.pattern.valex.Result;
 
-// TODO: Wrap all methods in try/catch blocks.
 @Repository("dataRepository")
 @SuppressWarnings("unchecked")
 class DataRepositoryImpl implements DataRepository {
