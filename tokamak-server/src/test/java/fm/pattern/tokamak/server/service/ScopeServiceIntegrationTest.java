@@ -1,6 +1,8 @@
 package fm.pattern.tokamak.server.service;
 
 import static fm.pattern.tokamak.server.PatternAssertions.assertThat;
+import static fm.pattern.tokamak.server.dsl.ClientDSL.client;
+import static fm.pattern.tokamak.server.dsl.GrantTypeDSL.grantType;
 import static fm.pattern.tokamak.server.dsl.ScopeDSL.scope;
 import static java.util.stream.IntStream.range;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -13,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import fm.pattern.tokamak.server.IntegrationTest;
 import fm.pattern.tokamak.server.model.Scope;
 import fm.pattern.valex.EntityNotFoundException;
+import fm.pattern.valex.ResourceConflictException;
 import fm.pattern.valex.Result;
 import fm.pattern.valex.UnprocessableEntityException;
 
@@ -75,6 +78,15 @@ public class ScopeServiceIntegrationTest extends IntegrationTest {
 		Scope scope = scope().thatIs().persistent().build();
 		scope.setId(null);
 		assertThat(scopeService.delete(scope)).rejected().withError("ENT-0001", "An id is required.", UnprocessableEntityException.class);
+	}
+
+	@Test
+	public void shouldNotBeAbleToDeleteAScopeIfTheScopeIsBeingUsedByClients() {
+		Scope scope = scope().thatIs().persistent().build();
+		client().withScope(scope).withGrantType(grantType().thatIs().persistent().build()).thatIs().persistent().build();
+
+		Result<Scope> result = scopeService.delete(scope);
+		assertThat(result).rejected().withError("SCO-0008", "This scope cannot be deleted, 1 client is linked to this scope.", ResourceConflictException.class);
 	}
 
 	@Test

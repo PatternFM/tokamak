@@ -1,6 +1,7 @@
 package fm.pattern.tokamak.server.service;
 
 import static fm.pattern.tokamak.server.PatternAssertions.assertThat;
+import static fm.pattern.tokamak.server.dsl.ClientDSL.client;
 import static fm.pattern.tokamak.server.dsl.GrantTypeDSL.grantType;
 import static java.util.stream.IntStream.range;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -13,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import fm.pattern.tokamak.server.IntegrationTest;
 import fm.pattern.tokamak.server.model.GrantType;
 import fm.pattern.valex.EntityNotFoundException;
+import fm.pattern.valex.ResourceConflictException;
 import fm.pattern.valex.Result;
 import fm.pattern.valex.UnprocessableEntityException;
 
@@ -75,6 +77,15 @@ public class GrantTypeServiceIntegrationTest extends IntegrationTest {
 		GrantType grantType = grantType().thatIs().persistent().build();
 		grantType.setId(null);
 		assertThat(grantTypeService.delete(grantType)).rejected().withError("ENT-0001", "An id is required.", UnprocessableEntityException.class);
+	}
+
+	@Test
+	public void shouldNotBeAbleToDeleteAnGrantTypeIfTheGrantTypeIsBeingUsedByClients() {
+		GrantType grantType = grantType().thatIs().persistent().build();
+		client().withGrantType(grantType).withGrantType(grantType().thatIs().persistent().build()).thatIs().persistent().build();
+
+		Result<GrantType> result = grantTypeService.delete(grantType);
+		assertThat(result).rejected().withError("GNT-0008", "This grant type cannot be deleted, 1 client is linked to this grant type.", ResourceConflictException.class);
 	}
 
 	@Test

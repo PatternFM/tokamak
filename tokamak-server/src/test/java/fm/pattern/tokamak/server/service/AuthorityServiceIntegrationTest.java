@@ -2,6 +2,8 @@ package fm.pattern.tokamak.server.service;
 
 import static fm.pattern.tokamak.server.PatternAssertions.assertThat;
 import static fm.pattern.tokamak.server.dsl.AuthorityDSL.authority;
+import static fm.pattern.tokamak.server.dsl.ClientDSL.client;
+import static fm.pattern.tokamak.server.dsl.GrantTypeDSL.grantType;
 import static java.util.stream.IntStream.range;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -13,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import fm.pattern.tokamak.server.IntegrationTest;
 import fm.pattern.tokamak.server.model.Authority;
 import fm.pattern.valex.EntityNotFoundException;
+import fm.pattern.valex.ResourceConflictException;
 import fm.pattern.valex.Result;
 import fm.pattern.valex.UnprocessableEntityException;
 
@@ -75,6 +78,15 @@ public class AuthorityServiceIntegrationTest extends IntegrationTest {
 		Authority authority = authority().thatIs().persistent().build();
 		authority.setId(null);
 		assertThat(authorityService.delete(authority)).rejected().withError("ENT-0001", "An id is required.", UnprocessableEntityException.class);
+	}
+
+	@Test
+	public void shouldNotBeAbleToDeleteAnAuthorityIfTheAuthorityIsBeingUsedByClients() {
+		Authority authority = authority().thatIs().persistent().build();
+		client().withAuthority(authority).withGrantType(grantType().thatIs().persistent().build()).thatIs().persistent().build();
+
+		Result<Authority> result = authorityService.delete(authority);
+		assertThat(result).rejected().withError("ATH-0005", "This authority cannot be deleted, 1 client is linked to this authority.", ResourceConflictException.class);
 	}
 
 	@Test

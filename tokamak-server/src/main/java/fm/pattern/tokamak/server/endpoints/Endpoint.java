@@ -16,67 +16,68 @@
 
 package fm.pattern.tokamak.server.endpoints;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import javax.servlet.http.HttpServletRequest;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import fm.pattern.tokamak.sdk.commons.ErrorRepresentation;
 import fm.pattern.tokamak.sdk.commons.ErrorsRepresentation;
-import fm.pattern.tokamak.server.conversion.EgressConversionService;
 import fm.pattern.valex.AuthenticationException;
 import fm.pattern.valex.AuthorizationException;
 import fm.pattern.valex.EntityNotFoundException;
 import fm.pattern.valex.InternalErrorException;
+import fm.pattern.valex.ReportableException;
 import fm.pattern.valex.ResourceConflictException;
 import fm.pattern.valex.UnprocessableEntityException;
 
 @RestController
 public class Endpoint {
 
-	private EgressConversionService converter;
-
 	@ResponseStatus(value = HttpStatus.UNPROCESSABLE_ENTITY)
 	@ExceptionHandler(UnprocessableEntityException.class)
 	public ErrorsRepresentation handleUnprocessableEntity(UnprocessableEntityException exception, HttpServletRequest request) {
-		return converter.convert(exception);
+		return convert(exception);
 	}
 
 	@ResponseStatus(value = HttpStatus.UNAUTHORIZED)
 	@ExceptionHandler(AuthenticationException.class)
 	public ErrorsRepresentation handleAuthentication(AuthenticationException exception) {
-		return converter.convert(exception);
+		return convert(exception);
 	}
 
 	@ResponseStatus(value = HttpStatus.FORBIDDEN)
 	@ExceptionHandler(AuthorizationException.class)
 	public ErrorsRepresentation handleAuthorization(AuthorizationException exception) {
-		return converter.convert(exception);
+		return convert(exception);
 	}
 
 	@ResponseStatus(value = HttpStatus.NOT_FOUND)
 	@ExceptionHandler(EntityNotFoundException.class)
 	public ErrorsRepresentation handleEntityNotFound(EntityNotFoundException exception) {
-		return converter.convert(exception);
+		return convert(exception);
 	}
 
 	@ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
 	@ExceptionHandler(InternalErrorException.class)
 	public ErrorsRepresentation handleInternalError(EntityNotFoundException exception) {
-		return converter.convert(exception);
+		return convert(exception);
 	}
 
 	@ResponseStatus(value = HttpStatus.CONFLICT)
 	@ExceptionHandler(ResourceConflictException.class)
 	public ErrorsRepresentation handleResourceConflict(ResourceConflictException exception) {
-		return converter.convert(exception);
+		return convert(exception);
 	}
 
-	@Autowired
-	public void setEgressConversionService(EgressConversionService egress) {
-		this.converter = egress;
+	private ErrorsRepresentation convert(ReportableException exception) {
+		List<ErrorRepresentation> errors = exception.getErrors().stream().map(e -> new ErrorRepresentation(e.getCode(), e.getMessage())).collect(Collectors.toList());
+		return new ErrorsRepresentation(errors);
 	}
 
 }

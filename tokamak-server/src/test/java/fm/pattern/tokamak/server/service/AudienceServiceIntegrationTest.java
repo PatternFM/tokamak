@@ -2,6 +2,8 @@ package fm.pattern.tokamak.server.service;
 
 import static fm.pattern.tokamak.server.PatternAssertions.assertThat;
 import static fm.pattern.tokamak.server.dsl.AudienceDSL.audience;
+import static fm.pattern.tokamak.server.dsl.ClientDSL.client;
+import static fm.pattern.tokamak.server.dsl.GrantTypeDSL.grantType;
 import static java.util.stream.IntStream.range;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -13,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import fm.pattern.tokamak.server.IntegrationTest;
 import fm.pattern.tokamak.server.model.Audience;
 import fm.pattern.valex.EntityNotFoundException;
+import fm.pattern.valex.ResourceConflictException;
 import fm.pattern.valex.Result;
 import fm.pattern.valex.UnprocessableEntityException;
 
@@ -75,6 +78,15 @@ public class AudienceServiceIntegrationTest extends IntegrationTest {
 		Audience audience = audience().thatIs().persistent().build();
 		audience.setId(null);
 		assertThat(audienceService.delete(audience)).rejected().withError("ENT-0001", "An id is required.", UnprocessableEntityException.class);
+	}
+
+	@Test
+	public void shouldNotBeAbleToDeleteAnAudienceIfTheAudienceIsBeingUsedByClients() {
+		Audience audience = audience().thatIs().persistent().build();
+		client().withAudience(audience).withGrantType(grantType().thatIs().persistent().build()).thatIs().persistent().build();
+
+		Result<Audience> result = audienceService.delete(audience);
+		assertThat(result).rejected().withError("AUD-0005", "This audience cannot be deleted, 1 client is linked to this audience.", ResourceConflictException.class);
 	}
 
 	@Test
