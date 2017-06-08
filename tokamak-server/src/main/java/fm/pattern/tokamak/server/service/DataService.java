@@ -18,6 +18,8 @@ package fm.pattern.tokamak.server.service;
 
 import java.util.List;
 
+import javax.persistence.Query;
+
 import fm.pattern.valex.Result;
 import fm.pattern.valex.annotations.Create;
 import fm.pattern.valex.annotations.Delete;
@@ -35,4 +37,6 @@ public interface DataService<T> {
 
     Result<List<T>> list(Class<T> type);
 
+    Query query(String query);
+    
 }

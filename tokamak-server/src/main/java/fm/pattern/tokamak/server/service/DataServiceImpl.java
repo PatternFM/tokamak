@@ -23,6 +23,7 @@ import java.util.List;
 
 import javax.annotation.Resource;
 import javax.persistence.Entity;
+import javax.persistence.Query;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -54,6 +55,11 @@ class DataServiceImpl<T> implements DataService<T> {
 	@Transactional
 	public Result<T> delete(T entity) {
 		return repository.delete(entity);
+	}
+
+	@Transactional(readOnly = true)
+	public Query query(String query) {
+		return repository.query(query);
 	}
 
 	@Transactional(readOnly = true)

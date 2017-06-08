@@ -18,7 +18,10 @@ package fm.pattern.tokamak.server.service;
 
 import static org.apache.commons.lang3.StringUtils.isBlank;
 
+import javax.persistence.NoResultException;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -44,7 +47,17 @@ class ClientServiceImpl extends DataServiceImpl<Client> implements ClientService
 
 	@Transactional(readOnly = true)
 	public Result<Client> findById(String id) {
-		return super.findById(id, Client.class);
+		if (isBlank(id)) {
+			return Result.reject("client.id.required");
+		}
+
+		try {
+			Client client = (Client) super.query("from Clients client left join fetch client.authorities left join fetch client.audiences left join fetch client.scopes left join fetch client.grantTypes where client.id = :id").setParameter("id", id).getSingleResult();
+			return Result.accept(client);
+		}
+		catch (EmptyResultDataAccessException | NoResultException e) {
+			return Result.reject("system.not.found", "client", id);
+		}
 	}
 
 	@Transactional(readOnly = true)
@@ -53,8 +66,13 @@ class ClientServiceImpl extends DataServiceImpl<Client> implements ClientService
 			return Result.reject("client.clientId.required");
 		}
 
-		Result<Client> result = super.findBy("clientId", clientId, Client.class);
-		return result.accepted() ? result : Result.reject("client.clientId.not_found", clientId);
+		try {
+			Client client = (Client) super.query("from Clients client left join fetch client.authorities left join fetch client.audiences left join fetch client.scopes left join fetch client.grantTypes where client.clientId = :clientId").setParameter("clientId", clientId).getSingleResult();
+			return Result.accept(client);
+		}
+		catch (EmptyResultDataAccessException | NoResultException e) {
+			return Result.reject("client.clientId.not_found", clientId);
+		}
 	}
 
 }
