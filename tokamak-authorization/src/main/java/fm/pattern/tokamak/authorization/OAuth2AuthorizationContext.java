@@ -18,11 +18,13 @@ package fm.pattern.tokamak.authorization;
 
 import static org.springframework.security.core.context.SecurityContextHolder.getContext;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 
 public class OAuth2AuthorizationContext implements AuthorizationContextProvider {
@@ -41,10 +43,9 @@ public class OAuth2AuthorizationContext implements AuthorizationContextProvider 
 		if (oauth == null) {
 			return new HashSet<String>();
 		}
-		if (oauth.getOAuth2Request().getScope() == null || oauth.getOAuth2Request().getScope().isEmpty()) {
-			return new HashSet<String>();
-		}
-		return oauth.getOAuth2Request().getScope();
+
+		Set<String> scope = oauth.getOAuth2Request().getScope();
+		return scope == null ? new HashSet<String>() : scope;
 	}
 
 	public Set<String> getAuthorities() {
@@ -52,10 +53,9 @@ public class OAuth2AuthorizationContext implements AuthorizationContextProvider 
 		if (oauth == null) {
 			return new HashSet<String>();
 		}
-		if (oauth.getAuthorities() == null || oauth.getAuthorities().isEmpty()) {
-			return new HashSet<String>();
-		}
-		return oauth.getAuthorities().stream().map(authority -> authority.getAuthority()).collect(Collectors.toSet());
+
+		Collection<GrantedAuthority> authorities = oauth.getAuthorities();
+		return authorities == null ? new HashSet<String>() : authorities.stream().map(authority -> authority.getAuthority()).collect(Collectors.toSet());
 	}
 
 	public Set<String> getRoles() {
@@ -63,6 +63,7 @@ public class OAuth2AuthorizationContext implements AuthorizationContextProvider 
 		if (oauth == null) {
 			return new HashSet<String>();
 		}
+
 		if (oauth.isClientOnly()) {
 			return new HashSet<String>();
 		}

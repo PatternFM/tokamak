@@ -18,10 +18,7 @@ package fm.pattern.tokamak.server.service;
 
 import static org.apache.commons.lang3.StringUtils.isBlank;
 
-import javax.persistence.NoResultException;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,6 +27,7 @@ import fm.pattern.tokamak.server.model.Client;
 import fm.pattern.tokamak.server.model.SerializedClient;
 import fm.pattern.tokamak.server.repository.SerializedClientRepository;
 import fm.pattern.tokamak.server.security.PasswordEncodingService;
+import fm.pattern.valex.Reportable;
 import fm.pattern.valex.Result;
 
 @Service
@@ -72,13 +70,12 @@ class ClientServiceImpl extends DataServiceImpl<Client> implements ClientService
 			return Result.reject("client.id.required");
 		}
 
-		try {
-			SerializedClient client = (SerializedClient) super.query("from SerializedClients client where client.id = :id").setParameter("id", id).getSingleResult();
-			return Result.accept(JSON.parse(client.getPayload(), Client.class));
+		Result<SerializedClient> result = serializedClientRepository.findById(id);
+		if (result.accepted()) {
+			return Result.accept(JSON.parse(result.getInstance().getPayload(), Client.class));
 		}
-		catch (EmptyResultDataAccessException | NoResultException e) {
-			return Result.reject("system.not.found", "client", id);
-		}
+
+		return Result.reject(result.getErrors().toArray(new Reportable[result.getErrors().size()]));
 	}
 
 	@Transactional(readOnly = true)
@@ -87,13 +84,12 @@ class ClientServiceImpl extends DataServiceImpl<Client> implements ClientService
 			return Result.reject("client.clientId.required");
 		}
 
-		try {
-			SerializedClient client = (SerializedClient) super.query("from SerializedClients client where client.clientId = :clientId").setParameter("clientId", clientId).getSingleResult();
-			return Result.accept(JSON.parse(client.getPayload(), Client.class));
+		Result<SerializedClient> result = serializedClientRepository.findByClientId(clientId);
+		if (result.accepted()) {
+			return Result.accept(JSON.parse(result.getInstance().getPayload(), Client.class));
 		}
-		catch (EmptyResultDataAccessException | NoResultException e) {
-			return Result.reject("client.clientId.not_found", clientId);
-		}
+
+		return Result.reject(result.getErrors().toArray(new Reportable[result.getErrors().size()]));
 	}
 
 }

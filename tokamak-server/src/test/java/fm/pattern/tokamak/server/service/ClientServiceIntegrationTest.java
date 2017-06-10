@@ -93,7 +93,7 @@ public class ClientServiceIntegrationTest extends IntegrationTest {
 	}
 
 	@Test
-	public void shouldBeAbleToFindAClientByUsername() {
+	public void shouldBeAbleToFindAClientByClientId() {
 		Client client = client().withGrantType(grantType).thatIs().persistent().build();
 		assertThat(clientService.findByClientId(client.getClientId()).getInstance()).isEqualTo(client);
 	}
