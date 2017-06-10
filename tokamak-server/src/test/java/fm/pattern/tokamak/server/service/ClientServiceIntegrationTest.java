@@ -48,6 +48,9 @@ public class ClientServiceIntegrationTest extends IntegrationTest {
 		assertThat(created.getId()).isNotNull();
 		assertThat(created.getClientId()).isNotNull();
 		assertThat(created.getClientSecret()).isNotNull();
+		
+		Client found = clientService.findById(client.getId()).getInstance();
+		System.out.println(found);
 	}
 
 	@Test

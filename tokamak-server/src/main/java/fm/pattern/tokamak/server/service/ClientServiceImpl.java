@@ -25,7 +25,9 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import fm.pattern.minimal.JSON;
 import fm.pattern.tokamak.server.model.Client;
+import fm.pattern.tokamak.server.model.SerializedClient;
 import fm.pattern.tokamak.server.repository.SerializedClientRepository;
 import fm.pattern.tokamak.server.security.PasswordEncodingService;
 import fm.pattern.valex.Result;
@@ -42,10 +44,26 @@ class ClientServiceImpl extends DataServiceImpl<Client> implements ClientService
 		this.serializedClientRepository = serializedClientRepository;
 	}
 
-	@Transactional(readOnly = false)
+	@Transactional
 	public Result<Client> create(Client client) {
 		client.setClientSecret(passwordEncodingService.encode(client.getClientSecret()));
-		return super.create(client);
+		Result<Client> result = super.create(client);
+		serializedClientRepository.save(result.getInstance().serialize());
+		return result;
+	}
+
+	@Transactional
+	public Result<Client> update(Client client) {
+		Result<Client> result = super.update(client);
+		serializedClientRepository.update(result.getInstance().serialize());
+		return result;
+	}
+
+	@Transactional
+	public Result<Client> delete(Client client) {
+		Result<Client> result = super.delete(client);
+		serializedClientRepository.delete(result.getInstance().serialize());
+		return result;
 	}
 
 	@Transactional(readOnly = true)
@@ -55,8 +73,8 @@ class ClientServiceImpl extends DataServiceImpl<Client> implements ClientService
 		}
 
 		try {
-			Client client = (Client) super.query("from Clients client left join fetch client.authorities left join fetch client.audiences left join fetch client.scopes left join fetch client.grantTypes where client.id = :id").setParameter("id", id).getSingleResult();
-			return Result.accept(client);
+			SerializedClient client = (SerializedClient) super.query("from SerializedClients client where client.id = :id").setParameter("id", id).getSingleResult();
+			return Result.accept(JSON.parse(client.getPayload(), Client.class));
 		}
 		catch (EmptyResultDataAccessException | NoResultException e) {
 			return Result.reject("system.not.found", "client", id);
@@ -70,8 +88,8 @@ class ClientServiceImpl extends DataServiceImpl<Client> implements ClientService
 		}
 
 		try {
-			Client client = (Client) super.query("from Clients client left join fetch client.authorities left join fetch client.audiences left join fetch client.scopes left join fetch client.grantTypes where client.clientId = :clientId").setParameter("clientId", clientId).getSingleResult();
-			return Result.accept(client);
+			SerializedClient client = (SerializedClient) super.query("from SerializedClients client where client.clientId = :clientId").setParameter("clientId", clientId).getSingleResult();
+			return Result.accept(JSON.parse(client.getPayload(), Client.class));
 		}
 		catch (EmptyResultDataAccessException | NoResultException e) {
 			return Result.reject("client.clientId.not_found", clientId);

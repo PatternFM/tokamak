@@ -36,57 +36,65 @@ import fm.pattern.valex.sequences.UpdateLevel1;
 @MappedSuperclass
 public class PersistentEntity implements Serializable {
 
-    private static final long serialVersionUID = -2873931442549637189L;
+	private static final long serialVersionUID = -2873931442549637189L;
 
-    @Id
-    @Column(name = "_id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long _id;
+	@Id
+	@Column(name = "_id")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long _id;
 
-    @Column(name = "id", nullable = false, unique = true, updatable = false)
-    @NotBlank(message = "{entity.id.required}", groups = { CreateLevel1.class, UpdateLevel1.class, DeleteLevel1.class })
-    private String id;
+	@Column(name = "id", nullable = false, unique = true, updatable = false)
+	@NotBlank(message = "{entity.id.required}", groups = { CreateLevel1.class, UpdateLevel1.class, DeleteLevel1.class })
+	private String id;
 
-    @Column(name = "created", nullable = false, updatable = false)
-    @NotNull(message = "{entity.created.required}", groups = { CreateLevel1.class, UpdateLevel1.class })
-    private Date created;
+	@Column(name = "created", nullable = false, updatable = false)
+	@NotNull(message = "{entity.created.required}", groups = { CreateLevel1.class, UpdateLevel1.class })
+	private Date created;
 
-    @Column(name = "updated", nullable = false)
-    @NotNull(message = "{entity.updated.required}", groups = { CreateLevel1.class, UpdateLevel1.class })
-    private Date updated;
+	@Column(name = "updated", nullable = false)
+	@NotNull(message = "{entity.updated.required}", groups = { CreateLevel1.class, UpdateLevel1.class })
+	private Date updated;
 
-    public PersistentEntity() {
-        this(IdGenerator.generateId());
-    }
+	public PersistentEntity() {
+		this(IdGenerator.generateId());
+	}
 
-    public PersistentEntity(String id) {
-        this.id = id;
-        this.created = new Date();
-        this.updated = created;
-    }
+	public PersistentEntity(String id) {
+		this.id = id;
+		this.created = new Date();
+		this.updated = created;
+	}
 
-    public String getId() {
-        return id;
-    }
+	public String getId() {
+		return id;
+	}
 
-    public void setId(String id) {
-        this.id = id;
-    }
+	public void setId(String id) {
+		this.id = id;
+	}
 
-    public Date getCreated() {
-        return new Date(created.getTime());
-    }
+	public Long get_id() {
+		return _id;
+	}
 
-    public void setCreated(Date created) {
-        this.created = created;
-    }
+	public void set_id(Long _id) {
+		this._id = _id;
+	}
 
-    public Date getUpdated() {
-        return new Date(updated.getTime());
-    }
+	public Date getCreated() {
+		return new Date(created.getTime());
+	}
 
-    public void setUpdated(Date updated) {
-        this.updated = updated;
-    }
+	public void setCreated(Date created) {
+		this.created = created;
+	}
+
+	public Date getUpdated() {
+		return new Date(updated.getTime());
+	}
+
+	public void setUpdated(Date updated) {
+		this.updated = updated;
+	}
 
 }
