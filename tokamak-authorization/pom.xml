@@ -1,54 +1,62 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-   <name>Tokamak Authorization</name>
-   <modelVersion>4.0.0</modelVersion>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<name>Tokamak Authorization</name>
+	<modelVersion>4.0.0</modelVersion>
 
-   <artifactId>tokamak-authorization</artifactId>
+	<artifactId>tokamak-authorization</artifactId>
 
-   <parent>
-      <groupId>fm.pattern</groupId>
-      <artifactId>tokamak</artifactId>
-      <version>1.0.2-SNAPSHOT</version>
-      <relativePath>../pom.xml</relativePath>
-   </parent>
+	<parent>
+		<groupId>fm.pattern</groupId>
+		<artifactId>tokamak</artifactId>
+		<version>1.0.2-SNAPSHOT</version>
+		<relativePath>../pom.xml</relativePath>
+	</parent>
 
-   <dependencies>
-      <dependency>
-         <groupId>fm.pattern</groupId>
-         <artifactId>valex</artifactId>
-         <version>1.0.7</version>
-      </dependency>
+	<dependencies>
+		<dependency>
+			<groupId>fm.pattern</groupId>
+			<artifactId>valex</artifactId>
+			<version>1.0.7</version>
+		</dependency>
 
-      <dependency>
-         <groupId>org.springframework.security</groupId>
-         <artifactId>spring-security-core</artifactId>
-         <version>4.2.2.RELEASE</version>
-      </dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-core</artifactId>
+			<version>4.2.2.RELEASE</version>
+		</dependency>
 
-      <dependency>
-         <groupId>org.springframework.security.oauth</groupId>
-         <artifactId>spring-security-oauth2</artifactId>
-         <version>2.1.0.RELEASE</version>
-      </dependency>
+		<dependency>
+			<groupId>org.springframework.security.oauth</groupId>
+			<artifactId>spring-security-oauth2</artifactId>
+			<version>2.1.0.RELEASE</version>
+		</dependency>
 
-      <dependency>
-         <groupId>org.apache.commons</groupId>
-         <artifactId>commons-lang3</artifactId>
-         <version>3.5</version>
-      </dependency>
-      
-      <dependency>
-         <groupId>junit</groupId>
-         <artifactId>junit</artifactId>
-         <version>4.12</version>
-         <scope>test</scope>
-      </dependency>
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>3.5</version>
+		</dependency>
 
-      <dependency>
-         <groupId>org.assertj</groupId>
-         <artifactId>assertj-core</artifactId>
-         <version>3.6.2</version>
-         <scope>test</scope>
-      </dependency>      
-   </dependencies>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.12</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-all</artifactId>
+			<version>1.10.19</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.assertj</groupId>
+			<artifactId>assertj-core</artifactId>
+			<version>3.6.2</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
 </project>
