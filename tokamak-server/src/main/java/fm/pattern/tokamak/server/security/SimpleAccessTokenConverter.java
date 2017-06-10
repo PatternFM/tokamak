@@ -16,7 +16,6 @@
 
 package fm.pattern.tokamak.server.security;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -52,11 +51,7 @@ public class SimpleAccessTokenConverter extends DefaultAccessTokenConverter {
 	@Override
 	public OAuth2Authentication extractAuthentication(Map<String, ?> map) {
 		List<String> authorities = (List<String>) map.get(CLIENT_AUTHORITIES);
-
-		Collection<GrantedAuthority> grantedAuthorities = new ArrayList<GrantedAuthority>();
-		for (String authority : authorities) {
-			grantedAuthorities.add(new SimpleGrantedAuthority(authority));
-		}
+		Collection<GrantedAuthority> grantedAuthorities = authorities.stream().map(a -> new SimpleGrantedAuthority(a)).collect(Collectors.toList());
 
 		OAuth2Authentication authentication = super.extractAuthentication(map);
 		OAuth2Request request = authentication.getOAuth2Request();

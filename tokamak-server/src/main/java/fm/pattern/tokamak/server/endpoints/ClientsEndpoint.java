@@ -60,9 +60,6 @@ public class ClientsEndpoint extends Endpoint {
 	@Authorize(scopes = "clients:update")
 	@RequestMapping(value = "/v1/clients/{id}", method = PUT, consumes = "application/json", produces = "application/json")
 	public ClientRepresentation update(@PathVariable String id, @RequestBody ClientRepresentation representation) {
-		Client print = clientService.findById(id).orThrow();
-		System.out.println(print);
-		
 		Client client = clientConversionService.convert(representation, clientService.findById(id).orThrow());
 		Client updated = clientService.update(client).orThrow();
 		return clientConversionService.convert(clientService.findById(updated.getId()).orThrow());

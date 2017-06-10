@@ -141,7 +141,6 @@ public class Client extends PersistentEntity {
 	}
 
 	public SerializedClient serialize() {
-		System.out.println("SERIALIZE: " + this.toString());
 		return new SerializedClient(getId(), getClientId(), this.toString());
 	}
 
