@@ -33,6 +33,18 @@ CREATE TABLE Clients (
 
 
 
+DROP TABLE IF EXISTS SerializedClients;
+
+CREATE TABLE SerializedClients (
+  id varchar(64) NOT NULL,
+  client_id varchar(128) NOT NULL,
+  payload TEXT NOT NULL,
+  PRIMARY KEY(id),
+  UNIQUE KEY UK_SERIALIZED_CLIENT_ID (client_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
 DROP TABLE IF EXISTS Roles;
 
 CREATE TABLE Roles (

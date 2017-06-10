@@ -26,6 +26,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import fm.pattern.tokamak.server.model.Client;
+import fm.pattern.tokamak.server.repository.SerializedClientRepository;
 import fm.pattern.tokamak.server.security.PasswordEncodingService;
 import fm.pattern.valex.Result;
 
@@ -33,10 +34,12 @@ import fm.pattern.valex.Result;
 class ClientServiceImpl extends DataServiceImpl<Client> implements ClientService {
 
 	private final PasswordEncodingService passwordEncodingService;
+	private final SerializedClientRepository serializedClientRepository;
 
 	@Autowired
-	public ClientServiceImpl(PasswordEncodingService passwordEncodingService) {
+	public ClientServiceImpl(PasswordEncodingService passwordEncodingService, SerializedClientRepository serializedClientRepository) {
 		this.passwordEncodingService = passwordEncodingService;
+		this.serializedClientRepository = serializedClientRepository;
 	}
 
 	@Transactional(readOnly = false)
