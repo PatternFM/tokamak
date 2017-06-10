@@ -238,3 +238,6 @@ INSERT INTO Scopes (created, updated, id, name) VALUES ('2017-01-01 12:00:00','2
 INSERT INTO Scopes (created, updated, id, name) VALUES ('2017-01-01 12:00:00','2017-01-01 12:00:00','scp_jrwvab24bgglcyiadup4tgm92uc6t5','grant_types:update');
 INSERT INTO Scopes (created, updated, id, name) VALUES ('2017-01-01 12:00:00','2017-01-01 12:00:00','scp_vkssmillu617wo4exldvlwpd8p5ins','grant_types:delete');
 INSERT INTO Scopes (created, updated, id, name) VALUES ('2017-01-01 12:00:00','2017-01-01 12:00:00','scp_edgdg5kb7bjsb9cyh55xvexty0j0zb','grant_types:read');
+
+INSERT INTO Authorities (created, updated, id, name) VALUES ('2017-01-01 12:00:00','2017-01-01 12:00:00','ath_wb0LcDMl5oDGAfQE8KfaKeIyGxr9po','role:admin');
+

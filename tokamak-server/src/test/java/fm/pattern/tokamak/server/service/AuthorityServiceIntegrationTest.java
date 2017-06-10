@@ -28,7 +28,8 @@ public class AuthorityServiceIntegrationTest extends IntegrationTest {
 	@Test
 	public void shouldBeAbleToCreateAnAuthority() {
 		Authority authority = new Authority("user");
-
+		System.out.println(authority.getId());
+		
 		Result<Authority> result = authorityService.create(authority);
 		assertThat(result).accepted();
 

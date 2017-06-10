@@ -47,6 +47,7 @@ import com.google.common.collect.Lists;
 import fm.pattern.tokamak.server.security.AccountAuthenticationService;
 import fm.pattern.tokamak.server.security.ClientAuthenticationService;
 import fm.pattern.tokamak.server.security.CustomJwtTokenEnhancer;
+import fm.pattern.tokamak.server.security.SimpleAccessTokenConverter;
 
 @Configuration
 @EnableWebSecurity
@@ -116,6 +117,7 @@ public class AuthorizationServerConfiguration {
 			JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
 			converter.setSigningKey(privateKey);
 			converter.setVerifierKey(publicKey);
+			converter.setAccessTokenConverter(new SimpleAccessTokenConverter());
 			return converter;
 		}
 
