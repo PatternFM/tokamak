@@ -12,6 +12,7 @@ import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
+import org.springframework.security.oauth2.provider.OAuth2Request;
 
 public class OAuth2AuthorizationContextTest {
 
@@ -23,6 +24,9 @@ public class OAuth2AuthorizationContextTest {
 
 	@Mock
 	private AnonymousAuthenticationToken anonymousAuthentication;
+
+	@Mock
+	private OAuth2Request request;
 
 	@Before
 	public void before() {
@@ -64,6 +68,16 @@ public class OAuth2AuthorizationContextTest {
 
 		OAuth2AuthorizationContext ctx = new OAuth2AuthorizationContext();
 		assertThat(ctx.isAuthenticated()).isFalse();
+	}
+
+	@Test
+	public void shouldReturnAnEmptySetOfScopesIfTheAuthenticationHasNoScopes() {
+		when(authentication.isAuthenticated()).thenReturn(true);
+		when(authentication.getOAuth2Request()).thenReturn(request);
+
+		OAuth2AuthorizationContext ctx = new OAuth2AuthorizationContext();
+		assertThat(ctx.isAuthenticated()).isTrue();
+		assertThat(ctx.getScopes()).hasSize(0);
 	}
 
 }
