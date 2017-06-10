@@ -19,11 +19,19 @@ package fm.pattern.tokamak.server.config;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+
+import fm.pattern.tokamak.server.security.AuthenticationContextInterceptor;
 
 @Configuration
 @EnableAspectJAutoProxy
 @ComponentScan({ "fm.pattern.tokamak.server", "fm.pattern.tokamak.authorization" })
 public class WebConfiguration extends WebMvcConfigurerAdapter {
+
+	@Override
+	public void addInterceptors(InterceptorRegistry registry) {
+		registry.addInterceptor(new AuthenticationContextInterceptor());
+	}
 
 }
