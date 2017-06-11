@@ -30,22 +30,23 @@ import org.springframework.security.oauth2.provider.OAuth2Request;
 import org.springframework.security.oauth2.provider.token.DefaultAccessTokenConverter;
 
 @SuppressWarnings("unchecked")
-public class SimpleAccessTokenConverter extends DefaultAccessTokenConverter {
+public class JWTTokenConverter extends DefaultAccessTokenConverter {
 
 	private static final String CLIENT_AUTHORITIES = "client_authorities";
 
 	/**
-	 * Values placed into the response map will be included in the JWT token only, not the OAuth 2 response itself.
+	 * Values placed into the map will be included in the JWT token only, not the OAuth 2 response itself.
 	 */
 	@Override
 	public Map<String, ?> convertAccessToken(OAuth2AccessToken token, OAuth2Authentication authentication) {
-		Map<String, Object> response = (Map<String, Object>) super.convertAccessToken(token, authentication);
+		Map<String, Object> map = (Map<String, Object>) super.convertAccessToken(token, authentication);
+
 		OAuth2Request request = authentication.getOAuth2Request();
+		Set<String> authorities = request.getAuthorities().stream().map(a -> a.getAuthority()).collect(Collectors.toSet());
 
-		Set<String> authorities = request.getAuthorities().stream().map(ga -> ga.getAuthority()).collect(Collectors.toSet());
-		response.put(CLIENT_AUTHORITIES, authorities);
+		map.put(CLIENT_AUTHORITIES, authorities);
 
-		return response;
+		return map;
 	}
 
 	@Override

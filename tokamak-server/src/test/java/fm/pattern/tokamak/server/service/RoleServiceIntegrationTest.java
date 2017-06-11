@@ -1,6 +1,7 @@
 package fm.pattern.tokamak.server.service;
 
 import static fm.pattern.tokamak.server.PatternAssertions.assertThat;
+import static fm.pattern.tokamak.server.dsl.AccountDSL.account;
 import static fm.pattern.tokamak.server.dsl.RoleDSL.role;
 import static java.util.stream.IntStream.range;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -13,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import fm.pattern.tokamak.server.IntegrationTest;
 import fm.pattern.tokamak.server.model.Role;
 import fm.pattern.valex.EntityNotFoundException;
+import fm.pattern.valex.ResourceConflictException;
 import fm.pattern.valex.Result;
 import fm.pattern.valex.UnprocessableEntityException;
 
@@ -64,8 +66,8 @@ public class RoleServiceIntegrationTest extends IntegrationTest {
 	@Test
 	public void shouldBeAbleToDeleteARole() {
 		Role role = role().thatIs().persistent().build();
-		assertThat(roleService.findById(role.getId())).accepted();
 
+		assertThat(roleService.findById(role.getId())).accepted();
 		assertThat(roleService.delete(role)).accepted();
 		assertThat(roleService.findById(role.getId())).rejected();
 	}
@@ -75,6 +77,15 @@ public class RoleServiceIntegrationTest extends IntegrationTest {
 		Role role = role().thatIs().persistent().build();
 		role.setId(null);
 		assertThat(roleService.delete(role)).rejected().withError("ENT-0001", "An id is required.", UnprocessableEntityException.class);
+	}
+
+	@Test
+	public void shouldNotBeAbleToDeleteAnRoleIfTheRoleIsBeingUsedByOtherAccounts() {
+		Role role = role().thatIs().persistent().build();
+		account().withRole(role).thatIs().persistent().build();
+
+		Result<Role> result = roleService.delete(role);
+		assertThat(result).rejected().withError("ROL-0007", "This role cannot be deleted, 1 account is linked to this role.", ResourceConflictException.class);
 	}
 
 	@Test

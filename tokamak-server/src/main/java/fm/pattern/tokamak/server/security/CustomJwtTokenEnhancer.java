@@ -35,9 +35,10 @@ import fm.pattern.valex.Result;
 @Component
 public class CustomJwtTokenEnhancer extends JwtAccessTokenConverter {
 
+	// TODO: Issuer should be data driven, not configured via yml.
 	@Value("${oauth2.issuer}")
 	private String issuer;
-	
+
 	private final AccountService accountService;
 
 	@Autowired
@@ -45,29 +46,32 @@ public class CustomJwtTokenEnhancer extends JwtAccessTokenConverter {
 		this.accountService = accountService;
 	}
 
+	/**
+	 * Values placed into the map will be included in the JWT token and the OAuth 2 response itself.
+	 */
 	@Override
 	public OAuth2AccessToken enhance(OAuth2AccessToken accessToken, OAuth2Authentication authentication) {
 		DefaultOAuth2AccessToken customAccessToken = new DefaultOAuth2AccessToken(accessToken);
 
-		Map<String, Object> additionalInformation = new LinkedHashMap<String, Object>(accessToken.getAdditionalInformation());
-		additionalInformation.put("sub", authentication.getOAuth2Request().getClientId());
-		additionalInformation.put("iss", issuer);
-		
+		Map<String, Object> map = new LinkedHashMap<String, Object>(accessToken.getAdditionalInformation());
+		map.put("sub", authentication.getOAuth2Request().getClientId());
+		map.put("iss", issuer);
+
 		Authentication userAuthentication = authentication.getUserAuthentication();
 		if (userAuthentication == null) {
-			customAccessToken.setAdditionalInformation(additionalInformation);
+			customAccessToken.setAdditionalInformation(map);
 			return super.enhance(customAccessToken, authentication);
 		}
 
 		AuthenticatedAccount account = getUser(userAuthentication);
 		if (account == null) {
-			customAccessToken.setAdditionalInformation(additionalInformation);
+			customAccessToken.setAdditionalInformation(map);
 			return super.enhance(customAccessToken, authentication);
 		}
 
-		additionalInformation.put("sub", account.getIdentfifier());
+		map.put("sub", account.getIdentfifier());
 
-		customAccessToken.setAdditionalInformation(additionalInformation);
+		customAccessToken.setAdditionalInformation(map);
 		return super.enhance(customAccessToken, authentication);
 	}
 
