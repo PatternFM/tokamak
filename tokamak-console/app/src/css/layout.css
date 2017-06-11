@@ -1,0 +1,35 @@
+body {
+	margin: 0;
+	padding: 0;
+	background: #EEE;
+}
+
+#container {
+	top: 0;
+	bottom: 0;
+	margin: 0;
+    padding: 0;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+
+#header {
+	background: #000;
+	width: 100%;
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: 0;
+	height: 65px;
+}
+
+#footer {
+    background: #000;
+    width: 100%;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 65px;
+}

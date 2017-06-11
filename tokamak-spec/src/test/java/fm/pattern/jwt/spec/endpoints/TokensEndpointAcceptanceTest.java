@@ -11,6 +11,7 @@ import org.junit.Test;
 import fm.pattern.jwt.spec.AcceptanceTest;
 import fm.pattern.tokamak.sdk.ClientCredentials;
 import fm.pattern.tokamak.sdk.JwtClientProperties;
+import fm.pattern.tokamak.sdk.PreFlightClient;
 import fm.pattern.tokamak.sdk.TokensClient;
 import fm.pattern.tokamak.sdk.UserCredentials;
 import fm.pattern.tokamak.sdk.commons.Result;
@@ -20,6 +21,7 @@ import fm.pattern.tokamak.sdk.model.AccountRepresentation;
 public class TokensEndpointAcceptanceTest extends AcceptanceTest {
 
 	private TokensClient tokensClient = new TokensClient(JwtClientProperties.getEndpoint());
+	private PreFlightClient preFlightClient = new PreFlightClient(JwtClientProperties.getEndpoint());
 
 	private String password = "password12345";
 
@@ -30,6 +32,11 @@ public class TokensEndpointAcceptanceTest extends AcceptanceTest {
 	public void before() {
 		this.token = token().withClient(TEST_CLIENT_CREDENTIALS).thatIs().persistent().build();
 		this.account = account().withPassword(password).thatIs().persistent(token).build();
+	}
+
+	@Test
+	public void shouldBeAbleToMakeAPreFlightRequestOnTheTokensEndpoint() {
+		assertThat(preFlightClient.check("/v1/oauth/token")).accepted().withResponseCode(200);
 	}
 
 	@Test
