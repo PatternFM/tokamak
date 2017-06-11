@@ -61,7 +61,8 @@
       <module>tokamak-server</module>
       <module>tokamak-spec</module>
       <module>tokamak-authorization</module>
-   </modules>
+    <module>tokamak-console</module>
+  </modules>
 
    <repositories>
       <repository>
