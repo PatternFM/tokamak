@@ -12,8 +12,8 @@ flyway.password: password
 flyway.url: jdbc:mysql://localhost:3306?useSSL=false&requireSSL=false
 
 oauth2:
-    issuer: https://auth.pattern.fm
-    audience: oauth-service
+    issuer: https://tokamak.pattern.fm
+    audience: www.pattern.fm
     accessTokenValiditySeconds: 7200
     refreshTokenValiditySeconds: 31536000
 

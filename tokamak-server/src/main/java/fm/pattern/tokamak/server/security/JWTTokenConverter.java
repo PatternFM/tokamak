@@ -22,17 +22,29 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
+import org.springframework.security.oauth2.provider.ClientDetails;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.security.oauth2.provider.OAuth2Request;
 import org.springframework.security.oauth2.provider.token.DefaultAccessTokenConverter;
+import org.springframework.stereotype.Component;
 
+@Component
 @SuppressWarnings("unchecked")
 public class JWTTokenConverter extends DefaultAccessTokenConverter {
 
 	private static final String CLIENT_AUTHORITIES = "client_authorities";
+	private static final String AUDIENCE = "aud";
+
+	private final ClientAuthenticationService clientAuthenticationService;
+
+	@Autowired
+	public JWTTokenConverter(ClientAuthenticationService clientAuthenticationService) {
+		this.clientAuthenticationService = clientAuthenticationService;
+	}
 
 	/**
 	 * Values placed into the map will be included in the JWT token only, not the OAuth 2 response itself.
@@ -43,6 +55,11 @@ public class JWTTokenConverter extends DefaultAccessTokenConverter {
 
 		OAuth2Request request = authentication.getOAuth2Request();
 		Set<String> authorities = request.getAuthorities().stream().map(a -> a.getAuthority()).collect(Collectors.toSet());
+
+		ClientDetails client = clientAuthenticationService.loadClientByClientId(request.getClientId());
+		if (client.getResourceIds() != null && !client.getResourceIds().isEmpty()) {
+			map.put(AUDIENCE, client.getResourceIds());
+		}
 
 		map.put(CLIENT_AUTHORITIES, authorities);
 

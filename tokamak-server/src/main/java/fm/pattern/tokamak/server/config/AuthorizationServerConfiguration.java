@@ -86,6 +86,9 @@ public class AuthorizationServerConfiguration {
 		@Autowired
 		private CustomJwtTokenEnhancer customTokenEnhancer;
 
+		@Autowired
+		private JWTTokenConverter tokenConverter;
+
 		@Bean
 		public AuthenticationProvider clientAuthenticationProvider() {
 			DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
@@ -117,7 +120,7 @@ public class AuthorizationServerConfiguration {
 			JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
 			converter.setSigningKey(privateKey);
 			converter.setVerifierKey(publicKey);
-			converter.setAccessTokenConverter(new JWTTokenConverter());
+			converter.setAccessTokenConverter(tokenConverter);
 			return converter;
 		}
 

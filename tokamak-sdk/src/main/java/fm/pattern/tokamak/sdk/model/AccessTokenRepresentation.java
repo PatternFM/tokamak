@@ -12,6 +12,8 @@ public class AccessTokenRepresentation extends Representation {
 	private Integer expiresIn;
 	private String scope;
 	private String jti;
+	private String issuer;
+	private String subject;
 
 	AccessTokenRepresentation() {
 
@@ -79,6 +81,24 @@ public class AccessTokenRepresentation extends Representation {
 
 	public void setScope(String scope) {
 		this.scope = scope;
+	}
+
+	@JsonProperty(value = "iss")
+	public String getIssuer() {
+		return issuer;
+	}
+
+	public void setIssuer(String issuer) {
+		this.issuer = issuer;
+	}
+
+	@JsonProperty(value = "sub")
+	public String getSubject() {
+		return subject;
+	}
+
+	public void setSubject(String subject) {
+		this.subject = subject;
 	}
 
 }

@@ -5,8 +5,13 @@ import static fm.pattern.tokamak.sdk.dsl.AccessTokenDSL.token;
 import static fm.pattern.tokamak.sdk.dsl.AccountDSL.account;
 import static org.assertj.core.api.Assertions.assertThat;
 
+import org.assertj.core.api.Assertions;
 import org.junit.Before;
 import org.junit.Test;
+
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.exceptions.JWTDecodeException;
+import com.auth0.jwt.interfaces.DecodedJWT;
 
 import fm.pattern.jwt.spec.AcceptanceTest;
 import fm.pattern.tokamak.sdk.ClientCredentials;
@@ -17,7 +22,7 @@ import fm.pattern.tokamak.sdk.commons.Result;
 import fm.pattern.tokamak.sdk.model.AccessTokenRepresentation;
 import fm.pattern.tokamak.sdk.model.AccountRepresentation;
 
-public class TokensEndpointAcceptanceTest extends AcceptanceTest {
+public class JWTAcceptanceTest extends AcceptanceTest {
 
 	private TokensClient tokensClient = new TokensClient(JwtClientProperties.getEndpoint());
 
@@ -43,8 +48,14 @@ public class TokensEndpointAcceptanceTest extends AcceptanceTest {
 		assertThat(token.getRefreshToken()).isNull();
 		assertThat(token.getExpiresIn()).isNotNull();
 		assertThat(token.getTokenType()).isEqualTo("bearer");
-		assertThat(token.getSubject()).isEqualTo(TEST_CLIENT_ID);
-		assertThat(token.getIssuer()).isEqualTo(ISSUER);
+
+		try {
+			DecodedJWT jwt = JWT.decode(token.getAccessToken());
+			assertThat(jwt.getAlgorithm()).isEqualTo("RS256");
+		}
+		catch (JWTDecodeException exception) {
+			Assertions.fail("Unable to decode JWT token.");
+		}
 	}
 
 	@Test
