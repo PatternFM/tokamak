@@ -22,14 +22,13 @@ public class TokensEndpointAcceptanceTest extends AcceptanceTest {
 	private TokensClient tokensClient = new TokensClient(JwtClientProperties.getEndpoint());
 
 	private String password = "password12345";
+
 	private AccountRepresentation account;
 	private AccessTokenRepresentation token;
 
 	@Before
 	public void before() {
 		this.token = token().withClient(TEST_CLIENT_CREDENTIALS).thatIs().persistent().build();
-
-		this.password = "password12345";
 		this.account = account().withPassword(password).thatIs().persistent(token).build();
 	}
 
@@ -42,7 +41,7 @@ public class TokensEndpointAcceptanceTest extends AcceptanceTest {
 		assertThat(token.getAccessToken()).isNotNull();
 		assertThat(token.getRefreshToken()).isNull();
 		assertThat(token.getExpiresIn()).isNotNull();
-		assertThat(token.getTokenType()).isEqualTo("bearer");
+		assertThat(token.getTokenType()).isEqualTo(TOKEN_BEARER);
 		assertThat(token.getSubject()).isEqualTo(TEST_CLIENT_ID);
 		assertThat(token.getIssuer()).isEqualTo(ISSUER);
 	}
@@ -68,7 +67,9 @@ public class TokensEndpointAcceptanceTest extends AcceptanceTest {
 		assertThat(token.getAccessToken()).isNotNull();
 		assertThat(token.getRefreshToken()).isNotNull();
 		assertThat(token.getExpiresIn()).isNotNull();
-		assertThat(token.getTokenType()).isEqualTo("bearer");
+		assertThat(token.getTokenType()).isEqualTo(TOKEN_BEARER);
+		assertThat(token.getIssuer()).isEqualTo(ISSUER);
+		assertThat(token.getSubject()).isEqualTo(account.getId());
 	}
 
 	@Test

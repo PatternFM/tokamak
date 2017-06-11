@@ -8,8 +8,10 @@ public abstract class AcceptanceTest extends AutomatedAcceptanceTest {
 
 	public static final String TEST_CLIENT_ID = "test-client";
 	public static final String TEST_CLIENT_SECRET = "bm46bksylwt2imkfbhgb";
-	public static final ClientCredentials TEST_CLIENT_CREDENTIALS = new ClientCredentials(TEST_CLIENT_ID, TEST_CLIENT_SECRET);
 	public static final String ISSUER = "https://tokamak.pattern.fm";
+	public static final String TOKEN_BEARER = "bearer";
+	
+	public static final ClientCredentials TEST_CLIENT_CREDENTIALS = new ClientCredentials(TEST_CLIENT_ID, TEST_CLIENT_SECRET);
 	
 	public static final String UNAUTHORIZED_GRANT_TYPE_CLIENT_CREDENTIALS = "Unauthorized grant type: client_credentials";
 	public static final String UNAUTHORIZED_GRANT_TYPE_PASSWORD = "Unauthorized grant type: password";

@@ -3,138 +3,131 @@ package fm.pattern.jwt.spec.endpoints;
 import static fm.pattern.jwt.spec.PatternAssertions.assertThat;
 import static fm.pattern.tokamak.sdk.dsl.AccessTokenDSL.token;
 import static fm.pattern.tokamak.sdk.dsl.AccountDSL.account;
+import static fm.pattern.tokamak.sdk.dsl.AudienceDSL.audience;
+import static fm.pattern.tokamak.sdk.dsl.AuthorityDSL.authority;
+import static fm.pattern.tokamak.sdk.dsl.ClientDSL.client;
+import static fm.pattern.tokamak.sdk.dsl.RoleDSL.role;
+import static fm.pattern.tokamak.sdk.dsl.ScopeDSL.scope;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import org.assertj.core.api.Assertions;
+import java.util.List;
+
 import org.junit.Before;
 import org.junit.Test;
 
 import com.auth0.jwt.JWT;
-import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 
 import fm.pattern.jwt.spec.AcceptanceTest;
 import fm.pattern.tokamak.sdk.ClientCredentials;
+import fm.pattern.tokamak.sdk.ClientsClient;
 import fm.pattern.tokamak.sdk.JwtClientProperties;
 import fm.pattern.tokamak.sdk.TokensClient;
-import fm.pattern.tokamak.sdk.UserCredentials;
 import fm.pattern.tokamak.sdk.commons.Result;
 import fm.pattern.tokamak.sdk.model.AccessTokenRepresentation;
 import fm.pattern.tokamak.sdk.model.AccountRepresentation;
+import fm.pattern.tokamak.sdk.model.AudienceRepresentation;
+import fm.pattern.tokamak.sdk.model.AuthorityRepresentation;
+import fm.pattern.tokamak.sdk.model.ClientRepresentation;
+import fm.pattern.tokamak.sdk.model.RoleRepresentation;
+import fm.pattern.tokamak.sdk.model.ScopeRepresentation;
 
 public class JWTAcceptanceTest extends AcceptanceTest {
 
 	private TokensClient tokensClient = new TokensClient(JwtClientProperties.getEndpoint());
+	private ClientsClient clientsClient = new ClientsClient(JwtClientProperties.getEndpoint());
 
 	private String password = "password12345";
+
 	private AccountRepresentation account;
+	private RoleRepresentation role;
 	private AccessTokenRepresentation token;
 
 	@Before
 	public void before() {
 		this.token = token().withClient(TEST_CLIENT_CREDENTIALS).thatIs().persistent().build();
-
-		this.password = "password12345";
-		this.account = account().withPassword(password).thatIs().persistent(token).build();
+		this.role = role().thatIs().persistent(token).build();
+		this.account = account().withPassword(password).withRoles(role).thatIs().persistent(token).build();
 	}
 
 	@Test
-	public void theServerShouldReturnAnAccessTokenButNotRefreshTokenWhenUsingTheClientCredentialsGrantType() {
-		Result<AccessTokenRepresentation> response = tokensClient.getAccessToken(TEST_CLIENT_CREDENTIALS);
+	public void shouldBeAbleToProduceAJWTTokenForClients() throws Exception {
+		AuthorityRepresentation authority1 = authority().thatIs().persistent(token).build();
+		AuthorityRepresentation authority2 = authority().thatIs().persistent(token).build();
+
+		AudienceRepresentation audience1 = audience().thatIs().persistent(token).build();
+		AudienceRepresentation audience2 = audience().thatIs().persistent(token).build();
+
+		ScopeRepresentation scope1 = scope().thatIs().persistent(token).build();
+		ScopeRepresentation scope2 = scope().thatIs().persistent(token).build();
+
+		ClientRepresentation representation = client().withToken(token).withAudiences(audience1, audience2).withScopes(scope1, scope2).withAuthorities(authority1, authority2).withClientSecret("testClientSecret").withGrantTypes("client_credentials", "password", "refresh_token").build();
+		assertThat(clientsClient.create(representation, this.token.getAccessToken())).accepted().withResponseCode(201);
+
+		Result<AccessTokenRepresentation> response = tokensClient.getAccessToken(new ClientCredentials(representation.getClientId(), "testClientSecret"));
 		assertThat(response).accepted();
 
-		AccessTokenRepresentation token = response.getInstance();
-		assertThat(token.getAccessToken()).isNotNull();
-		assertThat(token.getRefreshToken()).isNull();
-		assertThat(token.getExpiresIn()).isNotNull();
-		assertThat(token.getTokenType()).isEqualTo("bearer");
+		DecodedJWT jwt = JWT.decode(response.getInstance().getAccessToken());
 
-		try {
-			DecodedJWT jwt = JWT.decode(token.getAccessToken());
-			assertThat(jwt.getAlgorithm()).isEqualTo("RS256");
-		}
-		catch (JWTDecodeException exception) {
-			Assertions.fail("Unable to decode JWT token.");
-		}
+		assertThat(jwt.getAlgorithm()).isEqualTo("RS256");
+
+		assertThat(jwt.getIssuer()).isEqualTo(ISSUER);
+		assertThat(jwt.getExpiresAt()).isNotNull();
+		assertThat(jwt.getId()).isNotNull();
+		assertThat(jwt.getAudience()).containsOnly(audience1.getName().toLowerCase(), audience2.getName().toLowerCase());
+		assertThat(jwt.getSubject()).isEqualTo(representation.getClientId());
+
+		List<String> clientAuthorities = jwt.getClaim("client_authorities").asList(String.class);
+		assertThat(clientAuthorities).containsOnly(authority1.getName(), authority2.getName());
+
+		List<String> userRoles = jwt.getClaim("authorities").asList(String.class);
+		assertThat(userRoles).isNull();
+
+		List<String> scopes = jwt.getClaim("scope").asList(String.class);
+		assertThat(scopes).containsOnly(scope1.getName(), scope2.getName());
+
+		String clientId = jwt.getClaim("client_id").asString();
+		assertThat(clientId).containsSequence(representation.getClientId());
 	}
 
 	@Test
-	public void aClientShouldNotBeAbleToGetAnAccessTokenUsingAClientCredentialsGrantTypeWhenTheClientIdIsInvalid() {
-		Result<AccessTokenRepresentation> response = tokensClient.getAccessToken(new ClientCredentials("invalid_client_id", TEST_CLIENT_SECRET));
-		assertThat(response).rejected().withResponseCode(401).withMessage(BAD_CREDENTIALS);
-	}
+	public void shouldBeAbleToProduceAJWTTokenForUsers() throws Exception {
+		AuthorityRepresentation authority1 = authority().thatIs().persistent(token).build();
+		AuthorityRepresentation authority2 = authority().thatIs().persistent(token).build();
 
-	@Test
-	public void aClientShouldNotBeAbleToGetAnAccessTokenUsingAClientCredentialsGrantTypeWhenTheClientSecretIsInvalid() {
-		Result<AccessTokenRepresentation> response = tokensClient.getAccessToken(new ClientCredentials(TEST_CLIENT_ID, "invalid_client_secret"));
-		assertThat(response).rejected().withResponseCode(401).withMessage(BAD_CREDENTIALS);
-	}
+		AudienceRepresentation audience1 = audience().thatIs().persistent(token).build();
+		AudienceRepresentation audience2 = audience().thatIs().persistent(token).build();
 
-	@Test
-	public void theServerShouldReturnAnAccessTokenAndRefreshTokenWhenUsingThePasswordGrantType() {
-		Result<AccessTokenRepresentation> response = tokensClient.getAccessToken(TEST_CLIENT_CREDENTIALS, account.getUsername(), password);
+		ScopeRepresentation scope1 = scope().thatIs().persistent(token).build();
+		ScopeRepresentation scope2 = scope().thatIs().persistent(token).build();
+
+		ClientRepresentation representation = client().withToken(token).withAudiences(audience1, audience2).withScopes(scope1, scope2).withAuthorities(authority1, authority2).withClientSecret("testClientSecret").withGrantTypes("client_credentials", "password", "refresh_token").build();
+		assertThat(clientsClient.create(representation, this.token.getAccessToken())).accepted().withResponseCode(201);
+
+		Result<AccessTokenRepresentation> response = tokensClient.getAccessToken(new ClientCredentials(representation.getClientId(), "testClientSecret"), account.getUsername(), password);
 		assertThat(response).accepted();
 
-		AccessTokenRepresentation token = response.getInstance();
-		assertThat(token.getAccessToken()).isNotNull();
-		assertThat(token.getRefreshToken()).isNotNull();
-		assertThat(token.getExpiresIn()).isNotNull();
-		assertThat(token.getTokenType()).isEqualTo("bearer");
-	}
+		DecodedJWT jwt = JWT.decode(response.getInstance().getAccessToken());
 
-	@Test
-	public void aClientShouldNotBeAbleToGetAnAccessTokenUsingAResourceOwnerGrantTypeWhenTheClientIdIsInvalid() {
-		Result<AccessTokenRepresentation> response = tokensClient.getAccessToken(new ClientCredentials("invalid_client_id", TEST_CLIENT_SECRET), new UserCredentials(account.getUsername(), password));
-		assertThat(response).rejected().withResponseCode(401).withMessage(BAD_CREDENTIALS);
-	}
+		assertThat(jwt.getAlgorithm()).isEqualTo("RS256");
 
-	@Test
-	public void aClientShouldNotBeAbleToGetAnAccessTokenUsingAResourceOwnerGrantTypeWhenTheClientSecretIsInvalid() {
-		Result<AccessTokenRepresentation> response = tokensClient.getAccessToken(new ClientCredentials(TEST_CLIENT_ID, "invalid_client_secret"), new UserCredentials(account.getUsername(), password));
-		assertThat(response).rejected().withResponseCode(401).withMessage(BAD_CREDENTIALS);
-	}
+		assertThat(jwt.getIssuer()).isEqualTo(ISSUER);
+		assertThat(jwt.getExpiresAt()).isNotNull();
+		assertThat(jwt.getId()).isNotNull();
+		assertThat(jwt.getAudience()).containsOnly(audience1.getName().toLowerCase(), audience2.getName().toLowerCase());
+		assertThat(jwt.getSubject()).isEqualTo(account.getId());
 
-	@Test
-	public void aClientShouldNotBeAbleToGetAnAccessTokenUsingAResourceOwnerGrantTypeWhenTheUsernameIsInvalid() {
-		Result<AccessTokenRepresentation> response = tokensClient.getAccessToken(TEST_CLIENT_CREDENTIALS, new UserCredentials("invalid_username", password));
-		assertThat(response).rejected().withResponseCode(400).withMessage(BAD_CREDENTIALS);
-	}
+		List<String> clientAuthorities = jwt.getClaim("client_authorities").asList(String.class);
+		assertThat(clientAuthorities).containsOnly(authority1.getName(), authority2.getName());
 
-	@Test
-	public void aClientShouldNotBeAbleToGetAnAccessTokenUsingAResourceOwnerGrantTypeWhenThePasswordIsInvalid() {
-		Result<AccessTokenRepresentation> response = tokensClient.getAccessToken(TEST_CLIENT_CREDENTIALS, new UserCredentials(account.getUsername(), "invalid_password"));
-		assertThat(response).rejected().withResponseCode(400).withMessage(BAD_CREDENTIALS);
-	}
+		List<String> userRoles = jwt.getClaim("authorities").asList(String.class);
+		assertThat(userRoles).containsExactly(role.getName());
 
-	@Test
-	public void shouldBeAbleToGetAnAccessTokenUsingARefreshTokenGrantType() {
-		Result<AccessTokenRepresentation> accessTokenResponse = tokensClient.getAccessToken(TEST_CLIENT_CREDENTIALS, account.getUsername(), password);
-		assertThat(accessTokenResponse).accepted();
-		AccessTokenRepresentation originalAccessToken = accessTokenResponse.getInstance();
+		List<String> scopes = jwt.getClaim("scope").asList(String.class);
+		assertThat(scopes).containsOnly(scope1.getName(), scope2.getName());
 
-		Result<AccessTokenRepresentation> refreshTokenResponse = tokensClient.refreshAccessToken(TEST_CLIENT_CREDENTIALS, originalAccessToken);
-		assertThat(refreshTokenResponse).accepted();
-
-		AccessTokenRepresentation refreshedAccessToken = refreshTokenResponse.getInstance();
-		assertThat(refreshedAccessToken.getAccessToken()).isNotEqualTo(originalAccessToken.getAccessToken());
-	}
-
-	@Test
-	public void shouldBeNotAbleToGetAnAccessTokenUsingARefreshTokenGrantTypeWhenTheClientIdIsInvalid() {
-		Result<AccessTokenRepresentation> accessTokenResponse = tokensClient.getAccessToken(TEST_CLIENT_CREDENTIALS, new UserCredentials(account.getUsername(), password));
-		assertThat(accessTokenResponse).accepted();
-
-		Result<AccessTokenRepresentation> refreshTokenResponse = tokensClient.refreshAccessToken(new ClientCredentials("invalid_client_id", TEST_CLIENT_SECRET), accessTokenResponse.getInstance());
-		assertThat(refreshTokenResponse).withResponseCode(401).withMessage(BAD_CREDENTIALS);
-	}
-
-	@Test
-	public void shouldBeNotAbleToGetAnAccessTokenUsingARefreshTokenGrantTypeWhenTheClientPasswordIsInvalid() {
-		Result<AccessTokenRepresentation> accessTokenResponse = tokensClient.getAccessToken(TEST_CLIENT_CREDENTIALS, new UserCredentials(account.getUsername(), password));
-		assertThat(accessTokenResponse).accepted();
-
-		Result<AccessTokenRepresentation> refreshTokenResponse = tokensClient.refreshAccessToken(new ClientCredentials(TEST_CLIENT_ID, "invalid_password"), accessTokenResponse.getInstance());
-		assertThat(refreshTokenResponse).rejected().withResponseCode(401).withMessage(BAD_CREDENTIALS);
+		String clientId = jwt.getClaim("client_id").asString();
+		assertThat(clientId).containsSequence(representation.getClientId());
 	}
 
 }

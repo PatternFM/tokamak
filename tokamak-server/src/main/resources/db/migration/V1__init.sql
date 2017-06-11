@@ -56,7 +56,8 @@ CREATE TABLE Roles (
   description varchar(255), 
   KEY(_id),
   PRIMARY KEY(id),
-  UNIQUE KEY UK_ROLE_NAME (name)
+  UNIQUE KEY UK_ROLE_NAME (name),
+  INDEX roles_created_idx (created)  
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
@@ -72,7 +73,8 @@ CREATE TABLE Audiences (
   description varchar(255), 
   KEY(_id),
   PRIMARY KEY(id),
-  UNIQUE KEY UK_AUDIENCE_NAME (name)
+  UNIQUE KEY UK_AUDIENCE_NAME (name),
+  INDEX audiences_created_idx (created)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
@@ -88,7 +90,8 @@ CREATE TABLE Authorities (
   description varchar(255),
   KEY(_id),
   PRIMARY KEY(id),
-  UNIQUE KEY UK_AUTHORITY_NAME (name)
+  UNIQUE KEY UK_AUTHORITY_NAME (name),
+  INDEX authorities_created_idx (created)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
@@ -104,7 +107,8 @@ CREATE TABLE Scopes (
   description varchar(255),
   KEY(_id),
   PRIMARY KEY(id),
-  UNIQUE KEY UK_SCOPE_NAME (name)
+  UNIQUE KEY UK_SCOPE_NAME (name),
+  INDEX scopes_created_idx (created)  
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
@@ -120,7 +124,8 @@ CREATE TABLE GrantTypes (
   description varchar(255),
   KEY(_id),
   PRIMARY KEY(id),
-  UNIQUE KEY UK_GRANT_TYPE_NAME (name)
+  UNIQUE KEY UK_GRANT_TYPE_NAME (name),
+  INDEX granttypes_created_idx (created)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
