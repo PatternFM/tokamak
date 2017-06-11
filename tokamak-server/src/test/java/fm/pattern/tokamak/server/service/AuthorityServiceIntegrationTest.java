@@ -28,7 +28,7 @@ public class AuthorityServiceIntegrationTest extends IntegrationTest {
 	@Test
 	public void shouldBeAbleToCreateAnAuthority() {
 		Authority authority = new Authority("user");
-		
+
 		Result<Authority> result = authorityService.create(authority);
 		assertThat(result).accepted();
 
@@ -184,6 +184,17 @@ public class AuthorityServiceIntegrationTest extends IntegrationTest {
 		assertThat(result).accepted();
 		assertThat(result.getInstance()).hasSize(3);
 		assertThat(result.getInstance()).contains(authority1, authority2, authority3);
+	}
+
+	@Test
+	public void shouldReturnAnEmtpyListWhenAllAuthoritiesAreNullOrEmpty() {
+		List<String> ids = new ArrayList<>();
+		ids.add(null);
+		ids.add("");
+
+		Result<List<Authority>> result = authorityService.findExistingById(ids);
+		assertThat(result).accepted();
+		assertThat(result.getInstance()).isEmpty();
 	}
 
 }

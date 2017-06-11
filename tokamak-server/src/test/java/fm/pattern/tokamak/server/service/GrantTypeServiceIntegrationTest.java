@@ -185,4 +185,15 @@ public class GrantTypeServiceIntegrationTest extends IntegrationTest {
 		assertThat(result.getInstance()).contains(grantType1, grantType2, grantType3);
 	}
 
+	@Test
+	public void shouldReturnAnEmtpyListWhenAllAuthoritiesAreNullOrEmpty() {
+		List<String> ids = new ArrayList<>();
+		ids.add(null);
+		ids.add("");
+
+		Result<List<GrantType>> result = grantTypeService.findExistingById(ids);
+		assertThat(result).accepted();
+		assertThat(result.getInstance()).isEmpty();
+	}
+
 }

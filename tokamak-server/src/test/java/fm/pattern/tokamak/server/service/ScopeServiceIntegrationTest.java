@@ -186,4 +186,15 @@ public class ScopeServiceIntegrationTest extends IntegrationTest {
 		assertThat(result.getInstance()).contains(scope1, scope2, scope3);
 	}
 
+	@Test
+	public void shouldReturnAnEmtpyListWhenAllScopesAreNullOrEmpty() {
+		List<String> ids = new ArrayList<>();
+		ids.add(null);
+		ids.add("");
+
+		Result<List<Scope>> result = scopeService.findExistingById(ids);
+		assertThat(result).accepted();
+		assertThat(result.getInstance()).isEmpty();
+	}
+
 }

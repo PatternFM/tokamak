@@ -80,4 +80,14 @@ public class OAuth2AuthorizationContextTest {
 		assertThat(ctx.getScopes()).hasSize(0);
 	}
 
+	@Test
+	public void shouldReturnAnEmptySetOfAuthoritiesIfTheAuthenticationHasNoAuthorities() {
+		when(authentication.isAuthenticated()).thenReturn(true);
+		when(authentication.getOAuth2Request()).thenReturn(request);
+
+		OAuth2AuthorizationContext ctx = new OAuth2AuthorizationContext();
+		assertThat(ctx.isAuthenticated()).isTrue();
+		assertThat(ctx.getAuthorities()).hasSize(0);
+	}
+
 }

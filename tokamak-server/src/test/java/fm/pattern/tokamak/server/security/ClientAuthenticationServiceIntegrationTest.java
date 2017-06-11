@@ -69,4 +69,28 @@ public class ClientAuthenticationServiceIntegrationTest extends IntegrationTest 
 		assertThat(clientAuthenticationService.loadClientByClientId("foobard")).isNull();
 	}
 
+	@Test
+	public void shouldBeAbleToResolveTheClientFromTheThreadLocalCache() {
+		Client client = client().withGrantType(grantType).thatIs().persistent().build();
+		CurrentAuthenticatedClientContext.setAuthenticatedClient(new AuthenticatedClient(client));
+
+		ClientDetails details = clientAuthenticationService.loadClientByClientId(client.getClientId());
+		assertThat(details.getClientId()).isEqualTo(client.getClientId());
+		
+		CurrentAuthenticatedClientContext.clear();
+	}
+
+	@Test
+	public void shouldResolveTheClientEvenWhenAnotherClientIStoredInCache() {
+		Client client1 = client().withGrantType(grantType).thatIs().persistent().build();
+		Client client2 = client().withGrantType(grantType).thatIs().persistent().build();
+		
+		CurrentAuthenticatedClientContext.setAuthenticatedClient(new AuthenticatedClient(client1));
+
+		ClientDetails details = clientAuthenticationService.loadClientByClientId(client2.getClientId());
+		assertThat(details.getClientId()).isEqualTo(client2.getClientId());
+		
+		CurrentAuthenticatedClientContext.clear();
+	}
+	
 }

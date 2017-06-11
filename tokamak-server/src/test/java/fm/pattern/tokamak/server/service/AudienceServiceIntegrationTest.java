@@ -186,4 +186,15 @@ public class AudienceServiceIntegrationTest extends IntegrationTest {
 		assertThat(result.getInstance()).contains(audience1, audience2, audience3);
 	}
 
+	@Test
+	public void shouldReturnAnEmtpyListWhenAllAudiencesAreNullOrEmpty() {
+		List<String> ids = new ArrayList<>();
+		ids.add(null);
+		ids.add("");
+
+		Result<List<Audience>> result = audienceService.findExistingById(ids);
+		assertThat(result).accepted();
+		assertThat(result.getInstance()).isEmpty();
+	}
+
 }
