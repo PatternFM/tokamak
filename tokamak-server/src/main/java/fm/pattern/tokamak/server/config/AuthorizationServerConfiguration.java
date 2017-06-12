@@ -18,6 +18,8 @@ package fm.pattern.tokamak.server.config;
 
 import java.util.Arrays;
 
+import javax.sql.DataSource;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -39,6 +41,8 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.client.ClientDetailsUserDetailsService;
+import org.springframework.security.oauth2.provider.code.AuthorizationCodeServices;
+import org.springframework.security.oauth2.provider.code.JdbcAuthorizationCodeServices;
 import org.springframework.security.oauth2.provider.token.AuthorizationServerTokenServices;
 import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
 import org.springframework.security.oauth2.provider.token.TokenEnhancerChain;
@@ -70,11 +74,14 @@ public class AuthorizationServerConfiguration {
 		private AuthenticationManager manager;
 
 		@Autowired
+		private PasswordEncoder passwordEncoder;
+
+		@Autowired
 		private AccountAuthenticationService accountAuthenticationService;
 
 		@Override
 		protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-			auth.parentAuthenticationManager(manager);
+			auth.parentAuthenticationManager(manager).userDetailsService(accountAuthenticationService).passwordEncoder(passwordEncoder);
 		}
 
 		@Override
@@ -115,12 +122,20 @@ public class AuthorizationServerConfiguration {
 		@Autowired
 		private JWTTokenConverter tokenConverter;
 
-		@Bean
+		@Autowired
+		private DataSource dataSource;
+
+		@Bean(name = "clientAuthenticationProvider")
 		public AuthenticationProvider clientAuthenticationProvider() {
 			DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
 			provider.setPasswordEncoder(new BCryptPasswordEncoder());
 			provider.setUserDetailsService(new ClientDetailsUserDetailsService(clientAuthenticationService));
 			return provider;
+		}
+
+		@Bean
+		public AuthorizationCodeServices authorizationCodeServices() {
+			return new JdbcAuthorizationCodeServices(dataSource);
 		}
 
 		@Bean
@@ -170,9 +185,7 @@ public class AuthorizationServerConfiguration {
 		}
 
 		public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
-			endpoints.authenticationManager(authenticationManager()).tokenServices(tokenServices());
-			endpoints.pathMapping("/oauth/token", "/v1/oauth/token");
-			// endpoints.pathMapping("/oauth/authorize", "/v1/oauth/authorize");
+			endpoints.authenticationManager(authenticationManager()).tokenServices(tokenServices()).authorizationCodeServices(authorizationCodeServices());
 		}
 
 		public void configure(ClientDetailsServiceConfigurer clients) throws Exception {

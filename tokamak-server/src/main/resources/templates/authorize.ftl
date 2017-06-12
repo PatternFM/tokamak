@@ -17,6 +17,11 @@
       
       <input name="user_oauth_approval" value="true" type="hidden" />
       <input type="hidden" id="csrf_token" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+      
+      <#list authorizationRequest.scope as scope>
+          <input type="hidden" name="scope.${scope}" value="true" />
+      </#list>
+      
       <input type="submit" name="authorize" value="Authorize" /> 
     </form>
   </body>

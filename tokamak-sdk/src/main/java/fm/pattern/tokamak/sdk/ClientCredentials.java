@@ -9,9 +9,9 @@ public class ClientCredentials {
 
 	}
 
-	public ClientCredentials(String clientId, String secret) {
+	public ClientCredentials(String clientId, String clientSecret) {
 		this.clientId = clientId;
-		this.secret = secret;
+		this.secret = clientSecret;
 	}
 
 	public String getClientId() {
@@ -26,8 +26,8 @@ public class ClientCredentials {
 		return secret;
 	}
 
-	public void setSecret(String secret) {
-		this.secret = secret;
+	public void setSecret(String clientSecret) {
+		this.secret = clientSecret;
 	}
 
 }

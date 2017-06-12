@@ -6,10 +6,10 @@ import static fm.pattern.tokamak.sdk.dsl.AccountDSL.account;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import fm.pattern.jwt.spec.AcceptanceTest;
-import fm.pattern.tokamak.sdk.AuthorizationClient;
 import fm.pattern.tokamak.sdk.ClientCredentials;
 import fm.pattern.tokamak.sdk.JwtClientProperties;
 import fm.pattern.tokamak.sdk.PreFlightClient;
@@ -36,14 +36,23 @@ public class TokensEndpointAcceptanceTest extends AcceptanceTest {
 	}
 
 	@Test
-	public void test() {
-		AuthorizationClient ac = new AuthorizationClient(JwtClientProperties.getEndpoint());
-		ac.authorize(TEST_CLIENT_CREDENTIALS);
-	}
-	
-	@Test
 	public void shouldBeAbleToMakeAPreFlightRequestOnTheTokensEndpoint() {
 		assertThat(preFlightClient.check("/v1/oauth/token")).accepted().withResponseCode(200);
+	}
+
+	// TODO: Brandon - Must fully authenticate a user via the webapp in order to retrieve and exchange an access token.
+	@Ignore
+	public void shouldBeAbleToExchangeAValidAuthorizationCodeForAnAccessToken() {
+		Result<AccessTokenRepresentation> response = tokensClient.exchange(TEST_CLIENT_CREDENTIALS, "IooQj1", "http://localhost:8080/login");
+		assertThat(response).accepted();
+
+		AccessTokenRepresentation token = response.getInstance();
+		assertThat(token.getAccessToken()).isNotNull();
+		assertThat(token.getRefreshToken()).isNotNull();
+		assertThat(token.getExpiresIn()).isNotNull();
+		assertThat(token.getTokenType()).isEqualTo(TOKEN_BEARER);
+		assertThat(token.getSubject()).isEqualTo(TEST_CLIENT_ID);
+		assertThat(token.getIssuer()).isEqualTo(ISSUER);
 	}
 
 	@Test

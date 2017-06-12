@@ -35,19 +35,10 @@ public class TokensClient extends RestClient {
 		return getAccessToken(new ClientCredentials(clientId, clientSecret));
 	}
 
-	public Result<AccessTokenRepresentation> authorize(ClientCredentials clientCredentials) {
-		Response response = resource("/v1/oauth/authorize").property(HTTP_AUTHENTICATION_BASIC_USERNAME, clientCredentials.getClientId()).property(HTTP_AUTHENTICATION_BASIC_PASSWORD, clientCredentials.getSecret()).get();
-		if (response.getStatus() == 200) {
-			return Result.accept(response.getStatus(), response.readEntity(AccessTokenRepresentation.class));
-		}
-
-		return Result.reject(response.getStatus(), null, resolve(response));
-	}
-	
 	public Result<AccessTokenRepresentation> getAccessToken(ClientCredentials clientCredentials) {
 		Entity<String> entity = Entity.entity("grant_type=client_credentials", MediaType.APPLICATION_FORM_URLENCODED);
 
-		Response response = resource("/v1/oauth/token").property(HTTP_AUTHENTICATION_BASIC_USERNAME, clientCredentials.getClientId()).property(HTTP_AUTHENTICATION_BASIC_PASSWORD, clientCredentials.getSecret()).post(entity);
+		Response response = resource("/oauth/token").property(HTTP_AUTHENTICATION_BASIC_USERNAME, clientCredentials.getClientId()).property(HTTP_AUTHENTICATION_BASIC_PASSWORD, clientCredentials.getSecret()).post(entity);
 		if (response.getStatus() == 200) {
 			return Result.accept(response.getStatus(), response.readEntity(AccessTokenRepresentation.class));
 		}
@@ -66,7 +57,22 @@ public class TokensClient extends RestClient {
 	public Result<AccessTokenRepresentation> getAccessToken(ClientCredentials clientCredentials, UserCredentials userCredentials) {
 		Entity<String> entity = Entity.entity("grant_type=password&username=" + userCredentials.getUsername() + "&password=" + userCredentials.getPassword(), MediaType.APPLICATION_FORM_URLENCODED);
 
-		Response response = resource("/v1/oauth/token").property(HTTP_AUTHENTICATION_BASIC_USERNAME, clientCredentials.getClientId()).property(HTTP_AUTHENTICATION_BASIC_PASSWORD, clientCredentials.getSecret()).post(entity);
+		Response response = resource("/oauth/token").property(HTTP_AUTHENTICATION_BASIC_USERNAME, clientCredentials.getClientId()).property(HTTP_AUTHENTICATION_BASIC_PASSWORD, clientCredentials.getSecret()).post(entity);
+		if (response.getStatus() == 200) {
+			return Result.accept(response.getStatus(), response.readEntity(AccessTokenRepresentation.class));
+		}
+
+		return Result.reject(response.getStatus(), null, resolve(response));
+	}
+
+	public Result<AccessTokenRepresentation> exchange(String clientId, String clientSecret, String authorizationCode, String redirectUri) {
+		return exchange(new ClientCredentials(clientId, clientSecret), authorizationCode, redirectUri);
+	}
+
+	public Result<AccessTokenRepresentation> exchange(ClientCredentials clientCredentials, String authorizationCode, String redirectUri) {
+		Entity<String> entity = Entity.entity("grant_type=authorization_code&code=" + authorizationCode + "&redirect_uri=" + redirectUri, MediaType.APPLICATION_FORM_URLENCODED);
+
+		Response response = resource("/oauth/token").property(HTTP_AUTHENTICATION_BASIC_USERNAME, clientCredentials.getClientId()).property(HTTP_AUTHENTICATION_BASIC_PASSWORD, clientCredentials.getSecret()).post(entity);
 		if (response.getStatus() == 200) {
 			return Result.accept(response.getStatus(), response.readEntity(AccessTokenRepresentation.class));
 		}
@@ -81,7 +87,7 @@ public class TokensClient extends RestClient {
 	public Result<AccessTokenRepresentation> refreshAccessToken(ClientCredentials clientCredentials, AccessTokenRepresentation accessToken) {
 		Entity<String> entity = Entity.entity("grant_type=refresh_token&refresh_token=" + accessToken.getRefreshToken(), MediaType.APPLICATION_FORM_URLENCODED);
 
-		Response response = resource("/v1/oauth/token").property(HTTP_AUTHENTICATION_BASIC_USERNAME, clientCredentials.getClientId()).property(HTTP_AUTHENTICATION_BASIC_PASSWORD, clientCredentials.getSecret()).post(entity);
+		Response response = resource("/oauth/token").property(HTTP_AUTHENTICATION_BASIC_USERNAME, clientCredentials.getClientId()).property(HTTP_AUTHENTICATION_BASIC_PASSWORD, clientCredentials.getSecret()).post(entity);
 		if (response.getStatus() == 200) {
 			return Result.accept(response.getStatus(), response.readEntity(AccessTokenRepresentation.class));
 		}
