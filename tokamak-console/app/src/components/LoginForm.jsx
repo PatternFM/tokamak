@@ -14,18 +14,17 @@ class LoginForm extends Component {
          })
      }).then((response) => console.log("REULT"))
      
-     
-     
-     
      console.log("HERE??");
   }
 
   render() {
     return (
       <form id="login-form" method="POST" onSubmit={this.login}>
+        <div id="login-title">Tokamak Console</div>
         <input id="username" className="login-textfield" type="text" name="username" placeholder="username" />
         <input id="password" className="login-textfield" type="password" name="password" placeholder="password" />
-        <input type="submit" name="what" />
+        <br/>
+        <input type="submit" name="login" value="Sign In" />
       </form>
     );
   }

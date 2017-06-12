@@ -244,5 +244,8 @@ INSERT INTO Scopes (created, updated, id, name) VALUES ('2017-01-01 12:00:00','2
 INSERT INTO Scopes (created, updated, id, name) VALUES ('2017-01-01 12:00:00','2017-01-01 12:00:00','scp_vkssmillu617wo4exldvlwpd8p5ins','grant_types:delete');
 INSERT INTO Scopes (created, updated, id, name) VALUES ('2017-01-01 12:00:00','2017-01-01 12:00:00','scp_edgdg5kb7bjsb9cyh55xvexty0j0zb','grant_types:read');
 
+INSERT INTO Roles (created, updated, id, name) VALUES ('2017-01-01 12:00:00','2017-01-01 12:00:00','rol_edgda5k47bjsbtcyh45xvext4xj0tz','role:user');
+INSERT INTO Roles (created, updated, id, name) VALUES ('2017-01-01 12:00:00','2017-01-01 12:00:00','rol_ibg9lhwzjwiot4n9xsrhmbw8czs4hl','role:admin');
+
 INSERT INTO Authorities (created, updated, id, name) VALUES ('2017-01-01 12:00:00','2017-01-01 12:00:00','ath_wb0LcDMl5oDGAfQE8KfaKeIyGxr9po','role:admin');
 

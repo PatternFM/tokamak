@@ -35,6 +35,15 @@ public class TokensClient extends RestClient {
 		return getAccessToken(new ClientCredentials(clientId, clientSecret));
 	}
 
+	public Result<AccessTokenRepresentation> authorize(ClientCredentials clientCredentials) {
+		Response response = resource("/v1/oauth/authorize").property(HTTP_AUTHENTICATION_BASIC_USERNAME, clientCredentials.getClientId()).property(HTTP_AUTHENTICATION_BASIC_PASSWORD, clientCredentials.getSecret()).get();
+		if (response.getStatus() == 200) {
+			return Result.accept(response.getStatus(), response.readEntity(AccessTokenRepresentation.class));
+		}
+
+		return Result.reject(response.getStatus(), null, resolve(response));
+	}
+	
 	public Result<AccessTokenRepresentation> getAccessToken(ClientCredentials clientCredentials) {
 		Entity<String> entity = Entity.entity("grant_type=client_credentials", MediaType.APPLICATION_FORM_URLENCODED);
 

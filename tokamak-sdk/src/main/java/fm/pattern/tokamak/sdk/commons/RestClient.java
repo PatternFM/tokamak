@@ -61,6 +61,10 @@ public class RestClient {
 		return getClient().target(endpoint).path(resource).request(APPLICATION_JSON);
 	}
 
+	public String getEndpoint() {
+		return endpoint;
+	}
+	
 	protected final <T, S> Result<T> put(Invocation.Builder resource, S representation, Class<T> clazz, String token) {
 		if (isNotBlank(token)) {
 			resource.header("Authorization", "Bearer " + token);

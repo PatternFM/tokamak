@@ -6,7 +6,7 @@ import LoginForm from '../components/LoginForm.jsx'
 class Login extends Component {
   render() {
     return (
-        <div id="login-container">
+        <div id="lg-container">
             <MuiThemeProvider>
                     <LoginForm />
             </MuiThemeProvider>

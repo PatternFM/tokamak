@@ -20,6 +20,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 import fm.pattern.tokamak.server.security.AuthenticationContextInterceptor;
@@ -34,4 +35,10 @@ public class WebConfiguration extends WebMvcConfigurerAdapter {
 		registry.addInterceptor(new AuthenticationContextInterceptor());
 	}
 
+	@Override
+	public void addViewControllers(ViewControllerRegistry registry) {
+		registry.addViewController("/login").setViewName("login");
+		registry.addViewController("/oauth/confirm_access").setViewName("authorize");
+	}
+	
 }
