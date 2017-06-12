@@ -3,17 +3,22 @@ package fm.pattern.tokamak.server.service;
 import static fm.pattern.tokamak.server.PatternAssertions.assertThat;
 import static fm.pattern.tokamak.server.dsl.ClientDSL.client;
 import static fm.pattern.tokamak.server.dsl.GrantTypeDSL.grantType;
+import static fm.pattern.tokamak.server.dsl.ScopeDSL.scope;
 import static org.assertj.core.api.Assertions.assertThat;
+
+import java.util.HashSet;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.google.common.collect.Sets;
+
 import fm.pattern.tokamak.server.IntegrationTest;
 import fm.pattern.tokamak.server.model.Client;
 import fm.pattern.tokamak.server.model.GrantType;
+import fm.pattern.tokamak.server.model.Scope;
 import fm.pattern.tokamak.server.security.PasswordEncodingService;
-import fm.pattern.tokamak.server.service.ClientService;
 import fm.pattern.valex.EntityNotFoundException;
 import fm.pattern.valex.Result;
 import fm.pattern.valex.UnprocessableEntityException;
@@ -51,6 +56,13 @@ public class ClientServiceIntegrationTest extends IntegrationTest {
 	}
 
 	@Test
+	public void shouldEncryptTheClientPasswordWhenCreatingAClient() {
+		Client client = client().withGrantType(grantType).withClientSecret("password1234").thatIs().persistent().build();
+		assertThat(client.getClientSecret()).startsWith("$2a$");
+		assertThat(passwordEncodingService.matches("password1234", client.getClientSecret())).isTrue();
+	}
+
+	@Test
 	public void shouldNotBeAbleToCreateAnInvalidClient() {
 		Client client = client().build();
 
@@ -68,10 +80,31 @@ public class ClientServiceIntegrationTest extends IntegrationTest {
 	}
 
 	@Test
-	public void shouldEncryptTheClientPasswordWhenCreatingAClient() {
-		Client client = client().withGrantType(grantType).withClientSecret("password1234").thatIs().persistent().build();
-		assertThat(client.getClientSecret()).startsWith("$2a$");
-		assertThat(passwordEncodingService.matches("password1234", client.getClientSecret())).isTrue();
+	public void shouldBeAbleToUpdateAClient() {
+		Client client = client().withGrantType(grantType).thatIs().persistent().build();
+
+		Scope scope = scope().thatIs().persistent().build();
+		client.setScopes(Sets.newHashSet(scope));
+
+		Result<Client> result = clientService.update(client);
+		assertThat(result).accepted();
+
+		Client updated = clientService.findById(client.getId()).getInstance();
+		assertThat(updated.getScopes()).hasSize(1);
+		assertThat(updated.getScopes()).containsExactly(scope);
+	}
+
+	@Test
+	public void shouldNotBeAbleToUpdateAnInvalidClient() {
+		Client client = client().withGrantType(grantType).thatIs().persistent().build();
+		client.setGrantTypes(new HashSet<>());
+
+		Result<Client> result = clientService.update(client);
+		assertThat(result).rejected().withError("CLI-0006", "A client requires at least one grant type.", UnprocessableEntityException.class);
+	
+		Client unmodified = clientService.findById(client.getId()).getInstance();
+		assertThat(unmodified.getGrantTypes()).hasSize(1);
+		assertThat(unmodified.getGrantTypes()).containsExactly(grantType);
 	}
 
 	@Test
@@ -83,8 +116,8 @@ public class ClientServiceIntegrationTest extends IntegrationTest {
 	@Test
 	public void shouldNotBeAbleToFindAClientByIdIfTheClientIdIsNull() {
 		assertThat(clientService.findById(null)).rejected().withError("CLI-0007", "A client id is required.", UnprocessableEntityException.class);
-		assertThat(clientService.findById("")).rejected().withError("CLI-0007","A client id is required.", UnprocessableEntityException.class);
-		assertThat(clientService.findById("  ")).rejected().withError("CLI-0007","A client id is required.", UnprocessableEntityException.class);
+		assertThat(clientService.findById("")).rejected().withError("CLI-0007", "A client id is required.", UnprocessableEntityException.class);
+		assertThat(clientService.findById("  ")).rejected().withError("CLI-0007", "A client id is required.", UnprocessableEntityException.class);
 	}
 
 	@Test
@@ -100,7 +133,8 @@ public class ClientServiceIntegrationTest extends IntegrationTest {
 
 	@Test
 	public void shouldNotBeAbleToFindAClientByClientIdIfTheClientIdIsNullOrEmpty() {
-		assertThat(clientService.findByClientId(null)).rejected().withError("CLI-0001", "A client id is required.", UnprocessableEntityException.class);;
+		assertThat(clientService.findByClientId(null)).rejected().withError("CLI-0001", "A client id is required.", UnprocessableEntityException.class);
+		;
 		assertThat(clientService.findByClientId("")).rejected().withError("CLI-0001", "A client id is required.", UnprocessableEntityException.class);
 		assertThat(clientService.findByClientId("  ")).rejected().withError("CLI-0001", "A client id is required.", UnprocessableEntityException.class);
 	}

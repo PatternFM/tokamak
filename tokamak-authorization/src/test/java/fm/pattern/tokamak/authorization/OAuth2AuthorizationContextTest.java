@@ -9,6 +9,7 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.authentication.TestingAuthenticationToken;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
@@ -21,6 +22,9 @@ public class OAuth2AuthorizationContextTest {
 
 	@Mock
 	private OAuth2Authentication authentication;
+
+	@Mock
+	private TestingAuthenticationToken testAuthentication;
 
 	@Mock
 	private AnonymousAuthenticationToken anonymousAuthentication;
@@ -71,6 +75,15 @@ public class OAuth2AuthorizationContextTest {
 	}
 
 	@Test
+	public void shouldReturnAnEmtpySetOfScopesIfTheAuthenticationIsNotAnOAuth2Authentication() {
+		when(context.getAuthentication()).thenReturn(testAuthentication);
+		SecurityContextHolder.setContext(context);
+
+		OAuth2AuthorizationContext ctx = new OAuth2AuthorizationContext();
+		assertThat(ctx.getScopes()).hasSize(0);
+	}
+
+	@Test
 	public void shouldReturnAnEmptySetOfScopesIfTheAuthenticationHasNoScopes() {
 		when(authentication.isAuthenticated()).thenReturn(true);
 		when(authentication.getOAuth2Request()).thenReturn(request);
@@ -87,6 +100,15 @@ public class OAuth2AuthorizationContextTest {
 
 		OAuth2AuthorizationContext ctx = new OAuth2AuthorizationContext();
 		assertThat(ctx.isAuthenticated()).isTrue();
+		assertThat(ctx.getAuthorities()).hasSize(0);
+	}
+
+	@Test
+	public void shouldReturnAnEmtpySetOfAuthoritiesIfTheAuthenticationIsNotAnOAuth2Authentication() {
+		when(context.getAuthentication()).thenReturn(testAuthentication);
+		SecurityContextHolder.setContext(context);
+
+		OAuth2AuthorizationContext ctx = new OAuth2AuthorizationContext();
 		assertThat(ctx.getAuthorities()).hasSize(0);
 	}
 
