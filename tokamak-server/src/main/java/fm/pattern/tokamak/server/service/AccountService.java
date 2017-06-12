@@ -34,7 +34,6 @@ public interface AccountService {
 
 	Result<Account> findByUsername(String username);
 
-	// TODO: Create UpdatePasswordRequest object with JSR-303 annotations.
 	Result<Account> updatePassword(Account account, String currentPassword, String newPassword);
 
 }

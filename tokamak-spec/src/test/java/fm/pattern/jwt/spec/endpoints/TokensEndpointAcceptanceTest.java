@@ -10,6 +10,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import fm.pattern.jwt.spec.AcceptanceTest;
+import fm.pattern.tokamak.sdk.AccountsClient;
 import fm.pattern.tokamak.sdk.ClientCredentials;
 import fm.pattern.tokamak.sdk.JwtClientProperties;
 import fm.pattern.tokamak.sdk.PreFlightClient;
@@ -21,6 +22,7 @@ import fm.pattern.tokamak.sdk.model.AccountRepresentation;
 
 public class TokensEndpointAcceptanceTest extends AcceptanceTest {
 
+	private AccountsClient accountsClient = new AccountsClient(JwtClientProperties.getEndpoint());
 	private TokensClient tokensClient = new TokensClient(JwtClientProperties.getEndpoint());
 	private PreFlightClient preFlightClient = new PreFlightClient(JwtClientProperties.getEndpoint());
 
@@ -37,14 +39,29 @@ public class TokensEndpointAcceptanceTest extends AcceptanceTest {
 
 	@Test
 	public void shouldBeAbleToMakeAPreFlightRequestOnTheTokensEndpoint() {
-		assertThat(preFlightClient.check("/v1/oauth/token")).accepted().withResponseCode(200);
+		assertThat(preFlightClient.check("/oauth/token")).accepted().withResponseCode(200);
 	}
 
-	// To run this test, you must authenticate a user at:
-	// http://localhost:9600/oauth/authorize?client_id=test-client&redirect_uri=http://localhost:8080/login&response_type=code.
-	
-	// Once you press the "Authorize" button a redirect will occur (it won't work), but the redirect url will contain
-	// the authorization code.
+	@Test
+	public void shouldNotBeAbleToUseARefreshTokenWhenAnAccessTokenIsExpected() {
+		AccountRepresentation account = account().withPassword("password").withToken(token).thatIs().persistent().build();
+		Result<AccessTokenRepresentation> response = tokensClient.getAccessToken(TEST_CLIENT_CREDENTIALS, account.getUsername(), "password");
+		assertThat(response).accepted();
+
+		AccountRepresentation account2 = account().withPassword("password").build();
+
+		Result<AccountRepresentation> response2 = accountsClient.create(account2, response.getInstance().getRefreshToken());
+		assertThat(response2).rejected().withError(401, "AUT-0001", "Encoded token is a refresh token.");
+	}
+
+	/*
+	 * To run this test, you must authenticate a user at:
+	 * http://localhost:9600/oauth/authorize?client_id=test-client&redirect_uri=http://localhost:8080/login&
+	 * response_type=code.
+	 * 
+	 * Once you press the "Authorize" button a redirect will occur (it won't work), but the redirect url will contain
+	 * the authorization code.
+	 */
 	@Ignore
 	public void shouldBeAbleToExchangeAValidAuthorizationCodeForAnAccessToken() {
 		Result<AccessTokenRepresentation> response = tokensClient.exchange(TEST_CLIENT_CREDENTIALS, "enter_auth_code_here", "http://localhost:8080/login");
@@ -127,13 +144,26 @@ public class TokensEndpointAcceptanceTest extends AcceptanceTest {
 	public void shouldBeAbleToGetAnAccessTokenUsingARefreshTokenGrantType() {
 		Result<AccessTokenRepresentation> accessTokenResponse = tokensClient.getAccessToken(TEST_CLIENT_CREDENTIALS, account.getUsername(), password);
 		assertThat(accessTokenResponse).accepted();
-		AccessTokenRepresentation originalAccessToken = accessTokenResponse.getInstance();
 
-		Result<AccessTokenRepresentation> refreshTokenResponse = tokensClient.refreshAccessToken(TEST_CLIENT_CREDENTIALS, originalAccessToken);
+		AccessTokenRepresentation originalToken = accessTokenResponse.getInstance();
+
+		Result<AccessTokenRepresentation> refreshTokenResponse = tokensClient.refreshAccessToken(TEST_CLIENT_CREDENTIALS, originalToken);
 		assertThat(refreshTokenResponse).accepted();
 
-		AccessTokenRepresentation refreshedAccessToken = refreshTokenResponse.getInstance();
-		assertThat(refreshedAccessToken.getAccessToken()).isNotEqualTo(originalAccessToken.getAccessToken());
+		AccessTokenRepresentation refreshedToken = refreshTokenResponse.getInstance();
+		assertThat(refreshedToken.getAccessToken()).isNotEqualTo(originalToken.getAccessToken());
+	}
+
+	@Test
+	public void shouldNotBeAbleToPerformARefreshUsingAnAccessToken() {
+		Result<AccessTokenRepresentation> accessTokenResponse = tokensClient.getAccessToken(TEST_CLIENT_CREDENTIALS, account.getUsername(), password);
+		assertThat(accessTokenResponse).accepted();
+
+		AccessTokenRepresentation originalToken = accessTokenResponse.getInstance();
+		originalToken.setRefreshToken(originalToken.getAccessToken());
+
+		Result<AccessTokenRepresentation> refreshTokenResponse = tokensClient.refreshAccessToken(TEST_CLIENT_CREDENTIALS, originalToken);
+		assertThat(refreshTokenResponse).rejected().withError(401, "invalid_token", "Encoded token is not a refresh token");
 	}
 
 	@Test
