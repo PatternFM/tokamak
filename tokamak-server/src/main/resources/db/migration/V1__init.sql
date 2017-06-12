@@ -243,6 +243,11 @@ INSERT INTO Scopes (created, updated, id, name) VALUES ('2017-01-01 12:00:00','2
 INSERT INTO Scopes (created, updated, id, name) VALUES ('2017-01-01 12:00:00','2017-01-01 12:00:00','scp_azz7sndajdloudjkyfzwic3izka3kw','authorities:delete');
 INSERT INTO Scopes (created, updated, id, name) VALUES ('2017-01-01 12:00:00','2017-01-01 12:00:00','scp_zuofgp0oocouglenmqniobejsyc7m0','authorities:read');
 
+INSERT INTO Scopes (created, updated, id, name) VALUES ('2017-01-01 12:00:00','2017-01-01 12:00:00','scp_hzi6nhtqnek4667drakgsoenfewbmh','audiences:create');
+INSERT INTO Scopes (created, updated, id, name) VALUES ('2017-01-01 12:00:00','2017-01-01 12:00:00','scp_krg821ofnojenb7bv2jdyirlunb67m','audiences:update');
+INSERT INTO Scopes (created, updated, id, name) VALUES ('2017-01-01 12:00:00','2017-01-01 12:00:00','scp_arz7sndajdldudj6yfzgic4izka3kw','audiences:delete');
+INSERT INTO Scopes (created, updated, id, name) VALUES ('2017-01-01 12:00:00','2017-01-01 12:00:00','scp_z4ofgp0oocoggle5mqnhobdjsyc7m0','audiences:read');
+
 INSERT INTO Scopes (created, updated, id, name) VALUES ('2017-01-01 12:00:00','2017-01-01 12:00:00','scp_qwayiuoajqxqwfcypdyj8hmhcvzyic','scopes:create');
 INSERT INTO Scopes (created, updated, id, name) VALUES ('2017-01-01 12:00:00','2017-01-01 12:00:00','scp_zbueqkzvvp9zuoq37g3trrvwl5auhh','scopes:update');
 INSERT INTO Scopes (created, updated, id, name) VALUES ('2017-01-01 12:00:00','2017-01-01 12:00:00','scp_ty8l6srhwlp9si5mpmd9y4bqbeuvle','scopes:delete');

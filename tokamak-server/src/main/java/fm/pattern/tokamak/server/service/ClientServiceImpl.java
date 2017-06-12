@@ -64,7 +64,7 @@ class ClientServiceImpl extends DataServiceImpl<Client> implements ClientService
 		return result;
 	}
 
-	@Transactional(readOnly = true)
+	@Transactional
 	public Result<Client> findById(String id) {
 		if (isBlank(id)) {
 			return Result.reject("client.id.required");
@@ -75,10 +75,16 @@ class ClientServiceImpl extends DataServiceImpl<Client> implements ClientService
 			return Result.accept(JSON.parse(result.getInstance().getPayload(), Client.class));
 		}
 
+		Result<Client> source = super.findById(id, Client.class);
+		if (source.accepted()) {
+			serializedClientRepository.save(source.getInstance().serialize());
+			return source;
+		}
+
 		return Result.reject(result.getErrors().toArray(new Reportable[result.getErrors().size()]));
 	}
 
-	@Transactional(readOnly = true)
+	@Transactional
 	public Result<Client> findByClientId(String clientId) {
 		if (isBlank(clientId)) {
 			return Result.reject("client.clientId.required");
@@ -87,6 +93,12 @@ class ClientServiceImpl extends DataServiceImpl<Client> implements ClientService
 		Result<SerializedClient> result = serializedClientRepository.findByClientId(clientId);
 		if (result.accepted()) {
 			return Result.accept(JSON.parse(result.getInstance().getPayload(), Client.class));
+		}
+
+		Result<Client> source = super.findBy("clientId", clientId, Client.class);
+		if (source.accepted()) {
+			serializedClientRepository.save(source.getInstance().serialize());
+			return source;
 		}
 
 		return Result.reject(result.getErrors().toArray(new Reportable[result.getErrors().size()]));

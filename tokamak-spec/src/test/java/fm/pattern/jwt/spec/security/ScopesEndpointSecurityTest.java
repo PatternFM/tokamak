@@ -49,37 +49,37 @@ public class ScopesEndpointSecurityTest extends AcceptanceTest {
 	@Test
 	public void clientsThatDoNotPresentAnAccessTokenShouldNotBeAbleToCreateAScope() {
 		Result<ScopeRepresentation> response = scopesClient.create(scope().build(), null);
-		assertThat(response).rejected().withResponseCode(401).withCode("AUT-0001").withMessage("Full authentication is required to access this resource.");
+		assertThat(response).rejected().withError(401, "AUT-0001", "Full authentication is required to access this resource.");
 	}
 
 	@Test
 	public void clientsThatDoNotPresentAnAccessTokenShouldNotBeAbleToUpdateAScope() {
 		Result<ScopeRepresentation> response = scopesClient.update(scope().withId("abc").build(), null);
-		assertThat(response).rejected().withResponseCode(401).withCode("AUT-0001").withMessage("Full authentication is required to access this resource.");
+		assertThat(response).rejected().withError(401, "AUT-0001", "Full authentication is required to access this resource.");
 	}
 
 	@Test
 	public void clientsThatDoNotPresentAnAccessTokenShouldNotBeAbleToDeleteAScope() {
 		Result<ScopeRepresentation> response = scopesClient.delete("123456", null);
-		assertThat(response).rejected().withResponseCode(401).withCode("AUT-0001").withMessage("Full authentication is required to access this resource.");
+		assertThat(response).rejected().withError(401, "AUT-0001", "Full authentication is required to access this resource.");
 	}
 
 	@Test
 	public void clientsThatDoNotPresentAnAccessTokenShouldNotBeAbleToFindAScopeById() {
 		Result<ScopeRepresentation> response = scopesClient.findById("12345", null);
-		assertThat(response).rejected().withResponseCode(401).withCode("AUT-0001").withMessage("Full authentication is required to access this resource.");
+		assertThat(response).rejected().withError(401, "AUT-0001", "Full authentication is required to access this resource.");
 	}
 
 	@Test
 	public void clientsThatDoNotPresentAnAccessTokenShouldNotBeAbleToFindAScopeByName() {
 		Result<ScopeRepresentation> response = scopesClient.findByName("name", null);
-		assertThat(response).rejected().withResponseCode(401).withCode("AUT-0001").withMessage("Full authentication is required to access this resource.");
+		assertThat(response).rejected().withError(401, "AUT-0001", "Full authentication is required to access this resource.");
 	}
 
 	@Test
 	public void clientsThatDoNotPresentAnAccessTokenShouldNotBeAbleToListScopes() {
 		Result<ScopesRepresentation> response = scopesClient.list(null);
-		assertThat(response).rejected().withResponseCode(401).withCode("AUT-0001").withMessage("Full authentication is required to access this resource.");
+		assertThat(response).rejected().withError(401, "AUT-0001", "Full authentication is required to access this resource.");
 	}
 
 	@Test
@@ -87,7 +87,7 @@ public class ScopesEndpointSecurityTest extends AcceptanceTest {
 		AccessTokenRepresentation t = token().withClient(client.getClientId(), "client_secret").thatIs().persistent().build();
 
 		Result<ScopeRepresentation> response = scopesClient.create(scope().build(), t.getAccessToken());
-		assertThat(response).rejected().withResponseCode(403).withCode("ATZ-0001").withMessage("Insufficient scope for this resource.");
+		assertThat(response).rejected().withError(403, "ATZ-0001", "Insufficient scope for this resource.");
 	}
 
 	@Test
@@ -95,7 +95,7 @@ public class ScopesEndpointSecurityTest extends AcceptanceTest {
 		AccessTokenRepresentation t = token().withClient(client.getClientId(), "client_secret").thatIs().persistent().build();
 
 		Result<ScopeRepresentation> response = scopesClient.update(scope().withId("12345").build(), t.getAccessToken());
-		assertThat(response).rejected().withResponseCode(403).withCode("ATZ-0001").withMessage("Insufficient scope for this resource.");
+		assertThat(response).rejected().withError(403, "ATZ-0001", "Insufficient scope for this resource.");
 	}
 
 	@Test
@@ -103,7 +103,7 @@ public class ScopesEndpointSecurityTest extends AcceptanceTest {
 		AccessTokenRepresentation t = token().withClient(client.getClientId(), "client_secret").thatIs().persistent().build();
 
 		Result<ScopeRepresentation> response = scopesClient.delete("12345", t.getAccessToken());
-		assertThat(response).rejected().withResponseCode(403).withCode("ATZ-0001").withMessage("Insufficient scope for this resource.");
+		assertThat(response).rejected().withError(403, "ATZ-0001", "Insufficient scope for this resource.");
 	}
 
 	@Test
@@ -111,7 +111,7 @@ public class ScopesEndpointSecurityTest extends AcceptanceTest {
 		AccessTokenRepresentation t = token().withClient(client.getClientId(), "client_secret").thatIs().persistent().build();
 
 		Result<ScopeRepresentation> response = scopesClient.findById("12345", t.getAccessToken());
-		assertThat(response).rejected().withResponseCode(403).withCode("ATZ-0001").withMessage("Insufficient scope for this resource.");
+		assertThat(response).rejected().withError(403, "ATZ-0001", "Insufficient scope for this resource.");
 	}
 
 	@Test
@@ -119,7 +119,7 @@ public class ScopesEndpointSecurityTest extends AcceptanceTest {
 		AccessTokenRepresentation t = token().withClient(client.getClientId(), "client_secret").thatIs().persistent().build();
 
 		Result<ScopeRepresentation> response = scopesClient.findByName("username", t.getAccessToken());
-		assertThat(response).rejected().withResponseCode(403).withCode("ATZ-0001").withMessage("Insufficient scope for this resource.");
+		assertThat(response).rejected().withError(403, "ATZ-0001", "Insufficient scope for this resource.");
 	}
 
 	@Test
@@ -127,7 +127,7 @@ public class ScopesEndpointSecurityTest extends AcceptanceTest {
 		AccessTokenRepresentation t = token().withClient(client.getClientId(), "client_secret").thatIs().persistent().build();
 
 		Result<ScopesRepresentation> response = scopesClient.list(t.getAccessToken());
-		assertThat(response).rejected().withResponseCode(403).withCode("ATZ-0001").withMessage("Insufficient scope for this resource.");
+		assertThat(response).rejected().withError(403, "ATZ-0001", "Insufficient scope for this resource.");
 	}
 
 }

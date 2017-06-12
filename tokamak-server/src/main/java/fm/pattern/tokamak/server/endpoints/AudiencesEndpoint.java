@@ -33,6 +33,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import fm.pattern.tokamak.authorization.Authorize;
 import fm.pattern.tokamak.sdk.model.AudienceRepresentation;
 import fm.pattern.tokamak.sdk.model.AudiencesRepresentation;
 import fm.pattern.tokamak.server.conversion.AudienceConversionService;
@@ -51,6 +52,7 @@ public class AudiencesEndpoint extends Endpoint {
 		this.converter = converter;
 	}
 
+	@Authorize(scopes = "audiences:create")
 	@ResponseStatus(value = HttpStatus.CREATED)
 	@RequestMapping(value = "/v1/audiences", method = POST, consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
 	public AudienceRepresentation create(@RequestBody AudienceRepresentation representation) {
@@ -59,12 +61,14 @@ public class AudiencesEndpoint extends Endpoint {
 		return converter.convert(audienceService.findById(created.getId()).orThrow());
 	}
 
+	@Authorize(scopes = "audiences:update")
 	@RequestMapping(value = "/v1/audiences/{id}", method = PUT, consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
 	public AudienceRepresentation update(@PathVariable String id, @RequestBody AudienceRepresentation representation) {
 		Audience audience = converter.convert(representation, audienceService.findById(id).orThrow());
 		return converter.convert(audienceService.update(audience).orThrow());
 	}
 
+	@Authorize(scopes = "audiences:delete")
 	@ResponseStatus(value = HttpStatus.NO_CONTENT)
 	@RequestMapping(value = "/v1/audiences/{id}", method = DELETE)
 	public void delete(@PathVariable String id) {
@@ -72,18 +76,21 @@ public class AudiencesEndpoint extends Endpoint {
 		audienceService.delete(audience).orThrow();
 	}
 
+	@Authorize(scopes = "audiences:read")
 	@RequestMapping(value = "/v1/audiences/{id}", method = GET, produces = APPLICATION_JSON_VALUE)
 	public AudienceRepresentation findById(@PathVariable String id) {
 		Audience audience = audienceService.findById(id).orThrow();
 		return converter.convert(audience);
 	}
 
+	@Authorize(scopes = "audiences:read")
 	@RequestMapping(value = "/v1/audiences/name/{name}", method = GET, produces = APPLICATION_JSON_VALUE)
 	public AudienceRepresentation findByName(@PathVariable String name) {
 		Audience audience = audienceService.findByName(name).orThrow();
 		return converter.convert(audience);
 	}
 
+	@Authorize(scopes = "audiences:read")
 	@RequestMapping(value = "/v1/audiences", method = GET, produces = APPLICATION_JSON_VALUE)
 	public AudiencesRepresentation list() {
 		List<Audience> audiences = audienceService.list().orThrow();
