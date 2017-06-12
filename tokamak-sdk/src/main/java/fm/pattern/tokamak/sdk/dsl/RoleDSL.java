@@ -1,6 +1,9 @@
 package fm.pattern.tokamak.sdk.dsl;
 
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
+
+import org.apache.commons.lang3.StringUtils;
+
 import fm.pattern.tokamak.sdk.JwtClientProperties;
 import fm.pattern.tokamak.sdk.RolesClient;
 import fm.pattern.tokamak.sdk.commons.Result;
@@ -8,44 +11,53 @@ import fm.pattern.tokamak.sdk.model.RoleRepresentation;
 
 public class RoleDSL extends AbstractDSL<RoleDSL, RoleRepresentation> {
 
-    private RolesClient client = new RolesClient(JwtClientProperties.getEndpoint());
+	private RolesClient client = new RolesClient(JwtClientProperties.getEndpoint());
 
-    private String name = randomAlphanumeric(10);
-    private String description = "description";
+	private String id = null;
+	private String name = randomAlphanumeric(10);
+	private String description = "description";
 
-    public static RoleDSL role() {
-        return new RoleDSL();
-    }
+	public static RoleDSL role() {
+		return new RoleDSL();
+	}
 
-    public RoleDSL withName(String name) {
-        this.name = name;
-        return this;
-    }
+	public RoleDSL withId(String id) {
+		this.id = id;
+		return this;
+	}
 
-    public RoleDSL withDescription(String description) {
-        this.description = description;
-        return this;
-    }
+	public RoleDSL withName(String name) {
+		this.name = name;
+		return this;
+	}
 
-    public RoleRepresentation build() {
-        RoleRepresentation representation = create();
-        if (!shouldPersist()) {
-            return representation;
-        }
+	public RoleDSL withDescription(String description) {
+		this.description = description;
+		return this;
+	}
 
-        Result<RoleRepresentation> response = client.create(representation, super.getToken().getAccessToken());
-        if (response.rejected()) {
-            throw new IllegalStateException("Unable to create role, response from server: " + response.getErrors().toString());
-        }
+	public RoleRepresentation build() {
+		RoleRepresentation representation = create();
+		if (!shouldPersist()) {
+			return representation;
+		}
 
-        return response.getInstance();
-    }
+		Result<RoleRepresentation> response = client.create(representation, super.getToken().getAccessToken());
+		if (response.rejected()) {
+			throw new IllegalStateException("Unable to create role, response from server: " + response.getErrors().toString());
+		}
 
-    private RoleRepresentation create() {
-        RoleRepresentation representation = new RoleRepresentation();
-        representation.setName(name);
-        representation.setDescription(description);
-        return representation;
-    }
+		return response.getInstance();
+	}
+
+	private RoleRepresentation create() {
+		RoleRepresentation representation = new RoleRepresentation();
+		if (StringUtils.isNotEmpty(id)) {
+			representation.setId(id);
+		}
+		representation.setName(name);
+		representation.setDescription(description);
+		return representation;
+	}
 
 }

@@ -58,15 +58,15 @@ public class ResultAssertions extends AbstractAssert<ResultAssertions, Result<?>
 		return this;
 	}
 
-	public ResultAssertions withError(String code, String message) {
+	public ResultAssertions withError(Integer http, String code, String message) {
 		for (ErrorRepresentation error : actual.getErrors()) {
-			if (error.getCode().equals(code) && error.getMessage().equals(message)) {
+			if (actual.getResponseCode().equals(http) && error.getCode().equals(code) && error.getMessage().equals(message)) {
 				return this;
 			}
 		}
 
 		String errors = actual.getErrors().stream().map(error -> error.toString()).collect(Collectors.joining(","));
-		Assertions.fail("Unable to find an error with code '" + code + "', message '" + message + ". Errors are: " + errors);
+		Assertions.fail("Unable to find an error with http response code '" + http + "', code '" + code + "' and message '" + message + "'. Errors are: " + errors);
 		return this;
 	}
 

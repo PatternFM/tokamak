@@ -18,23 +18,24 @@ package fm.pattern.jwt.spec.security;
 
 import static fm.pattern.jwt.spec.PatternAssertions.assertThat;
 import static fm.pattern.tokamak.sdk.dsl.AccessTokenDSL.token;
-import static fm.pattern.tokamak.sdk.dsl.AccountDSL.account;
 import static fm.pattern.tokamak.sdk.dsl.ClientDSL.client;
+import static fm.pattern.tokamak.sdk.dsl.ScopeDSL.scope;
 
 import org.junit.Before;
 import org.junit.Test;
 
 import fm.pattern.jwt.spec.AcceptanceTest;
-import fm.pattern.tokamak.sdk.AccountsClient;
 import fm.pattern.tokamak.sdk.JwtClientProperties;
+import fm.pattern.tokamak.sdk.ScopesClient;
 import fm.pattern.tokamak.sdk.commons.Result;
 import fm.pattern.tokamak.sdk.model.AccessTokenRepresentation;
-import fm.pattern.tokamak.sdk.model.AccountRepresentation;
 import fm.pattern.tokamak.sdk.model.ClientRepresentation;
+import fm.pattern.tokamak.sdk.model.ScopeRepresentation;
+import fm.pattern.tokamak.sdk.model.ScopesRepresentation;
 
-public class AccountsEndpointSecurityTest extends AcceptanceTest {
+public class ScopesEndpointSecurityTest extends AcceptanceTest {
 
-	private AccountsClient accountsClient = new AccountsClient(JwtClientProperties.getEndpoint());
+	private ScopesClient scopesClient = new ScopesClient(JwtClientProperties.getEndpoint());
 
 	private ClientRepresentation client;
 	private AccessTokenRepresentation token;
@@ -46,72 +47,86 @@ public class AccountsEndpointSecurityTest extends AcceptanceTest {
 	}
 
 	@Test
-	public void clientsThatDoNotPresentAnAccessTokenShouldNotBeAbleToCreateAnAccount() {
-		Result<AccountRepresentation> response = accountsClient.create(account().build(), null);
+	public void clientsThatDoNotPresentAnAccessTokenShouldNotBeAbleToCreateAScope() {
+		Result<ScopeRepresentation> response = scopesClient.create(scope().build(), null);
 		assertThat(response).rejected().withResponseCode(401).withCode("AUT-0001").withMessage("Full authentication is required to access this resource.");
 	}
 
 	@Test
-	public void clientsThatDoNotPresentAnAccessTokenShouldNotBeAbleToUpdateAnAccount() {
-		Result<AccountRepresentation> response = accountsClient.update(account().withId("12345").build(), null);
+	public void clientsThatDoNotPresentAnAccessTokenShouldNotBeAbleToUpdateAScope() {
+		Result<ScopeRepresentation> response = scopesClient.update(scope().withId("abc").build(), null);
 		assertThat(response).rejected().withResponseCode(401).withCode("AUT-0001").withMessage("Full authentication is required to access this resource.");
 	}
 
 	@Test
-	public void clientsThatDoNotPresentAnAccessTokenShouldNotBeAbleToDeleteAnAccount() {
-		Result<AccountRepresentation> response = accountsClient.delete("123456", null);
+	public void clientsThatDoNotPresentAnAccessTokenShouldNotBeAbleToDeleteAScope() {
+		Result<ScopeRepresentation> response = scopesClient.delete("123456", null);
 		assertThat(response).rejected().withResponseCode(401).withCode("AUT-0001").withMessage("Full authentication is required to access this resource.");
 	}
 
 	@Test
-	public void clientsThatDoNotPresentAnAccessTokenShouldNotBeAbleToFindAnAccountById() {
-		Result<AccountRepresentation> response = accountsClient.findById("12345", null);
+	public void clientsThatDoNotPresentAnAccessTokenShouldNotBeAbleToFindAScopeById() {
+		Result<ScopeRepresentation> response = scopesClient.findById("12345", null);
 		assertThat(response).rejected().withResponseCode(401).withCode("AUT-0001").withMessage("Full authentication is required to access this resource.");
 	}
 
 	@Test
-	public void clientsThatDoNotPresentAnAccessTokenShouldNotBeAbleToFindAnAccountByUsername() {
-		Result<AccountRepresentation> response = accountsClient.findByUsername("username", null);
+	public void clientsThatDoNotPresentAnAccessTokenShouldNotBeAbleToFindAScopeByName() {
+		Result<ScopeRepresentation> response = scopesClient.findByName("name", null);
 		assertThat(response).rejected().withResponseCode(401).withCode("AUT-0001").withMessage("Full authentication is required to access this resource.");
 	}
 
 	@Test
-	public void clientsThatDoNotHaveTheAppropriateScopeShouldNotBeAbleToCreateAnAccount() {
+	public void clientsThatDoNotPresentAnAccessTokenShouldNotBeAbleToListScopes() {
+		Result<ScopesRepresentation> response = scopesClient.list(null);
+		assertThat(response).rejected().withResponseCode(401).withCode("AUT-0001").withMessage("Full authentication is required to access this resource.");
+	}
+
+	@Test
+	public void clientsThatDoNotHaveTheAppropriateScopeShouldNotBeAbleToCreateAScope() {
 		AccessTokenRepresentation t = token().withClient(client.getClientId(), "client_secret").thatIs().persistent().build();
 
-		Result<AccountRepresentation> response = accountsClient.create(account().build(), t.getAccessToken());
+		Result<ScopeRepresentation> response = scopesClient.create(scope().build(), t.getAccessToken());
 		assertThat(response).rejected().withResponseCode(403).withCode("ATZ-0001").withMessage("Insufficient scope for this resource.");
 	}
 
 	@Test
-	public void clientsThatDoNotHaveTheAppropriateScopeShouldNotBeAbleToUpdateAnAccount() {
+	public void clientsThatDoNotHaveTheAppropriateScopeShouldNotBeAbleToUpdateAScope() {
 		AccessTokenRepresentation t = token().withClient(client.getClientId(), "client_secret").thatIs().persistent().build();
 
-		Result<AccountRepresentation> response = accountsClient.update(account().withId("12345").build(), t.getAccessToken());
+		Result<ScopeRepresentation> response = scopesClient.update(scope().withId("12345").build(), t.getAccessToken());
 		assertThat(response).rejected().withResponseCode(403).withCode("ATZ-0001").withMessage("Insufficient scope for this resource.");
 	}
 
 	@Test
-	public void clientsThatDoNotHaveTheAppropriateScopeShouldNotBeAbleToDeleteAnAccount() {
+	public void clientsThatDoNotHaveTheAppropriateScopeShouldNotBeAbleToDeleteAScope() {
 		AccessTokenRepresentation t = token().withClient(client.getClientId(), "client_secret").thatIs().persistent().build();
 
-		Result<AccountRepresentation> response = accountsClient.delete("12345", t.getAccessToken());
+		Result<ScopeRepresentation> response = scopesClient.delete("12345", t.getAccessToken());
 		assertThat(response).rejected().withResponseCode(403).withCode("ATZ-0001").withMessage("Insufficient scope for this resource.");
 	}
 
 	@Test
-	public void clientsThatDoNotHaveTheAppropriateScopeShouldNotBeAbleToFindAnAccountById() {
+	public void clientsThatDoNotHaveTheAppropriateScopeShouldNotBeAbleToFindAScopeById() {
 		AccessTokenRepresentation t = token().withClient(client.getClientId(), "client_secret").thatIs().persistent().build();
 
-		Result<AccountRepresentation> response = accountsClient.findById("12345", t.getAccessToken());
+		Result<ScopeRepresentation> response = scopesClient.findById("12345", t.getAccessToken());
 		assertThat(response).rejected().withResponseCode(403).withCode("ATZ-0001").withMessage("Insufficient scope for this resource.");
 	}
 
 	@Test
-	public void clientsThatDoNotHaveTheAppropriateScopeShouldNotBeAbleToFindAnAccountByUsername() {
+	public void clientsThatDoNotHaveTheAppropriateScopeShouldNotBeAbleToFindAScopeByName() {
 		AccessTokenRepresentation t = token().withClient(client.getClientId(), "client_secret").thatIs().persistent().build();
 
-		Result<AccountRepresentation> response = accountsClient.findByUsername("username", t.getAccessToken());
+		Result<ScopeRepresentation> response = scopesClient.findByName("username", t.getAccessToken());
+		assertThat(response).rejected().withResponseCode(403).withCode("ATZ-0001").withMessage("Insufficient scope for this resource.");
+	}
+
+	@Test
+	public void clientsThatDoNotHaveTheAppropriateScopeShouldNotBeAbleToListScopes() {
+		AccessTokenRepresentation t = token().withClient(client.getClientId(), "client_secret").thatIs().persistent().build();
+
+		Result<ScopesRepresentation> response = scopesClient.list(t.getAccessToken());
 		assertThat(response).rejected().withResponseCode(403).withCode("ATZ-0001").withMessage("Insufficient scope for this resource.");
 	}
 

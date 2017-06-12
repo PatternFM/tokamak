@@ -11,7 +11,7 @@
     </appender>
 
     <logger name="org.springframework" level="ERROR" />
-    <logger name="org.springframework.security" level="DEBUG" />
+    <logger name="org.springframework.security" level="ERROR" />
     <logger name="org.hibernate" level="ERROR" />
     <logger name="org.hibernate.SQL" level="ERROR" />
     <logger name="ch.qos.logback" level="ERROR" />

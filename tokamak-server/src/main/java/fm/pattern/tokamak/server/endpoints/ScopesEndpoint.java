@@ -33,6 +33,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import fm.pattern.tokamak.authorization.Authorize;
 import fm.pattern.tokamak.sdk.model.ScopeRepresentation;
 import fm.pattern.tokamak.sdk.model.ScopesRepresentation;
 import fm.pattern.tokamak.server.conversion.ScopeConversionService;
@@ -51,6 +52,7 @@ public class ScopesEndpoint extends Endpoint {
 		this.scopeConversionService = scopeConversionService;
 	}
 
+	@Authorize(scopes = "scopes:create")
 	@ResponseStatus(value = HttpStatus.CREATED)
 	@RequestMapping(value = "/v1/scopes", method = POST, consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
 	public ScopeRepresentation create(@RequestBody ScopeRepresentation representation) {
@@ -59,12 +61,14 @@ public class ScopesEndpoint extends Endpoint {
 		return scopeConversionService.convert(scopeService.findById(created.getId()).orThrow());
 	}
 
+	@Authorize(scopes = "scopes:update")
 	@RequestMapping(value = "/v1/scopes/{id}", method = PUT, consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
 	public ScopeRepresentation update(@PathVariable String id, @RequestBody ScopeRepresentation representation) {
 		Scope scope = scopeConversionService.convert(representation, scopeService.findById(id).orThrow());
 		return scopeConversionService.convert(scopeService.update(scope).orThrow());
 	}
 
+	@Authorize(scopes = "scopes:delete")
 	@ResponseStatus(value = HttpStatus.NO_CONTENT)
 	@RequestMapping(value = "/v1/scopes/{id}", method = DELETE)
 	public void delete(@PathVariable String id) {
@@ -72,18 +76,21 @@ public class ScopesEndpoint extends Endpoint {
 		scopeService.delete(scope).orThrow();
 	}
 
+	@Authorize(scopes = "scopes:read")
 	@RequestMapping(value = "/v1/scopes/{id}", method = GET, produces = APPLICATION_JSON_VALUE)
 	public ScopeRepresentation findById(@PathVariable String id) {
 		Scope scope = scopeService.findById(id).orThrow();
 		return scopeConversionService.convert(scope);
 	}
 
+	@Authorize(scopes = "scopes:read")
 	@RequestMapping(value = "/v1/scopes/name/{name}", method = GET, produces = APPLICATION_JSON_VALUE)
 	public ScopeRepresentation findByName(@PathVariable String name) {
 		Scope scope = scopeService.findByName(name).orThrow();
 		return scopeConversionService.convert(scope);
 	}
 
+	@Authorize(scopes = "scopes:read")
 	@RequestMapping(value = "/v1/scopes", method = GET, produces = APPLICATION_JSON_VALUE)
 	public ScopesRepresentation list() {
 		List<Scope> scopes = scopeService.list().orThrow();

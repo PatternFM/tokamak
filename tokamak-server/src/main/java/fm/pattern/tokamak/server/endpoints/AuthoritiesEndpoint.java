@@ -33,6 +33,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import fm.pattern.tokamak.authorization.Authorize;
 import fm.pattern.tokamak.sdk.model.AuthoritiesRepresentation;
 import fm.pattern.tokamak.sdk.model.AuthorityRepresentation;
 import fm.pattern.tokamak.server.conversion.AuthorityConversionService;
@@ -51,6 +52,7 @@ public class AuthoritiesEndpoint extends Endpoint {
 		this.converter = converter;
 	}
 
+	@Authorize(scopes = "authorities:create")
 	@ResponseStatus(value = HttpStatus.CREATED)
 	@RequestMapping(value = "/v1/authorities", method = POST, consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
 	public AuthorityRepresentation create(@RequestBody AuthorityRepresentation representation) {
@@ -59,12 +61,14 @@ public class AuthoritiesEndpoint extends Endpoint {
 		return converter.convert(authorityService.findById(created.getId()).orThrow());
 	}
 
+	@Authorize(scopes = "authorities:update")
 	@RequestMapping(value = "/v1/authorities/{id}", method = PUT, consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
 	public AuthorityRepresentation update(@PathVariable String id, @RequestBody AuthorityRepresentation representation) {
 		Authority authority = converter.convert(representation, authorityService.findById(id).orThrow());
 		return converter.convert(authorityService.update(authority).orThrow());
 	}
 
+	@Authorize(scopes = "authorities:delete")
 	@ResponseStatus(value = HttpStatus.NO_CONTENT)
 	@RequestMapping(value = "/v1/authorities/{id}", method = DELETE)
 	public void delete(@PathVariable String id) {
@@ -72,18 +76,21 @@ public class AuthoritiesEndpoint extends Endpoint {
 		authorityService.delete(authority).orThrow();
 	}
 
+	@Authorize(scopes = "authorities:read")
 	@RequestMapping(value = "/v1/authorities/{id}", method = GET, produces = APPLICATION_JSON_VALUE)
 	public AuthorityRepresentation findById(@PathVariable String id) {
 		Authority authority = authorityService.findById(id).orThrow();
 		return converter.convert(authority);
 	}
 
+	@Authorize(scopes = "authorities:read")
 	@RequestMapping(value = "/v1/authorities/name/{name}", method = GET, produces = APPLICATION_JSON_VALUE)
 	public AuthorityRepresentation findByName(@PathVariable String name) {
 		Authority authority = authorityService.findByName(name).orThrow();
 		return converter.convert(authority);
 	}
 
+	@Authorize(scopes = "authorities:read")
 	@RequestMapping(value = "/v1/authorities", method = GET, produces = APPLICATION_JSON_VALUE)
 	public AuthoritiesRepresentation list() {
 		List<Authority> authorities = authorityService.list().orThrow();

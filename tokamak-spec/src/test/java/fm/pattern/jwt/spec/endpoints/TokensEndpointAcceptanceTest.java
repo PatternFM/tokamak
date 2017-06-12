@@ -40,10 +40,14 @@ public class TokensEndpointAcceptanceTest extends AcceptanceTest {
 		assertThat(preFlightClient.check("/v1/oauth/token")).accepted().withResponseCode(200);
 	}
 
-	// TODO: Brandon - Must fully authenticate a user via the webapp in order to retrieve and exchange an access token.
+	// To run this test, you must authenticate a user at:
+	// http://localhost:9600/oauth/authorize?client_id=test-client&redirect_uri=http://localhost:8080/login&response_type=code.
+	
+	// Once you press the "Authorize" button a redirect will occur (it won't work), but the redirect url will contain
+	// the authorization code.
 	@Ignore
 	public void shouldBeAbleToExchangeAValidAuthorizationCodeForAnAccessToken() {
-		Result<AccessTokenRepresentation> response = tokensClient.exchange(TEST_CLIENT_CREDENTIALS, "IooQj1", "http://localhost:8080/login");
+		Result<AccessTokenRepresentation> response = tokensClient.exchange(TEST_CLIENT_CREDENTIALS, "enter_auth_code_here", "http://localhost:8080/login");
 		assertThat(response).accepted();
 
 		AccessTokenRepresentation token = response.getInstance();

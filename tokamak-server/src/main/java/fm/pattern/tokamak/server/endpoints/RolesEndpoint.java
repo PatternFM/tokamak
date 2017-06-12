@@ -33,6 +33,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import fm.pattern.tokamak.authorization.Authorize;
 import fm.pattern.tokamak.sdk.model.RoleRepresentation;
 import fm.pattern.tokamak.sdk.model.RolesRepresentation;
 import fm.pattern.tokamak.server.conversion.RoleConversionService;
@@ -51,6 +52,7 @@ public class RolesEndpoint extends Endpoint {
 		this.roleConversionService = roleConversionService;
 	}
 
+	@Authorize(scopes = "roles:create")
 	@ResponseStatus(value = HttpStatus.CREATED)
 	@RequestMapping(value = "/v1/roles", method = POST, consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
 	public RoleRepresentation create(@RequestBody RoleRepresentation representation) {
@@ -59,12 +61,14 @@ public class RolesEndpoint extends Endpoint {
 		return roleConversionService.convert(roleService.findById(created.getId()).orThrow());
 	}
 
+	@Authorize(scopes = "roles:update")
 	@RequestMapping(value = "/v1/roles/{id}", method = PUT, consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
 	public RoleRepresentation update(@PathVariable String id, @RequestBody RoleRepresentation representation) {
 		Role role = roleConversionService.convert(representation, roleService.findById(id).orThrow());
 		return roleConversionService.convert(roleService.update(role).orThrow());
 	}
 
+	@Authorize(scopes = "roles:delete")
 	@ResponseStatus(value = HttpStatus.NO_CONTENT)
 	@RequestMapping(value = "/v1/roles/{id}", method = DELETE)
 	public void delete(@PathVariable String id) {
@@ -72,18 +76,21 @@ public class RolesEndpoint extends Endpoint {
 		roleService.delete(role).orThrow();
 	}
 
+	@Authorize(scopes = "roles:read")
 	@RequestMapping(value = "/v1/roles/{id}", method = GET, produces = APPLICATION_JSON_VALUE)
 	public RoleRepresentation findById(@PathVariable String id) {
 		Role role = roleService.findById(id).orThrow();
 		return roleConversionService.convert(role);
 	}
 
+	@Authorize(scopes = "roles:read")
 	@RequestMapping(value = "/v1/roles/name/{name}", method = GET, produces = APPLICATION_JSON_VALUE)
 	public RoleRepresentation findByName(@PathVariable String name) {
 		Role role = roleService.findByName(name).orThrow();
 		return roleConversionService.convert(role);
 	}
 
+	@Authorize(scopes = "roles:read")
 	@RequestMapping(value = "/v1/roles", method = GET, produces = APPLICATION_JSON_VALUE)
 	public RolesRepresentation list() {
 		List<Role> roles = roleService.list().orThrow();
