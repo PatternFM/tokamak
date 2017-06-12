@@ -17,15 +17,26 @@ input {
   -webkit-appearance: none;
 }
 
+input:focus,
+select:focus,
+textarea:focus,
+button:focus {
+    outline: none;
+}
+
 body {
   background: #2c3338;
-  color: #606468;
-  font: 87.5%/1.5em 'Open Sans', sans-serif;
+  color: #343456;
   margin: 0;
   padding: 0;
   overflow-y: auto !important;
   overflow-x: hidden !important;
   background: #EEE;
+}
+
+p {
+	font-family: "Roboto";
+	font-size: 16px;
 }
 
 #lg-container:before {
@@ -63,7 +74,12 @@ body {
 	font-size: 25px;
 	letter-spacing: 0.3px; 
 	padding-top: 60px;
-	padding-bottom: 50px;  
+	padding-bottom: 5px;  
+}
+
+#login-message {
+	color: #717171;
+	padding-bottom: 55px;
 }
 
 #login-form {
@@ -96,6 +112,12 @@ body {
 	height: 45px;
 	font-size: 16px;
 	font-family: "Raleway";
+    -webkit-transition: all 400ms; 
+    transition: all 400ms; 	
+}
+
+#login-form .login-textfield:focus {
+	background: #daf7fb;
 }
 
 #login-form input[type="submit"] {
@@ -116,4 +138,22 @@ body {
 #login-form input[type="submit"]:hover {
   background-color: #000;
   cursor: pointer;
+}
+
+.alert {
+	position: absolute;
+    left: 0;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
+    width: 560px;
+    bottom: 20px;
+    background: #f3da71;
+    padding: 20px 40px;
+    text-align: center;
+    box-shadow: 0 1px 3px 0 rgba(0,0,0,.2), 0 1px 1px 0 rgba(0,0,0,.14), 0 2px 1px -1px rgba(0,0,0,.12);
+    border-radius: 4px;
+    font-family: "Roboto";
+    color: #484848;
+    font-size: 15px;
 }

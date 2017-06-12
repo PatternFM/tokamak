@@ -6,14 +6,14 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link href="https://fonts.googleapis.com/css?family=Gruppo|Khand|Unica+One|Lato|Roboto|Raleway" rel="stylesheet"> 
-    <title>Tokamak Sign In</title>
+    <title>Authorize Application</title>
     <link rel="stylesheet" href="../tokamak.css"/>
   </head>
   
   <body>
     <form id="login-form" action="../oauth/authorize" method="post">
       <div id="login-title">Authorize Appliation</div>
-      <p>Client "${authorizationRequest.clientId}" would like permission to access your account.</p>
+      <p id="login-message">Client "${authorizationRequest.clientId}" would like permission to access your account.</p>
       
       <input name="user_oauth_approval" value="true" type="hidden" />
       <input type="hidden" id="csrf_token" name="${_csrf.parameterName}" value="${_csrf.token}"/>
