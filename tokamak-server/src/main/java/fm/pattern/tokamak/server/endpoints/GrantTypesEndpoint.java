@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import fm.pattern.tokamak.authorization.Authorize;
 import fm.pattern.tokamak.sdk.model.GrantTypeRepresentation;
 import fm.pattern.tokamak.sdk.model.GrantTypesRepresentation;
 import fm.pattern.tokamak.server.conversion.GrantTypeConversionService;
@@ -45,18 +46,21 @@ public class GrantTypesEndpoint extends Endpoint {
 		this.grantTypeConversionService = grantTypeConversionService;
 	}
 
+	@Authorize(scopes = "grant_types:read")
 	@RequestMapping(value = "/v1/grant_types/{id}", method = GET, produces = APPLICATION_JSON_VALUE)
 	public GrantTypeRepresentation findById(@PathVariable String id) {
 		GrantType grantType = grantTypeService.findById(id).orThrow();
 		return grantTypeConversionService.convert(grantType);
 	}
 
+	@Authorize(scopes = "grant_types:read")
 	@RequestMapping(value = "/v1/grant_types/name/{name}", method = GET, produces = APPLICATION_JSON_VALUE)
 	public GrantTypeRepresentation findByName(@PathVariable String name) {
 		GrantType grantType = grantTypeService.findByName(name).orThrow();
 		return grantTypeConversionService.convert(grantType);
 	}
 
+	@Authorize(scopes = "grant_types:read")
 	@RequestMapping(value = "/v1/grant_types", method = GET, produces = APPLICATION_JSON_VALUE)
 	public GrantTypesRepresentation list() {
 		List<GrantType> grantTypes = grantTypeService.list().orThrow();
