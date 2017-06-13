@@ -46,16 +46,21 @@ public class ClientConversionService {
 
 	public ClientRepresentation convert(Client client) {
 		ClientRepresentation representation = new ClientRepresentation();
+
 		representation.setId(client.getId());
 		representation.setCreated(client.getCreated());
 		representation.setUpdated(client.getUpdated());
 		representation.setClientId(client.getClientId());
+		representation.setName(client.getName());
+
 		representation.setAudiences(client.getAudiences().stream().map(audience -> audienceConversionService.convert(audience)).collect(Collectors.toCollection(HashSet::new)));
 		representation.setAuthorities(client.getAuthorities().stream().map(authority -> authorityConversionService.convert(authority)).collect(Collectors.toCollection(HashSet::new)));
 		representation.setGrantTypes(client.getGrantTypes().stream().map(grantType -> grantTypeConversionService.convert(grantType)).collect(Collectors.toCollection(HashSet::new)));
 		representation.setScopes(client.getScopes().stream().map(scope -> scopeConversionService.convert(scope)).collect(Collectors.toCollection(HashSet::new)));
+
 		representation.setAccessTokenValiditySeconds(client.getAccessTokenValiditySeconds());
 		representation.setRefreshTokenValiditySeconds(client.getRefreshTokenValiditySeconds());
+
 		return representation;
 	}
 
@@ -67,12 +72,9 @@ public class ClientConversionService {
 
 		Client client = new Client(representation.getClientId(), representation.getClientSecret(), authorities, audiences, grantTypes, scopes);
 
-		if (representation.getAccessTokenValiditySeconds() != null) {
-			client.setAccessTokenValiditySeconds(representation.getAccessTokenValiditySeconds());
-		}
-		if (representation.getRefreshTokenValiditySeconds() != null) {
-			client.setRefreshTokenValiditySeconds(representation.getRefreshTokenValiditySeconds());
-		}
+		client.setName(representation.getName());
+		client.setAccessTokenValiditySeconds(representation.getAccessTokenValiditySeconds());
+		client.setRefreshTokenValiditySeconds(representation.getRefreshTokenValiditySeconds());
 
 		return client;
 
@@ -89,6 +91,7 @@ public class ClientConversionService {
 		client.setAuthorities(authorities);
 		client.setAudiences(audiences);
 
+		client.setName(representation.getName());
 		client.setAccessTokenValiditySeconds(representation.getAccessTokenValiditySeconds());
 		client.setRefreshTokenValiditySeconds(representation.getRefreshTokenValiditySeconds());
 

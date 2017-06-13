@@ -65,6 +65,12 @@ public class Client extends PersistentEntity {
 	private String clientSecret;
 
 	@Getter
+	@Setter
+	@Column(name = "name")
+	@Size(max = 50, message = "{client.name.size}", groups = { CreateLevel1.class, UpdateLevel1.class })
+	private String name;
+
+	@Getter
 	@OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
 	@JoinTable(name = "ClientAudiences", joinColumns = { @JoinColumn(name = "client_id", referencedColumnName = "id") }, inverseJoinColumns = { @JoinColumn(name = "audience_id", referencedColumnName = "id") })
 	private Set<Audience> audiences = new HashSet<Audience>();

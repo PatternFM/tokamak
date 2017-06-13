@@ -21,6 +21,7 @@ public class ClientDSL extends AbstractDSL<ClientDSL, Client> {
 	private Set<Audience> audiences = new HashSet<Audience>();
 	private Set<GrantType> grantTypes = new HashSet<GrantType>();
 	private Set<Scope> scopes = new HashSet<>();
+	private String name;
 
 	private Integer accessTokenValiditySeconds = 600;
 	private Integer refreshTokenValiditySeconds = 3600;
@@ -37,6 +38,11 @@ public class ClientDSL extends AbstractDSL<ClientDSL, Client> {
 
 	public ClientDSL withClientSecret(String clientSecret) {
 		this.clientSecret = clientSecret;
+		return this;
+	}
+
+	public ClientDSL withName(String name) {
+		this.name = name;
 		return this;
 	}
 
@@ -74,6 +80,7 @@ public class ClientDSL extends AbstractDSL<ClientDSL, Client> {
 		Client client = new Client(clientId, clientSecret, authorities, audiences, grantTypes, scopes);
 		client.setAccessTokenValiditySeconds(accessTokenValiditySeconds);
 		client.setRefreshTokenValiditySeconds(refreshTokenValiditySeconds);
+		client.setName(name);
 		return shouldPersist() ? persist(client) : client;
 	}
 

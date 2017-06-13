@@ -43,7 +43,7 @@ public class ClientsEndpointAcceptanceTest extends AcceptanceTest {
 		ScopeRepresentation scope1 = scope().thatIs().persistent(token).build();
 		ScopeRepresentation scope2 = scope().thatIs().persistent(token).build();
 
-		ClientRepresentation representation = client().withToken(token).withAudiences(audience1, audience2).withScopes(scope1, scope2).withAuthorities(authority1, authority2).withGrantTypes("password", "refresh_token").build();
+		ClientRepresentation representation = client().withToken(token).withName("name").withAudiences(audience1, audience2).withScopes(scope1, scope2).withAuthorities(authority1, authority2).withGrantTypes("password", "refresh_token").build();
 
 		Result<ClientRepresentation> response = clientsClient.create(representation, this.token.getAccessToken());
 		assertThat(response).accepted().withResponseCode(201);
@@ -56,6 +56,7 @@ public class ClientsEndpointAcceptanceTest extends AcceptanceTest {
 		assertThat(created.getCreated()).isEqualTo(created.getUpdated());
 		assertThat(created.getClientId()).isEqualTo(representation.getClientId());
 		assertThat(created.getClientSecret()).isNull();
+		assertThat(created.getName()).isEqualTo("name");
 
 		assertThat(created.getAccessTokenValiditySeconds()).isEqualTo(600);
 		assertThat(created.getRefreshTokenValiditySeconds()).isEqualTo(6000);
@@ -102,6 +103,7 @@ public class ClientsEndpointAcceptanceTest extends AcceptanceTest {
 		client.getScopes().clear();
 		client.setAccessTokenValiditySeconds(100);
 		client.setRefreshTokenValiditySeconds(100);
+		client.setName("update");
 
 		Result<ClientRepresentation> result = clientsClient.update(client, token.getAccessToken());
 
@@ -116,6 +118,7 @@ public class ClientsEndpointAcceptanceTest extends AcceptanceTest {
 		assertThat(updated.getRefreshTokenValiditySeconds()).isEqualTo(100);
 		assertThat(updated.getAuthorities()).hasSize(2);
 		assertThat(updated.getScopes()).isEmpty();
+		assertThat(updated.getName()).isEqualTo("update");
 
 	}
 

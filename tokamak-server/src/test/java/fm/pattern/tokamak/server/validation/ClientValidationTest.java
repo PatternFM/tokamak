@@ -88,6 +88,11 @@ public class ClientValidationTest extends IntegrationTest {
     }
 
     @Test
+    public void shouldNotBeAbleToCreateAClientWhenTheClientNameIsGreaterThan50Characters() {
+        onCreate(client().withGrantType(grantType).withName(randomAlphabetic(51)).build()).rejected().withError("CLI-0010", "A client name cannot be greater than 50 characters.", UnprocessableEntityException.class);
+    }
+    
+    @Test
     public void shouldBeAbleToUpdateAClient() {
         onUpdate(client().withGrantType(grantType).build()).accepted();
     }
@@ -150,4 +155,9 @@ public class ClientValidationTest extends IntegrationTest {
         onUpdate(client().withGrantType(grantType).withClientId(randomAlphabetic(129)).build()).rejected().withError("CLI-0002", "A client id must be between 10 and 128 characters.", UnprocessableEntityException.class);
     }
 
+    @Test
+    public void shouldNotBeAbleToUpdateAClientWhenTheClientNameIsGreaterThan50Characters() {
+        onUpdate(client().withGrantType(grantType).withName(randomAlphabetic(51)).build()).rejected().withError("CLI-0010", "A client name cannot be greater than 50 characters.", UnprocessableEntityException.class);
+    }
+    
 }
