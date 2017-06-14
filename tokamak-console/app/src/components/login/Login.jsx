@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import React, { Component } from "react";
+import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
 
-import LoginForm from '../components/LoginForm.jsx'
+import LoginForm from "./LoginForm.jsx"
 
 class Login extends Component {
   render() {
