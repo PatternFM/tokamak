@@ -8,6 +8,10 @@
        box-sizing: border-box;
 }
 
+*:focus {
+    outline: none;
+}
+
 input {
   border: none;
   font-family: 'Open Sans', Arial, sans-serif;
@@ -18,7 +22,6 @@ input {
 }
 
 body {
-  background: #2c3338;
   color: #606468;
   font: 87.5%/1.5em 'Open Sans', sans-serif;
   margin: 0;
