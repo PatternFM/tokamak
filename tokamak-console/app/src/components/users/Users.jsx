@@ -3,13 +3,13 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 import Layout from "../layout/Layout.jsx";
 
-class Scopes extends React.Component {
+class Users extends React.Component {
   render() {
     return (
         <Layout>
             <MuiThemeProvider>
                <div className="content-holder">
-                 <h1>App Scopes</h1>
+                 <h1>Accounts</h1>
                </div>
             </MuiThemeProvider>
         </Layout>
@@ -17,4 +17,4 @@ class Scopes extends React.Component {
   }
 }
 
-export default Scopes;
+export default Users;

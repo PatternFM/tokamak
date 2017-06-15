@@ -9,15 +9,16 @@ class NavBar extends React.Component {
 
           </div> 
           <ul>
-            <li><NavLink to="/clients" activeClassName="active">OAuth Clients</NavLink></li>
-            <li><NavLink to="/scopes" activeClassName="active">Scopes</NavLink></li>
-            <li><NavLink to="/authorities" activeClassName="active">Authorities</NavLink></li>
-            <li><NavLink to="/audiences" activeClassName="active">Audiences</NavLink></li>
+            <li><NavLink to="/apps" activeClassName="active">OAuth Apps</NavLink></li>
+            <li><NavLink to="/scopes" activeClassName="active">App Scopes</NavLink></li>
+            <li><NavLink to="/authorities" activeClassName="active">App Authorities</NavLink></li>
+            <li><NavLink to="/audiences" activeClassName="active">App Audiences</NavLink></li>
             <br/><br/>
-            <li><NavLink to="/accounts" activeClassName="active">Accounts</NavLink></li>
-            <li><NavLink to="/roles" activeClassName="active">Roles</NavLink></li>
+            <li><NavLink to="/users" activeClassName="active">Users</NavLink></li>
+            <li><NavLink to="/roles" activeClassName="active">User Roles</NavLink></li>
             <br/><br/>
             <li><NavLink to="/settings" activeClassName="active">Settings</NavLink></li>
+            <li><NavLink to="/audit" activeClassName="active">Audit History</NavLink></li>
           </ul>
         </div>
     );

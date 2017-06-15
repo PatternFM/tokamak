@@ -9,7 +9,7 @@ class Settings extends React.Component {
         <Layout>
             <MuiThemeProvider>
                <div className="content-holder">
-                 <h1>OAuth Clients</h1>
+                 <h1>Settings</h1>
                </div>
             </MuiThemeProvider>
         </Layout>

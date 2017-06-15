@@ -9,7 +9,7 @@ class Audiences extends React.Component {
         <Layout>
             <MuiThemeProvider>
                <div className="content-holder">
-                 <h1>Audiences</h1>
+                 <h1>App Audiences</h1>
                </div>
             </MuiThemeProvider>
         </Layout>

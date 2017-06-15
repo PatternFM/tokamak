@@ -3,13 +3,13 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 import Layout from "../layout/Layout.jsx";
 
-class Accounts extends React.Component {
+class AuditHistory extends React.Component {
   render() {
     return (
         <Layout>
             <MuiThemeProvider>
                <div className="content-holder">
-                 <h1>Accounts</h1>
+                 <h1>Audit History</h1>
                </div>
             </MuiThemeProvider>
         </Layout>
@@ -17,4 +17,4 @@ class Accounts extends React.Component {
   }
 }
 
-export default Accounts;
+export default AuditHistory;

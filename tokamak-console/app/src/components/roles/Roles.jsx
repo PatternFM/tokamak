@@ -9,7 +9,7 @@ class Roles extends React.Component {
         <Layout>
             <MuiThemeProvider>
                <div className="content-holder">
-                 <h1>Roles</h1>
+                 <h1>User Roles</h1>
                </div>
             </MuiThemeProvider>
         </Layout>

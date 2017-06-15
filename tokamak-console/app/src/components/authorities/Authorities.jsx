@@ -9,7 +9,7 @@ class Authorities extends React.Component {
         <Layout>
             <MuiThemeProvider>
                <div className="content-holder">
-                 <h1>Authorities</h1>
+                 <h1>App Authorities</h1>
                </div>
             </MuiThemeProvider>
         </Layout>

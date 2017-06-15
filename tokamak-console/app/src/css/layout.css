@@ -160,10 +160,10 @@ body {
 .content-holder {
 	background: #FFF;
 	position: absolute;
-	top: 25px;
-	left: 25px;
-	right: 25px;
-    bottom: 25px;
+	top: 0;
+	left: 0;
+	right: 0;
+    bottom: 0;
 	box-shadow: 0 1px 3px 0 rgba(0,0,0,.2), 0 1px 1px 0 rgba(0,0,0,.14), 0 2px 1px -1px rgba(0,0,0,.12);
 	padding: 0 30px 30px 30px;
 	z-index: 0;
