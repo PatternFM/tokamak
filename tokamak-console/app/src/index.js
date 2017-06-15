@@ -9,6 +9,7 @@ import layout from "./css/layout.css";
 import login from "./css/login.css";
 
 import Login from "./components/login/Login.jsx";
+import Logout from "./components/logout/Logout.jsx";
 import Clients from "./components/clients/Clients.jsx";
 import Scopes from "./components/scopes/Scopes.jsx";
 import Roles from "./components/roles/Roles.jsx";
@@ -37,6 +38,8 @@ ReactDom.render(
       <div>
           <Route exact path="/" component={Login} />
           <Route path="/login" component={Login} />
+          <Route path="/logout" component={Logout} />
+          
           <PrivateRoute path="/clients" component={Clients} />
           <PrivateRoute path="/scopes" component={Scopes} />
           <PrivateRoute path="/authorities" component={Authorities} />
