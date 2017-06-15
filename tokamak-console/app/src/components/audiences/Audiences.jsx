@@ -8,7 +8,9 @@ class Audiences extends React.Component {
     return (
         <Layout>
             <MuiThemeProvider>
-                <h1>Audiences</h1>
+               <div className="content-holder">
+                 <h1>Audiences</h1>
+               </div>
             </MuiThemeProvider>
         </Layout>
     );

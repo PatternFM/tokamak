@@ -8,7 +8,9 @@ class Scopes extends React.Component {
     return (
         <Layout>
             <MuiThemeProvider>
-                <h1>Scopes</h1>
+               <div className="content-holder">
+                 <h1>Scopes</h1>
+               </div>
             </MuiThemeProvider>
         </Layout>
     );

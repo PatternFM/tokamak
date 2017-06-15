@@ -9,7 +9,7 @@ class NavBar extends React.Component {
 
           </div> 
           <ul>
-            <li><NavLink to="/clients" activeClassName="active">Clients</NavLink></li>
+            <li><NavLink to="/clients" activeClassName="active">OAuth Clients</NavLink></li>
             <li><NavLink to="/scopes" activeClassName="active">Scopes</NavLink></li>
             <li><NavLink to="/authorities" activeClassName="active">Authorities</NavLink></li>
             <li><NavLink to="/audiences" activeClassName="active">Audiences</NavLink></li>

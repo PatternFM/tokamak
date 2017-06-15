@@ -8,7 +8,9 @@ class Accounts extends React.Component {
     return (
         <Layout>
             <MuiThemeProvider>
-                <h1>Accounts</h1>
+               <div className="content-holder">
+                 <h1>Accounts</h1>
+               </div>
             </MuiThemeProvider>
         </Layout>
     );

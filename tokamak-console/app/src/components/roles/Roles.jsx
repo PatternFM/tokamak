@@ -8,7 +8,9 @@ class Roles extends React.Component {
     return (
         <Layout>
             <MuiThemeProvider>
-                <h1>Roles</h1>
+               <div className="content-holder">
+                 <h1>Roles</h1>
+               </div>
             </MuiThemeProvider>
         </Layout>
     );

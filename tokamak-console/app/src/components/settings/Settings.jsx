@@ -8,7 +8,9 @@ class Settings extends React.Component {
     return (
         <Layout>
             <MuiThemeProvider>
-                <h1>Settings</h1>
+               <div className="content-holder">
+                 <h1>OAuth Clients</h1>
+               </div>
             </MuiThemeProvider>
         </Layout>
     );
