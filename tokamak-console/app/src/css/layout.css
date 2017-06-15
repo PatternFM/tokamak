@@ -39,16 +39,40 @@ body {
     position: absolute;
     width: 100%;
     height: 100%;
+    background: #EAEAEA;
+}
+
+#content {
+	position: relative;
+	left: 280px;
+	top: 65px;
+	background: red;
+	margin: 0;
 }
 
 #header {
-	background: #000;
-	width: 100%;
+	background: #FFF;
 	position: absolute;
 	left: 0;
 	right: 0;
 	top: 0;
 	height: 65px;
+	left: 280px;
+	padding: 0 30px 0 30px;
+	box-shadow: 0 1px 3px 0 rgba(0,0,0,.2), 0 1px 1px 0 rgba(0,0,0,.14), 0 2px 1px -1px rgba(0,0,0,.12);
+}
+
+#header a {
+	line-height: 65px;
+    color: rgba(0, 0, 0, 0.55);
+    text-transform: uppercase;
+    text-decoration: none;
+    font-family: "Arial";
+    font-size: 10.4px;
+    font-weight: bold;
+    letter-spacing: 2.8px;
+    transition: all 0.2s ease;	
+    float: right;
 }
 
 #footer {
@@ -59,4 +83,67 @@ body {
     right: 0;
     bottom: 0;
     height: 65px;
+    left: 280px;
+}
+
+#navbar {
+	position: absolute;
+	left:0;
+	width: 280px;
+	height: 100%;
+	top: 0;
+    background: #000428;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to bottom, #0D50FA,  #031AA5);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to bottom, #0D50FA,  #031AA5); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
+#navbar ul {
+	list-style: none;
+    padding: 2.5em 2.5em 0.5em 2.5em;
+}
+
+#navbar ul a {
+	color: rgba(255, 255, 255, 0.35);
+	text-transform: uppercase;
+	text-decoration: none;
+	font-family: "Arial";
+	font-size: 10.4px;
+	font-weight: bold;
+	letter-spacing: 2.8px;
+	display: block;
+	position: relative;
+	transition: all 0.2s ease;
+}
+
+#navbar ul a:hover {
+	color: #FAFAFA;
+}
+
+#navbar ul a:after {
+    background-image: -webkit-linear-gradient(to right, #5e42a6, #b74e91);
+    background-image: linear-gradient(to right, #5e42a6, #b74e91);
+    -moz-transition: max-width 0.2s ease;
+    -webkit-transition: max-width 0.2s ease;
+    -ms-transition: max-width 0.2s ease;
+    transition: max-width 0.2s ease;
+    max-width: 0;
+    border-radius: 0.2em;
+    content: '';
+    height: 0.2em;
+    position: absolute;
+    left: 0;
+    width: 100%;
+}
+
+#navbar li {
+	margin: 1.5em 0 0 0;
+    opacity: 1;
+    padding: 0;
+    position: relative;
+}
+
+#navbar-top {
+	height: 65px;
+	width: 280px;
+	background: blue;
 }

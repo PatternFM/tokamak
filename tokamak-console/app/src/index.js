@@ -8,8 +8,14 @@ import AuthenticationService from "./services/AuthenticationService"
 import layout from "./css/layout.css";
 import login from "./css/login.css";
 
-import Home from "./components/home/Home.jsx";
 import Login from "./components/login/Login.jsx";
+import Clients from "./components/clients/Clients.jsx";
+import Scopes from "./components/scopes/Scopes.jsx";
+import Roles from "./components/roles/Roles.jsx";
+import Audiences from "./components/audiences/Audiences.jsx";
+import Authorities from "./components/authorities/Authorities.jsx";
+import Accounts from "./components/accounts/Accounts.jsx";
+import Settings from "./components/settings/Settings.jsx";
 
 const history = createHistory();
 
@@ -31,7 +37,13 @@ ReactDom.render(
       <div>
           <Route exact path="/" component={Login} />
           <Route path="/login" component={Login} />
-          <PrivateRoute path="/console" component={Home} />
+          <PrivateRoute path="/clients" component={Clients} />
+          <PrivateRoute path="/scopes" component={Scopes} />
+          <PrivateRoute path="/authorities" component={Authorities} />
+          <PrivateRoute path="/audiences" component={Audiences} />
+          <PrivateRoute path="/accounts" component={Accounts} />
+          <PrivateRoute path="/roles" component={Roles} />
+          <PrivateRoute path="/settings" component={Settings} />
       </div>
   </Router>
 , document.getElementById("tokamak-console"));

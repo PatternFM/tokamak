@@ -1,6 +1,6 @@
 import React from "react";
 import {withRouter} from "react-router-dom";
-import AuthenticationService from "../../services/AuthenticationService"
+import AuthenticationService from "../../services/AuthenticationService";
 
 class LoginForm extends React.Component {
 
@@ -21,7 +21,7 @@ class LoginForm extends React.Component {
         
         AuthenticationService.login(this.state.username, this.state.password, function(result) {
             if(result.status === "accepted") {
-                self.props.history.push("/console");
+                self.props.history.push("/clients");
             }
             if(result.status === "rejected") {
                 self.setState({error: result.message});
@@ -41,15 +41,6 @@ class LoginForm extends React.Component {
         return this.state.username && this.state.password && this.state.username.length > 0 && this.state.password.length > 0;
     }
     
-    componentWillMount() {
-        const { history } = this.props;
-    
-        if(AuthenticationService.isAuthenticated()) {
-            console.log("auth - is authenticated.");
-            history.push("/console");
-        }
-    }
-
     render() {
         return (
             <form id="login-form" method="POST" onSubmit={this.login.bind(this)}>
