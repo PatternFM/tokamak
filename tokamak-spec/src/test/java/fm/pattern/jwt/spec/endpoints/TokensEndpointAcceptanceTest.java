@@ -59,8 +59,8 @@ public class TokensEndpointAcceptanceTest extends AcceptanceTest {
 	 * http://localhost:9600/oauth/authorize?client_id=test-client&redirect_uri=http://localhost:8080/login&
 	 * response_type=code.
 	 * 
-	 * Once you press the "Authorize" button a redirect will occur (it won't work), but the redirect url will contain
-	 * the authorization code.
+	 * Once you press the "Authorize" button a redirect will occur (to the above url) which will contain the
+	 * authorization code.
 	 */
 	@Ignore
 	public void shouldBeAbleToExchangeAValidAuthorizationCodeForAnAccessToken() {

@@ -6,6 +6,7 @@ INSERT INTO ClientGrantTypes (client_id, grant_type_id) VALUES('cli_vthrewfbhgbt
 INSERT INTO ClientGrantTypes (client_id, grant_type_id) VALUES('cli_vthrewfbhgbt2bm46bksylwzximkug', 'gnt_qlb2cfhvcwo2hqxadretxbfcgl30vj');
 INSERT INTO ClientGrantTypes (client_id, grant_type_id) VALUES('cli_vthrewfbhgbt2bm46bksylwzximkug', 'gnt_dzp0fousdl0um2ppa2mpfvyhtww7ld');
 INSERT INTO ClientGrantTypes (client_id, grant_type_id) VALUES('cli_vthrewfbhgbt2bm46bksylwzximkug', 'gnt_vrjms7yh0kv0o5mb37xlabq69gaxz1');
+INSERT INTO ClientGrantTypes (client_id, grant_type_id) VALUES('cli_vthrewfbhgbt2bm46bksylwzximkug', 'gnt_stjzs6y708vt75mx17xlawqe5gax4z');
 
 INSERT INTO ClientScopes (client_id, scope_id) VALUES('cli_vthrewfbhgbt2bm46bksylwzximkug', 'scp_gws0jo8mqqhzdewbhqvyfyig9vtmri');
 INSERT INTO ClientScopes (client_id, scope_id) VALUES('cli_vthrewfbhgbt2bm46bksylwzximkug', 'scp_kzor8xpzoxex8iy9v8ukup4x4tsh1d');
