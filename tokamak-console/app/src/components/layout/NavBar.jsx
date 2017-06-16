@@ -11,7 +11,7 @@ class NavBar extends React.Component {
             <li><NavLink to="/authorities" activeClassName="active">App Authorities</NavLink></li>
             <li><NavLink to="/audiences" activeClassName="active">App Audiences</NavLink></li>
             <br/><br/>
-            <li><NavLink to="/users" activeClassName="active">User Accounts</NavLink></li>
+            <li><NavLink to="/accounts" activeClassName="active">User Accounts</NavLink></li>
             <li><NavLink to="/roles" activeClassName="active">User Roles</NavLink></li>
             <br/><br/>
             <li><NavLink to="/settings" activeClassName="active">Settings</NavLink></li>

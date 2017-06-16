@@ -4,13 +4,13 @@ import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColu
 
 const Timestamp = require("react-timestamp");
 
-class ViewRoles extends React.Component {
+class ViewAuthorities extends React.Component {
 
     render() {
         return (
             <MuiThemeProvider>
                 <div className="table-container">
-                <h1>User Roles</h1>
+                <h1>App Authorities</h1>
                 <Table className="display-table" showCheckboxes={false} selectable={false}>
                   <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
                     <TableRow>
@@ -22,7 +22,7 @@ class ViewRoles extends React.Component {
                   </TableHeader>
                   
                   <TableBody displayRowCheckbox={false}>
-                    {this.props.roles.map((role) => 
+                    {this.props.authorities.map((role) => 
                      <TableRow key={role.id}>
                        <TableRowColumn className="dtr">{role.id}</TableRowColumn>
                        <TableRowColumn className="dtr">{role.name}</TableRowColumn>
@@ -39,4 +39,4 @@ class ViewRoles extends React.Component {
   
 }
 
-export default ViewRoles;
+export default ViewAuthorities;
