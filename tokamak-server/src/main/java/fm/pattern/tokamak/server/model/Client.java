@@ -103,7 +103,7 @@ public class Client extends PersistentEntity {
 	private Integer refreshTokenValiditySeconds;
 
 	Client() {
-		super(IdGenerator.generateId("cli", 30));
+		super(IdGenerator.generateId("cli", ID_LENGTH));
 	}
 
 	public Client(String clientId, String clientSecret, Set<Authority> authorities, Set<Audience> audiences, Set<GrantType> grantTypes, Set<Scope> scope) {

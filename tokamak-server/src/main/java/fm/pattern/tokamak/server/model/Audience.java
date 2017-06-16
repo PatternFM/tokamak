@@ -58,7 +58,7 @@ public class Audience extends PersistentEntity {
 	private String description;
 
 	Audience() {
-		super(IdGenerator.generateId("aud", 30));
+		super(IdGenerator.generateId("aud", ID_LENGTH));
 	}
 
 	public Audience(String name) {

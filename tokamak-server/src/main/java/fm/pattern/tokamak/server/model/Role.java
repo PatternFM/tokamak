@@ -58,7 +58,7 @@ public class Role extends PersistentEntity {
 	private String description;
 
 	Role() {
-		super(IdGenerator.generateId("rol", 30));
+		super(IdGenerator.generateId("rol", ID_LENGTH));
 	}
 
 	public Role(String name) {

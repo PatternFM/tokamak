@@ -36,6 +36,8 @@ import fm.pattern.valex.sequences.UpdateLevel1;
 @MappedSuperclass
 public class PersistentEntity implements Serializable {
 
+	public static final Integer ID_LENGTH = 20;
+	
 	private static final long serialVersionUID = -2873931442549637189L;
 
 	@Id

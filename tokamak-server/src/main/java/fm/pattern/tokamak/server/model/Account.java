@@ -81,7 +81,7 @@ public class Account extends PersistentEntity {
 	}
 
 	public Account(String username, String password, Set<Role> roles) {
-		super(IdGenerator.generateId("acc", 30));
+		super(IdGenerator.generateId("acc", ID_LENGTH));
 
 		this.username = username;
 		this.password = password;

@@ -18,14 +18,19 @@ package fm.pattern.tokamak.server.service;
 
 import static org.apache.commons.lang3.StringUtils.isBlank;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import fm.pattern.tokamak.server.model.Account;
+import fm.pattern.tokamak.server.pagination.Collection;
+import fm.pattern.tokamak.server.pagination.Criteria;
 import fm.pattern.tokamak.server.security.PasswordEncodingService;
 import fm.pattern.valex.Result;
 
 @Service
+@SuppressWarnings("unchecked")
 class AccountServiceImpl extends DataServiceImpl<Account> implements AccountService {
 
 	private final PasswordEncodingService passwordEncodingService;
@@ -76,6 +81,13 @@ class AccountServiceImpl extends DataServiceImpl<Account> implements AccountServ
 
 		account.setPassword(passwordEncodingService.encode(newPassword));
 		return update(account);
+	}
+
+	@Transactional(readOnly = true)
+	public Result<List<Account>> list(Criteria criteria) {
+		Long count = super.count(super.query("select count(account.id) from Account account"));
+		List<Account> data = super.query("from Accounts order by created desc").setFirstResult(criteria.getFirstResult()).setMaxResults(criteria.getLimit()).getResultList();
+		return Result.accept((List<Account>) new Collection<Account>(data, count.intValue(), criteria));
 	}
 
 }

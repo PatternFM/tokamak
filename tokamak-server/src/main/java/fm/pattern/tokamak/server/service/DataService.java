@@ -39,4 +39,6 @@ public interface DataService<T> {
 
     Query query(String query);
     
+    Long count(Query query);
+    
 }

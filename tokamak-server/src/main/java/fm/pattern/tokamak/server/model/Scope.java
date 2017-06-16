@@ -58,7 +58,7 @@ public class Scope extends PersistentEntity {
 	private String description;
 
 	Scope() {
-		super(IdGenerator.generateId("scp", 30));
+		super(IdGenerator.generateId("scp", ID_LENGTH));
 	}
 
 	public Scope(String name) {

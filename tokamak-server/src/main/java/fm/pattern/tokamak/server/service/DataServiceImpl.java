@@ -91,6 +91,11 @@ class DataServiceImpl<T> implements DataService<T> {
 		}
 	}
 
+	@Transactional(readOnly = true)
+	public Long count(Query query) {
+		return repository.count(query);
+	}
+	
 	private <T> String entity(Class<T> entity) {
 		if (entity.isAnnotationPresent(Entity.class)) {
 			return entity.getAnnotation(Entity.class).name();

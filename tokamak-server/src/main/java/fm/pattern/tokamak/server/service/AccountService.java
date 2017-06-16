@@ -16,7 +16,10 @@
 
 package fm.pattern.tokamak.server.service;
 
+import java.util.List;
+
 import fm.pattern.tokamak.server.model.Account;
+import fm.pattern.tokamak.server.pagination.Criteria;
 import fm.pattern.valex.Result;
 import fm.pattern.valex.annotations.Create;
 import fm.pattern.valex.annotations.Delete;
@@ -36,4 +39,6 @@ public interface AccountService {
 
 	Result<Account> updatePassword(Account account, String currentPassword, String newPassword);
 
+	Result<List<Account>> list(Criteria criteria);
+	
 }

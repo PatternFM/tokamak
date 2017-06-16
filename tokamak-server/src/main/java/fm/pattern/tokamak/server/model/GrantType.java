@@ -58,7 +58,7 @@ public class GrantType extends PersistentEntity {
 	private String description;
 
 	GrantType() {
-		super(IdGenerator.generateId("gnt", 30));
+		super(IdGenerator.generateId("gnt", ID_LENGTH));
 	}
 
 	public GrantType(String name) {

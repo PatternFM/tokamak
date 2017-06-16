@@ -58,7 +58,7 @@ public class Authority extends PersistentEntity {
 	private String description;
 
 	Authority() {
-		super(IdGenerator.generateId("ath", 30));
+		super(IdGenerator.generateId("ath", ID_LENGTH));
 	}
 
 	public Authority(String name) {
