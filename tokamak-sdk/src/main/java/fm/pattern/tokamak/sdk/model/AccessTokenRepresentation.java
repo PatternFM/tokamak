@@ -10,6 +10,7 @@ public class AccessTokenRepresentation extends Representation {
 	private String refreshToken;
 	private String tokenType;
 	private Integer expiresIn;
+	private Integer issuedAt;
 	private String scope;
 	private String jti;
 	private String issuer;
@@ -99,6 +100,15 @@ public class AccessTokenRepresentation extends Representation {
 
 	public void setSubject(String subject) {
 		this.subject = subject;
+	}
+
+	@JsonProperty(value = "iat")
+	public Integer getIssuedAt() {
+		return issuedAt;
+	}
+
+	public void setIssuedAt(Integer issuedAt) {
+		this.issuedAt = issuedAt;
 	}
 
 }

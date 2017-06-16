@@ -88,6 +88,7 @@ public class TokensEndpointAcceptanceTest extends AcceptanceTest {
 		assertThat(token.getTokenType()).isEqualTo(TOKEN_BEARER);
 		assertThat(token.getSubject()).isEqualTo(TEST_CLIENT_ID);
 		assertThat(token.getIssuer()).isEqualTo(ISSUER);
+		assertThat(token.getIssuedAt()).isNotNull();
 	}
 
 	@Test
@@ -114,6 +115,7 @@ public class TokensEndpointAcceptanceTest extends AcceptanceTest {
 		assertThat(token.getTokenType()).isEqualTo(TOKEN_BEARER);
 		assertThat(token.getIssuer()).isEqualTo(ISSUER);
 		assertThat(token.getSubject()).isEqualTo(account.getId());
+		assertThat(token.getIssuedAt()).isNotNull();
 	}
 
 	@Test

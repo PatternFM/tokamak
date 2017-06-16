@@ -72,6 +72,7 @@ public class JWTAcceptanceTest extends AcceptanceTest {
 		assertThat(jwt.getAlgorithm()).isEqualTo("RS256");
 
 		assertThat(jwt.getIssuer()).isEqualTo(ISSUER);
+		assertThat(jwt.getIssuedAt()).isNotNull();
 		assertThat(jwt.getExpiresAt()).isNotNull();
 		assertThat(jwt.getId()).isNotNull();
 		assertThat(jwt.getAudience()).containsOnly(audience1.getName().toLowerCase(), audience2.getName().toLowerCase());
@@ -112,6 +113,7 @@ public class JWTAcceptanceTest extends AcceptanceTest {
 		assertThat(jwt.getAlgorithm()).isEqualTo("RS256");
 
 		assertThat(jwt.getIssuer()).isEqualTo(ISSUER);
+		assertThat(jwt.getIssuedAt()).isNotNull();
 		assertThat(jwt.getExpiresAt()).isNotNull();
 		assertThat(jwt.getId()).isNotNull();
 		assertThat(jwt.getAudience()).containsOnly(audience1.getName().toLowerCase(), audience2.getName().toLowerCase());

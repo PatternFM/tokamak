@@ -16,6 +16,7 @@
 
 package fm.pattern.tokamak.server.security;
 
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -56,6 +57,7 @@ public class CustomJwtTokenEnhancer extends JwtAccessTokenConverter {
 		Map<String, Object> map = new LinkedHashMap<String, Object>(accessToken.getAdditionalInformation());
 		map.put("sub", authentication.getOAuth2Request().getClientId());
 		map.put("iss", issuer);
+		map.put("iat", new Date().getTime() / 1000);
 
 		Authentication userAuthentication = authentication.getUserAuthentication();
 		if (userAuthentication == null) {
