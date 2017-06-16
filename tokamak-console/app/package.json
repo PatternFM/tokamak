@@ -11,6 +11,7 @@
     "react-document-title": "^2.0.3",
     "react-dom": "^15.5.4",
     "react-router": "^4.1.1",
+    "react-timestamp": "^4.2.1",
     "validator": "^7.0.0",
     "whatwg-fetch": "^2.0.3"
   },

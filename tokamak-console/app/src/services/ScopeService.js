@@ -11,13 +11,16 @@ var ScopeService = {
             }
         })
         .then(function(response) {
-        	return response.json();
+            if(response.ok) {
+        	   return response.json();
+        	}
+        	throw {status:"rejected", code:response.status, errors:response.json().errors};
         })
         .then(function(json) {
-        	return json;
+        	return {status:"accepted", "instance":json};
         })
         .catch(function(error) {
-        	console.log("ERROR!");
+            return error.status ? error : {status:"rejected", code:0, errors:[{"code":"INT-0001", "message":"Network unavilable"}]}
         });
     }  
     

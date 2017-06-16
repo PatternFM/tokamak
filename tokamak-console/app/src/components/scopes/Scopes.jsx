@@ -4,34 +4,43 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import Layout from "../layout/Layout.jsx";
 import ViewScopes from "./ViewScopes.jsx";
 import ScopeService from "../../services/ScopeService.js";
+import ApplicationError from "../error/ApplicationError.jsx";
 
 class Scopes extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            scopes: []
+            scopes: [],
+            error: null
         };
     }
 
     componentWillMount() {
-        ScopeService.list().then((data) => {
-            this.setState({scopes: data}, function() {});
+        ScopeService.list().then((result) => {
+            if(result.status === "accepted") {
+                this.setState({scopes: result.instance.scopes}, function() { });
+            }
+            else {
+                this.setState({error:result});
+            }
         });
     }
 
-  render() {
-    return (
-        <Layout>
-            <MuiThemeProvider>
-               <div className="content-holder">
-                 <h1>App Scopes</h1>
-                 <ViewScopes />
-               </div>
-            </MuiThemeProvider>
-        </Layout>
-    );
-  }
+    render() {
+        let output = this.state.error != null ? <ApplicationError error={this.state.error} /> : <ViewScopes scopes={this.state.scopes} />;
+        
+        return (
+            <Layout>
+                <MuiThemeProvider>
+                   <div className="content-holder">
+                     {output}
+                   </div>
+                </MuiThemeProvider>
+            </Layout>
+        );
+    }
+    
 }
 
 export default Scopes;
