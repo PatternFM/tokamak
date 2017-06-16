@@ -1,9 +1,8 @@
-INSERT INTO Clients (created, updated, id, client_id, client_secret) VALUES ('2017-01-01 12:00:00.000','2017-01-01 12:00:00.000','cli_vthrewfbhgbt2bm46bksylwzximkug','test-client','$2a$10$XMYMNDyiEN9982NGHsVeCextGacHs.cXvBVJQVPCTiB.crDiPS0eu');
-
-INSERT INTO ClientGrantTypes (client_id, grant_type_id) VALUES('cli_vthrewfbhgbt2bm46bksylwzximkug', 'gnt_x8ir9yj0gdb8839pkyuk4z9b4eeb3i');
+INSERT INTO Clients (created, updated, id, client_id, client_secret) VALUES (NOW(),NOW(),'cli_vthrewfbhgbt2bm46bksylwzximkug','test-client','$2a$10$XMYMNDyiEN9982NGHsVeCextGacHs.cXvBVJQVPCTiB.crDiPS0eu');
 
 INSERT INTO ClientAuthorities (client_id, authority_id) VALUES('cli_vthrewfbhgbt2bm46bksylwzximkug', 'ath_wb0LcDMl5oDGAfQE8KfaKeIyGxr9po');
 
+INSERT INTO ClientGrantTypes (client_id, grant_type_id) VALUES('cli_vthrewfbhgbt2bm46bksylwzximkug', 'gnt_x8ir9yj0gdb8839pkyuk4z9b4eeb3i');
 INSERT INTO ClientGrantTypes (client_id, grant_type_id) VALUES('cli_vthrewfbhgbt2bm46bksylwzximkug', 'gnt_qlb2cfhvcwo2hqxadretxbfcgl30vj');
 INSERT INTO ClientGrantTypes (client_id, grant_type_id) VALUES('cli_vthrewfbhgbt2bm46bksylwzximkug', 'gnt_dzp0fousdl0um2ppa2mpfvyhtww7ld');
 INSERT INTO ClientGrantTypes (client_id, grant_type_id) VALUES('cli_vthrewfbhgbt2bm46bksylwzximkug', 'gnt_vrjms7yh0kv0o5mb37xlabq69gaxz1');
@@ -28,9 +27,6 @@ INSERT INTO ClientScopes (client_id, scope_id) VALUES('cli_vthrewfbhgbt2bm46bksy
 INSERT INTO ClientScopes (client_id, scope_id) VALUES('cli_vthrewfbhgbt2bm46bksylwzximkug', 'scp_zbueqkzvvp9zuoq37g3trrvwl5auhh');
 INSERT INTO ClientScopes (client_id, scope_id) VALUES('cli_vthrewfbhgbt2bm46bksylwzximkug', 'scp_ty8l6srhwlp9si5mpmd9y4bqbeuvle');
 INSERT INTO ClientScopes (client_id, scope_id) VALUES('cli_vthrewfbhgbt2bm46bksylwzximkug', 'scp_cd28ieewxlb3gtde3tzafzkf5iciny');
-INSERT INTO ClientScopes (client_id, scope_id) VALUES('cli_vthrewfbhgbt2bm46bksylwzximkug', 'scp_c5ltnjhqocyjnismd5valaehizkcax');
-INSERT INTO ClientScopes (client_id, scope_id) VALUES('cli_vthrewfbhgbt2bm46bksylwzximkug', 'scp_jrwvab24bgglcyiadup4tgm92uc6t5');
-INSERT INTO ClientScopes (client_id, scope_id) VALUES('cli_vthrewfbhgbt2bm46bksylwzximkug', 'scp_vkssmillu617wo4exldvlwpd8p5ins');
 INSERT INTO ClientScopes (client_id, scope_id) VALUES('cli_vthrewfbhgbt2bm46bksylwzximkug', 'scp_edgdg5kb7bjsb9cyh55xvexty0j0zb');
 INSERT INTO ClientScopes (client_id, scope_id) VALUES('cli_vthrewfbhgbt2bm46bksylwzximkug', 'scp_hzi6nhtqnek4667drakgsoenfewbmh');
 INSERT INTO ClientScopes (client_id, scope_id) VALUES('cli_vthrewfbhgbt2bm46bksylwzximkug', 'scp_krg821ofnojenb7bv2jdyirlunb67m');
