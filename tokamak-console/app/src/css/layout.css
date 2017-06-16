@@ -94,7 +94,7 @@ body {
 	width: 300px;
 	height: 100%;
 	top: 0;
-    background: #312450;
+    background: #093171;
 }
 
 #navbar ul {
@@ -116,24 +116,14 @@ body {
 	padding: 1.35em 0;
 }
 
-#navbar ul .active {
-	color: #FFF;
-}
-
-#navbar ul .active:after {
-    background-image: linear-gradient(to right, #5e42a6, #b74e91);
-    -webkit-transition: max-width 0.2s ease;
-    transition: max-width 0.2s ease;
-}
-
 #navbar ul a:hover {
 	color: #FAFAFA;
 }
 
 #navbar ul a:after {  
-    -webkit-transition: max-width 0.2s ease;
-    transition: max-width 0.2s ease;
-    background: #3c2c62;
+    -webkit-transition: all 250ms;
+    transition: all 250ms;
+    background: rgba(4, 69, 130, 0.90);
     border-radius: 0.2em;
     content: '';
     height: 0.2em;
@@ -150,10 +140,20 @@ body {
     position: relative;
 }
 
+#navbar ul .active {
+    color: #FFF;
+}
+
+#navbar ul .active:after {
+    background-image: linear-gradient(to right, #5e42a6, #b74e91);
+    -webkit-transition: max-width 0.2s ease;
+    transition: max-width 0.2s ease;
+}
+
 #navbar-top {
 	height: 65px;
 	width: 300px;
-	background: #231939;
+	background: #062352;
     box-shadow: 0 1px 3px 0 rgba(0,0,0,.2), 0 1px 1px 0 rgba(0,0,0,.14), 0 2px 1px -1px rgba(0,0,0,.12);
 }
 

@@ -21,7 +21,7 @@ class LoginForm extends React.Component {
         
         AuthenticationService.login(this.state.username, this.state.password, function(result) {
             if(result.status === "accepted") {
-                self.props.history.push("/clients");
+                self.props.history.push("/apps");
             }
             if(result.status === "rejected") {
                 self.setState({error: result.message});

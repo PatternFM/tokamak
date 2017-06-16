@@ -37,8 +37,11 @@ var AuthenticationService = {
         });
     },		
 		
+    getAccessToken() {
+    	return localStorage.getItem("access_token");
+    },
+    
     logout() {
-    	console.log("logout called");
         localStorage.removeItem("access_token");
         localStorage.removeItem("refresh_token");
     },

@@ -10,7 +10,7 @@ class Login extends Component {
         const { history } = this.props;
     
         if(AuthenticationService.isAuthenticated()) {
-            history.push("/clients");
+            history.push("/apps");
         }
     }
 
