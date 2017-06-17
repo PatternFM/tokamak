@@ -22,7 +22,7 @@ class Scopes extends React.Component {
                 this.setState({scopes: result.instance.scopes}, function() { });
             }
             else {
-                this.setState({error:result});
+                this.setState({ error:result.errors[0] });
             }
         });
     }

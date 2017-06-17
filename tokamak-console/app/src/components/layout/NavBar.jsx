@@ -4,6 +4,7 @@ import { NavLink } from "react-router-dom";
 class NavBar extends React.Component {
   render() {
     return (
+        <div>
         <div id="navbar">
           <ul>
             <li><NavLink to="/apps" activeClassName="active">OAuth Apps</NavLink></li>
@@ -17,6 +18,8 @@ class NavBar extends React.Component {
             <li><NavLink to="/settings" activeClassName="active">Settings</NavLink></li>
             <li><NavLink to="/audit" activeClassName="active">Audit History</NavLink></li>
           </ul>
+        </div>
+        <div id="navbar-footer"><NavLink to="/logout">Sign Out</NavLink></div>
         </div>
     );
   }

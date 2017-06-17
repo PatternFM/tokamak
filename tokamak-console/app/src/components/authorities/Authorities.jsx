@@ -3,7 +3,7 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 import Layout from "../layout/Layout.jsx";
 import ViewAuthorities from "./ViewAuthorities.jsx";
-import RoleService from "../../services/RoleService.js";
+import AuthorityService from "../../services/AuthorityService.js";
 import ApplicationError from "../error/ApplicationError.jsx";
 
 class Authorities extends React.Component {
@@ -17,7 +17,7 @@ class Authorities extends React.Component {
     }
 
     componentWillMount() {
-        RoleService.list().then((result) => {
+        AuthorityService.list().then((result) => {
             if(result.status === "accepted") {
                 this.setState({authorities: result.instance.authorities}, function() { });
             }

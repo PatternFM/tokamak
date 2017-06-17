@@ -47,30 +47,30 @@ body {
 	left: 300px;
 	right: 0;
 	bottom: 0;
-	top: 75px;
+	top: 0;
 	margin: 0;
 }
 
 #header {
-	background: #FFF;
+	background: #FAFAFA;
 	position: absolute;
 	left: 0;
 	right: 0;
 	top: 0;
 	height: 75px;
-	left: 0;
+	left: 300px;
 	padding: 0 30px 0 30px;
-	box-shadow: 0 1px 3px 0 rgba(0,0,0,.2), 0 1px 1px 0 rgba(0,0,0,.14), 0 2px 1px -1px rgba(0,0,0,.12);
+	box-shadow: 0 1px 3px 0 rgba(50, 50, 50, .2);
 	z-index: 10;
 }
 
 #header a {
 	line-height: 75px;
-    color: rgba(0, 0, 0, 0.75);
+    color: rgba(0, 0, 0, 0.90);
     text-transform: uppercase;
     text-decoration: none;
     font-family: "Arial";
-    font-size: 10.4px;
+    font-size: 12.0px;
     font-weight: bold;
     letter-spacing: 2.8px;
     transition: all 0.2s ease;	
@@ -95,7 +95,6 @@ body {
 	height: 100%;
 	top: 0;
     background: #093171;
-    padding-top: 75px;
 }
 
 #navbar ul {
@@ -151,6 +150,34 @@ body {
     transition: max-width 0.2s ease;
 }
 
+#navbar-footer {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	width: 300px;
+	height: 70px;
+	background: #062352;
+}
+
+#navbar-footer a {
+    line-height: 70px;
+    color: rgba(255, 255, 255, 0.55);
+    text-transform: uppercase;
+    text-decoration: none;
+    font-family: "Arial";
+    font-size: 12.0px;
+    font-weight: bold;
+    letter-spacing: 2.8px;
+    transition: all 250ms; 
+    display: block;
+    text-align: center;
+}
+
+#navbar-footer a:hover {
+	background: #000;
+	color: #FFF;
+}
+
 .content-holder {
 	background: #FFF;
 	position: absolute;
@@ -190,6 +217,14 @@ body {
 	padding-bottom: 20px;
 }
 
+.dtr {
+    font-size: 15px !important;
+    color: #656565;
+    border-bottom: 1px solid #EEE !important;
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
 .dth {
 	font-size: 14px !important;
     color: #333 !important;
@@ -198,6 +233,14 @@ body {
     border-bottom: 1px solid #EEE !important;
     padding-top: 20px !important;
     padding-bottom: 20px !important;
+}
+
+.left-pad-0 {
+	padding-left: 3px !important;
+}
+
+.right-pad-0 {
+    padding-right: 3px !important;
 }
 
 .error-page {

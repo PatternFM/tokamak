@@ -5,22 +5,16 @@ var ScopeService = {
 		
     list() {
         return fetch(BASE_URL + "/v1/scopes", {
-            headers: {
-                "Accept": "application/json",
-                "Authorization": "Bearer " + AuthenticationService.getAccessToken()
-            }
+            headers: { "Accept": "application/json", "Authorization": "Bearer " + AuthenticationService.getAccessToken() }
         })
         .then(function(response) {
-            if(response.ok) {
-        	   return response.json();
-        	}
-        	throw {status:"rejected", code:response.status, errors:response.json().errors};
+            return response.json();
         })
         .then(function(json) {
-        	return {status:"accepted", "instance":json};
+        	return json.errors ? { status:"rejected", errors:json.errors } : { status:"accepted", instance:json };
         })
         .catch(function(error) {
-            return error.status ? error : {status:"rejected", code:0, errors:[{"code":"INT-0001", "message":"Network unavilable"}]}
+            return { status:"rejected", errors:[{"code":"INT-0001", "message":"Network unavilable"}] };
         });
     }  
     
