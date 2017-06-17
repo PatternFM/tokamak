@@ -19,7 +19,7 @@ class Roles extends React.Component {
     componentWillMount() {
         RoleService.list().then((result) => {
             if(result.status === "accepted") {
-                this.setState({roles: result.instance.roles}, function() { });
+                this.setState( {roles: result.instance.roles}, function() { } );
             }
             else {
                 this.setState({ error:result.errors[0] });

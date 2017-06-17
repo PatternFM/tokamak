@@ -14,7 +14,7 @@ class ViewAccounts extends React.Component {
                 <Table className="display-table" showCheckboxes={false} selectable={false}>
                   <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
                     <TableRow>
-                      <TableHeaderColumn className="dth">ID</TableHeaderColumn>
+                      <TableHeaderColumn className="dth">Account ID</TableHeaderColumn>
                       <TableHeaderColumn className="dth">Name</TableHeaderColumn>
                       <TableHeaderColumn className="dth">Description</TableHeaderColumn>
                       <TableHeaderColumn className="dth">Created</TableHeaderColumn>

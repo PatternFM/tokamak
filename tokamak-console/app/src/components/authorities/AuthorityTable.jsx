@@ -12,7 +12,7 @@ class AudienceTable extends React.Component {
                 <Table className="display-table" showCheckboxes={false} selectable={false}>
                   <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
                     <TableRow>
-                      <TableHeaderColumn className="dth left-pad-0">Audience ID</TableHeaderColumn>
+                      <TableHeaderColumn className="dth left-pad-0">Authority ID</TableHeaderColumn>
                       <TableHeaderColumn className="dth">Name</TableHeaderColumn>
                       <TableHeaderColumn className="dth">Description</TableHeaderColumn>
                       <TableHeaderColumn className="dth right-pad-0">Created</TableHeaderColumn>
@@ -20,12 +20,12 @@ class AudienceTable extends React.Component {
                   </TableHeader>
                   
                   <TableBody displayRowCheckbox={false}>
-                    {this.props.audiences.map((audience) => 
-                     <TableRow key={audience.id}>
-                       <TableRowColumn className="dtr left-pad-0">{audience.id}</TableRowColumn>
-                       <TableRowColumn className="dtr">{audience.name}</TableRowColumn>
-                       <TableRowColumn className="dtr">{audience.description}</TableRowColumn>
-                       <TableRowColumn className="dtr right-pad-0"><Timestamp time={audience.created/1000} format="full" /></TableRowColumn>
+                    {this.props.authorities.map((authority) => 
+                     <TableRow key={authority.id}>
+                       <TableRowColumn className="dtr left-pad-0">{authority.id}</TableRowColumn>
+                       <TableRowColumn className="dtr">{authority.name}</TableRowColumn>
+                       <TableRowColumn className="dtr">{authority.description}</TableRowColumn>
+                       <TableRowColumn className="dtr right-pad-0"><Timestamp time={authority.created/1000} format="full" /></TableRowColumn>
                      </TableRow>
                     )}
                   </TableBody>

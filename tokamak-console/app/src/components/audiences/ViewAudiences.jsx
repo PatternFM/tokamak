@@ -7,7 +7,7 @@ class ViewAudiences extends React.Component {
     render() {
         return (
             <div>
-            {this.props.audience &&
+            {this.props.audiences &&
               <MuiThemeProvider>
                   <div className="table-container">
                     <h1>App Audiences</h1>
@@ -15,7 +15,7 @@ class ViewAudiences extends React.Component {
                   </div>
               </MuiThemeProvider>
             }
-            {!this.props.audience &&
+            {!this.props.audiences &&
               <div className="error-page">
                 <h2 className="error-title">You haven't created any audiences yet</h2>
                 <button className="tok-button center margin-top-50">Create Audience</button>
