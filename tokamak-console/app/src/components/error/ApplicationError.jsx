@@ -3,7 +3,7 @@ import React from "react";
 class ApplicationError extends React.Component {
   render() {
     return (
-        <div className="content-holder">
+        <div className="content-holder animated fadeIn">
           {this.props.error.code === 0 &&
             <div className="error-page">
             <h2 className="error-title">You appear to be offline</h2>

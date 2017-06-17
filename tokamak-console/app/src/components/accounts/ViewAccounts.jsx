@@ -1,39 +1,27 @@
 import React from "react";
 import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
-import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from "material-ui/Table";
-
-const Timestamp = require("react-timestamp");
+import AccountTable from "./AccountTable.jsx";
 
 class ViewAccounts extends React.Component {
 
     render() {
         return (
-            <MuiThemeProvider>
-                <div className="table-container">
-                <h1>User Accounts</h1>
-                <Table className="display-table" showCheckboxes={false} selectable={false}>
-                  <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
-                    <TableRow>
-                      <TableHeaderColumn className="dth">Account ID</TableHeaderColumn>
-                      <TableHeaderColumn className="dth">Name</TableHeaderColumn>
-                      <TableHeaderColumn className="dth">Description</TableHeaderColumn>
-                      <TableHeaderColumn className="dth">Created</TableHeaderColumn>
-                    </TableRow>
-                  </TableHeader>
-                  
-                  <TableBody displayRowCheckbox={false}>
-                    {this.props.accounts.map((account) => 
-                     <TableRow key={account.id}>
-                       <TableRowColumn className="dtr">{account.id}</TableRowColumn>
-                       <TableRowColumn className="dtr">{account.username}</TableRowColumn>
-                       <TableRowColumn className="dtr"></TableRowColumn>
-                       <TableRowColumn className="dtr"><Timestamp time={account.created/1000} format="full" /></TableRowColumn>
-                     </TableRow>
-                    )}
-                  </TableBody>
-                </Table>
-                </div>
-            </MuiThemeProvider>
+            <div className="animated fadeIn">
+            {this.props.accounts &&
+              <MuiThemeProvider>
+                  <div className="table-container">
+                    <h1>Accounts</h1>
+                    <AccountTable accounts={this.props.accounts} />
+                  </div>
+              </MuiThemeProvider>
+            }
+            {!this.props.accounts &&
+              <div className="error-page">
+                <h2 className="error-title">You haven't created any accounts yet</h2>
+                <button className="tok-button center margin-top-50">Create Account</button>
+              </div>
+            }
+            </div>
         );
     }
   

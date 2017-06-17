@@ -17,7 +17,7 @@ var RestService = {
         	return json.errors ? { status:"rejected", errors:json.errors } : { status:"accepted", instance:json };
         })
         .catch(function(error) {
-            return { status:"rejected", errors:[{"code":"INT-0001", "message":"Network unavilable."}] };
+            return { status:"rejected", errors:[{ code:"INT-0001", message:error }] };
         });
     }  
     

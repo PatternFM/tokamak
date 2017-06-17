@@ -6,7 +6,7 @@ class ViewAudiences extends React.Component {
 
     render() {
         return (
-            <div>
+            <div className="animated fadeIn">
             {this.props.audiences &&
               <MuiThemeProvider>
                   <div className="table-container">
