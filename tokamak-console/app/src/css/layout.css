@@ -58,10 +58,20 @@ body {
 	right: 0;
 	top: 0;
 	height: 75px;
-	left: 300px;
+	left: 0;
 	padding: 0 30px 0 30px;
 	box-shadow: 0 1px 3px 0 rgba(50, 50, 50, .2);
 	z-index: 10;
+}
+
+#header .title {
+	line-height: 75px;
+    font-family: Raleway;
+    color: #444;
+    font-size: 18px;
+    font-weight: bold;
+    letter-spacing: 1.0px;
+    text-transform: uppercase;
 }
 
 #header a {
@@ -210,19 +220,19 @@ body {
 }
 
 .dtr {
-	font-size: 15px !important;
+	font-size: 16px !important;
 	color: #656565;
 	border-bottom: 1px solid #EEE !important;
-	padding-top: 20px;
-	padding-bottom: 20px;
+    padding-top: 18px;
+    padding-bottom: 18px;
 }
 
 .dtr {
-    font-size: 15px !important;
+    font-size: 16px !important;
     color: #656565;
     border-bottom: 1px solid #EEE !important;
-    padding-top: 20px;
-    padding-bottom: 20px;
+    padding-top: 18px;
+    padding-bottom: 18px;
 }
 
 .dth {
@@ -263,6 +273,8 @@ body {
 
 .table-container {
 	margin-bottom: 100px;
+	padding: 20px;
+	padding-top: 100px;
 }
 
 .center {

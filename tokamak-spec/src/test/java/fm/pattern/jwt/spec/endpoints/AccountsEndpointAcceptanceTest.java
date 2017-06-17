@@ -1,6 +1,7 @@
 package fm.pattern.jwt.spec.endpoints;
 
 import static fm.pattern.jwt.spec.PatternAssertions.assertThat;
+import static fm.pattern.tokamak.sdk.commons.CriteriaRepresentation.criteria;
 import static fm.pattern.tokamak.sdk.dsl.AccessTokenDSL.token;
 import static fm.pattern.tokamak.sdk.dsl.AccountDSL.account;
 import static fm.pattern.tokamak.sdk.dsl.RoleDSL.role;
@@ -8,6 +9,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.stream.IntStream;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Before;
@@ -18,6 +20,7 @@ import fm.pattern.tokamak.sdk.AccountsClient;
 import fm.pattern.tokamak.sdk.JwtClientProperties;
 import fm.pattern.tokamak.sdk.TokensClient;
 import fm.pattern.tokamak.sdk.UserCredentials;
+import fm.pattern.tokamak.sdk.commons.PaginatedListRepresentation;
 import fm.pattern.tokamak.sdk.commons.Result;
 import fm.pattern.tokamak.sdk.model.AccessTokenRepresentation;
 import fm.pattern.tokamak.sdk.model.AccountRepresentation;
@@ -173,6 +176,15 @@ public class AccountsEndpointAcceptanceTest extends AcceptanceTest {
 	public void shouldReturnA404WhenAnAccountWithTheSpecifiedUsernameCannotBeFound() {
 		Result<AccountRepresentation> response = accountsClient.findByUsername("abcdefg", token.getAccessToken());
 		assertThat(response).rejected().withResponseCode(404).withMessage("No such username: abcdefg");
+	}
+
+	// TODO: Complete test implementation.
+	@Test
+	public void shouldBeAbleToListAccounts() {
+		IntStream.range(1, 5).forEach(i -> account().withToken(token).thatIs().persistent().build());
+
+		Result<PaginatedListRepresentation<AccountRepresentation>> result = accountsClient.list(criteria(), token.getAccessToken());
+		assertThat(result).accepted().withResponseCode(200);
 	}
 
 }

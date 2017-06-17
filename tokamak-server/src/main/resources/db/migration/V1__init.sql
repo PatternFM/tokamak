@@ -225,6 +225,7 @@ INSERT INTO GrantTypes (created, updated, id, name) VALUES (NOW(),NOW(),'gnt_dzp
 INSERT INTO GrantTypes (created, updated, id, name) VALUES (NOW(),NOW(),'gnt_vrjms7yh0kv0o5mb37xl','authorization_code');
 INSERT INTO GrantTypes (created, updated, id, name) VALUES (NOW(),NOW(),'gnt_stjzs6y708vt75mx17xl','implicit');
 
+
 INSERT INTO Scopes (created, updated, id, name) VALUES (NOW(),NOW(),'scp_gws0jo8mqqhzdewbhqvy','accounts:create');
 INSERT INTO Scopes (created, updated, id, name) VALUES (NOW(),NOW(),'scp_kzor8xpzoxex8iy9v8uk','accounts:update');
 INSERT INTO Scopes (created, updated, id, name) VALUES (NOW(),NOW(),'scp_tjs5q1gmu4z9zhpy08cn','accounts:delete');
@@ -251,8 +252,9 @@ INSERT INTO Scopes (created, updated, id, name) VALUES (NOW(),NOW(),'scp_ty8l6sr
 INSERT INTO Scopes (created, updated, id, name) VALUES (NOW(),NOW(),'scp_cd28ieewxlb3gtde3tza','scopes:read');
 INSERT INTO Scopes (created, updated, id, name) VALUES (NOW(),NOW(),'scp_edgdg5kb7bjsb9cyh55x','grant_types:read');
 
+
 INSERT INTO Roles (created, updated, id, name) VALUES (NOW(),NOW(),'rol_edgda5k47bjsbtcyh45x','role:user');
 INSERT INTO Roles (created, updated, id, name) VALUES (NOW(),NOW(),'rol_ibg9lhwzjwiot4n9xsrh','role:admin');
 
-INSERT INTO Authorities (created, updated, id, name) VALUES (NOW(),NOW(),'ath_wb0LcDMl5oDGAfQE8Kfa','authority:admin');
 
+INSERT INTO Authorities (created, updated, id, name) VALUES (NOW(),NOW(),'ath_wb0LcDMl5oDGAfQE8Kfa','authority:admin');

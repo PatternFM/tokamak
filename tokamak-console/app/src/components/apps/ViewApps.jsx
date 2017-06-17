@@ -7,15 +7,17 @@ class ViewApps extends React.Component {
     render() {
         return (
             <div className="animated fadeIn">
-            {this.props.apps &&
+            {this.props.apps && this.props.apps.length > 0  &&
               <MuiThemeProvider>
+                <div>
+                  <div id="header"><div className="title">Apps</div></div>
                   <div className="table-container">
-                    <h1>Apps</h1>
                     <AppTable apps={this.props.apps} />
                   </div>
+                </div>
               </MuiThemeProvider>
             }
-            {!this.props.apps &&
+            {!this.props.apps || this.props.apps.length === 0 &&
               <div className="error-page">
                 <h2 className="error-title">You haven't created any apps yet</h2>
                 <button className="tok-button center margin-top-50">Create App</button>
