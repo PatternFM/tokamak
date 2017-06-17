@@ -85,7 +85,7 @@ class AccountServiceImpl extends DataServiceImpl<Account> implements AccountServ
 
 	@Transactional(readOnly = true)
 	public Result<List<Account>> list(Criteria criteria) {
-		Long count = super.count(super.query("select count(account.id) from Account account"));
+		Long count = super.count(super.query("select count(account.id) from Accounts account"));
 		List<Account> data = super.query("from Accounts order by created desc").setFirstResult(criteria.getFirstResult()).setMaxResults(criteria.getLimit()).getResultList();
 		return Result.accept((List<Account>) new PaginatedList<Account>(data, count.intValue(), criteria));
 	}

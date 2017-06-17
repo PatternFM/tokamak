@@ -23,7 +23,6 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 import static org.springframework.web.bind.annotation.RequestMethod.PUT;
 
-import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,9 +35,10 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import fm.pattern.tokamak.authorization.Authorize;
+import fm.pattern.tokamak.sdk.commons.PaginatedListRepresentation;
 import fm.pattern.tokamak.sdk.model.AccountRepresentation;
-import fm.pattern.tokamak.sdk.model.AccountsRepresentation;
 import fm.pattern.tokamak.server.conversion.AccountConversionService;
+import fm.pattern.tokamak.server.conversion.PaginatedListConversionService;
 import fm.pattern.tokamak.server.model.Account;
 import fm.pattern.tokamak.server.pagination.PaginatedList;
 import fm.pattern.tokamak.server.service.AccountService;
@@ -48,11 +48,13 @@ public class AccountsEndpoint extends Endpoint {
 
 	private final AccountService accountService;
 	private final AccountConversionService accountConversionService;
+	private final PaginatedListConversionService paginatedListConversionService;
 
 	@Autowired
-	public AccountsEndpoint(AccountService accountService, AccountConversionService accountConversionService) {
+	public AccountsEndpoint(AccountService accountService, AccountConversionService accountConversionService, PaginatedListConversionService paginatedListConversionService) {
 		this.accountService = accountService;
 		this.accountConversionService = accountConversionService;
+		this.paginatedListConversionService = paginatedListConversionService;
 	}
 
 	@Authorize(scopes = "accounts:create")
@@ -94,11 +96,10 @@ public class AccountsEndpoint extends Endpoint {
 
 	@Authorize(scopes = "accounts:read")
 	@RequestMapping(value = "/v1/accounts", method = GET, produces = APPLICATION_JSON_VALUE)
-	public AccountsRepresentation list(@RequestParam(required = false) Integer page, @RequestParam(required = false) Integer limit) {
+	public PaginatedListRepresentation<AccountRepresentation> list(@RequestParam(required = false) Integer page, @RequestParam(required = false) Integer limit) {
 		PaginatedList<Account> accounts = (PaginatedList<Account>) accountService.list(criteria().page(page).limit(limit)).orThrow();
-		List<AccountRepresentation> representations = accounts.stream().map(a -> accountConversionService.convert(a)).collect(Collectors.toList());
-
-		return accountConversionService.convert(accountService.findByUsername(username).orThrow());
+		PaginatedListRepresentation<AccountRepresentation> representation = paginatedListConversionService.convert(accounts, AccountRepresentation.class);
+		return representation.withPayload(accounts.stream().map(a -> accountConversionService.convert(a)).collect(Collectors.toList()));
 	}
 
 }

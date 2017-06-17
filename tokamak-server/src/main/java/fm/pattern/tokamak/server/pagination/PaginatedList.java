@@ -1,5 +1,6 @@
 package fm.pattern.tokamak.server.pagination;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
@@ -8,11 +9,11 @@ import java.util.ListIterator;
 public class PaginatedList<T> implements List<T> {
 
 	private final Criteria criteria;
-	private final List<T> data;
+	private final List<T> data = new ArrayList<>();
 	private final Integer total;
 
 	public PaginatedList(List<T> data, Integer total, Criteria criteria) {
-		this.data = data;
+		this.data.addAll(data);
 		this.total = total <= 0 ? 0 : total;
 		this.criteria = criteria;
 	}

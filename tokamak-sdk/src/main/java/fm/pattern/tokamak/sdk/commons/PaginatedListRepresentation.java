@@ -1,22 +1,23 @@
 package fm.pattern.tokamak.sdk.commons;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class PaginatedListRepresentation<T> extends Representation {
 
-	private List<T> payload;
+	private List<T> payload = new ArrayList<>();
 	private CriteriaRepresentation criteria;
 
 	private Integer total;
 	private Integer remaining;
 	private Integer pages;
-	
+
 	public PaginatedListRepresentation() {
 
 	}
 
 	public PaginatedListRepresentation(List<T> payload) {
-		this.payload = payload;
+		this.payload.addAll(payload);
 	}
 
 	public List<T> getPayload() {
@@ -25,6 +26,11 @@ public class PaginatedListRepresentation<T> extends Representation {
 
 	public void setPayload(List<T> payload) {
 		this.payload = payload;
+	}
+
+	public PaginatedListRepresentation<T> withPayload(List<T> payload) {
+		this.payload = payload;
+		return this;
 	}
 
 	public Integer getTotal() {

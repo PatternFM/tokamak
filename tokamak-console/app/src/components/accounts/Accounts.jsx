@@ -22,7 +22,7 @@ class Accounts extends React.Component {
         this.setState({ loading:true });
         AccountService.list().then((result) => {
             if(result.status === "accepted") {
-                this.setState({ accounts: result.instance.accounts }, function() { });
+                this.setState({ accounts: result.instance.payload }, function() { });
             }
             else {
                 this.setState({ error:result.errors[0] });

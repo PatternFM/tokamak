@@ -3,10 +3,13 @@ package fm.pattern.tokamak.server.service;
 import static fm.pattern.tokamak.server.PatternAssertions.assertThat;
 import static fm.pattern.tokamak.server.dsl.AccountDSL.account;
 import static fm.pattern.tokamak.server.dsl.RoleDSL.role;
+import static fm.pattern.tokamak.server.pagination.Criteria.criteria;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
+import java.util.stream.IntStream;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Test;
@@ -70,7 +73,7 @@ public class AccountServiceIntegrationTest extends IntegrationTest {
 
 		Account account = account().withRole(role1).withRole(role2).withRole(role3).thatIs().persistent().build();
 		account.setRoles(new HashSet<>(Arrays.asList(role2)));
-		
+
 		Result<Account> result = accountService.update(account);
 		assertThat(result).accepted();
 		assertThat(result.getInstance().getRoles()).hasSize(1);
@@ -201,6 +204,20 @@ public class AccountServiceIntegrationTest extends IntegrationTest {
 
 		Account account = account().withUsername(email).withPassword(oldPassword).thatIs().persistent().build();
 		assertThat(accountService.updatePassword(account, "invalid", "ABC")).rejected().withMessage("The password you provided does not match your current password. Please try again.");
+	}
+
+	@Test
+	public void shouldBeAbleToListAccounts() {
+		IntStream.range(1, 5).forEach(i -> account().thatIs().persistent().build());
+
+		Result<List<Account>> result = accountService.list(criteria());
+		assertThat(result).accepted();
+
+		List<Account> accounts = result.getInstance();
+		assertThat(accounts.size()).isGreaterThanOrEqualTo(5);
+		
+		assertThat(accountService.list(criteria().limit(1)).getInstance().size()).isEqualTo(1);
+		assertThat(accountService.list(criteria().limit(1).page(3)).getInstance().size()).isEqualTo(1);
 	}
 
 	private void assertAccountHasPassword(String email, String expectedPassword) {
