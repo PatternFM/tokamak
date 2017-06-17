@@ -264,3 +264,37 @@ body {
 .table-container {
 	margin-bottom: 100px;
 }
+
+.center {
+	margin: 0 auto;
+}
+
+.no-content-logo {
+	margin-top: 100px;
+}
+
+.margin-top-50 {
+	margin-top: 50px !important;
+}
+
+.tok-button {
+  display: block;
+  border: 0;
+  font-size: 13px;
+  border-radius: 5px;
+  background: #222;
+  color: #eee;
+  font-weight: bold;
+  margin-top: 5px;
+  text-transform: uppercase;
+  height: 50px;
+  -webkit-transition: all 400ms; 
+  transition: all 400ms; 
+  letter-spacing: 1.0px;
+  padding: 0 35px 0 35px;
+}
+
+.tok-button:hover {
+  background-color: #000;
+  cursor: pointer;
+}

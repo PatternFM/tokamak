@@ -22,7 +22,7 @@ class Authorities extends React.Component {
                 this.setState({authorities: result.instance.authorities}, function() { });
             }
             else {
-                this.setState({error:result});
+                this.setState({ error:result.errors[0] });
             }
         });
     }

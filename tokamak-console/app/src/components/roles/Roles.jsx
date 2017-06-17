@@ -22,7 +22,7 @@ class Roles extends React.Component {
                 this.setState({roles: result.instance.roles}, function() { });
             }
             else {
-                this.setState({error:result});
+                this.setState({ error:result.errors[0] });
             }
         });
     }

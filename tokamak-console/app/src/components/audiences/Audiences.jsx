@@ -22,7 +22,7 @@ class Audiences extends React.Component {
                 this.setState({audiences: result.instance.audiences}, function() { });
             }
             else {
-                this.setState({error:result});
+                this.setState({ error:result.errors[0] });
             }
         });
     }

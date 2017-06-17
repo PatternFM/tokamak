@@ -18,8 +18,7 @@ class ViewAudiences extends React.Component {
             {!this.props.audience &&
               <div className="error-page">
                 <h2 className="error-title">You haven't created any audiences yet</h2>
-                <p className="error-message">Please click the button below to create your first audience.</p>
-                <img src="/img/no-data.png" alt="" />
+                <button className="tok-button center margin-top-50">Create Audience</button>
               </div>
             }
             </div>

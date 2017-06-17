@@ -22,7 +22,7 @@ class Accounts extends React.Component {
                 this.setState({accounts: result.instance.accounts}, function() { });
             }
             else {
-                this.setState({error:result});
+                this.setState({ error:result.errors[0] });
             }
         });
     }

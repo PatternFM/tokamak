@@ -12,10 +12,10 @@ class AudienceTable extends React.Component {
                 <Table className="display-table" showCheckboxes={false} selectable={false}>
                   <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
                     <TableRow>
-                      <TableHeaderColumn className="dth">ID</TableHeaderColumn>
+                      <TableHeaderColumn className="dth left-pad-0">ID</TableHeaderColumn>
                       <TableHeaderColumn className="dth">Name</TableHeaderColumn>
                       <TableHeaderColumn className="dth">Description</TableHeaderColumn>
-                      <TableHeaderColumn className="dth">Created</TableHeaderColumn>
+                      <TableHeaderColumn className="dth right-pad-0">Created</TableHeaderColumn>
                     </TableRow>
                   </TableHeader>
                   
@@ -25,7 +25,7 @@ class AudienceTable extends React.Component {
                        <TableRowColumn className="dtr left-pad-0">{audience.id}</TableRowColumn>
                        <TableRowColumn className="dtr">{audience.name}</TableRowColumn>
                        <TableRowColumn className="dtr">{audience.description}</TableRowColumn>
-                       <TableRowColumn className="dtr"><Timestamp time={audience.created/1000} format="full" /></TableRowColumn>
+                       <TableRowColumn className="dtr right-pad-0"><Timestamp time={audience.created/1000} format="full" /></TableRowColumn>
                      </TableRow>
                     )}
                   </TableBody>
