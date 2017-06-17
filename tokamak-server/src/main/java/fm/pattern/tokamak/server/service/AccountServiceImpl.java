@@ -24,7 +24,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import fm.pattern.tokamak.server.model.Account;
-import fm.pattern.tokamak.server.pagination.Collection;
+import fm.pattern.tokamak.server.pagination.PaginatedList;
 import fm.pattern.tokamak.server.pagination.Criteria;
 import fm.pattern.tokamak.server.security.PasswordEncodingService;
 import fm.pattern.valex.Result;
@@ -87,7 +87,7 @@ class AccountServiceImpl extends DataServiceImpl<Account> implements AccountServ
 	public Result<List<Account>> list(Criteria criteria) {
 		Long count = super.count(super.query("select count(account.id) from Account account"));
 		List<Account> data = super.query("from Accounts order by created desc").setFirstResult(criteria.getFirstResult()).setMaxResults(criteria.getLimit()).getResultList();
-		return Result.accept((List<Account>) new Collection<Account>(data, count.intValue(), criteria));
+		return Result.accept((List<Account>) new PaginatedList<Account>(data, count.intValue(), criteria));
 	}
 
 }

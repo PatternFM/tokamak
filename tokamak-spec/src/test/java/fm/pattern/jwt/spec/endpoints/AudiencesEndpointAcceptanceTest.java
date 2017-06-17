@@ -150,4 +150,10 @@ public class AudiencesEndpointAcceptanceTest extends AcceptanceTest {
 		assertThat(result).rejected().withResponseCode(404).withMessage("No such audience name: rol_123");
 	}
 
+	// TODO: Implement test.
+	@Test
+	public void shouldBeAbleToListAudiences() {
+		
+	}
+	
 }

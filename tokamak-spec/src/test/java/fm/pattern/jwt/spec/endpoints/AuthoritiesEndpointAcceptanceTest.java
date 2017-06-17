@@ -150,4 +150,9 @@ public class AuthoritiesEndpointAcceptanceTest extends AcceptanceTest {
 		assertThat(result).rejected().withResponseCode(404).withMessage("No such authority name: rol_123");
 	}
 
+	@Test
+	public void shouldBeAbleToListAuthorities() {
+		
+	}
+	
 }

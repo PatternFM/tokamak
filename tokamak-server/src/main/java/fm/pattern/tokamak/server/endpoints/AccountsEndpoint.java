@@ -16,24 +16,31 @@
 
 package fm.pattern.tokamak.server.endpoints;
 
+import static fm.pattern.tokamak.server.pagination.Criteria.criteria;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.web.bind.annotation.RequestMethod.DELETE;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 import static org.springframework.web.bind.annotation.RequestMethod.PUT;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import fm.pattern.tokamak.authorization.Authorize;
 import fm.pattern.tokamak.sdk.model.AccountRepresentation;
+import fm.pattern.tokamak.sdk.model.AccountsRepresentation;
 import fm.pattern.tokamak.server.conversion.AccountConversionService;
 import fm.pattern.tokamak.server.model.Account;
+import fm.pattern.tokamak.server.pagination.PaginatedList;
 import fm.pattern.tokamak.server.service.AccountService;
 
 @RestController
@@ -82,6 +89,15 @@ public class AccountsEndpoint extends Endpoint {
 	@Authorize(scopes = "accounts:read")
 	@RequestMapping(value = "/v1/accounts/username/{username}", method = GET, produces = APPLICATION_JSON_VALUE)
 	public AccountRepresentation findByUsername(@PathVariable String username) {
+		return accountConversionService.convert(accountService.findByUsername(username).orThrow());
+	}
+
+	@Authorize(scopes = "accounts:read")
+	@RequestMapping(value = "/v1/accounts", method = GET, produces = APPLICATION_JSON_VALUE)
+	public AccountsRepresentation list(@RequestParam(required = false) Integer page, @RequestParam(required = false) Integer limit) {
+		PaginatedList<Account> accounts = (PaginatedList<Account>) accountService.list(criteria().page(page).limit(limit)).orThrow();
+		List<AccountRepresentation> representations = accounts.stream().map(a -> accountConversionService.convert(a)).collect(Collectors.toList());
+
 		return accountConversionService.convert(accountService.findByUsername(username).orThrow());
 	}
 

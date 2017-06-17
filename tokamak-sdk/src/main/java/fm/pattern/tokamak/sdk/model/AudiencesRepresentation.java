@@ -7,22 +7,22 @@ import fm.pattern.tokamak.sdk.commons.Representation;
 
 public class AudiencesRepresentation extends Representation {
 
-    private List<AudienceRepresentation> audiences = new ArrayList<AudienceRepresentation>();
+	private List<AudienceRepresentation> audiences = new ArrayList<AudienceRepresentation>();
 
-    public AudiencesRepresentation() {
+	public AudiencesRepresentation() {
 
-    }
+	}
 
-    public AudiencesRepresentation(List<AudienceRepresentation> audiences) {
-        this.audiences = audiences;
-    }
+	public AudiencesRepresentation(List<AudienceRepresentation> audiences) {
+		this.audiences = audiences;
+	}
 
-    public List<AudienceRepresentation> getAuthorities() {
-        return audiences;
-    }
+	public List<AudienceRepresentation> getAudiences() {
+		return audiences;
+	}
 
-    public void setAuthorities(List<AudienceRepresentation> audiences) {
-        this.audiences = audiences;
-    }
+	public void setAudiences(List<AudienceRepresentation> audiences) {
+		this.audiences = audiences;
+	}
 
 }

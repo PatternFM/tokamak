@@ -5,13 +5,13 @@ import java.util.List;
 import java.util.ListIterator;
 
 @SuppressWarnings({ "hiding" })
-public class Collection<T> implements List<T> {
+public class PaginatedList<T> implements List<T> {
 
 	private final Criteria criteria;
 	private final List<T> data;
 	private final Integer total;
 
-	public Collection(List<T> data, Integer total, Criteria criteria) {
+	public PaginatedList(List<T> data, Integer total, Criteria criteria) {
 		this.data = data;
 		this.total = total <= 0 ? 0 : total;
 		this.criteria = criteria;

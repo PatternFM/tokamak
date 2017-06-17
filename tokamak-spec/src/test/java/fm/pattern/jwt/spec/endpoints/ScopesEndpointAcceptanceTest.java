@@ -150,4 +150,10 @@ public class ScopesEndpointAcceptanceTest extends AcceptanceTest {
 		assertThat(result).rejected().withResponseCode(404).withMessage("No such scope name: scp_123");
 	}
 
+	// TODO: Add tests.
+	@Test
+	public void shouldBeAbleToListScopes() {
+
+	}
+
 }

@@ -150,4 +150,10 @@ public class RolesEndpointAcceptanceTest extends AcceptanceTest {
 		assertThat(result).rejected().withResponseCode(404).withMessage("No such role name: rol_123");
 	}
 
+	// TODO: Implement test.
+	@Test
+	public void shouldBeAbleToListRoles() {
+		
+	}
+	
 }
