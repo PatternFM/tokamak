@@ -104,6 +104,23 @@ public class TokensEndpointAcceptanceTest extends AcceptanceTest {
 	}
 
 	@Test
+	public void shouldNotBeAbleToIssueTokensToLockedAccounts() {
+		AccountRepresentation account = account().withPassword("password").thatIs().persistent(token).build();
+
+		assertThat(tokensClient.getAccessToken(TEST_CLIENT_CREDENTIALS, account.getUsername(), "password")).accepted().withResponseCode(200);
+
+		account.setLocked(true);
+		assertThat(accountsClient.update(account, token.getAccessToken())).accepted().withResponseCode(200);
+
+		assertThat(tokensClient.getAccessToken(TEST_CLIENT_CREDENTIALS, account.getUsername(), "password")).rejected().withResponseCode(400);
+
+		account.setLocked(false);
+		assertThat(accountsClient.update(account, token.getAccessToken())).accepted().withResponseCode(200);
+
+		assertThat(tokensClient.getAccessToken(TEST_CLIENT_CREDENTIALS, account.getUsername(), "password")).accepted().withResponseCode(200);
+	}
+
+	@Test
 	public void theServerShouldReturnAnAccessTokenAndRefreshTokenWhenUsingThePasswordGrantType() {
 		Result<AccessTokenRepresentation> response = tokensClient.getAccessToken(TEST_CLIENT_CREDENTIALS, account.getUsername(), password);
 		assertThat(response).accepted();

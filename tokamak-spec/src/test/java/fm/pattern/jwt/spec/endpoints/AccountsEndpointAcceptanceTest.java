@@ -22,6 +22,7 @@ import fm.pattern.tokamak.sdk.TokensClient;
 import fm.pattern.tokamak.sdk.UserCredentials;
 import fm.pattern.tokamak.sdk.commons.PaginatedListRepresentation;
 import fm.pattern.tokamak.sdk.commons.Result;
+import fm.pattern.tokamak.sdk.commons.TokenHolder;
 import fm.pattern.tokamak.sdk.model.AccessTokenRepresentation;
 import fm.pattern.tokamak.sdk.model.AccountRepresentation;
 import fm.pattern.tokamak.sdk.model.RoleRepresentation;
@@ -31,18 +32,21 @@ public class AccountsEndpointAcceptanceTest extends AcceptanceTest {
 	private AccountsClient accountsClient = new AccountsClient(JwtClientProperties.getEndpoint());
 	private TokensClient tokensClient = new TokensClient(JwtClientProperties.getEndpoint());
 
-	private AccessTokenRepresentation token;
+	private static AccessTokenRepresentation token = null;
 
 	@Before
 	public void before() {
-		this.token = token().withClient(TEST_CLIENT_CREDENTIALS).thatIs().persistent().build();
+		if (token == null) {
+			token = token().withClient(TEST_CLIENT_CREDENTIALS).thatIs().persistent().build();
+			TokenHolder.token(token.getAccessToken());
+		}
 	}
 
 	@Test
 	public void shouldBeAbleToCreateAnAccount() {
 		AccountRepresentation account = account().withPassword("password").build();
 
-		Result<AccountRepresentation> response = accountsClient.create(account, token.getAccessToken());
+		Result<AccountRepresentation> response = accountsClient.create(account);
 		assertThat(response).accepted().withResponseCode(201);
 
 		AccountRepresentation created = response.getInstance();
@@ -58,7 +62,7 @@ public class AccountsEndpointAcceptanceTest extends AcceptanceTest {
 	@Test
 	public void shouldNotBeAbleToCreateAnInvalidAccount() {
 		AccountRepresentation account = account().withUsername(null).withPassword("password").build();
-		Result<AccountRepresentation> response = accountsClient.create(account, token.getAccessToken());
+		Result<AccountRepresentation> response = accountsClient.create(account);
 		assertThat(response).rejected().withResponseCode(422).withMessage("An account username is required.");
 	}
 
@@ -67,13 +71,13 @@ public class AccountsEndpointAcceptanceTest extends AcceptanceTest {
 		AccountRepresentation account = account().withPassword("password").thatIs().persistent(token).build();
 		account.setPassword("password");
 
-		Result<AccountRepresentation> response = accountsClient.create(account, token.getAccessToken());
+		Result<AccountRepresentation> response = accountsClient.create(account);
 		assertThat(response).rejected().withResponseCode(409).withMessage("This account username is already in use.");
 	}
 
 	@Test
 	public void shouldBeAbleToUpdateAnAccount() {
-		AccountRepresentation account = account().thatIs().persistent(token).build();
+		AccountRepresentation account = account().withPassword("password").thatIs().persistent(token).build();
 		pause(1000);
 
 		RoleRepresentation role = role().thatIs().persistent(token).build();
@@ -81,7 +85,7 @@ public class AccountsEndpointAcceptanceTest extends AcceptanceTest {
 		account.setRoles(new HashSet<RoleRepresentation>(Arrays.asList(role)));
 		account.setLocked(true);
 
-		Result<AccountRepresentation> result = accountsClient.update(account, token.getAccessToken());
+		Result<AccountRepresentation> result = accountsClient.update(account);
 		assertThat(result).accepted().withResponseCode(200);
 
 		AccountRepresentation updated = result.getInstance();
@@ -107,7 +111,7 @@ public class AccountsEndpointAcceptanceTest extends AcceptanceTest {
 		AccountRepresentation account = account().withRoles(role1, role2, role3).thatIs().persistent(token).build();
 		account.setRoles(new HashSet<RoleRepresentation>(Arrays.asList(role1)));
 
-		Result<AccountRepresentation> result = accountsClient.update(account, token.getAccessToken());
+		Result<AccountRepresentation> result = accountsClient.update(account);
 		assertThat(result).accepted().withResponseCode(200);
 
 		AccountRepresentation updated = result.getInstance();
@@ -124,7 +128,7 @@ public class AccountsEndpointAcceptanceTest extends AcceptanceTest {
 		account.setPassword("new_password");
 		account.setUsername(RandomStringUtils.randomAlphanumeric(6));
 
-		Result<AccountRepresentation> result = accountsClient.update(account, token.getAccessToken());
+		Result<AccountRepresentation> result = accountsClient.update(account);
 		assertThat(result).accepted().withResponseCode(200);
 
 		AccountRepresentation updated = result.getInstance();
@@ -142,31 +146,31 @@ public class AccountsEndpointAcceptanceTest extends AcceptanceTest {
 		RoleRepresentation role1 = role().thatIs().persistent(token).build();
 		AccountRepresentation account = account().withRoles(role1).thatIs().persistent(token).build();
 
-		Result<AccountRepresentation> result = accountsClient.delete(account.getId(), token.getAccessToken());
+		Result<AccountRepresentation> result = accountsClient.delete(account.getId());
 		assertThat(result).accepted().withResponseCode(204);
 
-		assertThat(accountsClient.findById(account.getId(), token.getAccessToken())).rejected().withResponseCode(404);
+		assertThat(accountsClient.findById(account.getId())).rejected().withResponseCode(404);
 	}
 
 	@Test
 	public void shouldBeAbleToFindAnAccountById() {
 		AccountRepresentation account = account().thatIs().persistent(token).build();
 
-		Result<AccountRepresentation> response = accountsClient.findById(account.getId(), token.getAccessToken());
+		Result<AccountRepresentation> response = accountsClient.findById(account.getId());
 		assertThat(response).accepted().withResponseCode(200);
 		assertThat(response.getInstance()).isEqualToComparingFieldByField(account);
 	}
 
 	@Test
 	public void shouldReturnA404WhenAnAccountWithTheSpecifiedIdCannotBeFound() {
-		Result<AccountRepresentation> response = accountsClient.findById("abcdefg", token.getAccessToken());
+		Result<AccountRepresentation> response = accountsClient.findById("abcdefg");
 		assertThat(response).rejected().withResponseCode(404).withMessage("No such account id: abcdefg");
 	}
 
 	@Test
 	public void shouldBeAbleToFindAnAccountByUsername() {
 		AccountRepresentation account = account().thatIs().persistent(token).build();
-		Result<AccountRepresentation> result = accountsClient.findByUsername(account.getUsername(), token.getAccessToken());
+		Result<AccountRepresentation> result = accountsClient.findByUsername(account.getUsername());
 
 		assertThat(result).accepted().withResponseCode(200);
 		assertThat(result.getInstance()).isEqualToComparingFieldByField(account);
@@ -174,7 +178,7 @@ public class AccountsEndpointAcceptanceTest extends AcceptanceTest {
 
 	@Test
 	public void shouldReturnA404WhenAnAccountWithTheSpecifiedUsernameCannotBeFound() {
-		Result<AccountRepresentation> response = accountsClient.findByUsername("abcdefg", token.getAccessToken());
+		Result<AccountRepresentation> response = accountsClient.findByUsername("abcdefg");
 		assertThat(response).rejected().withResponseCode(404).withMessage("No such username: abcdefg");
 	}
 
@@ -182,13 +186,13 @@ public class AccountsEndpointAcceptanceTest extends AcceptanceTest {
 	public void shouldBeAbleToListAccounts() {
 		IntStream.range(1, 5).forEach(i -> account().withToken(token).thatIs().persistent().build());
 
-		Result<PaginatedListRepresentation<AccountRepresentation>> result = accountsClient.list(criteria(), token.getAccessToken());
+		Result<PaginatedListRepresentation<AccountRepresentation>> result = accountsClient.list(criteria());
 		assertThat(result).accepted().withResponseCode(200);
 		assertThat(result.getInstance().getPayload().size()).isGreaterThanOrEqualTo(5);
 		assertThat(result.getInstance().getCriteria().getPage()).isNotNull();
 		assertThat(result.getInstance().getCriteria().getLimit()).isNotNull();
-		
-		assertThat(accountsClient.list(criteria().limit(1).page(4), token.getAccessToken()).getInstance().getPayload()).hasSize(1);
+
+		assertThat(accountsClient.list(criteria().limit(1).page(4)).getInstance().getPayload()).hasSize(1);
 	}
 
 }
