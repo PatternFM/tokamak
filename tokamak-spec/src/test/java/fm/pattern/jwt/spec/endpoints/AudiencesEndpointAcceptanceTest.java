@@ -16,6 +16,7 @@ import fm.pattern.jwt.spec.AcceptanceTest;
 import fm.pattern.tokamak.sdk.AudiencesClient;
 import fm.pattern.tokamak.sdk.JwtClientProperties;
 import fm.pattern.tokamak.sdk.commons.Result;
+import fm.pattern.tokamak.sdk.commons.TokenHolder;
 import fm.pattern.tokamak.sdk.model.AccessTokenRepresentation;
 import fm.pattern.tokamak.sdk.model.AudienceRepresentation;
 import fm.pattern.tokamak.sdk.model.AudiencesRepresentation;
@@ -24,18 +25,21 @@ public class AudiencesEndpointAcceptanceTest extends AcceptanceTest {
 
 	private final AudiencesClient client = new AudiencesClient(JwtClientProperties.getEndpoint());
 
-	private AccessTokenRepresentation token;
+	private static AccessTokenRepresentation token;
 
 	@Before
 	public void before() {
-		this.token = token().withClient(TEST_CLIENT_CREDENTIALS).thatIs().persistent().build();
+		if (token == null) {
+			token = token().withClient(TEST_CLIENT_CREDENTIALS).thatIs().persistent().build();
+			TokenHolder.token(token.getAccessToken());
+		}
 	}
 
 	@Test
 	public void shouldBeAbleToCreateAnAudience() {
 		AudienceRepresentation audience = audience().build();
 
-		Result<AudienceRepresentation> result = client.create(audience, token.getAccessToken());
+		Result<AudienceRepresentation> result = client.create(audience);
 		assertThat(result).accepted().withResponseCode(201);
 
 		AudienceRepresentation created = result.getInstance();
@@ -51,7 +55,7 @@ public class AudiencesEndpointAcceptanceTest extends AcceptanceTest {
 	public void shouldNotBeAbleToCreateAnAudienceIfTheAudienceIsInvalid() {
 		AudienceRepresentation audience = audience().withName("").build();
 
-		Result<AudienceRepresentation> result = client.create(audience, token.getAccessToken());
+		Result<AudienceRepresentation> result = client.create(audience);
 		assertThat(result).rejected().withResponseCode(422).withCode("AUD-0001").withMessage("An audience name is required.");
 	}
 
@@ -59,7 +63,7 @@ public class AudiencesEndpointAcceptanceTest extends AcceptanceTest {
 	public void shouldNotBeAbleToCreateAnAudienceIfTheAudienceNameIsAlreadyInUse() {
 		AudienceRepresentation audience = audience().thatIs().persistent(token).build();
 
-		Result<AudienceRepresentation> result = client.create(audience, token.getAccessToken());
+		Result<AudienceRepresentation> result = client.create(audience);
 		assertThat(result).rejected().withResponseCode(409).withCode("AUD-0003").withMessage("This audience name is already in use.");
 	}
 
@@ -70,7 +74,7 @@ public class AudiencesEndpointAcceptanceTest extends AcceptanceTest {
 
 		audience.setName(RandomStringUtils.randomAlphabetic(10));
 
-		Result<AudienceRepresentation> result = client.update(audience, token.getAccessToken());
+		Result<AudienceRepresentation> result = client.update(audience);
 		assertThat(result).accepted().withResponseCode(200);
 
 		AudienceRepresentation updated = result.getInstance();
@@ -90,7 +94,7 @@ public class AudiencesEndpointAcceptanceTest extends AcceptanceTest {
 		AudienceRepresentation audience = audience().thatIs().persistent(token).build();
 		audience.setName("");
 
-		Result<AudienceRepresentation> result = client.update(audience, token.getAccessToken());
+		Result<AudienceRepresentation> result = client.update(audience);
 		assertThat(result).rejected().withResponseCode(422).withCode("AUD-0001").withMessage("An audience name is required.");
 	}
 
@@ -100,7 +104,7 @@ public class AudiencesEndpointAcceptanceTest extends AcceptanceTest {
 		AudienceRepresentation audience = audience().thatIs().persistent(token).build();
 		audience.setName(existing.getName());
 
-		Result<AudienceRepresentation> result = client.update(audience, token.getAccessToken());
+		Result<AudienceRepresentation> result = client.update(audience);
 		assertThat(result).rejected().withResponseCode(409).withCode("AUD-0003").withMessage("This audience name is already in use.");
 	}
 
@@ -108,10 +112,10 @@ public class AudiencesEndpointAcceptanceTest extends AcceptanceTest {
 	public void shouldBeAbleToDeleteAnAudience() {
 		AudienceRepresentation audience = audience().thatIs().persistent(token).build();
 
-		Result<AudienceRepresentation> result = client.delete(audience.getId(), token.getAccessToken());
+		Result<AudienceRepresentation> result = client.delete(audience.getId());
 		assertThat(result).accepted().withResponseCode(204);
 
-		assertThat(client.findById(audience.getId(), token.getAccessToken())).rejected().withResponseCode(404);
+		assertThat(client.findById(audience.getId())).rejected().withResponseCode(404);
 	}
 
 	@Test
@@ -119,7 +123,7 @@ public class AudiencesEndpointAcceptanceTest extends AcceptanceTest {
 		AudienceRepresentation audience = audience().thatIs().persistent(token).build();
 		client().withAudiences(audience).withGrantTypes("password", "refresh_token").thatIs().persistent(token).build();
 
-		Result<AudienceRepresentation> result = client.delete(audience.getId(), token.getAccessToken());
+		Result<AudienceRepresentation> result = client.delete(audience.getId());
 		assertThat(result).rejected().withResponseCode(409).withCode("AUD-0005").withMessage("This audience cannot be deleted, 1 client is linked to this audience.");
 	}
 
@@ -127,14 +131,14 @@ public class AudiencesEndpointAcceptanceTest extends AcceptanceTest {
 	public void shouldBeAbleToFindAnAudienceById() {
 		AudienceRepresentation audience = audience().thatIs().persistent(token).build();
 
-		Result<AudienceRepresentation> result = client.findById(audience.getId(), token.getAccessToken());
+		Result<AudienceRepresentation> result = client.findById(audience.getId());
 		assertThat(result).accepted().withResponseCode(200);
 		assertThat(result.getInstance()).isEqualToComparingFieldByField(audience);
 	}
 
 	@Test
 	public void shouldReturnA404WhenAnAudienceWithTheSpecifiedIdCannotBeFound() {
-		Result<AudienceRepresentation> result = client.findById("aud_123", token.getAccessToken());
+		Result<AudienceRepresentation> result = client.findById("aud_123");
 		assertThat(result).rejected().withResponseCode(404).withMessage("No such audience id: aud_123");
 	}
 
@@ -142,14 +146,14 @@ public class AudiencesEndpointAcceptanceTest extends AcceptanceTest {
 	public void shouldBeAbleToFindAnAudienceByName() {
 		AudienceRepresentation audience = audience().thatIs().persistent(token).build();
 
-		Result<AudienceRepresentation> result = client.findByName(audience.getName(), token.getAccessToken());
+		Result<AudienceRepresentation> result = client.findByName(audience.getName());
 		assertThat(result).accepted().withResponseCode(200);
 		assertThat(result.getInstance()).isEqualToComparingFieldByField(audience);
 	}
 
 	@Test
 	public void shouldReturnA404WhenAnAudienceWithTheSpecifiedNameCannotBeFound() {
-		Result<AudienceRepresentation> result = client.findByName("rol_123", token.getAccessToken());
+		Result<AudienceRepresentation> result = client.findByName("rol_123");
 		assertThat(result).rejected().withResponseCode(404).withMessage("No such audience name: rol_123");
 	}
 
