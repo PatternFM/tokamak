@@ -15,6 +15,7 @@ import fm.pattern.tokamak.sdk.JwtClientProperties;
 import fm.pattern.tokamak.sdk.commons.Result;
 import fm.pattern.tokamak.sdk.model.AccessTokenRepresentation;
 import fm.pattern.tokamak.sdk.model.GrantTypeRepresentation;
+import fm.pattern.tokamak.sdk.model.GrantTypesRepresentation;
 
 public class GrantTypesEndpointAcceptanceTest extends AcceptanceTest {
 
@@ -59,6 +60,13 @@ public class GrantTypesEndpointAcceptanceTest extends AcceptanceTest {
 	public void shouldReturnA404WhenAGrantTypeWithTheSpecifiedNameCannotBeFound() {
 		Result<GrantTypeRepresentation> result = client.findByName("gnt_123", token.getAccessToken());
 		assertThat(result).rejected().withResponseCode(404).withMessage("No such grant type name: gnt_123");
+	}
+
+	@Test
+	public void shouldBeAbleToListGrantTypes() {
+		Result<GrantTypesRepresentation> result = client.list(token.getAccessToken());
+		assertThat(result).accepted().withResponseCode(200);
+		assertThat(result.getInstance().getGrantTypes().size()).isEqualTo(5);
 	}
 
 }

@@ -2,9 +2,12 @@ package fm.pattern.jwt.spec.endpoints;
 
 import static fm.pattern.jwt.spec.PatternAssertions.assertThat;
 import static fm.pattern.tokamak.sdk.dsl.AccessTokenDSL.token;
+import static fm.pattern.tokamak.sdk.dsl.AuthorityDSL.authority;
 import static fm.pattern.tokamak.sdk.dsl.ClientDSL.client;
 import static fm.pattern.tokamak.sdk.dsl.ScopeDSL.scope;
 import static org.assertj.core.api.Assertions.assertThat;
+
+import java.util.stream.IntStream;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Before;
@@ -16,6 +19,7 @@ import fm.pattern.tokamak.sdk.ScopesClient;
 import fm.pattern.tokamak.sdk.commons.Result;
 import fm.pattern.tokamak.sdk.model.AccessTokenRepresentation;
 import fm.pattern.tokamak.sdk.model.ScopeRepresentation;
+import fm.pattern.tokamak.sdk.model.ScopesRepresentation;
 
 public class ScopesEndpointAcceptanceTest extends AcceptanceTest {
 
@@ -150,10 +154,13 @@ public class ScopesEndpointAcceptanceTest extends AcceptanceTest {
 		assertThat(result).rejected().withResponseCode(404).withMessage("No such scope name: scp_123");
 	}
 
-	// TODO: Add tests.
 	@Test
 	public void shouldBeAbleToListScopes() {
+		IntStream.range(1, 5).forEach(i -> authority().withToken(token).thatIs().persistent().build());
 
+		Result<ScopesRepresentation> result = client.list(token.getAccessToken());
+		assertThat(result).accepted().withResponseCode(200);
+		assertThat(result.getInstance().getScopes().size()).isGreaterThanOrEqualTo(5);
 	}
 
 }

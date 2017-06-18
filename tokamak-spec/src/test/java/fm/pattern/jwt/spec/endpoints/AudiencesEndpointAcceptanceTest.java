@@ -6,6 +6,8 @@ import static fm.pattern.tokamak.sdk.dsl.AudienceDSL.audience;
 import static fm.pattern.tokamak.sdk.dsl.ClientDSL.client;
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.stream.IntStream;
+
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Before;
 import org.junit.Test;
@@ -16,6 +18,7 @@ import fm.pattern.tokamak.sdk.JwtClientProperties;
 import fm.pattern.tokamak.sdk.commons.Result;
 import fm.pattern.tokamak.sdk.model.AccessTokenRepresentation;
 import fm.pattern.tokamak.sdk.model.AudienceRepresentation;
+import fm.pattern.tokamak.sdk.model.AudiencesRepresentation;
 
 public class AudiencesEndpointAcceptanceTest extends AcceptanceTest {
 
@@ -150,10 +153,13 @@ public class AudiencesEndpointAcceptanceTest extends AcceptanceTest {
 		assertThat(result).rejected().withResponseCode(404).withMessage("No such audience name: rol_123");
 	}
 
-	// TODO: Implement test.
 	@Test
 	public void shouldBeAbleToListAudiences() {
-		
+		IntStream.range(1, 5).forEach(i -> audience().withToken(token).thatIs().persistent().build());
+
+		Result<AudiencesRepresentation> result = client.list(token.getAccessToken());
+		assertThat(result).accepted().withResponseCode(200);
+		assertThat(result.getInstance().getAudiences().size()).isGreaterThanOrEqualTo(5);
 	}
-	
+
 }

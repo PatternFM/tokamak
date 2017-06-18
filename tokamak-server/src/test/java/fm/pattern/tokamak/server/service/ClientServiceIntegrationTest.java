@@ -4,9 +4,12 @@ import static fm.pattern.tokamak.server.PatternAssertions.assertThat;
 import static fm.pattern.tokamak.server.dsl.ClientDSL.client;
 import static fm.pattern.tokamak.server.dsl.GrantTypeDSL.grantType;
 import static fm.pattern.tokamak.server.dsl.ScopeDSL.scope;
+import static fm.pattern.tokamak.server.pagination.Criteria.criteria;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.HashSet;
+import java.util.List;
+import java.util.stream.IntStream;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -101,7 +104,7 @@ public class ClientServiceIntegrationTest extends IntegrationTest {
 
 		Result<Client> result = clientService.update(client);
 		assertThat(result).rejected().withError("CLI-0006", "A client requires at least one grant type.", UnprocessableEntityException.class);
-	
+
 		Client unmodified = clientService.findById(client.getId()).getInstance();
 		assertThat(unmodified.getGrantTypes()).hasSize(1);
 		assertThat(unmodified.getGrantTypes()).containsExactly(grantType);
@@ -142,6 +145,20 @@ public class ClientServiceIntegrationTest extends IntegrationTest {
 	@Test
 	public void shouldNotBeAbleToFindAClientByClienIdIfTheClientIdDoesNotExist() {
 		assertThat(clientService.findByClientId("csrx")).rejected().withError("CLI-0009", "No such client id: csrx", EntityNotFoundException.class);
+	}
+
+	@Test
+	public void shouldBeAbleToListClients() {
+		IntStream.range(1, 5).forEach(i -> client().withGrantType(grantType).thatIs().persistent().build());
+
+		Result<List<Client>> result = clientService.list(criteria());
+		assertThat(result).accepted();
+
+		List<Client> clients = result.getInstance();
+		assertThat(clients.size()).isGreaterThanOrEqualTo(5);
+
+		assertThat(clientService.list(criteria().limit(1)).getInstance().size()).isEqualTo(1);
+		assertThat(clientService.list(criteria().limit(1).page(3)).getInstance().size()).isEqualTo(1);
 	}
 
 }

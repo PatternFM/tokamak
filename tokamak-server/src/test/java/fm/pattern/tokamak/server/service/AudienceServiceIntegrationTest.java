@@ -194,7 +194,7 @@ public class AudienceServiceIntegrationTest extends IntegrationTest {
 
 		Result<List<Audience>> result = audienceService.findExistingById(ids);
 		assertThat(result).accepted();
+
 		assertThat(result.getInstance()).isEmpty();
 	}
-
 }

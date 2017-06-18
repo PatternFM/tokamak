@@ -6,6 +6,8 @@ import static fm.pattern.tokamak.sdk.dsl.AccountDSL.account;
 import static fm.pattern.tokamak.sdk.dsl.RoleDSL.role;
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.stream.IntStream;
+
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Before;
 import org.junit.Test;
@@ -16,6 +18,7 @@ import fm.pattern.tokamak.sdk.RolesClient;
 import fm.pattern.tokamak.sdk.commons.Result;
 import fm.pattern.tokamak.sdk.model.AccessTokenRepresentation;
 import fm.pattern.tokamak.sdk.model.RoleRepresentation;
+import fm.pattern.tokamak.sdk.model.RolesRepresentation;
 
 public class RolesEndpointAcceptanceTest extends AcceptanceTest {
 
@@ -150,10 +153,13 @@ public class RolesEndpointAcceptanceTest extends AcceptanceTest {
 		assertThat(result).rejected().withResponseCode(404).withMessage("No such role name: rol_123");
 	}
 
-	// TODO: Implement test.
 	@Test
 	public void shouldBeAbleToListRoles() {
-		
+		IntStream.range(1, 5).forEach(i -> role().withToken(token).thatIs().persistent().build());
+
+		Result<RolesRepresentation> result = client.list(token.getAccessToken());
+		assertThat(result).accepted().withResponseCode(200);
+		assertThat(result.getInstance().getRoles().size()).isGreaterThanOrEqualTo(5);
 	}
-	
+
 }
