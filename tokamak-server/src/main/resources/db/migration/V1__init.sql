@@ -25,6 +25,7 @@ CREATE TABLE Clients (
   client_id varchar(128) NOT NULL,
   client_secret varchar(255) NOT NULL,
   name varchar(50),
+  redirect_uri varchar(255),
   access_token_validity_seconds int(11) unsigned,
   refresh_token_validity_seconds int(11) unsigned,
   KEY(_id),

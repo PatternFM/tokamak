@@ -1,5 +1,7 @@
 package fm.pattern.tokamak.server.dsl;
 
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
+
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
@@ -22,6 +24,7 @@ public class ClientDSL extends AbstractDSL<ClientDSL, Client> {
 	private Set<GrantType> grantTypes = new HashSet<GrantType>();
 	private Set<Scope> scopes = new HashSet<>();
 	private String name;
+	private String redirectUri;
 
 	private Integer accessTokenValiditySeconds = 600;
 	private Integer refreshTokenValiditySeconds = 3600;
@@ -43,6 +46,11 @@ public class ClientDSL extends AbstractDSL<ClientDSL, Client> {
 
 	public ClientDSL withName(String name) {
 		this.name = name;
+		return this;
+	}
+
+	public ClientDSL withRedirectUri(String redirectUri) {
+		this.redirectUri = redirectUri;
 		return this;
 	}
 
@@ -81,6 +89,11 @@ public class ClientDSL extends AbstractDSL<ClientDSL, Client> {
 		client.setAccessTokenValiditySeconds(accessTokenValiditySeconds);
 		client.setRefreshTokenValiditySeconds(refreshTokenValiditySeconds);
 		client.setName(name);
+
+		if (isNotBlank(redirectUri)) {
+			client.setRedirectUri(redirectUri);
+		}
+
 		return shouldPersist() ? persist(client) : client;
 	}
 

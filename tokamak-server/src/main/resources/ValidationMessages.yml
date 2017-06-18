@@ -135,6 +135,10 @@ client.clientId.not_found:
   code: CLI-0009
   exception: fm.pattern.valex.EntityNotFoundException
 
+client.redirect_uri.size:
+  message: "A client redirect URI must be less than {max} characters."
+  code: CLI-0010
+
 
 grantType.id.required:
   message: "The grant type id to retrieve cannot be null or empty."

@@ -137,7 +137,6 @@ public class ClientServiceIntegrationTest extends IntegrationTest {
 	@Test
 	public void shouldNotBeAbleToFindAClientByClientIdIfTheClientIdIsNullOrEmpty() {
 		assertThat(clientService.findByClientId(null)).rejected().withError("CLI-0001", "A client id is required.", UnprocessableEntityException.class);
-		;
 		assertThat(clientService.findByClientId("")).rejected().withError("CLI-0001", "A client id is required.", UnprocessableEntityException.class);
 		assertThat(clientService.findByClientId("  ")).rejected().withError("CLI-0001", "A client id is required.", UnprocessableEntityException.class);
 	}
@@ -149,7 +148,7 @@ public class ClientServiceIntegrationTest extends IntegrationTest {
 
 	@Test
 	public void shouldBeAbleToListClients() {
-		IntStream.range(1, 5).forEach(i -> client().withGrantType(grantType).thatIs().persistent().build());
+		IntStream.range(0, 5).forEach(i -> client().withGrantType(grantType).thatIs().persistent().build());
 
 		Result<List<Client>> result = clientService.list(criteria());
 		assertThat(result).accepted();

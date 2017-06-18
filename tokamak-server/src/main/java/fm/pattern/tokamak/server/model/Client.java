@@ -94,6 +94,12 @@ public class Client extends PersistentEntity {
 
 	@Getter
 	@Setter
+	@Size(max = 255, message = "{client.redirect_uri.size}", groups = { CreateLevel1.class, UpdateLevel1.class })
+	@Column(name = "redirect_uri")
+	private String redirectUri;
+
+	@Getter
+	@Setter
 	@Column(name = "access_token_validity_seconds")
 	private Integer accessTokenValiditySeconds;
 
