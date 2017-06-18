@@ -5,6 +5,7 @@ import AppTable from "./AppTable.jsx";
 class ViewApps extends React.Component {
 
     render() {
+        console.log("HAVE " + this.props.apps.length + " apps");
         return (
             <div className="animated fadeIn">
             {this.props.apps && this.props.apps.length > 0  &&

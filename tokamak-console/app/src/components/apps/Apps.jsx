@@ -22,7 +22,7 @@ class Apps extends React.Component {
         this.setState({ loading:true });
         ClientService.list().then((result) => {
             if(result.status === "accepted") {
-                this.setState({ apps: result.instance.apps }, function() { });
+                this.setState({ apps: result.instance.payload }, function() { });
             }
             else {
                 this.setState({ error:result.errors[0] });

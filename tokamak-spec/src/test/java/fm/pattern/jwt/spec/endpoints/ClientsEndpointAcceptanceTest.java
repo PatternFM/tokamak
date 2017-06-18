@@ -1,6 +1,7 @@
 package fm.pattern.jwt.spec.endpoints;
 
 import static fm.pattern.jwt.spec.PatternAssertions.assertThat;
+import static fm.pattern.tokamak.sdk.commons.CriteriaRepresentation.criteria;
 import static fm.pattern.tokamak.sdk.dsl.AccessTokenDSL.token;
 import static fm.pattern.tokamak.sdk.dsl.AudienceDSL.audience;
 import static fm.pattern.tokamak.sdk.dsl.AuthorityDSL.authority;
@@ -8,12 +9,15 @@ import static fm.pattern.tokamak.sdk.dsl.ClientDSL.client;
 import static fm.pattern.tokamak.sdk.dsl.ScopeDSL.scope;
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.stream.IntStream;
+
 import org.junit.Before;
 import org.junit.Test;
 
 import fm.pattern.jwt.spec.AcceptanceTest;
 import fm.pattern.tokamak.sdk.ClientsClient;
 import fm.pattern.tokamak.sdk.JwtClientProperties;
+import fm.pattern.tokamak.sdk.commons.PaginatedListRepresentation;
 import fm.pattern.tokamak.sdk.commons.Result;
 import fm.pattern.tokamak.sdk.model.AccessTokenRepresentation;
 import fm.pattern.tokamak.sdk.model.AudienceRepresentation;
@@ -156,6 +160,19 @@ public class ClientsEndpointAcceptanceTest extends AcceptanceTest {
 	public void shouldReturnA404WhenAnClientWithTheSpecifiedIdCannotBeFound() {
 		Result<ClientRepresentation> response = clientsClient.findById("abcdefg", token.getAccessToken());
 		assertThat(response).rejected().withResponseCode(404).withMessage("No such client id: abcdefg");
+	}
+
+	@Test
+	public void shouldBeAbleToListClients() {
+		IntStream.range(1, 5).forEach(i -> client().withGrantTypes("password", "refresh_token").withToken(token).thatIs().persistent().build());
+
+		Result<PaginatedListRepresentation<ClientRepresentation>> result = clientsClient.list(criteria(), token.getAccessToken());
+		assertThat(result).accepted().withResponseCode(200);
+		assertThat(result.getInstance().getPayload().size()).isGreaterThanOrEqualTo(5);
+		assertThat(result.getInstance().getCriteria().getPage()).isNotNull();
+		assertThat(result.getInstance().getCriteria().getLimit()).isNotNull();
+
+		assertThat(clientsClient.list(criteria().limit(1).page(4), token.getAccessToken()).getInstance().getPayload()).hasSize(1);
 	}
 
 }

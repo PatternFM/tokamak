@@ -16,24 +16,31 @@
 
 package fm.pattern.tokamak.server.endpoints;
 
+import static fm.pattern.tokamak.server.pagination.Criteria.criteria;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.web.bind.annotation.RequestMethod.DELETE;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 import static org.springframework.web.bind.annotation.RequestMethod.PUT;
 
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import fm.pattern.tokamak.authorization.Authorize;
+import fm.pattern.tokamak.sdk.commons.PaginatedListRepresentation;
 import fm.pattern.tokamak.sdk.model.ClientRepresentation;
 import fm.pattern.tokamak.server.conversion.ClientConversionService;
+import fm.pattern.tokamak.server.conversion.PaginatedListConversionService;
 import fm.pattern.tokamak.server.model.Client;
+import fm.pattern.tokamak.server.pagination.PaginatedList;
 import fm.pattern.tokamak.server.service.ClientService;
 
 @RestController
@@ -41,11 +48,13 @@ public class ClientsEndpoint extends Endpoint {
 
 	private final ClientService clientService;
 	private final ClientConversionService clientConversionService;
+	private final PaginatedListConversionService paginatedListConversionService;
 
 	@Autowired
-	public ClientsEndpoint(ClientService clientService, ClientConversionService clientConversionService) {
+	public ClientsEndpoint(ClientService clientService, ClientConversionService clientConversionService, PaginatedListConversionService paginatedListConversionService) {
 		this.clientService = clientService;
 		this.clientConversionService = clientConversionService;
+		this.paginatedListConversionService = paginatedListConversionService;
 	}
 
 	@Authorize(scopes = "clients:create")
@@ -77,6 +86,14 @@ public class ClientsEndpoint extends Endpoint {
 	@RequestMapping(value = "/v1/clients/{id}", method = GET, produces = APPLICATION_JSON_VALUE)
 	public ClientRepresentation findById(@PathVariable String id) {
 		return clientConversionService.convert(clientService.findById(id).orThrow());
+	}
+
+	@Authorize(scopes = "clients:read")
+	@RequestMapping(value = "/v1/clients", method = GET, produces = APPLICATION_JSON_VALUE)
+	public PaginatedListRepresentation<ClientRepresentation> list(@RequestParam(required = false) Integer page, @RequestParam(required = false) Integer limit) {
+		PaginatedList<Client> clients = (PaginatedList<Client>) clientService.list(criteria().page(page).limit(limit)).orThrow();
+		PaginatedListRepresentation<ClientRepresentation> representation = paginatedListConversionService.convert(clients, ClientRepresentation.class);
+		return representation.withPayload(clients.stream().map(a -> clientConversionService.convert(a)).collect(Collectors.toList()));
 	}
 
 }

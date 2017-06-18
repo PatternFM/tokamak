@@ -178,13 +178,17 @@ public class AccountsEndpointAcceptanceTest extends AcceptanceTest {
 		assertThat(response).rejected().withResponseCode(404).withMessage("No such username: abcdefg");
 	}
 
-	// TODO: Complete test implementation.
 	@Test
 	public void shouldBeAbleToListAccounts() {
 		IntStream.range(1, 5).forEach(i -> account().withToken(token).thatIs().persistent().build());
 
 		Result<PaginatedListRepresentation<AccountRepresentation>> result = accountsClient.list(criteria(), token.getAccessToken());
 		assertThat(result).accepted().withResponseCode(200);
+		assertThat(result.getInstance().getPayload().size()).isGreaterThanOrEqualTo(5);
+		assertThat(result.getInstance().getCriteria().getPage()).isNotNull();
+		assertThat(result.getInstance().getCriteria().getLimit()).isNotNull();
+		
+		assertThat(accountsClient.list(criteria().limit(1).page(4), token.getAccessToken()).getInstance().getPayload()).hasSize(1);
 	}
 
 }

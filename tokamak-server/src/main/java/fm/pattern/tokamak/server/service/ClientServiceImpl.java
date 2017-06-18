@@ -18,6 +18,9 @@ package fm.pattern.tokamak.server.service;
 
 import static org.apache.commons.lang3.StringUtils.isBlank;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,12 +28,15 @@ import org.springframework.transaction.annotation.Transactional;
 import fm.pattern.minimal.JSON;
 import fm.pattern.tokamak.server.model.Client;
 import fm.pattern.tokamak.server.model.SerializedClient;
+import fm.pattern.tokamak.server.pagination.Criteria;
+import fm.pattern.tokamak.server.pagination.PaginatedList;
 import fm.pattern.tokamak.server.repository.SerializedClientRepository;
 import fm.pattern.tokamak.server.security.PasswordEncodingService;
 import fm.pattern.valex.Reportable;
 import fm.pattern.valex.Result;
 
 @Service
+@SuppressWarnings("unchecked")
 class ClientServiceImpl extends DataServiceImpl<Client> implements ClientService {
 
 	private final PasswordEncodingService passwordEncodingService;
@@ -102,6 +108,14 @@ class ClientServiceImpl extends DataServiceImpl<Client> implements ClientService
 		}
 
 		return Result.reject(result.getErrors().toArray(new Reportable[result.getErrors().size()]));
+	}
+
+	@Transactional(readOnly = true)
+	public Result<List<Client>> list(Criteria criteria) {
+		Long count = super.count(super.query("select count(client.id) from SerializedClients client"));
+		List<SerializedClient> data = super.query("from SerializedClients order by created desc").setFirstResult(criteria.getFirstResult()).setMaxResults(criteria.getLimit()).getResultList();
+		List<Client> clients = data.stream().map(d -> JSON.parse(d.getPayload(), Client.class)).collect(Collectors.toList());
+		return Result.accept((List<Client>) new PaginatedList<Client>(clients, count.intValue(), criteria));
 	}
 
 }

@@ -1,5 +1,7 @@
 package fm.pattern.tokamak.server.model;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -23,6 +25,11 @@ public class SerializedClient {
 
 	@Getter
 	@Setter
+	@Column(name = "created", nullable = false)
+	private Date created;
+
+	@Getter
+	@Setter
 	@Column(name = "payload", nullable = false)
 	private String payload;
 
@@ -30,9 +37,10 @@ public class SerializedClient {
 
 	}
 
-	public SerializedClient(String id, String clientId, String payload) {
+	public SerializedClient(String id, String clientId, Date created, String payload) {
 		this.id = id;
 		this.clientId = clientId;
+		this.created = created;
 		this.payload = payload;
 	}
 

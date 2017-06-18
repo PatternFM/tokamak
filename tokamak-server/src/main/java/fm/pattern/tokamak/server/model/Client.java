@@ -147,7 +147,7 @@ public class Client extends PersistentEntity {
 	}
 
 	public SerializedClient serialize() {
-		return new SerializedClient(getId(), getClientId(), this.toString());
+		return new SerializedClient(getId(), getClientId(), getCreated(), this.toString());
 	}
 
 	public int hashCode() {

@@ -16,7 +16,10 @@
 
 package fm.pattern.tokamak.server.service;
 
+import java.util.List;
+
 import fm.pattern.tokamak.server.model.Client;
+import fm.pattern.tokamak.server.pagination.Criteria;
 import fm.pattern.valex.Result;
 import fm.pattern.valex.annotations.Create;
 import fm.pattern.valex.annotations.Delete;
@@ -27,11 +30,13 @@ public interface ClientService {
 	Result<Client> create(@Create Client client);
 
 	Result<Client> update(@Update Client client);
-	
+
 	Result<Client> delete(@Delete Client client);
 
 	Result<Client> findById(String id);
 
 	Result<Client> findByClientId(String clientId);
+
+	Result<List<Client>> list(Criteria criteria);
 
 }
