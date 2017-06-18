@@ -5,11 +5,11 @@ import AudienceTable from "./AudienceTable.jsx";
 class ViewAudiences extends React.Component {
 
     render() {
-        console.log("audiences? " + this.props.audiences);
+        let moreThanOneResult = this.props.audiences && this.props.audiences.length > 0;
         
         return (
             <div className="animated fadeIn">
-            {this.props.audiences && this.props.audiences.length > 0 &&
+            {moreThanOneResult &&
               <MuiThemeProvider>
                 <div>
                   <div id="header"><div className="title">App Audiences</div></div>
@@ -19,7 +19,7 @@ class ViewAudiences extends React.Component {
                 </div>
               </MuiThemeProvider>
             }
-            {!this.props.audiences || this.props.audiences.length === 0 &&
+            {!moreThanOneResult &&
               <div className="error-page">
                 <h2 className="error-title">You haven't created any audiences yet</h2>
                 <button className="tok-button center margin-top-50">Create Audience</button>

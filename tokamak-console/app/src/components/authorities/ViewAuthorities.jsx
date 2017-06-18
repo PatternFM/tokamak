@@ -5,9 +5,11 @@ import AuthorityTable from "./AuthorityTable.jsx";
 class ViewAuthorities extends React.Component {
 
     render() {
+        let moreThanOneResult = this.props.authorities && this.props.authorities.length > 0;
+        
         return (
             <div className="animated fadeIn">
-            {this.props.authorities && this.props.authorities.length > 0 &&
+            {moreThanOneResult &&
               <MuiThemeProvider>
                 <div>
                   <div id="header"><div className="title">App Authorities</div></div>
@@ -17,7 +19,7 @@ class ViewAuthorities extends React.Component {
                 </div>
               </MuiThemeProvider>
             }
-            {!this.props.authorities || this.props.authorities.length === 0 &&
+            {!moreThanOneResult &&
               <div className="error-page">
                 <h2 className="error-title">You haven't created any authorities yet</h2>
                 <button className="tok-button center margin-top-50">Create Authority</button>

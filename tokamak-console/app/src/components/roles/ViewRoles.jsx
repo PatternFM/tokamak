@@ -5,9 +5,11 @@ import RoleTable from "./RoleTable.jsx";
 class ViewRoles extends React.Component {
 
     render() {
+        let moreThanOneResult = this.props.roles && this.props.roles.length > 0;
+        
         return (
             <div className="animated fadeIn">
-            {this.props.roles && this.props.roles.length > 0 &&
+            {moreThanOneResult &&
               <MuiThemeProvider>
                 <div>
                   <div id="header"><div className="title">Account Roles</div></div>
@@ -17,7 +19,7 @@ class ViewRoles extends React.Component {
                 </div>
               </MuiThemeProvider>
             }
-            {!this.props.roles || this.props.roles.length === 0 &&
+            {moreThanOneResult &&
               <div className="error-page">
                 <h2 className="error-title">You haven't created any roles yet</h2>
                 <button className="tok-button center margin-top-50">Create Role</button>

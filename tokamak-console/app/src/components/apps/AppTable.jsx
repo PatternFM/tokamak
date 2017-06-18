@@ -12,7 +12,7 @@ class AppTable extends React.Component {
                 <Table className="display-table" showCheckboxes={false} selectable={false}>
                   <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
                     <TableRow>
-                      <TableHeaderColumn className="dth left-pad-0">App ID</TableHeaderColumn>
+                      <TableHeaderColumn className="dth left-pad-0">Client ID</TableHeaderColumn>
                       <TableHeaderColumn className="dth">Name</TableHeaderColumn>
                       <TableHeaderColumn className="dth right-pad-0">Created</TableHeaderColumn>
                     </TableRow>

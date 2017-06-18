@@ -5,10 +5,11 @@ import AppTable from "./AppTable.jsx";
 class ViewApps extends React.Component {
 
     render() {
-        console.log("HAVE " + this.props.apps.length + " apps");
+        let moreThanOneResult = this.props.apps && this.props.apps.length > 0;
+        
         return (
             <div className="animated fadeIn">
-            {this.props.apps && this.props.apps.length > 0  &&
+            {moreThanOneResult  &&
               <MuiThemeProvider>
                 <div>
                   <div id="header"><div className="title">Apps</div></div>
@@ -18,7 +19,7 @@ class ViewApps extends React.Component {
                 </div>
               </MuiThemeProvider>
             }
-            {!this.props.apps || this.props.apps.length === 0 &&
+            {!moreThanOneResult &&
               <div className="error-page">
                 <h2 className="error-title">You haven't created any apps yet</h2>
                 <button className="tok-button center margin-top-50">Create App</button>

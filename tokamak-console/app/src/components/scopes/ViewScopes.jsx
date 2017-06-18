@@ -5,9 +5,11 @@ import ScopeTable from "./ScopeTable.jsx";
 class ViewScopes extends React.Component {
 
     render() {
+        let moreThanOneResult = this.props.scopes && this.props.scopes.length > 0;
+                
         return (
             <div className="animated fadeIn">
-            {this.props.scopes && this.props.scopes.length > 0  &&
+            {moreThanOneResult  &&
               <MuiThemeProvider>
                 <div>
                   <div id="header"><div className="title">App Scopes</div></div>
@@ -17,7 +19,7 @@ class ViewScopes extends React.Component {
                 </div>
               </MuiThemeProvider>
             }
-            {!this.props.scopes || this.props.scopes.length === 0 &&
+            {!moreThanOneResult &&
               <div className="error-page">
                 <h2 className="error-title">You haven't created any scopes yet</h2>
                 <button className="tok-button center margin-top-50">Create Scope</button>
