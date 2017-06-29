@@ -20,7 +20,6 @@
 }
 
 #lg-container:after {
-    /* background:rgba(0, 0, 0, 0.5); */
     content: "";
     position: fixed;
     width: 100%;
@@ -28,19 +27,26 @@
 }
 
 #login-title {
-	font-family: 'Raleway'; 
-	letter-spacing: 0.6px;
+	font-family: "Helvetica Neue"; 
+	letter-spacing: 1.2px;
 	text-transform: uppercase;
-	font-size: 26px; 
-	padding-top: 60px;
-	padding-bottom: 50px;  
+	font-size: 24px; 
+	font-weight: 200;
+	padding-top: 35px;
+	padding-bottom: 35px;
+	margin-bottom: 55px;
+	background: #FAFAFA;  
+	border-top-left-radius: 4px;
+	border-top-right-radius: 4px;
 }
 
 .login-error {
-	font-family: "Roboto";
+	font-family: "Helvetica Neue", "Helvetica", "Sans Serif";
 	font-size: 17px;
 	color: #E25454;
-	margin-top: 35px;
+	-webkit-font-smoothing: antialiased;
+    margin-bottom: 35px;
+    margin-top: -25px;
 }
 
 #login-form {
@@ -67,49 +73,61 @@
 	width: 350px;
 	border: none;
 	border-radius: 4px;
-	background: #EEE;
+	background: #F2F2F2;
 	padding: 5px 15px;
 	margin-bottom: 10px;
 	height: 45px;
 	font-size: 16px;
-	font-family: "Raleway";
+	font-family: "Helvetica Neue", "Helvetica", "Sans Serif";
+	color: #585858;
 	transition: all 400ms;
 	-webkit-transition: all 400ms;
+	-webkit-font-smoothing: antialiased;
 }
 
 #login-form .login-textfield:focus {
-    background: #a8ffdd;
+    background: #E2E2E2;
 }
 
 #login-form input[type="submit"], #login-form button {
+  margin-top: 5px;
   border-radius: 3px;
   -moz-border-radius: 3px;
   -webkit-border-radius: 3px;
-  background: #222;
-  color: #eee;
-  font-weight: bold;
-  margin-top: 5px;
+  padding: 0 40px 0 40px;
+  background: #E40000;
+  color: #EEE;
   text-transform: uppercase;
-  width: 350px;
   height: 50px;
-  -webkit-transition: all 400ms; 
-  transition: all 400ms; 
-  letter-spacing: 0.5px;
+  -webkit-font-smoothing: antialiased;
+  -webkit-transition: all 250ms; 
+  transition: all 250ms; 
+  letter-spacing: 1.1px;
+  font-weight: 200;
 }
 
 #login-form input[type="submit"]:hover, #login-form button:hover {
-  background-color: #000;
+  background: #D20000;
   cursor: pointer;
 }
 
 #login-form input:disabled {
-    background: #333333;
-    color: #DDD;
+    background: #E40000;
+    color: #FFF;
     cursor: not-allowed;
 }
 
 #login-form input:disabled:hover {
-    background: #333333 !important;
-    color: #DDD !important;
+    background: #E40000 !important;
+    color: #FFF !important;
     cursor: not-allowed !important;
+}
+
+.loading-content {
+	text-transform: uppercase;
+	-webkit-font-smoothing: antialiased;
+	color: #444;
+	font-size: 17px;
+	letter-spacing: 1.0px;
+	font-weight: 200;
 }

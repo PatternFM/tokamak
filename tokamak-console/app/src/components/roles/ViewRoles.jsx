@@ -19,7 +19,7 @@ class ViewRoles extends React.Component {
                 </div>
               </MuiThemeProvider>
             }
-            {moreThanOneResult &&
+            {!moreThanOneResult &&
               <div className="error-page">
                 <h2 className="error-title">You haven't created any roles yet</h2>
                 <button className="tok-button center margin-top-50">Create Role</button>

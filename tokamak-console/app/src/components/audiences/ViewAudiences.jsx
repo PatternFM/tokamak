@@ -1,11 +1,12 @@
 import React from "react";
 import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
 import AudienceTable from "./AudienceTable.jsx";
+import { NavLink } from "react-router-dom";
 
 class ViewAudiences extends React.Component {
 
     render() {
-        let moreThanOneResult = this.props.audiences && this.props.audiences.length > 0;
+        let moreThanOneResult = this.props.audiences.length > 0;
         
         return (
             <div className="animated fadeIn">
@@ -21,8 +22,10 @@ class ViewAudiences extends React.Component {
             }
             {!moreThanOneResult &&
               <div className="error-page">
-                <h2 className="error-title">You haven't created any audiences yet</h2>
-                <button className="tok-button center margin-top-50">Create Audience</button>
+                <h2 className="error-title">App Audiences</h2>
+                <p className="simple-message">The <em>audience</em> or "aud" claim in a JWT defines the intended recipients of a token. Since it's an optional claim, you don't need to define an audience for your oauth apps. <NavLink to="/help">Learn more about audiences.</NavLink></p>
+                <br/><br/>
+                <button className="tok-button center">Create Audience</button>
               </div>
             }
             </div>

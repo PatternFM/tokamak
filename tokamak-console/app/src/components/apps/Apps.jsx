@@ -32,14 +32,14 @@ class Apps extends React.Component {
     }
 
     render() {
-        let output = this.state.error != null ? <ApplicationError error={this.state.error} /> : <ViewApps apps={this.state.apps} />;
-        let render = this.state.loading ? <Loader /> : output;
+        let page = this.state.error != null ? <ApplicationError error={this.state.error} /> : <ViewApps apps={this.state.apps} />;
+        let output = this.state.loading ? <Loader /> : page;
         
         return (
             <Layout>
                 <MuiThemeProvider>
                    <div className="content-holder">
-                      {render}
+                      {output}
                    </div>
                 </MuiThemeProvider>
             </Layout>

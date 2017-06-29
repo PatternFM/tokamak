@@ -8,6 +8,7 @@ import AuthenticationService from "./services/AuthenticationService"
 import layout from "./css/layout.css";
 import login from "./css/login.css";
 import animate from "./css/animate.css";
+import spinner from "./css/spinner.css";
 
 import Login from "./components/login/Login.jsx";
 import Logout from "./components/logout/Logout.jsx";

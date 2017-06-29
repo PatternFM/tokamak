@@ -25,13 +25,12 @@ button:focus {
 }
 
 body {
-  background: #2c3338;
+  background: url("/background.png") repeat scroll 0 0;
   color: #343456;
   margin: 0;
   padding: 0;
   overflow-y: auto !important;
   overflow-x: hidden !important;
-  background: #EEE;
 }
 
 p {
@@ -117,7 +116,7 @@ p {
 }
 
 #login-form .login-textfield:focus {
-	background: #daf7fb;
+	background: #a8ffdd;
 }
 
 #login-form input[type="submit"] {

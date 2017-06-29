@@ -95,14 +95,14 @@ public class AuthorizationServerConfiguration {
 	@EnableAuthorizationServer
 	protected static class OAuth2Config extends AuthorizationServerConfigurerAdapter {
 
-		@Value("${oauth2.audience}")
-		private String audience;
-
 		@Value("${oauth2.privateKey}")
 		private String privateKey;
 
 		@Value("${oauth2.publicKey}")
 		private String publicKey;
+
+		@Value("${oauth2.audience}")
+		private String audience;
 
 		@Value("${oauth2.accessTokenValiditySeconds}")
 		private Integer accessTokenValiditySeconds;

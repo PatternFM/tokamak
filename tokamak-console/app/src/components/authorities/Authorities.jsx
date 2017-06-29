@@ -27,13 +27,13 @@ class Authorities extends React.Component {
             else {
                 this.setState({ error:result.errors[0] });
             }
+            this.setState({ loading:false });
         });
-        this.setState({ loading:false });
     }
 
     render() {
-        let output = this.state.error != null ? <ApplicationError error={this.state.error} /> : <ViewAuthorities authorities={this.state.authorities} />;
-        let render = this.state.loading ? <Loader /> : output;
+        let page = this.state.error != null ? <ApplicationError error={this.state.error} /> : <ViewAuthorities authorities={this.state.authorities} />;
+        let output = this.state.loading ? <Loader /> : page;
                 
         return (
             <Layout>

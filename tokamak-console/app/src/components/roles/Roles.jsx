@@ -27,8 +27,8 @@ class Roles extends React.Component {
             else {
                 this.setState({ error:result.errors[0] });
             }
+            this.setState({ loading:false });
         });
-        this.setState({ loading:false });
     }
 
     render() {

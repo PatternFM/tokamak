@@ -36,7 +36,6 @@ import fm.pattern.valex.Result;
 @Component
 public class CustomJwtTokenEnhancer extends JwtAccessTokenConverter {
 
-	// TODO: Issuer should be data driven, not configured via yml.
 	@Value("${oauth2.issuer}")
 	private String issuer;
 

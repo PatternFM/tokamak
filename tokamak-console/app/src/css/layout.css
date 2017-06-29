@@ -12,6 +12,17 @@
     outline: none;
 }
 
+a {
+	color: rgb(54, 170, 199);
+    text-decoration: none;
+    transition: all 250ms;
+    -webkit-transition: all 250ms;
+}
+
+a:hover {
+	color: rgb(51, 132, 152);
+}
+
 input {
   border: none;
   font-family: 'Open Sans', Arial, sans-serif;
@@ -52,26 +63,21 @@ body {
 }
 
 #header {
-	background: #FAFAFA;
-	position: absolute;
-	left: 0;
-	right: 0;
-	top: 0;
-	height: 75px;
-	left: 0;
-	padding: 0 30px 0 30px;
-	box-shadow: 0 1px 3px 0 rgba(50, 50, 50, .2);
-	z-index: 10;
+	padding: 60px 0 0 20px;
 }
 
 #header .title {
-	line-height: 75px;
-    font-family: Raleway;
-    color: #444;
-    font-size: 18px;
-    font-weight: bold;
-    letter-spacing: 1.0px;
-    text-transform: uppercase;
+	font-size: 34px !important;
+    font-weight: 200;
+    color: #222;
+}
+
+#header .overview {
+    font-family: "Helvetica Neue", Helvetica, Sans-Serif;
+    font-size: 16px;
+    line-height: 24px;
+    color: rgba(0, 0, 0, 0.85);
+    -webkit-font-smoothing: antialiased;
 }
 
 #header a {
@@ -104,7 +110,7 @@ body {
 	width: 300px;
 	height: 100%;
 	top: 0;
-    background: #093171;
+    background: #E40000;
 }
 
 #navbar ul {
@@ -113,13 +119,13 @@ body {
 }
 
 #navbar ul a {
-	color: rgba(255, 255, 255, 0.35);
+	color: rgba(255, 255, 255, 0.90);
 	text-transform: uppercase;
 	text-decoration: none;
 	font-family: "Arial";
 	font-size: 10.4px;
 	font-weight: bold;
-	letter-spacing: 2.8px;
+	letter-spacing: 1.5px;
 	display: block;
 	position: relative;
 	transition: all 0.2s ease;
@@ -133,7 +139,7 @@ body {
 #navbar ul a:after {  
     -webkit-transition: all 250ms;
     transition: all 250ms;
-    background: rgba(4, 69, 130, 0.90);
+    background: #d30000;
     border-radius: 0.2em;
     content: '';
     height: 0.2em;
@@ -144,7 +150,7 @@ body {
 }
 
 #navbar li {
-	margin: 1.5em 0 0 0;
+	margin: 1.3em 0 0 0;
     opacity: 1;
     padding: 0;
     position: relative;
@@ -155,7 +161,7 @@ body {
 }
 
 #navbar ul .active:after {
-    background-image: linear-gradient(to right, #5e42a6, #b74e91);
+    background: rgba(255, 255, 255, 0.8);
     -webkit-transition: max-width 0.2s ease;
     transition: max-width 0.2s ease;
 }
@@ -166,17 +172,17 @@ body {
 	left: 0;
 	width: 300px;
 	height: 70px;
-	background: #062352;
+	background: #C20000;
 }
 
 #navbar-footer a {
     line-height: 70px;
-    color: rgba(255, 255, 255, 0.55);
+    color: #FFF;
     text-transform: uppercase;
     text-decoration: none;
-    font-family: "Arial";
-    font-size: 12.0px;
-    font-weight: bold;
+    font-family: "Helvetica Neue", "Helvetica", "Sans Serif";
+    font-size: 12px;
+    font-weight: 200;
     letter-spacing: 2.8px;
     transition: all 250ms; 
     display: block;
@@ -274,7 +280,6 @@ body {
 .table-container {
 	margin-bottom: 100px;
 	padding: 20px;
-	padding-top: 100px;
 }
 
 .center {
@@ -293,20 +298,35 @@ body {
   display: block;
   border: 0;
   font-size: 13px;
-  border-radius: 5px;
-  background: #222;
-  color: #eee;
-  font-weight: bold;
-  margin-top: 5px;
+  margin-top: 15px;
+  height: 50px;  
+  border-radius: 3px;
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+  padding: 0 40px 0 40px;
+  background: #E40000;
+  color: #EEE;
   text-transform: uppercase;
   height: 50px;
-  -webkit-transition: all 400ms; 
-  transition: all 400ms; 
-  letter-spacing: 1.0px;
-  padding: 0 35px 0 35px;
+  -webkit-font-smoothing: antialiased;
+  -webkit-transition: all 250ms; 
+  transition: all 250ms; 
+  letter-spacing: 1.1px;
+  font-weight: 200;  
 }
 
 .tok-button:hover {
-  background-color: #000;
+  background-color: #C20000;
   cursor: pointer;
+}
+
+.simple-message {
+	font-family: "Helvetica Neue", Helvetica, Sans-Serif;
+	display: block;
+	width: 750px;
+	margin: 0 auto;
+	font-size: 16px;
+	line-height: 24px;
+	color: rgba(0, 0, 0, 0.85);
+	-webkit-font-smoothing: antialiased;
 }

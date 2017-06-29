@@ -12,7 +12,10 @@ class ViewApps extends React.Component {
             {moreThanOneResult  &&
               <MuiThemeProvider>
                 <div>
-                  <div id="header"><div className="title">Apps</div></div>
+                  <div id="header">
+                  <div className="title">OAuth Apps</div>
+                  <p className="overview">Register new OAuth 2.0 applications to interact with OAuth protected endpoints.</p>
+                  </div>
                   <div className="table-container">
                     <AppTable apps={this.props.apps} />
                   </div>

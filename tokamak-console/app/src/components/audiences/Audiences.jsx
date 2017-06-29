@@ -13,7 +13,7 @@ class Audiences extends React.Component {
         super(props);
         this.state = {
             audiences: [],
-            loading: false,
+            loading: true,
             error: null
         };
     }
@@ -27,19 +27,19 @@ class Audiences extends React.Component {
             else {
                 this.setState({ error:result.errors[0] });
             }
+            this.setState({ loading:false });
         });
-        this.setState({ loading:false });
     }
 
     render() {
-        let output = this.state.error != null ? <ApplicationError error={this.state.error} /> : <ViewAudiences audiences={this.state.audiences} />;
-        let render = this.state.loading ? <Loader /> : output;
+        let page = this.state.error != null ? <ApplicationError error={this.state.error} /> : <ViewAudiences audiences={this.state.audiences} />;
+        let output = this.state.loading ? <Loader /> : page;
         
         return (
             <Layout>
                 <MuiThemeProvider>
                    <div className="content-holder">
-                     {render}
+                     {output}
                    </div>
                 </MuiThemeProvider>
             </Layout>
