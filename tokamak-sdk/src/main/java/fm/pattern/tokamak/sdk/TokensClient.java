@@ -121,7 +121,9 @@ public class TokensClient extends RestClient {
 		clientConfig.property(HttpUrlConnectorProvider.SET_METHOD_WORKAROUND, true);
 		clientConfig.register(HttpAuthenticationFeature.basicBuilder().build());
 		clientConfig.register(JacksonFeature.class);
-		clientConfig.register(new LoggingFilter(Logger.getAnonymousLogger(), true));
+		if (JwtClientProperties.isLoggingEnabled()) {
+			clientConfig.register(new LoggingFilter(Logger.getAnonymousLogger(), true));
+		}
 		return clientConfig;
 	}
 

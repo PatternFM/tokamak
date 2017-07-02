@@ -19,6 +19,8 @@ import org.glassfish.jersey.filter.LoggingFilter;
 import org.glassfish.jersey.jackson.JacksonFeature;
 import org.glassfish.jersey.media.multipart.MultiPartFeature;
 
+import fm.pattern.tokamak.sdk.JwtClientProperties;
+
 public class RestClient {
 
 	private final Client client;
@@ -64,7 +66,7 @@ public class RestClient {
 	public String getEndpoint() {
 		return endpoint;
 	}
-	
+
 	protected final <T, S> Result<T> put(Invocation.Builder resource, S representation, Class<T> clazz, String token) {
 		if (isNotBlank(token)) {
 			resource.header("Authorization", "Bearer " + token);
@@ -120,7 +122,9 @@ public class RestClient {
 	private static ClientConfig config() {
 		ClientConfig clientConfig = new ClientConfig();
 		clientConfig.property(HttpUrlConnectorProvider.SET_METHOD_WORKAROUND, true);
-		clientConfig.register(new LoggingFilter(Logger.getAnonymousLogger(), true));
+		if (JwtClientProperties.isLoggingEnabled()) {
+			clientConfig.register(new LoggingFilter(Logger.getAnonymousLogger(), true));
+		}
 		clientConfig.register(JacksonFeature.class);
 		clientConfig.register(MultiPartFeature.class);
 		return clientConfig;
