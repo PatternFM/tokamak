@@ -18,21 +18,27 @@ class Authorities extends React.Component {
         };
     }
 
+    onNewAuthority(authority) {
+        var authorities = this.state.authorities.slice();
+        authorities.unshift(authority);
+        this.setState({ authorities: authorities });
+    }
+
     componentWillMount() {
         this.setState({ loading:true });
         AuthorityService.list().then((result) => {
             if(result.status === "accepted") {
-                this.setState({authorities: result.instance.authorities}, function() { });
+                this.setState({ authorities: result.instance.authorities }, function() { });
             }
             else {
                 this.setState({ error:result.errors[0] });
             }
             this.setState({ loading:false });
-        });
+        }); 
     }
 
     render() {
-        let page = this.state.error != null ? <ApplicationError error={this.state.error} /> : <ViewAuthorities authorities={this.state.authorities} />;
+        let page = this.state.error != null ? <ApplicationError error={this.state.error} /> : <ViewAuthorities authorities={this.state.authorities} onNewAuthority={this.onNewAuthority.bind(this)} />;
         let output = this.state.loading ? <Loader /> : page;
                 
         return (

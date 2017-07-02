@@ -256,6 +256,5 @@ INSERT INTO Scopes (created, updated, id, name, description) VALUES (NOW(),NOW()
 INSERT INTO Scopes (created, updated, id, name, description) VALUES (NOW(),NOW(),'scp_edgdg5kb7bjsb9cyh55x','grant_types:read','View and list grant types');
 
 
-INSERT INTO Roles (created, updated, id, name) VALUES (NOW(),NOW(),'rol_edgda5k47bjsbtcyh45x','role:user');
-INSERT INTO Roles (created, updated, id, name) VALUES (NOW(),NOW(),'rol_ibg9lhwzjwiot4n9xsrh','role:admin');
+INSERT INTO Roles (created, updated, id, name, description) VALUES (NOW(),NOW(),'rol_ibg9lhwzjwiot4n9xsrh','role:tokamak-admin','Users are authorized to manage the Tokamak server through the web console or REST API.');
 

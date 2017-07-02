@@ -287,7 +287,7 @@ body {
 }
 
 .tok-button {
-  display: block;
+  display: inline-block;
   border: 0;
   font-size: 13px;
   margin-top: 15px;
@@ -335,4 +335,64 @@ body {
 	border-radius: 2px;
 	float: right;
 	margin: -10px 0;
+}
+
+.modal-title {
+    font-size: 15px;
+    font-weight: 500;
+    color: rgba(0,0,0,0.75);
+    font-family: "Helvetica Neue", "Helvetica", "Sans Serif";
+    margin-bottom: 40px;
+    text-align: center;
+    -webkit-font-smoothing: antialiased;
+}
+
+.tok-textfield {
+    width: 100%;
+    height: 46px;
+    padding: 8px 16px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;	
+	font-size: 14px;
+	font-family: "Helvetica Neue", "Helvetica", "Sans Serif";
+	-webkit-font-smoothing: antialiased;
+}
+
+.tok-textfield:focus {
+	border-color: #66afe9;
+    outline: 0;
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102,175,233,.6);
+}
+
+.tok-cancel {
+	background: #DDD;
+	color: #333;
+}
+
+.tok-cancel:hover {
+	background: #CCC !important;
+}
+
+.form-key {
+	text-align: right;
+    font-size: 15px;
+    font-weight: 500;
+    color: rgba(0,0,0,0.75);
+    font-family: "Helvetica Neue", "Helvetica", "Sans Serif";
+    -webkit-font-smoothing: antialiased;
+    padding: 12px 10px 0 0;
+    vertical-align: top;
+    white-space: nowrap;
+}
+
+.form-value {
+	width: 100%;
+	padding-bottom: 5px;
+}
+
+textarea {
+	height: 100px !important;
 }
