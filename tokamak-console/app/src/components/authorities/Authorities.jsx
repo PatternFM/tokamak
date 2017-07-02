@@ -24,6 +24,15 @@ class Authorities extends React.Component {
         this.setState({ authorities: authorities });
     }
 
+    onUpdatedAuthority(authority) {
+        var authorities = this.state.authorities.slice();
+        var index = authorities.findIndex(function(a) {return a.id === authority.id});
+        if(index !== -1) {
+            authorities[index] = authority;
+        }
+        this.setState({ authorities: authorities });
+    }
+
     componentWillMount() {
         this.setState({ loading:true });
         AuthorityService.list().then((result) => {
@@ -38,7 +47,7 @@ class Authorities extends React.Component {
     }
 
     render() {
-        let page = this.state.error != null ? <ApplicationError error={this.state.error} /> : <ViewAuthorities authorities={this.state.authorities} onNewAuthority={this.onNewAuthority.bind(this)} />;
+        let page = this.state.error != null ? <ApplicationError error={this.state.error} /> : <ViewAuthorities authorities={this.state.authorities} onNewAuthority={this.onNewAuthority.bind(this)} onUpdatedAuthority={this.onUpdatedAuthority.bind(this)} />;
         let output = this.state.loading ? <Loader /> : page;
                 
         return (

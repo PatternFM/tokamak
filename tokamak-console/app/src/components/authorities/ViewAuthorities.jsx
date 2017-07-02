@@ -12,7 +12,7 @@ class ViewAuthorities extends React.Component {
         return (
             <div className="animated fadeIn">
             
-            <CreateAuthorityForm ref="createAuthorityForm" authorityCreated={this.props.onNewAuthority} />
+            <CreateAuthorityForm ref="createAuthorityForm" authorityCreated={this.props.onNewAuthority} authorityUpdated={this.props.onUpdatedAuthority}  />
             
             {moreThanOneResult &&
               <MuiThemeProvider>
@@ -23,7 +23,7 @@ class ViewAuthorities extends React.Component {
                     <button className="tok-button fixed-top" onClick={() => this.refs.createAuthorityForm.handleOpen()}>+ Create Authority</button>
                   </div>
                   <div className="table-container">
-                    <AuthorityTable authorities={this.props.authorities} />
+                    <AuthorityTable authorities={this.props.authorities} authorityCreated={this.props.onNewAuthority} authorityUpdated={this.props.onUpdatedAuthority} />
                   </div>
                 </div>
               </MuiThemeProvider>
