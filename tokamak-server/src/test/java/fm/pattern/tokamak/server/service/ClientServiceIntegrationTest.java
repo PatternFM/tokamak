@@ -143,7 +143,7 @@ public class ClientServiceIntegrationTest extends IntegrationTest {
 
 	@Test
 	public void shouldNotBeAbleToFindAClientByClienIdIfTheClientIdDoesNotExist() {
-		assertThat(clientService.findByClientId("csrx")).rejected().withError("CLI-0009", "No such client id: csrx", EntityNotFoundException.class);
+		assertThat(clientService.findByClientId("csrx")).rejected().withError("SYS-0001", "No such client id: csrx", EntityNotFoundException.class);
 	}
 
 	@Test

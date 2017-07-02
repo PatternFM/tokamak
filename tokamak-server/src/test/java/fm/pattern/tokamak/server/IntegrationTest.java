@@ -9,6 +9,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import fm.pattern.tokamak.server.config.ApplicationConfiguration;
+import fm.pattern.tokamak.server.config.RedisConfiguration;
 import fm.pattern.valex.Result;
 import fm.pattern.valex.ValidationService;
 import fm.pattern.valex.sequences.Create;
@@ -16,7 +17,7 @@ import fm.pattern.valex.sequences.Delete;
 import fm.pattern.valex.sequences.Update;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = { ApplicationConfiguration.class, TestConfiguration.class })
+@SpringBootTest(classes = { ApplicationConfiguration.class, TestConfiguration.class, RedisConfiguration.class })
 @Transactional
 public abstract class IntegrationTest {
 

@@ -11,6 +11,17 @@ flyway.user: username
 flyway.password: password
 flyway.url: jdbc:mysql://localhost:3306?useSSL=false&requireSSL=false
 
+spring:
+  redis:
+    host: localhost
+    port: 6379
+    timeout: 10
+    pool:
+      max-active: 10
+      max-idle: 10
+      min-idle: 0
+      max-wait: 60000
+      
 oauth2:
     issuer: https://tokamak.pattern.fm
     audience: oauth-service

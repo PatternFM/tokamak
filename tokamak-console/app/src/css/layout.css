@@ -74,10 +74,12 @@ body {
 
 #header .overview {
     font-family: "Helvetica Neue", Helvetica, Sans-Serif;
-    font-size: 16px;
+    font-size: 15px;
     line-height: 24px;
-    color: rgba(0, 0, 0, 0.85);
+    color: rgba(0, 0, 0, 0.65);
     -webkit-font-smoothing: antialiased;
+    letter-spacing: 0.4px;
+    margin-top: 10px;
 }
 
 #header a {
@@ -119,7 +121,7 @@ body {
 }
 
 #navbar ul a {
-	color: rgba(255, 255, 255, 0.90);
+	color: rgba(255, 255, 255, 0.80);
 	text-transform: uppercase;
 	text-decoration: none;
 	font-family: "Arial";
@@ -142,7 +144,7 @@ body {
     background: #d30000;
     border-radius: 0.2em;
     content: '';
-    height: 0.2em;
+    height: 0.1em;
     position: absolute;
     left: 0;
     width: 100%;
@@ -150,7 +152,7 @@ body {
 }
 
 #navbar li {
-	margin: 1.3em 0 0 0;
+	margin: 5px 0 0 0;
     opacity: 1;
     padding: 0;
     position: relative;
@@ -226,29 +228,26 @@ body {
 }
 
 .dtr {
-	font-size: 16px !important;
-	color: #656565;
+	font-size: 15px !important;
+	color: #484848;
 	border-bottom: 1px solid #EEE !important;
     padding-top: 18px;
     padding-bottom: 18px;
-}
-
-.dtr {
-    font-size: 16px !important;
-    color: #656565;
-    border-bottom: 1px solid #EEE !important;
-    padding-top: 18px;
-    padding-bottom: 18px;
+    font-family: "Helvetica Neue", "Helvetica", "Sans Serif";
+    letter-spacing: 0.6px;
+    -webkit-font-smoothing: antialiased;
 }
 
 .dth {
-	font-size: 14px !important;
+	font-size: 15px !important;
     color: #333 !important;
-    letter-spacing: 1.1px;
-    text-transform: uppercase;
+    letter-spacing: 0.6px;
     border-bottom: 1px solid #EEE !important;
-    padding-top: 20px !important;
-    padding-bottom: 20px !important;
+    padding-top: 18px !important;
+    padding-bottom: 8px !important;
+    font-family: "Helvetica Neue", "Helvetica", "Sans Serif";
+    -webkit-font-smoothing: antialiased;
+    font-weight: bold !important;
 }
 
 .left-pad-0 {
@@ -312,7 +311,6 @@ body {
   -webkit-transition: all 250ms; 
   transition: all 250ms; 
   letter-spacing: 1.1px;
-  font-weight: 200;  
 }
 
 .tok-button:hover {
@@ -329,4 +327,19 @@ body {
 	line-height: 24px;
 	color: rgba(0, 0, 0, 0.85);
 	-webkit-font-smoothing: antialiased;
+}
+
+.fixed-top {
+	position: absolute;
+	right: 40px;
+	top: 40px;
+}
+
+.inline-button {
+	font-weight: 200;
+	background: #F2F2F2;
+	padding: 10px;
+	border-radius: 2px;
+	float: right;
+	margin: -10px 0;
 }

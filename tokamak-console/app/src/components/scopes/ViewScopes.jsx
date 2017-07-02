@@ -12,7 +12,11 @@ class ViewScopes extends React.Component {
             {moreThanOneResult  &&
               <MuiThemeProvider>
                 <div>
-                  <div id="header"><div className="title">App Scopes</div></div>
+                  <div id="header">
+                    <div className="title">App Scopes</div>
+                    <p className="overview">View, create and manage your OAuth2 app scopes.</p>
+                    <button className="tok-button fixed-top">+ Create Scope</button>
+                  </div>
                   <div className="table-container">
                     <ScopeTable scopes={this.props.scopes} />
                   </div>

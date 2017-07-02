@@ -13,8 +13,9 @@ class ViewApps extends React.Component {
               <MuiThemeProvider>
                 <div>
                   <div id="header">
-                  <div className="title">OAuth Apps</div>
-                  <p className="overview">Register new OAuth 2.0 applications to interact with OAuth protected endpoints.</p>
+                    <div className="title">OAuth Apps</div>
+                    <p className="overview">Register new apps to interact with OAuth 2 protected endpoints.</p>
+                    <button className="tok-button fixed-top">+ Create App</button>
                   </div>
                   <div className="table-container">
                     <AppTable apps={this.props.apps} />

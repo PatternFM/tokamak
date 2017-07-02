@@ -21,6 +21,8 @@ import Accounts from "./components/accounts/Accounts.jsx";
 import Settings from "./components/settings/Settings.jsx";
 import AuditHistory from "./components/audit/AuditHistory.jsx";
 
+var FontAwesome = require('react-fontawesome');
+
 const history = createHistory();
 
 const PrivateRoute = ({component: Component, ...rest}) => (

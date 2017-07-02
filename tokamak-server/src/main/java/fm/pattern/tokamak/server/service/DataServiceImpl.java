@@ -64,21 +64,24 @@ class DataServiceImpl<T> implements DataService<T> {
 
 	@Transactional(readOnly = true)
 	public Result<T> findById(String id, Class<T> type) {
-		String name = type.getSimpleName().toLowerCase();
 		if (isBlank(id)) {
 			return Result.reject(uncapitalize(type.getSimpleName()) + ".id.required");
 		}
 
+		String name = type.getSimpleName().toLowerCase();
 		T entity = repository.findById(id, type);
 		return entity != null ? Result.accept(entity) : Result.reject("system.not.found", name, id);
 	}
 
 	@Transactional(readOnly = true)
 	public Result<T> findBy(String key, String value, Class<T> type) {
-		String name = type.getSimpleName().toLowerCase();
+		if (isBlank(value)) {
+			return Result.reject(uncapitalize(type.getSimpleName()) + "." + key + ".required");
+		}
 
+		String name = type.getSimpleName().toLowerCase();
 		T entity = repository.findBy(key, value, type);
-		return entity != null ? Result.accept(entity) : Result.reject("system.not.found", name, key);
+		return entity != null ? Result.accept(entity) : Result.reject("system.not.found", name, value);
 	}
 
 	@Transactional(readOnly = true)
@@ -95,7 +98,7 @@ class DataServiceImpl<T> implements DataService<T> {
 	public Long count(Query query) {
 		return repository.count(query);
 	}
-	
+
 	private <T> String entity(Class<T> entity) {
 		if (entity.isAnnotationPresent(Entity.class)) {
 			return entity.getAnnotation(Entity.class).name();
