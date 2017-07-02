@@ -1,6 +1,7 @@
 import React from "react";
 import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
 import AccountTable from "./AccountTable.jsx";
+import { NavLink } from "react-router-dom";
 
 class ViewAccounts extends React.Component {
 
@@ -12,7 +13,11 @@ class ViewAccounts extends React.Component {
             {moreThanOneResult &&
               <MuiThemeProvider>
                 <div>
-                  <div id="header"><div className="title">Accounts</div></div>
+                  <div id="header">
+                    <div className="title">User Accounts</div>
+                    <p className="overview">View, create and manage accounts. <NavLink to="/help#roles">Learn more about user accounts.</NavLink></p>
+                    <button className="tok-button fixed-top">+ Create Account</button>
+                  </div>
                   <div className="table-container">
                     <AccountTable accounts={this.props.accounts} />
                   </div>

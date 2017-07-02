@@ -259,5 +259,3 @@ INSERT INTO Scopes (created, updated, id, name, description) VALUES (NOW(),NOW()
 INSERT INTO Roles (created, updated, id, name) VALUES (NOW(),NOW(),'rol_edgda5k47bjsbtcyh45x','role:user');
 INSERT INTO Roles (created, updated, id, name) VALUES (NOW(),NOW(),'rol_ibg9lhwzjwiot4n9xsrh','role:admin');
 
-
-INSERT INTO Authorities (created, updated, id, name) VALUES (NOW(),NOW(),'ath_wb0LcDMl5oDGAfQE8Kfa','authority:admin');

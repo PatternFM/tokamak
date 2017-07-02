@@ -1,6 +1,7 @@
 import React from "react";
 import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
 import RoleTable from "./RoleTable.jsx";
+import { NavLink } from "react-router-dom";
 
 class ViewRoles extends React.Component {
 
@@ -12,7 +13,11 @@ class ViewRoles extends React.Component {
             {moreThanOneResult &&
               <MuiThemeProvider>
                 <div>
-                  <div id="header"><div className="title">Account Roles</div></div>
+                  <div id="header">
+                    <div className="title">User Roles</div>
+                    <p className="overview">View, create and manage user roles. <NavLink to="/help#roles">Learn more about roles.</NavLink></p>
+                    <button className="tok-button fixed-top">+ Create Role</button>
+                  </div>
                   <div className="table-container">
                     <RoleTable roles={this.props.roles} />
                   </div>

@@ -1,36 +1,37 @@
 import React from "react";
-import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
-import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from "material-ui/Table";
-
 const Timestamp = require("react-timestamp");
 
 class AudienceTable extends React.Component {
 
     render() {
         return (
-            <MuiThemeProvider>
-                <Table className="display-table" showCheckboxes={false} selectable={false}>
-                  <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
-                    <TableRow>
-                      <TableHeaderColumn className="dth left-pad-0">Role ID</TableHeaderColumn>
-                      <TableHeaderColumn className="dth">Name</TableHeaderColumn>
-                      <TableHeaderColumn className="dth">Description</TableHeaderColumn>
-                      <TableHeaderColumn className="dth right-pad-0">Created</TableHeaderColumn>
-                    </TableRow>
-                  </TableHeader>
+                <table className="display-table">
+                  <thead>
+                    <tr>
+                      <th className="dth left-pad-0" align="left">Role</th>
+                      <th className="dth" align="left">ID</th>
+                      <th className="dth" align="left">Created</th>
+                      <th className="dth right-pad-0" align="left"></th>
+                    </tr>
+                  </thead>
                   
-                  <TableBody displayRowCheckbox={false}>
+                  <tbody>
                     {this.props.roles.map((role) => 
-                     <TableRow key={role.id}>
-                       <TableRowColumn className="dtr left-pad-0">{role.id}</TableRowColumn>
-                       <TableRowColumn className="dtr">{role.name}</TableRowColumn>
-                       <TableRowColumn className="dtr">{role.description}</TableRowColumn>
-                       <TableRowColumn className="dtr right-pad-0"><Timestamp time={role.created/1000} format="full" /></TableRowColumn>
-                     </TableRow>
+                     <tr>
+                       <td className="dtr left-pad-0" align="left">
+                         {role.name}<br/>
+                         <span className="description">{role.description}</span>
+                       </td>
+                       <td className="dtr" align="left">{role.id}</td>
+                       <td className="dtr" align="left"><Timestamp time={role.created/1000} format="full" /></td>
+                       <td className="dtr right-pad-0"> 
+                         <i className="fa fa-times inline-button"></i>
+                         <i className="fa fa-pencil inline-button" style={{marginRight:"5px"}}></i> 
+                       </td>
+                     </tr>
                     )}
-                  </TableBody>
-                </Table>
-            </MuiThemeProvider>
+                  </tbody>
+                </table>
         );
     }
   

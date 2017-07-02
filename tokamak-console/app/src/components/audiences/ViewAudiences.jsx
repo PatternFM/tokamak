@@ -13,7 +13,11 @@ class ViewAudiences extends React.Component {
             {moreThanOneResult &&
               <MuiThemeProvider>
                 <div>
-                  <div id="header"><div className="title">App Audiences</div></div>
+                  <div id="header">
+                    <div className="title">App Audiences</div>
+                    <p className="overview">View, create and manage audiences. <NavLink to="/help#roles">Learn more about audiences.</NavLink></p>
+                    <button className="tok-button fixed-top">+ Create Audience</button>
+                  </div>
                   <div className="table-container">
                     <AudienceTable audiences={this.props.audiences} />
                   </div>
@@ -25,7 +29,7 @@ class ViewAudiences extends React.Component {
                 <h2 className="error-title">App Audiences</h2>
                 <p className="simple-message">The <em>audience</em> or "aud" claim in a JWT defines the intended recipients of a token. Since it's an optional claim, you don't need to define an audience for your oauth apps. <NavLink to="/help#audiences">Learn more about audiences.</NavLink></p>
                 <br/><br/>
-                <button className="tok-button center">Create Audience</button>
+                <button className="tok-button center">+ Create Audience</button>
               </div>
             }
             </div>

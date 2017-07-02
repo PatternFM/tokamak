@@ -26,8 +26,10 @@ class ViewAuthorities extends React.Component {
             }
             {!moreThanOneResult &&
               <div className="error-page">
-                <h2 className="error-title">You haven't created any authorities yet</h2>
-                <button className="tok-button center margin-top-50">Create Authority</button>
+                <h2 className="error-title">App Authorities</h2>
+                <p className="simple-message">The <em>authority</em> claim is a Tokamak specific claim, which enumerates the authorities (roles) assigned to a client. Since it's an optional claim, you don't need to define authorities for your oauth apps. <NavLink to="/help#authorities">Learn more about authorities.</NavLink></p>
+                <br/><br/>
+                <button className="tok-button center">+ Create Authority</button>
               </div>
             }
             </div>
