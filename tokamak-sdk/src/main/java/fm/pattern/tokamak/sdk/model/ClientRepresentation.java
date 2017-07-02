@@ -8,6 +8,7 @@ public class ClientRepresentation extends EntityRepresentation {
 	private String clientId;
 	private String clientSecret;
 	private String name;
+	private String description;
 
 	private Set<AuthorityRepresentation> authorities = new HashSet<AuthorityRepresentation>();
 	private Set<AudienceRepresentation> audiences = new HashSet<AudienceRepresentation>();
@@ -47,6 +48,14 @@ public class ClientRepresentation extends EntityRepresentation {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	public Set<AuthorityRepresentation> getAuthorities() {

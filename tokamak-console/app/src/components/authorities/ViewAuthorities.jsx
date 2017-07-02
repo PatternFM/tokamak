@@ -1,6 +1,7 @@
 import React from "react";
 import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
 import AuthorityTable from "./AuthorityTable.jsx";
+import { NavLink } from "react-router-dom";
 
 class ViewAuthorities extends React.Component {
 
@@ -12,7 +13,11 @@ class ViewAuthorities extends React.Component {
             {moreThanOneResult &&
               <MuiThemeProvider>
                 <div>
-                  <div id="header"><div className="title">App Authorities</div></div>
+                  <div id="header">
+                    <div className="title">App Authorities</div>
+                    <p className="overview">View, create and manage OAuth2 app authorities. <NavLink to="/help#authorities">Learn more about authorities.</NavLink></p>
+                    <button className="tok-button fixed-top">+ Create Authority</button>
+                  </div>
                   <div className="table-container">
                     <AuthorityTable authorities={this.props.authorities} />
                   </div>

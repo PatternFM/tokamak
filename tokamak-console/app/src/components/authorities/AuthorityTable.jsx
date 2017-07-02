@@ -1,39 +1,40 @@
 import React from "react";
-import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
-import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from "material-ui/Table";
-
 const Timestamp = require("react-timestamp");
 
-class AudienceTable extends React.Component {
+class AuthorityTable extends React.Component {
 
     render() {
         return (
-            <MuiThemeProvider>
-                <Table className="display-table" showCheckboxes={false} selectable={false}>
-                  <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
-                    <TableRow>
-                      <TableHeaderColumn className="dth left-pad-0">Authority ID</TableHeaderColumn>
-                      <TableHeaderColumn className="dth">Name</TableHeaderColumn>
-                      <TableHeaderColumn className="dth">Description</TableHeaderColumn>
-                      <TableHeaderColumn className="dth right-pad-0">Created</TableHeaderColumn>
-                    </TableRow>
-                  </TableHeader>
+                <table className="display-table">
+                  <thead>
+                    <tr>
+                      <th className="dth left-pad-0" align="left">Authority</th>
+                      <th className="dth" align="left">ID</th>
+                      <th className="dth" align="left">Created</th>
+                      <th className="dth right-pad-0" align="left"></th>
+                    </tr>
+                  </thead>
                   
-                  <TableBody displayRowCheckbox={false}>
+                  <tbody>
                     {this.props.authorities.map((authority) => 
-                     <TableRow key={authority.id}>
-                       <TableRowColumn className="dtr left-pad-0">{authority.id}</TableRowColumn>
-                       <TableRowColumn className="dtr">{authority.name}</TableRowColumn>
-                       <TableRowColumn className="dtr">{authority.description}</TableRowColumn>
-                       <TableRowColumn className="dtr right-pad-0"><Timestamp time={authority.created/1000} format="full" /></TableRowColumn>
-                     </TableRow>
+                     <tr>
+                       <td className="dtr left-pad-0" align="left">
+                         {authority.name}<br/>
+                         <span className="description">{authority.description}</span>
+                       </td>
+                       <td className="dtr" align="left">{authority.id}</td>
+                       <td className="dtr" align="left"><Timestamp time={authority.created/1000} format="full" /></td>
+                       <td className="dtr right-pad-0"> 
+                         <i className="fa fa-times inline-button"></i>
+                         <i className="fa fa-pencil inline-button" style={{marginRight:"5px"}}></i> 
+                       </td>
+                     </tr>
                     )}
-                  </TableBody>
-                </Table>
-            </MuiThemeProvider>
+                  </tbody>
+                </table>
         );
     }
   
 }
 
-export default AudienceTable;
+export default AuthorityTable;

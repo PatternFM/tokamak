@@ -65,7 +65,7 @@ public class Endpoint {
 
 	@ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
 	@ExceptionHandler(InternalErrorException.class)
-	public ErrorsRepresentation handleInternalError(EntityNotFoundException exception) {
+	public ErrorsRepresentation handleInternalError(InternalErrorException exception) {
 		return convert(exception);
 	}
 

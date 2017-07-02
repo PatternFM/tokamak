@@ -1,34 +1,36 @@
 import React from "react";
-import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
-import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from "material-ui/Table";
-
 const Timestamp = require("react-timestamp");
 
 class AppTable extends React.Component {
 
     render() {
         return (
-            <MuiThemeProvider>
-                <Table className="display-table" showCheckboxes={false} selectable={false}>
-                  <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
-                    <TableRow>
-                      <TableHeaderColumn className="dth left-pad-0">Client ID</TableHeaderColumn>
-                      <TableHeaderColumn className="dth">Name</TableHeaderColumn>
-                      <TableHeaderColumn className="dth right-pad-0">Created</TableHeaderColumn>
-                    </TableRow>
-                  </TableHeader>
-                  
-                  <TableBody displayRowCheckbox={false}>
+            <table className="display-table">
+                <thead>
+                    <tr>
+                      <th className="dth left-pad-0">App</th>
+                      <th className="dth">ID</th>
+                      <th className="dth">Created</th>
+                      <th className="dth right-pad-0"></th>
+                    </tr>
+                </thead>
+                <tbody>  
                     {this.props.apps.map((app) => 
-                     <TableRow key={app.id}>
-                       <TableRowColumn className="dtr left-pad-0">{app.id}</TableRowColumn>
-                       <TableRowColumn className="dtr">{app.name}</TableRowColumn>
-                       <TableRowColumn className="dtr right-pad-0"><Timestamp time={app.created/1000} format="full" /></TableRowColumn>
-                     </TableRow>
+                     <tr>
+                       <td className="dtr left-pad-0">
+                         {app.name}<br/>
+                         <span className="description">{app.description}</span>
+                       </td>
+                       <td className="dtr">{app.id}</td>
+                       <td className="dtr"><Timestamp time={app.created/1000} format="full" /></td>
+                       <td className="dtr right-pad-0"> 
+                         <i className="fa fa-times inline-button"></i>
+                         <i className="fa fa-pencil inline-button" style={{marginRight:"5px"}}></i> 
+                       </td>
+                     </tr>
                     )}
-                  </TableBody>
-                </Table>
-            </MuiThemeProvider>
+                </tbody>
+            </table>
         );
     }
   

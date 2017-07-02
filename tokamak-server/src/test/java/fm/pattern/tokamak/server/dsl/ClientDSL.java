@@ -6,6 +6,8 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.apache.commons.lang3.RandomStringUtils;
+
 import fm.pattern.commons.util.IdGenerator;
 import fm.pattern.tokamak.server.model.Audience;
 import fm.pattern.tokamak.server.model.Authority;
@@ -23,7 +25,8 @@ public class ClientDSL extends AbstractDSL<ClientDSL, Client> {
 	private Set<Audience> audiences = new HashSet<Audience>();
 	private Set<GrantType> grantTypes = new HashSet<GrantType>();
 	private Set<Scope> scopes = new HashSet<>();
-	private String name;
+	private String name = RandomStringUtils.randomAlphabetic(10);
+	private String description;
 	private String redirectUri;
 
 	private Integer accessTokenValiditySeconds = 600;
@@ -49,6 +52,11 @@ public class ClientDSL extends AbstractDSL<ClientDSL, Client> {
 		return this;
 	}
 
+	public ClientDSL withDescription(String description) {
+		this.description = description;
+		return this;
+	}
+	
 	public ClientDSL withRedirectUri(String redirectUri) {
 		this.redirectUri = redirectUri;
 		return this;
@@ -89,6 +97,7 @@ public class ClientDSL extends AbstractDSL<ClientDSL, Client> {
 		client.setAccessTokenValiditySeconds(accessTokenValiditySeconds);
 		client.setRefreshTokenValiditySeconds(refreshTokenValiditySeconds);
 		client.setName(name);
+		client.setDescription(description);
 
 		if (isNotBlank(redirectUri)) {
 			client.setRedirectUri(redirectUri);

@@ -67,8 +67,15 @@ public class Client extends PersistentEntity {
 	@Getter
 	@Setter
 	@Column(name = "name")
-	@Size(max = 50, message = "{client.name.size}", groups = { CreateLevel1.class, UpdateLevel1.class })
+	@NotBlank(message = "{client.name.required}", groups = { CreateLevel1.class, UpdateLevel1.class })
+	@Size(max = 50, message = "{client.name.size}", groups = { CreateLevel2.class, UpdateLevel2.class })
 	private String name;
+
+	@Getter
+	@Setter
+	@Column(name = "description")
+	@Size(max = 255, message = "{client.description.size}", groups = { CreateLevel1.class, UpdateLevel1.class })
+	private String description;
 
 	@Getter
 	@OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)

@@ -43,7 +43,7 @@ public class ClientConversionServiceTest extends IntegrationTest {
 		Scope scope = scope().build();
 		GrantType grantType = grantType().build();
 
-		Client client = client().withAudience(audience).withAuthority(authority).withScope(scope).withGrantType(grantType).build();
+		Client client = client().withAudience(audience).withDescription("description").withAuthority(authority).withScope(scope).withGrantType(grantType).build();
 
 		ClientRepresentation representation = clientConversionService.convert(client);
 		assertThat(representation.getId()).isEqualTo(client.getId());
@@ -51,6 +51,7 @@ public class ClientConversionServiceTest extends IntegrationTest {
 		assertThat(representation.getUpdated()).isEqualTo(client.getUpdated());
 		assertThat(representation.getClientId()).isEqualTo(client.getClientId());
 		assertThat(representation.getClientSecret()).isNull();
+		assertThat(representation.getDescription()).isEqualTo("description");
 		assertThat(representation.getAccessTokenValiditySeconds()).isEqualTo(client.getAccessTokenValiditySeconds());
 		assertThat(representation.getRefreshTokenValiditySeconds()).isEqualTo(client.getRefreshTokenValiditySeconds());
 
@@ -67,7 +68,7 @@ public class ClientConversionServiceTest extends IntegrationTest {
 		Scope scope = scope().thatIs().persistent().build();
 		GrantType grantType = grantType().thatIs().persistent().build();
 
-		ClientRepresentation representation = ClientDSL.client().withAudiences(audienceConversionService.convert(audience)).withAuthorities(authorityConversionService.convert(authority)).withScopes(scopeConversionService.convert(scope)).withGrantTypes(grantTypeConversionService.convert(grantType)).build();
+		ClientRepresentation representation = ClientDSL.client().withDescription("desc").withAudiences(audienceConversionService.convert(audience)).withAuthorities(authorityConversionService.convert(authority)).withScopes(scopeConversionService.convert(scope)).withGrantTypes(grantTypeConversionService.convert(grantType)).build();
 
 		Client client = clientConversionService.convert(representation);
 		assertThat(client.getAuthorities()).hasSize(1);
@@ -78,6 +79,7 @@ public class ClientConversionServiceTest extends IntegrationTest {
 		assertThat(client.getGrantTypes()).contains(grantType);
 		assertThat(client.getScopes()).hasSize(1);
 		assertThat(client.getScopes()).contains(scope);
+		assertThat(client.getDescription()).isEqualTo("desc");
 
 		assertThat(client.getAccessTokenValiditySeconds()).isEqualTo(representation.getAccessTokenValiditySeconds());
 		assertThat(client.getRefreshTokenValiditySeconds()).isEqualTo(representation.getRefreshTokenValiditySeconds());

@@ -52,6 +52,7 @@ public class ClientConversionService {
 		representation.setUpdated(client.getUpdated());
 		representation.setClientId(client.getClientId());
 		representation.setName(client.getName());
+		representation.setDescription(client.getDescription());
 
 		representation.setAudiences(client.getAudiences().stream().map(audience -> audienceConversionService.convert(audience)).collect(Collectors.toCollection(HashSet::new)));
 		representation.setAuthorities(client.getAuthorities().stream().map(authority -> authorityConversionService.convert(authority)).collect(Collectors.toCollection(HashSet::new)));
@@ -73,6 +74,7 @@ public class ClientConversionService {
 		Client client = new Client(representation.getClientId(), representation.getClientSecret(), authorities, audiences, grantTypes, scopes);
 
 		client.setName(representation.getName());
+		client.setDescription(representation.getDescription());
 		client.setAccessTokenValiditySeconds(representation.getAccessTokenValiditySeconds());
 		client.setRefreshTokenValiditySeconds(representation.getRefreshTokenValiditySeconds());
 

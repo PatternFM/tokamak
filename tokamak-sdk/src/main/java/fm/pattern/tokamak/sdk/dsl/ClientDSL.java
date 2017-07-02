@@ -28,6 +28,8 @@ public class ClientDSL extends AbstractDSL<ClientDSL, ClientRepresentation> {
 	private AudiencesClient audiencesClient = new AudiencesClient(JwtClientProperties.getEndpoint());
 
 	private String name = randomAlphanumeric(8);
+	private String description;
+
 	private String clientId = "cli_" + randomAlphanumeric(15);
 	private String clientSecret = randomAlphanumeric(20);
 
@@ -64,6 +66,11 @@ public class ClientDSL extends AbstractDSL<ClientDSL, ClientRepresentation> {
 
 	public ClientDSL withName(String name) {
 		this.name = name;
+		return this;
+	}
+
+	public ClientDSL withDescription(String description) {
+		this.description = description;
 		return this;
 	}
 
@@ -146,6 +153,7 @@ public class ClientDSL extends AbstractDSL<ClientDSL, ClientRepresentation> {
 		client.setClientId(clientId);
 		client.setClientSecret(clientSecret);
 		client.setName(name);
+		client.setDescription(description);
 		client.setScopes(scopes);
 		client.setGrantTypes(grantTypes);
 		client.setAuthorities(authorities);

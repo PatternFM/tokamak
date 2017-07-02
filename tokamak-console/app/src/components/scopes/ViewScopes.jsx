@@ -1,6 +1,7 @@
 import React from "react";
 import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
 import ScopeTable from "./ScopeTable.jsx";
+import { NavLink } from "react-router-dom";
 
 class ViewScopes extends React.Component {
 
@@ -14,7 +15,7 @@ class ViewScopes extends React.Component {
                 <div>
                   <div id="header">
                     <div className="title">App Scopes</div>
-                    <p className="overview">View, create and manage your OAuth2 app scopes.</p>
+                    <p className="overview">View, create and manage OAuth2 app scopes. <NavLink to="/help#scopes">Learn more about scopes.</NavLink></p>
                     <button className="tok-button fixed-top">+ Create Scope</button>
                   </div>
                   <div className="table-container">

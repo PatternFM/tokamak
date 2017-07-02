@@ -1,6 +1,7 @@
 import React from "react";
 import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
 import AppTable from "./AppTable.jsx";
+import { NavLink } from "react-router-dom";
 
 class ViewApps extends React.Component {
 
@@ -14,7 +15,7 @@ class ViewApps extends React.Component {
                 <div>
                   <div id="header">
                     <div className="title">OAuth Apps</div>
-                    <p className="overview">Register new apps to interact with OAuth 2 protected endpoints.</p>
+                    <p className="overview">View, create and manage apps to interact with OAuth2 protected endpoints. <NavLink to="/help#apps">Learn more about apps.</NavLink></p>
                     <button className="tok-button fixed-top">+ Create App</button>
                   </div>
                   <div className="table-container">

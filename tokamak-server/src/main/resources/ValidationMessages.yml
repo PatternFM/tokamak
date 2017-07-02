@@ -122,9 +122,17 @@ client.secret.size:
   message: "A client secret must be between {min} and {max} characters."
   code: CLI-0005
 
+client.name.required:
+  message: "A client name is required."
+  code: CLI-0011
+
 client.name.size:
   message: "A client name cannot be greater than {max} characters."
   code: CLI-0010
+
+client.description.size:
+  message: "A client description cannot be greater than {max} characters."
+  code: CLI-0013
 
 client.grantType.required:
   message: "A client requires at least one grant type."
@@ -137,7 +145,7 @@ client.clientId.not_found:
 
 client.redirect_uri.size:
   message: "A client redirect URI must be less than {max} characters."
-  code: CLI-0010
+  code: CLI-0012
 
 
 grantType.id.required:

@@ -10,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import fm.pattern.tokamak.server.config.ApplicationConfiguration;
 import fm.pattern.tokamak.server.config.RedisConfiguration;
-import fm.pattern.valex.Result;
 import fm.pattern.valex.ValidationService;
 import fm.pattern.valex.sequences.Create;
 import fm.pattern.valex.sequences.Delete;
@@ -25,18 +24,15 @@ public abstract class IntegrationTest {
 	private ValidationService validationService;
 
 	public <T> ResultAssertions onCreate(T instance) {
-		Result<T> result = validationService.validate(instance, Create.class);
-		return assertThat(result);
+		return assertThat(validationService.validate(instance, Create.class));
 	}
 
 	public <T> ResultAssertions onUpdate(T instance) {
-		Result<T> result = validationService.validate(instance, Update.class);
-		return assertThat(result);
+		return assertThat(validationService.validate(instance, Update.class));
 	}
 
 	public <T> ResultAssertions onDelete(T instance) {
-		Result<T> result = validationService.validate(instance, Delete.class);
-		return assertThat(result);
+		return assertThat(validationService.validate(instance, Delete.class));
 	}
 
 }

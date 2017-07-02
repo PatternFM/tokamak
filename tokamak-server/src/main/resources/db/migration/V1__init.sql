@@ -24,7 +24,8 @@ CREATE TABLE Clients (
   updated datetime(3) NOT NULL,
   client_id varchar(128) NOT NULL,
   client_secret varchar(255) NOT NULL,
-  name varchar(50),
+  name varchar(50) NOT NULL,
+  description varchar(255),
   redirect_uri varchar(255),
   access_token_validity_seconds int(11) unsigned,
   refresh_token_validity_seconds int(11) unsigned,
@@ -228,31 +229,31 @@ INSERT INTO GrantTypes (created, updated, id, name) VALUES (NOW(),NOW(),'gnt_vrj
 INSERT INTO GrantTypes (created, updated, id, name) VALUES (NOW(),NOW(),'gnt_stjzs6y708vt75mx17xl','implicit');
 
 
-INSERT INTO Scopes (created, updated, id, name) VALUES (NOW(),NOW(),'scp_gws0jo8mqqhzdewbhqvy','accounts:create');
-INSERT INTO Scopes (created, updated, id, name) VALUES (NOW(),NOW(),'scp_kzor8xpzoxex8iy9v8uk','accounts:update');
-INSERT INTO Scopes (created, updated, id, name) VALUES (NOW(),NOW(),'scp_tjs5q1gmu4z9zhpy08cn','accounts:delete');
-INSERT INTO Scopes (created, updated, id, name) VALUES (NOW(),NOW(),'scp_hkgtskyizkixzzimnew9','accounts:read');
-INSERT INTO Scopes (created, updated, id, name) VALUES (NOW(),NOW(),'scp_v7t5ngcnwibl1ykba53v','clients:create');
-INSERT INTO Scopes (created, updated, id, name) VALUES (NOW(),NOW(),'scp_nlbl8q2gsfundb6bwrhy','clients:update');
-INSERT INTO Scopes (created, updated, id, name) VALUES (NOW(),NOW(),'scp_ibg9lhwzjwioe4n9xsrh','clients:delete');
-INSERT INTO Scopes (created, updated, id, name) VALUES (NOW(),NOW(),'scp_ltb5zev462vkl6wezayz','clients:read');
-INSERT INTO Scopes (created, updated, id, name) VALUES (NOW(),NOW(),'scp_fvjtuvymnai9yxmp2kdo','roles:create');
-INSERT INTO Scopes (created, updated, id, name) VALUES (NOW(),NOW(),'scp_pavligj10fmejikdxqvm','roles:update');
-INSERT INTO Scopes (created, updated, id, name) VALUES (NOW(),NOW(),'scp_ga8mlm7l4mfg9pf2ib3x','roles:delete');
-INSERT INTO Scopes (created, updated, id, name) VALUES (NOW(),NOW(),'scp_s7bhhhut0qkgip9jqwnj','roles:read');
-INSERT INTO Scopes (created, updated, id, name) VALUES (NOW(),NOW(),'scp_hkianhtqnek96w7drakl','authorities:create');
-INSERT INTO Scopes (created, updated, id, name) VALUES (NOW(),NOW(),'scp_kig121ofnoj0nbabv2jq','authorities:update');
-INSERT INTO Scopes (created, updated, id, name) VALUES (NOW(),NOW(),'scp_azz7sndajdloudjkyfzw','authorities:delete');
-INSERT INTO Scopes (created, updated, id, name) VALUES (NOW(),NOW(),'scp_zuofgp0oocouglenmqni','authorities:read');
-INSERT INTO Scopes (created, updated, id, name) VALUES (NOW(),NOW(),'scp_hzi6nhtqnek4667drakg','audiences:create');
-INSERT INTO Scopes (created, updated, id, name) VALUES (NOW(),NOW(),'scp_krg821ofnojenb7bv2jd','audiences:update');
-INSERT INTO Scopes (created, updated, id, name) VALUES (NOW(),NOW(),'scp_arz7sndajdldudj6yfzg','audiences:delete');
-INSERT INTO Scopes (created, updated, id, name) VALUES (NOW(),NOW(),'scp_z4ofgp0oocoggle5mqnh','audiences:read');
-INSERT INTO Scopes (created, updated, id, name) VALUES (NOW(),NOW(),'scp_qwayiuoajqxqwfcypdyj','scopes:create');
-INSERT INTO Scopes (created, updated, id, name) VALUES (NOW(),NOW(),'scp_zbueqkzvvp9zuoq37g3t','scopes:update');
-INSERT INTO Scopes (created, updated, id, name) VALUES (NOW(),NOW(),'scp_ty8l6srhwlp9si5mpmd9','scopes:delete');
-INSERT INTO Scopes (created, updated, id, name) VALUES (NOW(),NOW(),'scp_cd28ieewxlb3gtde3tza','scopes:read');
-INSERT INTO Scopes (created, updated, id, name) VALUES (NOW(),NOW(),'scp_edgdg5kb7bjsb9cyh55x','grant_types:read');
+INSERT INTO Scopes (created, updated, id, name, description) VALUES (NOW(),NOW(),'scp_gws0jo8mqqhzdewbhqvy','accounts:create','Create accounts');
+INSERT INTO Scopes (created, updated, id, name, description) VALUES (NOW(),NOW(),'scp_kzor8xpzoxex8iy9v8uk','accounts:update','Update accounts');
+INSERT INTO Scopes (created, updated, id, name, description) VALUES (NOW(),NOW(),'scp_tjs5q1gmu4z9zhpy08cn','accounts:delete','Delete accounts');
+INSERT INTO Scopes (created, updated, id, name, description) VALUES (NOW(),NOW(),'scp_hkgtskyizkixzzimnew9','accounts:read', 'View and list accounts');
+INSERT INTO Scopes (created, updated, id, name, description) VALUES (NOW(),NOW(),'scp_v7t5ngcnwibl1ykba53v','clients:create','Create OAuth apps');
+INSERT INTO Scopes (created, updated, id, name, description) VALUES (NOW(),NOW(),'scp_nlbl8q2gsfundb6bwrhy','clients:update','Update OAuth apps');
+INSERT INTO Scopes (created, updated, id, name, description) VALUES (NOW(),NOW(),'scp_ibg9lhwzjwioe4n9xsrh','clients:delete','Delete OAuth apps');
+INSERT INTO Scopes (created, updated, id, name, description) VALUES (NOW(),NOW(),'scp_ltb5zev462vkl6wezayz','clients:read','View and list OAuth apps');
+INSERT INTO Scopes (created, updated, id, name, description) VALUES (NOW(),NOW(),'scp_fvjtuvymnai9yxmp2kdo','roles:create','Create roles');
+INSERT INTO Scopes (created, updated, id, name, description) VALUES (NOW(),NOW(),'scp_pavligj10fmejikdxqvm','roles:update','Update roles');
+INSERT INTO Scopes (created, updated, id, name, description) VALUES (NOW(),NOW(),'scp_ga8mlm7l4mfg9pf2ib3x','roles:delete','Delete roles');
+INSERT INTO Scopes (created, updated, id, name, description) VALUES (NOW(),NOW(),'scp_s7bhhhut0qkgip9jqwnj','roles:read','View and list roles');
+INSERT INTO Scopes (created, updated, id, name, description) VALUES (NOW(),NOW(),'scp_hkianhtqnek96w7drakl','authorities:create','Create authorities');
+INSERT INTO Scopes (created, updated, id, name, description) VALUES (NOW(),NOW(),'scp_kig121ofnoj0nbabv2jq','authorities:update','Update authorities');
+INSERT INTO Scopes (created, updated, id, name, description) VALUES (NOW(),NOW(),'scp_azz7sndajdloudjkyfzw','authorities:delete','Delete authorities');
+INSERT INTO Scopes (created, updated, id, name, description) VALUES (NOW(),NOW(),'scp_zuofgp0oocouglenmqni','authorities:read','View and list authorities');
+INSERT INTO Scopes (created, updated, id, name, description) VALUES (NOW(),NOW(),'scp_hzi6nhtqnek4667drakg','audiences:create','Create audiences');
+INSERT INTO Scopes (created, updated, id, name, description) VALUES (NOW(),NOW(),'scp_krg821ofnojenb7bv2jd','audiences:update','Update audiences');
+INSERT INTO Scopes (created, updated, id, name, description) VALUES (NOW(),NOW(),'scp_arz7sndajdldudj6yfzg','audiences:delete','Delete audiences');
+INSERT INTO Scopes (created, updated, id, name, description) VALUES (NOW(),NOW(),'scp_z4ofgp0oocoggle5mqnh','audiences:read','View and list audiences');
+INSERT INTO Scopes (created, updated, id, name, description) VALUES (NOW(),NOW(),'scp_qwayiuoajqxqwfcypdyj','scopes:create','Create scopes');
+INSERT INTO Scopes (created, updated, id, name, description) VALUES (NOW(),NOW(),'scp_zbueqkzvvp9zuoq37g3t','scopes:update','Update scopes');
+INSERT INTO Scopes (created, updated, id, name, description) VALUES (NOW(),NOW(),'scp_ty8l6srhwlp9si5mpmd9','scopes:delete','Delete scopes');
+INSERT INTO Scopes (created, updated, id, name, description) VALUES (NOW(),NOW(),'scp_cd28ieewxlb3gtde3tza','scopes:read','View and list scopes');
+INSERT INTO Scopes (created, updated, id, name, description) VALUES (NOW(),NOW(),'scp_edgdg5kb7bjsb9cyh55x','grant_types:read','View and list grant types');
 
 
 INSERT INTO Roles (created, updated, id, name) VALUES (NOW(),NOW(),'rol_edgda5k47bjsbtcyh45x','role:user');

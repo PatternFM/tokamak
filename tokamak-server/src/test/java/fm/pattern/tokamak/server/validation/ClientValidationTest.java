@@ -4,13 +4,10 @@ import static fm.pattern.tokamak.server.dsl.ClientDSL.client;
 import static fm.pattern.tokamak.server.dsl.GrantTypeDSL.grantType;
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
 
-import java.util.HashSet;
-
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Before;
 import org.junit.Test;
 
-import fm.pattern.minimal.Reflection;
 import fm.pattern.tokamak.server.IntegrationTest;
 import fm.pattern.tokamak.server.model.Client;
 import fm.pattern.tokamak.server.model.GrantType;
@@ -40,16 +37,8 @@ public class ClientValidationTest extends IntegrationTest {
 	}
 
 	@Test
-	public void shouldNotBeAbleToCreateAClientWhenTheSetOfGrantTypesIsNull() {
-		Client client = client().build();
-		Reflection.set(client, "grantTypes", null);
-		onCreate(client).rejected().withError("CLI-0006", "A client requires at least one grant type.", UnprocessableEntityException.class);
-	}
-
-	@Test
 	public void shouldNotBeAbleToCreateAClientWhenTheSetOfGrantTypesIsEmpty() {
 		Client client = client().build();
-		Reflection.set(client, "grantTypes", new HashSet<GrantType>());
 		onCreate(client).rejected().withError("CLI-0006", "A client requires at least one grant type.", UnprocessableEntityException.class);
 	}
 
@@ -78,13 +67,20 @@ public class ClientValidationTest extends IntegrationTest {
 	}
 
 	@Test
-	public void shouldNotBeAbleToCreateAClientWhenTheClientClientIdIsLessThan10Characters() {
+	public void shouldNotBeAbleToCreateAClientWhenTheClientIdIsLessThan10Characters() {
 		onCreate(client().withGrantType(grantType).withClientId("ABC").build()).rejected().withError("CLI-0002", "A client id must be between 10 and 128 characters.", UnprocessableEntityException.class);
 	}
 
 	@Test
-	public void shouldNotBeAbleToCreateAClientWhenTheClientClientIdIsGreaterThan128Characters() {
+	public void shouldNotBeAbleToCreateAClientWhenTheClientIdIsGreaterThan128Characters() {
 		onCreate(client().withGrantType(grantType).withClientId(randomAlphabetic(129)).build()).rejected().withError("CLI-0002", "A client id must be between 10 and 128 characters.", UnprocessableEntityException.class);
+	}
+
+	@Test
+	public void shouldNotBeAbleToCreateAClientWhenTheClientNameIsNullOrEmpty() {
+		onCreate(client().withGrantType(grantType).withName(null).build()).rejected().withError("CLI-0011", "A client name is required.", UnprocessableEntityException.class);
+		onCreate(client().withGrantType(grantType).withName("").build()).rejected().withError("CLI-0011", "A client name is required.", UnprocessableEntityException.class);
+		onCreate(client().withGrantType(grantType).withName("    ").build()).rejected().withError("CLI-0011", "A client name is required.", UnprocessableEntityException.class);
 	}
 
 	@Test
@@ -93,8 +89,13 @@ public class ClientValidationTest extends IntegrationTest {
 	}
 
 	@Test
+	public void shouldNotBeAbleToCreateAClientWhenTheClientDescriptionIsGreaterThan255Characters() {
+		onCreate(client().withGrantType(grantType).withDescription(randomAlphabetic(256)).build()).rejected().withError("CLI-0013", "A client description cannot be greater than 255 characters.", UnprocessableEntityException.class);
+	}
+
+	@Test
 	public void shouldNotBeAbleToCreateAClientWhenTheRedirectUriIsGreaterThan255Characters() {
-		onCreate(client().withGrantType(grantType).withRedirectUri(randomAlphabetic(256)).build()).rejected().withError("CLI-0010", "A client redirect URI must be less than 255 characters.", UnprocessableEntityException.class);
+		onCreate(client().withGrantType(grantType).withRedirectUri(randomAlphabetic(256)).build()).rejected().withError("CLI-0012", "A client redirect URI must be less than 255 characters.", UnprocessableEntityException.class);
 	}
 
 	@Test
@@ -113,16 +114,8 @@ public class ClientValidationTest extends IntegrationTest {
 	}
 
 	@Test
-	public void shouldNotBeAbleToUpdateAClientWhenTheSetOfGrantTypesIsNull() {
-		Client client = client().build();
-		Reflection.set(client, "grantTypes", null);
-		onUpdate(client).rejected().withError("CLI-0006", "A client requires at least one grant type.", UnprocessableEntityException.class);
-	}
-
-	@Test
 	public void shouldNotBeAbleToUpdateAClientWhenTheSetOfGrantTypesIsEmpty() {
 		Client client = client().build();
-		Reflection.set(client, "grantTypes", new HashSet<GrantType>());
 		onUpdate(client).rejected().withError("CLI-0006", "A client requires at least one grant type.", UnprocessableEntityException.class);
 	}
 
@@ -161,13 +154,25 @@ public class ClientValidationTest extends IntegrationTest {
 	}
 
 	@Test
+	public void shouldNotBeAbleToUpdateAClientWhenTheClientNameIsNullOrEmpty() {
+		onUpdate(client().withGrantType(grantType).withName(null).build()).rejected().withError("CLI-0011", "A client name is required.", UnprocessableEntityException.class);
+		onUpdate(client().withGrantType(grantType).withName("").build()).rejected().withError("CLI-0011", "A client name is required.", UnprocessableEntityException.class);
+		onUpdate(client().withGrantType(grantType).withName("    ").build()).rejected().withError("CLI-0011", "A client name is required.", UnprocessableEntityException.class);
+	}
+
+	@Test
 	public void shouldNotBeAbleToUpdateAClientWhenTheClientNameIsGreaterThan50Characters() {
 		onUpdate(client().withGrantType(grantType).withName(randomAlphabetic(51)).build()).rejected().withError("CLI-0010", "A client name cannot be greater than 50 characters.", UnprocessableEntityException.class);
 	}
 
 	@Test
+	public void shouldNotBeAbleToUpdateAClientWhenTheClientDescriptionIsGreaterThan255Characters() {
+		onUpdate(client().withGrantType(grantType).withDescription(randomAlphabetic(256)).build()).rejected().withError("CLI-0013", "A client description cannot be greater than 255 characters.", UnprocessableEntityException.class);
+	}
+
+	@Test
 	public void shouldNotBeAbleToUpdateAClientWhenTheRedirectUriIsGreaterThan255Characters() {
-		onUpdate(client().withGrantType(grantType).withRedirectUri(randomAlphabetic(256)).build()).rejected().withError("CLI-0010", "A client redirect URI must be less than 255 characters.", UnprocessableEntityException.class);
+		onUpdate(client().withGrantType(grantType).withRedirectUri(randomAlphabetic(256)).build()).rejected().withError("CLI-0012", "A client redirect URI must be less than 255 characters.", UnprocessableEntityException.class);
 	}
 
 }

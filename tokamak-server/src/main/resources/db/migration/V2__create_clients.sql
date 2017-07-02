@@ -1,4 +1,4 @@
-INSERT INTO Clients (created, updated, id, client_id, client_secret) VALUES (NOW(),NOW(),'cli_vthrewfbhgbt2bm46bks','test-client','$2a$10$XMYMNDyiEN9982NGHsVeCextGacHs.cXvBVJQVPCTiB.crDiPS0eu');
+INSERT INTO Clients (created, updated, id, client_id, client_secret, name, description) VALUES (NOW(),NOW(),'cli_vthrewfbhgbt2bm46bks','test-client','$2a$10$XMYMNDyiEN9982NGHsVeCextGacHs.cXvBVJQVPCTiB.crDiPS0eu', 'Tokamak Acceptance Test App','This app is used to run automated acceptance tests against the Tokamak server.');
 
 INSERT INTO ClientAuthorities (client_id, authority_id) VALUES('cli_vthrewfbhgbt2bm46bks', 'ath_wb0LcDMl5oDGAfQE8Kfa');
 
