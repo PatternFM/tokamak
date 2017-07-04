@@ -22,14 +22,14 @@ class CreateAuthorityForm extends React.Component {
         };
     }
 
-    handleOpen(authority) {
+    show(authority) {
         if(authority) {
             this.setState({ authority_id:authority.id, name:authority.name, description:authority.description, update:true });
         }
         this.setState({ open:true });
     }
 
-    handleClose() {
+    hide() {
         this.setState({open:false});
     }
 
@@ -48,7 +48,7 @@ class CreateAuthorityForm extends React.Component {
         AuthorityService.create(this.state.name, this.state.description).then(function(result) {
             if(result.status === "accepted") {
                 self.props.authorityCreated(result.instance);
-                self.handleClose();
+                self.hide();
                 self.setState({ authority_id:"" });
                 self.setState({ name:"" });
                 self.setState({ description:"" });
@@ -67,7 +67,7 @@ class CreateAuthorityForm extends React.Component {
         AuthorityService.update(this.state.authority_id, this.state.name, this.state.description).then(function(result) {
             if(result.status === "accepted") {
                 self.props.authorityUpdated(result.instance);
-                self.handleClose();
+                self.hide();
                 self.setState({ authority_id:"" });
                 self.setState({ name:"" });
                 self.setState({ description:"" });
@@ -82,8 +82,10 @@ class CreateAuthorityForm extends React.Component {
 
     render() {
         let title = this.state.update ? "Update Authority" : "Create Authority";
-        let button = this.state.update ? <button className="tok-button center" style={{marginRight:"10px"}} onClick={() => this.update()}>Update</button> : <button className="tok-button center" style={{marginRight:"10px"}} onClick={() => this.create()}>Create</button>;
-        
+        let button = this.state.update ? <button className="tok-button center" style={{marginRight:"10px"}} onClick={ () => this.update() }>Update</button> : <button className="tok-button center" style={{marginRight:"10px"}} onClick={() => this.create()}>Create</button>;
+
+        let inputv = this.state.update ? <div className="tok-textfield-disabled">{this.state.name}</div> : <input autoFocus className="tok-textfield" type="text" name="name" value={this.state.name} onChange={this.nameChanged.bind(this)} autoComplete="off" />;
+
         return (
             <Dialog modal={true} open={this.state.open}>
               <div className="modal-title">{title}</div>
@@ -91,7 +93,7 @@ class CreateAuthorityForm extends React.Component {
               <table style={{width:"100%", padding:"0 60px 30px 60px"}}>
                 <tr>
                   <td className="form-key">Authority Name</td>
-                  <td className="form-value"><input className="tok-textfield" type="text" name="name" value={this.state.name} onChange={this.nameChanged.bind(this)} autoComplete="off" /></td>
+                  <td className="form-value">{inputv}</td>
                 </tr>
                 <tr>
                   <td className="form-key">Description</td>
@@ -101,7 +103,7 @@ class CreateAuthorityForm extends React.Component {
               
               <div style={{textAlign:"center", paddingBottom:"30px"}}>
                 {button}
-                <button className="tok-button tok-cancel center" onClick={() => this.handleClose()}>Cancel</button>
+                <button className="tok-button tok-cancel center" onClick={() => this.hide()}>Cancel</button>
               </div>
             </Dialog>
         );

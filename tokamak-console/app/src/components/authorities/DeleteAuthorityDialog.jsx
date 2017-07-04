@@ -13,13 +13,13 @@ class DeleteAuthorityDialog extends React.Component {
         };
     }
 
-    handleOpen(authority) {
+    show(authority) {
         this.setState({ open:true });
         this.setState({ authority:authority });
     }
 
-    handleClose() {
-        this.setState({open:false});
+    hide() {
+        this.setState({ open:false });
     }
 
     delete() {        
@@ -29,7 +29,7 @@ class DeleteAuthorityDialog extends React.Component {
         AuthorityService.delete(self.state.authority).then(function(result) {
             if(result.status === "accepted") {
                 self.props.authorityDeleted(result.instance);
-                self.handleClose();
+                self.hide();
                 self.setState({ authority:null });
             }
             if(result.status === "rejected") {

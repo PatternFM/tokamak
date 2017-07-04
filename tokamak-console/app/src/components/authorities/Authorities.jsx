@@ -18,13 +18,13 @@ class Authorities extends React.Component {
         };
     }
 
-    onNewAuthority(authority) {
+    authorityCreated(authority) {
         var authorities = this.state.authorities.slice();
         authorities.unshift(authority);
         this.setState({ authorities: authorities });
     }
 
-    onUpdatedAuthority(authority) {
+    authorityUpdated(authority) {
         var authorities = this.state.authorities.slice();
         var index = authorities.findIndex(function(a) {return a.id === authority.id});
         if(index !== -1) {
@@ -34,7 +34,6 @@ class Authorities extends React.Component {
     }
 
     authorityDeleted(authority) {
-        console.log("calling authoirty deleeted...");
         var authorities = this.state.authorities.slice();
         var index = authorities.findIndex(function(a) {return a.id === authority.id});
         if(index !== -1) {
@@ -57,7 +56,7 @@ class Authorities extends React.Component {
     }
 
     render() {
-        let page = this.state.error != null ? <ApplicationError error={this.state.error} /> : <ViewAuthorities authorities={this.state.authorities} authorityCreated={ this.onNewAuthority.bind(this) } authorityUpdated={ this.onUpdatedAuthority.bind(this) } authorityDeleted={ this.authorityDeleted.bind(this) } />;
+        let page = this.state.error != null ? <ApplicationError error={this.state.error} /> : <ViewAuthorities authorities={this.state.authorities} authorityCreated={ this.authorityCreated.bind(this) } authorityUpdated={ this.authorityUpdated.bind(this) } authorityDeleted={ this.authorityDeleted.bind(this) } />;
         let output = this.state.loading ? <Loader /> : page;
                 
         return (
