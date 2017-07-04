@@ -31,8 +31,32 @@ class Scopes extends React.Component {
         });
     }
 
+    scopeCreated(scope) {
+        var scopes = this.state.scopes.slice();
+        scopes.unshift(scope);
+        this.setState({ scopes: scopes });
+    }
+
+    scopeUpdated(scope) {
+        var scopes = this.state.scopes.slice();
+        var index = scopes.findIndex(function(a) {return a.id === scope.id});
+        if(index !== -1) {
+            scopes[index] = scope;
+        }
+        this.setState({ scopes: scopes });
+    }
+
+    scopeDeleted(scope) {
+        var scopes = this.state.scopes.slice();
+        var index = scopes.findIndex(function(a) {return a.id === scope.id});
+        if(index !== -1) {
+            scopes.splice(index, 1);
+        }
+        this.setState({ scopes: scopes });
+    }
+
     render() {
-        let output = this.state.error != null ? <ApplicationError error={this.state.error} /> : <ViewScopes scopes={this.state.scopes} />;
+        let output = this.state.error != null ? <ApplicationError error={this.state.error} /> : <ViewScopes scopes={this.state.scopes} scopeCreated={ this.scopeCreated.bind(this) } scopeUpdated={ this.scopeUpdated.bind(this) } scopeDeleted={ this.scopeDeleted.bind(this) } />;
         let render = this.state.loading ? <Loader /> : output;
         
         return (

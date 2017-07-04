@@ -1,11 +1,11 @@
 import React from 'react';
 import Dialog from 'material-ui/Dialog';
-import AudienceService from "../../services/AudienceService";
+import ScopeService from "../../services/ScopeService";
 
-class CreateAudienceForm extends React.Component {
+class CreateScopeForm extends React.Component {
     propTypes: {
-        audienceCreated: React.PropTypes.func,
-        audienceUpdated: React.PropTypes.func
+        scopeCreated: React.PropTypes.func,
+        scopeUpdated: React.PropTypes.func
     }
     
     constructor(props) {
@@ -14,24 +14,23 @@ class CreateAudienceForm extends React.Component {
         this.state = {
             name: "",
             description: "",
-            error: null,
-            audience_id: "",
+            error: "",
+            scope_id: "",
             loading: false,
             update: false,
             open: false
         };
     }
 
-    show(audience) {
-        if(audience) {
-            this.setState({ audience_id:audience.id, name:audience.name, description:audience.description, update:true });
+    show(scope) {
+        if(scope) {
+            this.setState({ scope_id:scope.id, name:scope.name, description:scope.description, update:true });
         }
         this.setState({ open:true });
     }
 
     hide() {
-        this.setState({ open:false });
-        this.setState({ error:null });
+        this.setState({open:false});
     }
 
     nameChanged(event) {
@@ -46,16 +45,16 @@ class CreateAudienceForm extends React.Component {
         this.setState({ loading:true });
         
         let self = this;
-        AudienceService.create(this.state.name, this.state.description).then(function(result) {
+        ScopeService.create(this.state.name, this.state.description).then(function(result) {
             if(result.status === "accepted") {
-                self.props.audienceCreated(result.instance);
+                self.props.scopeCreated(result.instance);
                 self.hide();
-                self.setState({ audience_id:"" });
+                self.setState({ scope_id:"" });
                 self.setState({ name:"" });
                 self.setState({ description:"" });
             }
             if(result.status === "rejected") {
-                self.setState({ error: result.errors[0].message });
+                self.setState({ error:result.errors[0].message });
             }
             self.setState({ loading:false });
         });
@@ -65,23 +64,24 @@ class CreateAudienceForm extends React.Component {
         this.setState({ loading:true });
 
         let self = this;
-        AudienceService.update(this.state.audience_id, this.state.name, this.state.description).then(function(result) {
+        ScopeService.update(this.state.scope_id, this.state.name, this.state.description).then(function(result) {
             if(result.status === "accepted") {
-                self.props.audienceUpdated(result.instance);
+                self.props.scopeUpdated(result.instance);
                 self.hide();
-                self.setState({ audience_id:"" });
+                self.setState({ scope_id:"" });
                 self.setState({ name:"" });
                 self.setState({ description:"" });
             }
             if(result.status === "rejected") {
-                self.setState({ error: result.errors[0].message });
+                self.setState({ error:result.errors[0].message });
             }
             self.setState({ loading:false });
         });
     }
 
+
     render() {
-        let title = this.state.update ? "Update Audience" : "Create Audience";
+        let title = this.state.update ? "Update Scope" : "Create Scope";
         let button = this.state.update ? <button className="tok-button center" style={{marginRight:"10px"}} onClick={ () => this.update() }>Update</button> : <button className="tok-button center" style={{marginRight:"10px"}} onClick={() => this.create()}>Create</button>;
         let inputv = this.state.update ? <div className="tok-textfield-disabled">{this.state.name}</div> : <input autoFocus className="tok-textfield" type="text" name="name" value={this.state.name} onChange={this.nameChanged.bind(this)} autoComplete="off" />;
 
@@ -95,7 +95,7 @@ class CreateAudienceForm extends React.Component {
               
               <table style={{width:"100%", padding:"0 60px 30px 60px"}}>
                 <tr>
-                  <td className="form-key">Audience Name</td>
+                  <td className="form-key">Scope Name</td>
                   <td className="form-value">{inputv}</td>
                 </tr>
                 <tr>
@@ -114,4 +114,4 @@ class CreateAudienceForm extends React.Component {
     
 }
 
-export default CreateAudienceForm;
+export default CreateScopeForm;

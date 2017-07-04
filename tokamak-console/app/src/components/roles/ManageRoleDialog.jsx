@@ -54,7 +54,7 @@ class CreateRoleForm extends React.Component {
                 self.setState({ description:"" });
             }
             if(result.status === "rejected") {
-                self.setState({error: result.message});
+                self.setState({ error:result.errors[0].message });
             }
             self.setState({ loading:false });
         });
@@ -73,7 +73,7 @@ class CreateRoleForm extends React.Component {
                 self.setState({ description:"" });
             }
             if(result.status === "rejected") {
-                self.setState({error: result.message});
+                self.setState({ error:result.errors[0].message });
             }
             self.setState({ loading:false });
         });
@@ -90,7 +90,7 @@ class CreateRoleForm extends React.Component {
               <div className="modal-title">{title}</div>
               
               {this.state.error && this.state.error.length > 0 &&
-                 <div className="login-error">{this.state.error}</div>
+                 <div className="validation-error">{this.state.error}</div>
               }        
               
               <table style={{width:"100%", padding:"0 60px 30px 60px"}}>
