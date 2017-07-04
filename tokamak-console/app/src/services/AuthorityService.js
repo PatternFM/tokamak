@@ -12,6 +12,10 @@ var AuthorityService = {
 
     update(id, name, description) {
         return RestService.put("/v1/authorities/" + id, {name:name, description:description});
+    },
+
+    delete(authority) {
+        return RestService.delete("/v1/authorities/" + authority.id, authority);
     }
 
 }

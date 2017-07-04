@@ -1,14 +1,16 @@
 import React from "react";
 import CreateAuthorityForm from "./CreateAuthorityForm.jsx";
+import DeleteAuthorityDialog from "./DeleteAuthorityDialog.jsx";
 
 const Timestamp = require("react-timestamp");
 
 class AuthorityTable extends React.Component {
-
+    
     render() {
         return (
             <div>
-                <CreateAuthorityForm ref="createAuthorityForm" authorityUpdated={this.props.authorityUpdated} /> 
+                <CreateAuthorityForm ref="form" authorityUpdated={this.props.authorityUpdated} /> 
+                <DeleteAuthorityDialog ref="deleteAuthorityDialog" authorityDeleted={this.props.authorityDeleted} />
                 
                 <table className="display-table">
                   <thead>
@@ -30,8 +32,8 @@ class AuthorityTable extends React.Component {
                        <td className="dtr">{authority.id}</td>
                        <td className="dtr"><Timestamp time={authority.created/1000} format="full" /></td>
                        <td className="dtr right-pad-0"> 
-                         <i className="fa fa-times inline-button"></i>
-                         <i className="fa fa-pencil inline-button" style={{marginRight:"5px"}} onClick={() => this.refs.createAuthorityForm.handleOpen(authority)}></i> 
+                         <i className="fa fa-times inline-button" onClick={() => this.refs.deleteAuthorityDialog.handleOpen(authority)}></i>
+                         <i className="fa fa-pencil inline-button" style={{marginRight:"5px"}} onClick={() => this.refs.form.handleOpen(authority)}></i> 
                        </td>
                      </tr>
                     )}

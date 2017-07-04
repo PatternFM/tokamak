@@ -12,7 +12,7 @@ class ViewAuthorities extends React.Component {
         return (
             <div className="animated fadeIn">
             
-            <CreateAuthorityForm ref="createAuthorityForm" authorityCreated={this.props.onNewAuthority} authorityUpdated={this.props.onUpdatedAuthority}  />
+            <CreateAuthorityForm ref="form" authorityCreated={this.props.authorityCreated}  />
             
             {moreThanOneResult &&
               <MuiThemeProvider>
@@ -20,10 +20,10 @@ class ViewAuthorities extends React.Component {
                   <div id="header">
                     <div className="title">App Authorities</div>
                     <p className="overview">View, create and manage OAuth2 app authorities. <NavLink to="/help#authorities">Learn more about authorities.</NavLink></p>
-                    <button className="tok-button fixed-top" onClick={() => this.refs.createAuthorityForm.handleOpen()}>+ Create Authority</button>
+                    <button className="tok-button fixed-top" onClick={() => this.refs.form.handleOpen()}>+ Create Authority</button>
                   </div>
                   <div className="table-container">
-                    <AuthorityTable authorities={this.props.authorities} authorityCreated={this.props.onNewAuthority} authorityUpdated={this.props.onUpdatedAuthority} />
+                    <AuthorityTable authorities={this.props.authorities} authorityUpdated={this.props.authorityUpdated} authorityDeleted={this.props.authorityDeleted} />
                   </div>
                 </div>
               </MuiThemeProvider>
@@ -33,7 +33,7 @@ class ViewAuthorities extends React.Component {
                 <h2 className="error-title">App Authorities</h2>
                 <p className="simple-message">The <em>authority</em> claim is a Tokamak specific claim, which enumerates the authorities (roles) assigned to a client. Since it's an optional claim, you don't need to define authorities for your oauth apps. <NavLink to="/help#authorities">Learn more about authorities.</NavLink></p>
                 <br/><br/>
-                <button className="tok-button center" onClick={() => this.refs.createAuthorityForm.handleOpen()}>+ Create Authority</button>
+                <button className="tok-button center" onClick={() => this.refs.form.handleOpen()}>+ Create Authority</button>
               </div>
             }
             </div>

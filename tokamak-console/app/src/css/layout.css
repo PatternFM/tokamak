@@ -337,6 +337,11 @@ body {
 	margin: -10px 0;
 }
 
+.inline-button:hover {
+	background: #E2E2E2;
+	cursor: pointer;
+}
+
 .modal-title {
     font-size: 15px;
     font-weight: 500;
@@ -345,6 +350,14 @@ body {
     margin-bottom: 40px;
     text-align: center;
     -webkit-font-smoothing: antialiased;
+}
+
+.modal-message {
+	text-align: center;
+    -webkit-font-smoothing: antialiased;
+    margin-bottom: 30px;
+    color: #333;
+    font-family: "Helvetica Neue", "Helvetica";    
 }
 
 .tok-textfield {
