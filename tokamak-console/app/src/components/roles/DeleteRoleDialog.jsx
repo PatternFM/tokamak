@@ -1,39 +1,39 @@
 import React from 'react';
 import Dialog from 'material-ui/Dialog';
-import AuthorityService from "../../services/AuthorityService";
+import RoleService from "../../services/RoleService";
 
-class DeleteAuthorityDialog extends React.Component {
+class DeleteRoleDialog extends React.Component {
     constructor(props) {
         super(props);
         
         this.state = {
             error: null,
-            authority: null,
+            role: null,
             loading: false,
             open: false
         };
     }
 
-    show(authority) {
+    show(role) {
         this.setState({ open:true });
-        this.setState({ authority:authority });
+        this.setState({ role:role });
     }
 
     hide() {
         this.setState({ open:false });
-        this.setState({ authority:null });
-        this.setState({ error:null });        
+        this.setState({ role:null });
+        this.setState({ error:null });
     }
 
     delete() {        
         this.setState({ loading:true });
         
         let self = this;
-        AuthorityService.delete(self.state.authority).then(function(result) {
+        RoleService.delete(self.state.role).then(function(result) {
             if(result.status === "accepted") {
-                self.props.authorityDeleted(result.instance);
+                self.props.roleDeleted(result.instance);
                 self.hide();
-                self.setState({ authority:null });
+                self.setState({ role:null });
             }
             if(result.status === "rejected") {
                 self.setState({ error:result.errors[0].message });
@@ -43,17 +43,17 @@ class DeleteAuthorityDialog extends React.Component {
     }
 
     render() {
-        let name = this.state.authority ? this.state.authority.name : "";
+        let name = this.state.role ? this.state.role.name : "";
         return (
             <Dialog modal={true} open={this.state.open}>
-              <div className="modal-title">Delete Authority</div>
+              <div className="modal-title">Delete Role</div>
               <div className="modal-message">
                  <p>Are you sure you want to delete <strong>{name}</strong>?</p>
               </div>
               
               {this.state.error && this.state.error.length > 0 &&
                  <div className="validation-error">{this.state.error}</div>
-              } 
+              }              
               
               <div style={{textAlign:"center", paddingBottom:"30px"}}>
                 <button className="tok-button center" style={{marginRight:"10px"}} onClick={() => this.delete()}>Delete</button>
@@ -65,4 +65,4 @@ class DeleteAuthorityDialog extends React.Component {
     
 }
 
-export default DeleteAuthorityDialog;
+export default DeleteRoleDialog;

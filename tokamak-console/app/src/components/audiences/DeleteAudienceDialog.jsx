@@ -7,6 +7,7 @@ class DeleteAudienceDialog extends React.Component {
         super(props);
         
         this.state = {
+            error: null,
             audience: null,
             loading: false,
             open: false
@@ -20,6 +21,8 @@ class DeleteAudienceDialog extends React.Component {
 
     hide() {
         this.setState({ open:false });
+        this.setState({ audience:null });
+        this.setState({ error:null });
     }
 
     delete() {        
@@ -33,7 +36,7 @@ class DeleteAudienceDialog extends React.Component {
                 self.setState({ audience:null });
             }
             if(result.status === "rejected") {
-                self.setState({ error:result.message });
+                self.setState({ error:result.errors[0].message });
             }
             self.setState({ loading:false });
         });
@@ -47,6 +50,11 @@ class DeleteAudienceDialog extends React.Component {
               <div className="modal-message">
                  <p>Are you sure you want to delete <strong>{name}</strong>?</p>
               </div>
+              
+              {this.state.error && this.state.error.length > 0 &&
+                 <div className="validation-error">{this.state.error}</div>
+              }              
+              
               <div style={{textAlign:"center", paddingBottom:"30px"}}>
                 <button className="tok-button center" style={{marginRight:"10px"}} onClick={() => this.delete()}>Delete</button>
                 <button className="tok-button tok-cancel center" onClick={() => this.hide()}>Cancel</button>

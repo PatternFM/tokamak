@@ -1,6 +1,7 @@
 import React from "react";
 import ManageAudienceDialog from "./ManageAudienceDialog.jsx";
 import DeleteAudienceDialog from "./DeleteAudienceDialog.jsx";
+
 const Timestamp = require("react-timestamp");
 
 class AudienceTable extends React.Component {

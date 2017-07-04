@@ -28,9 +28,7 @@ var RestService = {
         	headers: { "Accept": "application/json", "Content-Type": "application/json", "Authorization": "Bearer " + AuthenticationService.getAccessToken() }
         })
         .then(function(response) {
-            if(response.ok) {
-                return response.json();
-            }
+            return response.json();
             throw Error("Received " + response.status + " reponse code from the Tokamak Server.");
         })
         .then(function(json) {
@@ -48,9 +46,7 @@ var RestService = {
         	headers: { "Accept": "application/json", "Content-Type": "application/json", "Authorization": "Bearer " + AuthenticationService.getAccessToken() }
         })
         .then(function(response) {
-            if(response.ok) {
-                return response.json();
-            }
+            return response.json();
             throw Error("Received " + response.status + " reponse code from the Tokamak Server.");
         })
         .then(function(json) {
@@ -69,6 +65,9 @@ var RestService = {
         .then(function(response) {
             if(response.ok) {
                 return instance;
+            }
+            else {
+            	return response.json();
             }
             throw Error("Received " + response.status + " reponse code from the Tokamak Server.");
         })

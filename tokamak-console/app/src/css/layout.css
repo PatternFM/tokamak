@@ -420,3 +420,13 @@ body {
 textarea {
 	height: 100px !important;
 }
+
+.validation-error {
+    font-family: "Helvetica Neue", "Helvetica", "Sans Serif";
+    font-size: 15px;
+    text-align: center;
+    color: #E25454;
+    -webkit-font-smoothing: antialiased;
+    margin-bottom: 20px;
+    margin-top: -10px;
+}

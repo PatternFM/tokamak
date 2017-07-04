@@ -14,7 +14,7 @@ class CreateAudienceForm extends React.Component {
         this.state = {
             name: "",
             description: "",
-            error: "",
+            error: null,
             audience_id: "",
             loading: false,
             update: false,
@@ -30,7 +30,8 @@ class CreateAudienceForm extends React.Component {
     }
 
     hide() {
-        this.setState({open:false});
+        this.setState({ open:false });
+        this.setState({ error:null });
     }
 
     nameChanged(event) {
@@ -54,7 +55,7 @@ class CreateAudienceForm extends React.Component {
                 self.setState({ description:"" });
             }
             if(result.status === "rejected") {
-                self.setState({error: result.message});
+                self.setState({ error: result.errors[0].message });
             }
             self.setState({ loading:false });
         });
@@ -73,7 +74,7 @@ class CreateAudienceForm extends React.Component {
                 self.setState({ description:"" });
             }
             if(result.status === "rejected") {
-                self.setState({error: result.message});
+                self.setState({ error: result.errors[0].message });
             }
             self.setState({ loading:false });
         });
@@ -90,7 +91,7 @@ class CreateAudienceForm extends React.Component {
               <div className="modal-title">{title}</div>
               
               {this.state.error && this.state.error.length > 0 &&
-                 <div className="login-error">{this.state.error}</div>
+                 <div className="validation-error">{this.state.error}</div>
               }        
               
               <table style={{width:"100%", padding:"0 60px 30px 60px"}}>

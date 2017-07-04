@@ -31,8 +31,32 @@ class Roles extends React.Component {
         });
     }
 
+    roleCreated(role) {
+        var roles = this.state.roles.slice();
+        roles.unshift(role);
+        this.setState({ roles: roles });
+    }
+
+    roleUpdated(role) {
+        var roles = this.state.roles.slice();
+        var index = roles.findIndex(function(a) {return a.id === role.id});
+        if(index !== -1) {
+            roles[index] = role;
+        }
+        this.setState({ roles: roles });
+    }
+
+    roleDeleted(role) {
+        var roles = this.state.roles.slice();
+        var index = roles.findIndex(function(a) {return a.id === role.id});
+        if(index !== -1) {
+            roles.splice(index, 1);
+        }
+        this.setState({ roles: roles });
+    }
+
     render() {
-        let output = this.state.error != null ? <ApplicationError error={this.state.error} /> : <ViewRoles roles={this.state.roles} />;
+        let output = this.state.error != null ? <ApplicationError error={this.state.error} /> : <ViewRoles roles={this.state.roles} roleCreated={ this.roleCreated.bind(this) } roleUpdated={ this.roleUpdated.bind(this) } roleDeleted={ this.roleDeleted.bind(this) } />;
         let render = this.state.loading ? <Loader /> : output;
         
         return (

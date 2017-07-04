@@ -1,11 +1,11 @@
 import React from 'react';
 import Dialog from 'material-ui/Dialog';
-import AuthorityService from "../../services/AuthorityService";
+import RoleService from "../../services/RoleService";
 
-class CreateAuthorityForm extends React.Component {
+class CreateRoleForm extends React.Component {
     propTypes: {
-        authorityCreated: React.PropTypes.func,
-        authorityUpdated: React.PropTypes.func
+        roleCreated: React.PropTypes.func,
+        roleUpdated: React.PropTypes.func
     }
     
     constructor(props) {
@@ -15,16 +15,16 @@ class CreateAuthorityForm extends React.Component {
             name: "",
             description: "",
             error: "",
-            authority_id: "",
+            role_id: "",
             loading: false,
             update: false,
             open: false
         };
     }
 
-    show(authority) {
-        if(authority) {
-            this.setState({ authority_id:authority.id, name:authority.name, description:authority.description, update:true });
+    show(role) {
+        if(role) {
+            this.setState({ role_id:role.id, name:role.name, description:role.description, update:true });
         }
         this.setState({ open:true });
     }
@@ -45,16 +45,16 @@ class CreateAuthorityForm extends React.Component {
         this.setState({ loading:true });
         
         let self = this;
-        AuthorityService.create(this.state.name, this.state.description).then(function(result) {
+        RoleService.create(this.state.name, this.state.description).then(function(result) {
             if(result.status === "accepted") {
-                self.props.authorityCreated(result.instance);
+                self.props.roleCreated(result.instance);
                 self.hide();
-                self.setState({ authority_id:"" });
+                self.setState({ role_id:"" });
                 self.setState({ name:"" });
                 self.setState({ description:"" });
             }
             if(result.status === "rejected") {
-                self.setState({ error: result.errors[0].message });
+                self.setState({error: result.message});
             }
             self.setState({ loading:false });
         });
@@ -64,16 +64,16 @@ class CreateAuthorityForm extends React.Component {
         this.setState({ loading:true });
 
         let self = this;
-        AuthorityService.update(this.state.authority_id, this.state.name, this.state.description).then(function(result) {
+        RoleService.update(this.state.role_id, this.state.name, this.state.description).then(function(result) {
             if(result.status === "accepted") {
-                self.props.authorityUpdated(result.instance);
+                self.props.roleUpdated(result.instance);
                 self.hide();
-                self.setState({ authority_id:"" });
+                self.setState({ role_id:"" });
                 self.setState({ name:"" });
                 self.setState({ description:"" });
             }
             if(result.status === "rejected") {
-                self.setState({ error: result.errors[0].message });
+                self.setState({error: result.message});
             }
             self.setState({ loading:false });
         });
@@ -81,9 +81,8 @@ class CreateAuthorityForm extends React.Component {
 
 
     render() {
-        let title = this.state.update ? "Update Authority" : "Create Authority";
+        let title = this.state.update ? "Update Role" : "Create Role";
         let button = this.state.update ? <button className="tok-button center" style={{marginRight:"10px"}} onClick={ () => this.update() }>Update</button> : <button className="tok-button center" style={{marginRight:"10px"}} onClick={() => this.create()}>Create</button>;
-
         let inputv = this.state.update ? <div className="tok-textfield-disabled">{this.state.name}</div> : <input autoFocus className="tok-textfield" type="text" name="name" value={this.state.name} onChange={this.nameChanged.bind(this)} autoComplete="off" />;
 
         return (
@@ -91,12 +90,12 @@ class CreateAuthorityForm extends React.Component {
               <div className="modal-title">{title}</div>
               
               {this.state.error && this.state.error.length > 0 &&
-                 <div className="validation-error">{this.state.error}</div>
+                 <div className="login-error">{this.state.error}</div>
               }        
               
               <table style={{width:"100%", padding:"0 60px 30px 60px"}}>
                 <tr>
-                  <td className="form-key">Authority Name</td>
+                  <td className="form-key">Role Name</td>
                   <td className="form-value">{inputv}</td>
                 </tr>
                 <tr>
@@ -115,4 +114,4 @@ class CreateAuthorityForm extends React.Component {
     
 }
 
-export default CreateAuthorityForm;
+export default CreateRoleForm;
