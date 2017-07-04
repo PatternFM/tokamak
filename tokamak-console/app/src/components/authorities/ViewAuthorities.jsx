@@ -2,7 +2,7 @@ import React from "react";
 import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
 import AuthorityTable from "./AuthorityTable.jsx";
 import { NavLink } from "react-router-dom";
-import ManageAuthorityDialog from "./ManageAuthorityDialog.jsx"
+import ManageAuthorityDialog from "./ManageAuthorityDialog.jsx";
 
 class ViewAuthorities extends React.Component {
     

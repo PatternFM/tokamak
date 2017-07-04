@@ -1,21 +1,21 @@
 import React from 'react';
 import Dialog from 'material-ui/Dialog';
-import AuthorityService from "../../services/AuthorityService";
+import AudienceService from "../../services/AudienceService";
 
-class DeleteAuthorityDialog extends React.Component {
+class DeleteAudienceDialog extends React.Component {
     constructor(props) {
         super(props);
         
         this.state = {
-            authority: null,
+            audience: null,
             loading: false,
             open: false
         };
     }
 
-    show(authority) {
+    show(audience) {
         this.setState({ open:true });
-        this.setState({ authority:authority });
+        this.setState({ audience:audience });
     }
 
     hide() {
@@ -26,11 +26,11 @@ class DeleteAuthorityDialog extends React.Component {
         this.setState({ loading:true });
         
         let self = this;
-        AuthorityService.delete(self.state.authority).then(function(result) {
+        AudienceService.delete(self.state.audience).then(function(result) {
             if(result.status === "accepted") {
-                self.props.authorityDeleted(result.instance);
+                self.props.audienceDeleted(result.instance);
                 self.hide();
-                self.setState({ authority:null });
+                self.setState({ audience:null });
             }
             if(result.status === "rejected") {
                 self.setState({ error:result.message });
@@ -40,10 +40,10 @@ class DeleteAuthorityDialog extends React.Component {
     }
 
     render() {
-        let name = this.state.authority ? this.state.authority.name : "";
+        let name = this.state.audience ? this.state.audience.name : "";
         return (
             <Dialog modal={true} open={this.state.open}>
-              <div className="modal-title">Delete Authority</div>
+              <div className="modal-title">Delete Audience</div>
               <div className="modal-message">
                  <p>Are you sure you want to delete <strong>{name}</strong>?</p>
               </div>
@@ -57,4 +57,4 @@ class DeleteAuthorityDialog extends React.Component {
     
 }
 
-export default DeleteAuthorityDialog;
+export default DeleteAudienceDialog;

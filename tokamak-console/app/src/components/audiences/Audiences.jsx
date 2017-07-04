@@ -31,8 +31,32 @@ class Audiences extends React.Component {
         });
     }
 
+    audienceCreated(audience) {
+        var audiences = this.state.audiences.slice();
+        audiences.unshift(audience);
+        this.setState({ audiences: audiences });
+    }
+
+    audienceUpdated(audience) {
+        var audiences = this.state.audiences.slice();
+        var index = audiences.findIndex(function(a) {return a.id === audience.id});
+        if(index !== -1) {
+            audiences[index] = audience;
+        }
+        this.setState({ audiences: audiences });
+    }
+
+    audienceDeleted(audience) {
+        var audiences = this.state.audiences.slice();
+        var index = audiences.findIndex(function(a) {return a.id === audience.id});
+        if(index !== -1) {
+            audiences.splice(index, 1);
+        }
+        this.setState({ audiences: audiences });
+    }
+
     render() {
-        let page = this.state.error != null ? <ApplicationError error={this.state.error} /> : <ViewAudiences audiences={this.state.audiences} />;
+        let page = this.state.error != null ? <ApplicationError error={this.state.error} /> : <ViewAudiences audiences={this.state.audiences} audienceCreated={ this.audienceCreated.bind(this) } audienceUpdated={ this.audienceUpdated.bind(this) } audienceDeleted={ this.audienceDeleted.bind(this) } />;
         let output = this.state.loading ? <Loader /> : page;
         
         return (

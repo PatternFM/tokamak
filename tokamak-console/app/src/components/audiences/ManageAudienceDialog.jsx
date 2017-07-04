@@ -1,11 +1,11 @@
 import React from 'react';
 import Dialog from 'material-ui/Dialog';
-import AuthorityService from "../../services/AuthorityService";
+import AudienceService from "../../services/AudienceService";
 
-class CreateAuthorityForm extends React.Component {
+class CreateAudienceForm extends React.Component {
     propTypes: {
-        authorityCreated: React.PropTypes.func,
-        authorityUpdated: React.PropTypes.func
+        audienceCreated: React.PropTypes.func,
+        audienceUpdated: React.PropTypes.func
     }
     
     constructor(props) {
@@ -15,16 +15,16 @@ class CreateAuthorityForm extends React.Component {
             name: "",
             description: "",
             error: "",
-            authority_id: "",
+            audience_id: "",
             loading: false,
             update: false,
             open: false
         };
     }
 
-    show(authority) {
-        if(authority) {
-            this.setState({ authority_id:authority.id, name:authority.name, description:authority.description, update:true });
+    show(audience) {
+        if(audience) {
+            this.setState({ audience_id:audience.id, name:audience.name, description:audience.description, update:true });
         }
         this.setState({ open:true });
     }
@@ -45,11 +45,11 @@ class CreateAuthorityForm extends React.Component {
         this.setState({ loading:true });
         
         let self = this;
-        AuthorityService.create(this.state.name, this.state.description).then(function(result) {
+        AudienceService.create(this.state.name, this.state.description).then(function(result) {
             if(result.status === "accepted") {
-                self.props.authorityCreated(result.instance);
+                self.props.audienceCreated(result.instance);
                 self.hide();
-                self.setState({ authority_id:"" });
+                self.setState({ audience_id:"" });
                 self.setState({ name:"" });
                 self.setState({ description:"" });
             }
@@ -64,11 +64,11 @@ class CreateAuthorityForm extends React.Component {
         this.setState({ loading:true });
 
         let self = this;
-        AuthorityService.update(this.state.authority_id, this.state.name, this.state.description).then(function(result) {
+        AudienceService.update(this.state.audience_id, this.state.name, this.state.description).then(function(result) {
             if(result.status === "accepted") {
-                self.props.authorityUpdated(result.instance);
+                self.props.audienceUpdated(result.instance);
                 self.hide();
-                self.setState({ authority_id:"" });
+                self.setState({ audience_id:"" });
                 self.setState({ name:"" });
                 self.setState({ description:"" });
             }
@@ -81,9 +81,8 @@ class CreateAuthorityForm extends React.Component {
 
 
     render() {
-        let title = this.state.update ? "Update Authority" : "Create Authority";
+        let title = this.state.update ? "Update Audience" : "Create Audience";
         let button = this.state.update ? <button className="tok-button center" style={{marginRight:"10px"}} onClick={ () => this.update() }>Update</button> : <button className="tok-button center" style={{marginRight:"10px"}} onClick={() => this.create()}>Create</button>;
-
         let inputv = this.state.update ? <div className="tok-textfield-disabled">{this.state.name}</div> : <input autoFocus className="tok-textfield" type="text" name="name" value={this.state.name} onChange={this.nameChanged.bind(this)} autoComplete="off" />;
 
         return (
@@ -96,7 +95,7 @@ class CreateAuthorityForm extends React.Component {
               
               <table style={{width:"100%", padding:"0 60px 30px 60px"}}>
                 <tr>
-                  <td className="form-key">Authority Name</td>
+                  <td className="form-key">Audience Name</td>
                   <td className="form-value">{inputv}</td>
                 </tr>
                 <tr>
@@ -115,4 +114,4 @@ class CreateAuthorityForm extends React.Component {
     
 }
 
-export default CreateAuthorityForm;
+export default CreateAudienceForm;
