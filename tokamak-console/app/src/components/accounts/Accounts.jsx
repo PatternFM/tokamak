@@ -31,8 +31,32 @@ class Accounts extends React.Component {
         });
     }
 
+    accountCreated(account) {
+        var accounts = this.state.accounts.slice();
+        accounts.unshift(account);
+        this.setState({ accounts:accounts });
+    }
+
+    accountUpdated(account) {
+        var accounts = this.state.accounts.slice();
+        var index = accounts.findIndex(function(a) { return a.id === account.id });
+        if(index !== -1) {
+            accounts[index] = account;
+        }
+        this.setState({ accounts:accounts });
+    }
+
+    accountDeleted(account) {
+        var accounts = this.state.accounts.slice();
+        var index = accounts.findIndex(function(a) { return a.id === account.id });
+        if(index !== -1) {
+            accounts.splice(index, 1);
+        }
+        this.setState({ accounts:accounts });
+    }
+
     render() {
-        let output = this.state.error != null ? <ApplicationError error={this.state.error} /> : <ViewAccounts accounts={this.state.accounts} />;
+        let output = this.state.error != null ? <ApplicationError error={this.state.error} /> : <ViewAccounts accounts={this.state.accounts} accountCreated={ this.accountCreated.bind(this) } accountUpdated={ this.accountUpdated.bind(this) } accountDeleted={ this.accountDeleted.bind(this) } />;
         let render = this.state.loading ? <Loader /> : output;
         
         return (

@@ -12,7 +12,7 @@ class ViewRoles extends React.Component {
         return (
             <div className="animated fadeIn">
             
-            <ManageRoleDialog ref="manageRoleDialog" roleCreated={this.props.roleCreated}  />
+            <ManageRoleDialog ref="manageRoleDialog" roleCreated={this.props.roleCreated} />
             
             {moreThanOneResult &&
               <MuiThemeProvider>
