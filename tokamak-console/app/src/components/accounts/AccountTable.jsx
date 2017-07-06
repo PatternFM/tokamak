@@ -32,7 +32,8 @@ class AccountTable extends React.Component {
                        <td className="dtr">{account.id}</td>
                        <td className="dtr"><Timestamp time={account.created/1000} format="full" /></td>
                        <td className="dtr right-pad-0"> 
-                         <i className="fa fa-times inline-button" onClick={ () => this.refs.deleteAccountDialog.show(account) }></i>
+                         <i className="fa fa-lock inline-button"></i>
+                         <i className="fa fa-times inline-button" style={{marginRight:"5px"}} onClick={ () => this.refs.deleteAccountDialog.show(account) }></i>
                          <i className="fa fa-pencil inline-button" style={{marginRight:"5px"}} onClick={ () => this.refs.manageAccountDialog.show(account) }></i> 
                        </td>
                      </tr>

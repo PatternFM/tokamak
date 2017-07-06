@@ -19,7 +19,7 @@ class ViewAccounts extends React.Component {
                 <div>
                   <div id="header">
                     <div className="title">User Accounts</div>
-                    <p className="overview">View, create and manage accounts. <NavLink to="/help#accounts">Learn more about user accounts.</NavLink></p>
+                    <p className="overview">View, create and manage accounts. <NavLink to="/help#accounts">Learn more about accounts.</NavLink></p>
                     <button className="tok-button fixed-top" onClick={() => this.refs.manageAccountDialog.show()}>+ Create Account</button>
                   </div>
                   <div className="table-container">
