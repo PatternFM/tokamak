@@ -430,3 +430,38 @@ textarea {
     margin-bottom: 20px;
     margin-top: -10px;
 }
+
+.select-table {
+	width: 100%;
+	padding: 0 60px 30px 60px;
+}
+
+.select-table td {
+	padding: 10px !important;
+}
+
+.select-table td:first-child {
+    padding: 10px 10px 10px 0 !important;
+}
+
+.select-table td:last-child {
+    padding: 10px 0 10px 10px !important;
+}
+
+.change-password {
+	float: left;
+	display: block;
+    font-family: "Helvetica Neue", "Helvetica", "Sans Serif";
+    font-size: 14px;	
+	font-style: normal;
+	padding-left: 20px;
+	padding-top: 9px;
+	color: rgb(54, 170, 199);
+    transition: all 250ms;
+    -webkit-transition: all 250ms;
+    -webkit-font-smoothing: antialiased;
+}
+
+.change-password:hover {
+	cursor: pointer;
+}

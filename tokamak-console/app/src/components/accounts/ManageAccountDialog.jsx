@@ -118,9 +118,10 @@ class CreateAccountForm extends React.Component {
     render() {
         let title = this.state.update ? "Update Account" : "Create Account";
         let button = this.state.update ? <button className="tok-button center" style={{marginRight:"10px"}} onClick={ () => this.update() }>Update</button> : <button className="tok-button center" style={{marginRight:"10px"}} onClick={() => this.create()}>Create</button>;
+        let inputv = this.state.update ? <div><div className="tok-textfield-disabled" style={{ width:"70%", float:"left" }}>&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;</div><i className="change-password">change password</i></div> : <input className="tok-textfield" type="password" name="name" value={this.state.password} onChange={this.passwordChanged.bind(this)} autoComplete="off" />;
 
         return (
-            <Dialog modal={true} open={this.state.open}>
+            <Dialog modal={true} open={this.state.open} autoScrollBodyContent={true}>
               <div className="modal-title">{title}</div>
               
               {this.state.error && this.state.error.length > 0 &&
@@ -130,23 +131,23 @@ class CreateAccountForm extends React.Component {
               <table style={{width:"100%", padding:"0 60px 30px 60px"}}>
                 <tr>
                   <td className="form-key">Username</td>
-                  <td className="form-value"><input autoFocus className="tok-textfield" type="text" name="name" value={this.state.username} onChange={this.usernameChanged.bind(this)} autoComplete="off" /></td>
+                  <td className="form-value"><input className="tok-textfield" type="text" name="name" value={this.state.username} onChange={this.usernameChanged.bind(this)} autoComplete="off" /></td>
                 </tr>
                 <tr>
                   <td className="form-key">Password</td>
-                  <td className="form-value"><input className="tok-textfield" type="password" name="name" value={this.state.password} onChange={this.passwordChanged.bind(this)} autoComplete="off" /></td>
+                  <td className="form-value">{inputv}</td>
                 </tr>                                
               </table>
               
               <div className="form-key" style={{textAlign:"left", width:"100%", padding:"0 65px 0 65px"}}>Roles</div>
-                <table className="display-table" style={{width:"100%", padding:"0 60px 30px 60px"}}>
+                <table className="display-table select-table">
                   <tbody>
                     {this.state.roles.map((role) => 
                      <tr key={role.id}>
                        <td className="dtr left-pad-0">
                          <input type="checkbox" name={role.name} onChange={ this.toggle.bind(this, role) } defaultChecked={this.isChecked(role)}></input>
                        </td>
-                       <td className="dtr left-pad-0">
+                       <td className="dtr left-pad-0" style={{ whiteSpace:"nowrap" }}>
                          {role.name}
                        </td>
                        <td className="dtr right-pad-0">

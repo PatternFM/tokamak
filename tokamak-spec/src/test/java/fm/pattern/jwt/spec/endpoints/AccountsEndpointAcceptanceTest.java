@@ -100,6 +100,12 @@ public class AccountsEndpointAcceptanceTest extends AcceptanceTest {
 		assertThat(updated.isLocked()).isTrue();
 		assertThat(updated.getRoles()).hasSize(1);
 		assertThat(updated.getRoles().iterator().next()).isEqualToComparingFieldByField(role);
+		
+		account.setRoles(new HashSet<>());
+		
+		Result<AccountRepresentation> result2 = accountsClient.update(account);
+		assertThat(result2).accepted().withResponseCode(200);
+		assertThat(result2.getInstance().getRoles()).isEmpty();
 	}
 
 	@Test
