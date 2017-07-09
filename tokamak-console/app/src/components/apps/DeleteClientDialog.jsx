@@ -43,10 +43,10 @@ class DeleteClientDialog extends React.Component {
     }
 
     render() {
-        let name = this.state.client ? this.state.client.username : "";
+        let name = this.state.client ? this.state.client.name: "";
         return (
             <Dialog modal={true} open={this.state.open}>
-              <div className="modal-title">Delete Client</div>
+              <div className="modal-title">Delete App</div>
               <div className="modal-message">
                  <p>Are you sure you want to delete <strong>{name}</strong>?</p>
               </div>

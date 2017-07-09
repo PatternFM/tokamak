@@ -1,4 +1,6 @@
 import React from "react";
+import ManageClientDialog from "./ManageClientDialog.jsx";
+import DeleteClientDialog from "./DeleteClientDialog.jsx";
 import Pagination from "../pagination/Pagination.jsx";
 
 const Timestamp = require("react-timestamp");
@@ -8,6 +10,9 @@ class AppTable extends React.Component {
     render() {
         return (
           <div>
+            <ManageClientDialog ref="manageClientDialog" clientUpdated={this.props.clientUpdated} /> 
+            <DeleteClientDialog ref="deleteClientDialog" clientDeleted={this.props.clientDeleted} />
+          
             <table className="display-table">
                 <thead>
                     <tr>
@@ -27,8 +32,8 @@ class AppTable extends React.Component {
                        <td className="dtr">{app.id}</td>
                        <td className="dtr"><Timestamp time={app.created/1000} format="full" /></td>
                        <td className="dtr right-pad-0"> 
-                         <i className="fa fa-times inline-button"></i>
-                         <i className="fa fa-pencil inline-button" style={{marginRight:"5px"}}></i> 
+                         <i className="fa fa-times inline-button" onClick={ () => this.refs.deleteClientDialog.show(app) }></i>
+                         <i className="fa fa-pencil inline-button" style={{marginRight:"5px"}} onClick={ () => this.refs.manageClientDialog.show(app) }></i> 
                        </td>
                      </tr>
                     )}

@@ -12,7 +12,7 @@ class Apps extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            result: [],
+            result: {},
             loading: false,
             error: null
         };
@@ -32,27 +32,34 @@ class Apps extends React.Component {
     }
 
     clientCreated(client) {
-        var clients = this.state.clients.slice();
+        var result = this.state.result;
+        var clients = result.payload.slice();
         clients.unshift(client);
-        this.setState({ clients:clients });
+        result.payload = clients;
+        this.setState({ result:result });
     }
 
     clientUpdated(client) {
-        var clients = this.state.clients.slice();
+        var result = this.state.result;
+        var clients = result.payload.slice();
         var index = clients.findIndex(function(a) { return a.id === client.id });
         if(index !== -1) {
             clients[index] = client;
         }
-        this.setState({ clients:clients });
+        result.payload = clients;
+        this.setState({ result:result });
     }
 
     clientDeleted(client) {
-        var clients = this.state.clients.slice();
+        console.log("DELETEING CLINET: " + client.name);
+        var result = this.state.result;
+        var clients = result.payload.slice();
         var index = clients.findIndex(function(a) { return a.id === client.id });
         if(index !== -1) {
             clients.splice(index, 1);
         }
-        this.setState({ clients:clients });
+        result.payload = clients;
+        this.setState({ result:result });
     }
 
     pageRequested(page) {
@@ -69,7 +76,7 @@ class Apps extends React.Component {
     } 
 
     render() {
-        let page = this.state.error != null ? <ApplicationError error={this.state.error} /> : <ViewApps apps={this.state.result} clientUpdated={ this.clientUpdated.bind(this) } clientDeleted={ this.clientDeleted.bind(this) } pageRequested={ this.pageRequested.bind(this) }/>;
+        let page = this.state.error != null ? <ApplicationError error={this.state.error} /> : <ViewApps apps={this.state.result} clientCreated={ this.clientCreated.bind(this) } clientUpdated={ this.clientUpdated.bind(this) } clientDeleted={ this.clientDeleted.bind(this) } pageRequested={ this.pageRequested.bind(this) }/>;
         let output = this.state.loading ? <Loader /> : page;
         
         return (
