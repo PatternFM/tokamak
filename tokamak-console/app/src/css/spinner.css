@@ -1,7 +1,12 @@
 .spinner {
   -webkit-animation: rotator 1.4s linear infinite;
-          animation: rotator 1.4s linear infinite;
-          stroke: #E40000;
+  animation: rotator 1.4s linear infinite;
+  stroke: #E40000;
+}
+
+.button-spinner {
+	stroke: #FFFFFF !important;
+	height: 50px;
 }
 
 @-webkit-keyframes rotator {
