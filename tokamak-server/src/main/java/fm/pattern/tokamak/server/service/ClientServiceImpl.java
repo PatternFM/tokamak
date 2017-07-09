@@ -16,9 +16,12 @@
 
 package fm.pattern.tokamak.server.service;
 
+import static org.apache.commons.lang3.StringUtils.isBlank;
+
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -40,7 +43,7 @@ class ClientServiceImpl extends DataServiceImpl<Client> implements ClientService
 	private final Cache cache;
 
 	@Autowired
-	public ClientServiceImpl(PasswordEncodingService passwordEncodingService, Cache cache) {
+	public ClientServiceImpl(PasswordEncodingService passwordEncodingService, @Qualifier("clientCache") Cache cache) {
 		this.passwordEncodingService = passwordEncodingService;
 		this.cache = cache;
 	}
@@ -92,6 +95,10 @@ class ClientServiceImpl extends DataServiceImpl<Client> implements ClientService
 
 	@Transactional
 	public Result<Client> findByClientId(String clientId) {
+		if (isBlank(clientId)) {
+			return Result.reject("client.clientId.required");
+		}
+
 		Client client = cache.get(String.format(client_id_key, clientId), Client.class);
 		if (client != null) {
 			return Result.accept(client);
@@ -101,7 +108,8 @@ class ClientServiceImpl extends DataServiceImpl<Client> implements ClientService
 		if (result.accepted()) {
 			cache(result.getInstance());
 		}
-		return result;
+
+		return result.accepted() ? result : Result.reject("client.clientId.not_found", clientId);
 	}
 
 	@Transactional(readOnly = true)

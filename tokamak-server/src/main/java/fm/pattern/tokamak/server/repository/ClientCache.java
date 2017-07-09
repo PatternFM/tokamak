@@ -1,18 +1,19 @@
 package fm.pattern.tokamak.server.repository;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 import org.springframework.stereotype.Component;
 
-@Component
+@Component("clientCache")
 @SuppressWarnings("unchecked")
-class CacheImpl implements Cache {
+class ClientCache implements Cache {
 
 	private final RedisTemplate<String, Object> template;
 
 	@Autowired
-	public CacheImpl(RedisTemplate<String, Object> template) {
+	public ClientCache(@Qualifier("clientRedisTemplate") RedisTemplate<String, Object> template) {
 		this.template = template;
 		this.template.setKeySerializer(new StringRedisSerializer());
 	}

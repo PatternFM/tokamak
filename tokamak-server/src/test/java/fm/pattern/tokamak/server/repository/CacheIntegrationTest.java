@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 
 import fm.pattern.tokamak.server.IntegrationTest;
 import fm.pattern.tokamak.server.model.Account;
@@ -12,6 +13,7 @@ import fm.pattern.tokamak.server.model.Account;
 public class CacheIntegrationTest extends IntegrationTest {
 
 	@Autowired
+	@Qualifier("accountCache")
 	private Cache cache;
 
 	@Test
