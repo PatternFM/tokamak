@@ -45,7 +45,6 @@ public class AccountConversionService {
 	public Account convert(AccountRepresentation representation, Account account) {
 		Set<Role> roles = representation.getRoles() == null ? new HashSet<Role>() : representation.getRoles().stream().map(role -> lookup(role)).filter(role -> role != null).collect(Collectors.toSet());
 		account.setRoles(roles);
-		account.setLocked(representation.isLocked());
 		return account;
 	}
 

@@ -83,7 +83,6 @@ class CreateRoleForm extends React.Component {
     render() {
         let title = this.state.update ? "Update Role" : "Create Role";
         let button = this.state.update ? <button className="tok-button center" style={{marginRight:"10px"}} onClick={ () => this.update() }>Update</button> : <button className="tok-button center" style={{marginRight:"10px"}} onClick={() => this.create()}>Create</button>;
-        let inputv = this.state.update ? <div className="tok-textfield-disabled">{this.state.name}</div> : <input autoFocus className="tok-textfield" type="text" name="name" value={this.state.name} onChange={this.nameChanged.bind(this)} autoComplete="off" />;
 
         return (
             <Dialog modal={true} open={this.state.open}>
@@ -96,7 +95,7 @@ class CreateRoleForm extends React.Component {
               <table style={{width:"100%", padding:"0 60px 30px 60px"}}>
                 <tr>
                   <td className="form-key">Role Name</td>
-                  <td className="form-value">{inputv}</td>
+                  <td className="form-value"><input autoFocus className="tok-textfield" type="text" name="name" value={this.state.name} onChange={this.nameChanged.bind(this)} autoComplete="off" /></td>
                 </tr>
                 <tr>
                   <td className="form-key">Description</td>

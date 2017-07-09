@@ -66,6 +66,7 @@ public class AccountConversionServiceTest extends IntegrationTest {
 
 		assertThat(updated.getUsername()).isEqualTo(account.getUsername());
 		assertThat(updated.getPassword()).isEqualTo(account.getPassword());
+		assertThat(updated.isLocked()).isEqualTo(account.isLocked());
 	}
 
 }

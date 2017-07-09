@@ -119,6 +119,7 @@ class CreateAccountForm extends React.Component {
         let title = this.state.update ? "Update Account" : "Create Account";
         let button = this.state.update ? <button className="tok-button center" style={{marginRight:"10px"}} onClick={ () => this.update() }>Update</button> : <button className="tok-button center" style={{marginRight:"10px"}} onClick={() => this.create()}>Create</button>;
         let inputv = this.state.update ? <div><div className="tok-textfield-disabled" style={{ width:"70%", float:"left" }}>&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;</div><i className="change-password">change password</i></div> : <input className="tok-textfield" type="password" name="name" value={this.state.password} onChange={this.passwordChanged.bind(this)} autoComplete="off" />;
+        let inputx = this.state.update ? <div className="tok-textfield-disabled">{this.state.username}</div> : <input autoFocus className="tok-textfield" type="text" name="name" value={this.state.username} onChange={this.usernameChanged.bind(this)} autoComplete="off" />;
 
         return (
             <Dialog modal={true} open={this.state.open} autoScrollBodyContent={true}>
@@ -131,7 +132,7 @@ class CreateAccountForm extends React.Component {
               <table style={{width:"100%", padding:"0 60px 30px 60px"}}>
                 <tr>
                   <td className="form-key">Username</td>
-                  <td className="form-value"><input className="tok-textfield" type="text" name="name" value={this.state.username} onChange={this.usernameChanged.bind(this)} autoComplete="off" /></td>
+                     <td className="form-value">{inputx}</td>
                 </tr>
                 <tr>
                   <td className="form-key">Password</td>
