@@ -19,14 +19,14 @@ public class CriteriaTest {
 	}
 
 	@Test
-	public void shouldHaveADefaultLimitOf20() {
-		assertThat(Criteria.criteria().getLimit()).isEqualTo(20);
+	public void shouldHaveADefaultLimitOf50() {
+		assertThat(Criteria.criteria().getLimit()).isEqualTo(50);
 	}
 
 	@Test
 	public void shouldProduceADefaultLimitIfTheLimitIsInvalid() {
-		assertThat(Criteria.criteria().limit(-3).getLimit()).isEqualTo(20);
-		assertThat(Criteria.criteria().limit(null).getLimit()).isEqualTo(20);
+		assertThat(Criteria.criteria().limit(-3).getLimit()).isEqualTo(50);
+		assertThat(Criteria.criteria().limit(null).getLimit()).isEqualTo(50);
 	}
 
 	@Test

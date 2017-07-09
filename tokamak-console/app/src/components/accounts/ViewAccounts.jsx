@@ -12,7 +12,7 @@ class ViewAccounts extends React.Component {
         return (
             <div className="animated fadeIn">
             
-             <ManageAccountDialog ref="manageAccountDialog" accountCreated={this.props.accountCreated} />
+            <ManageAccountDialog ref="manageAccountDialog" accountCreated={this.props.accountCreated} />
             
             {moreThanOneResult &&
               <MuiThemeProvider>

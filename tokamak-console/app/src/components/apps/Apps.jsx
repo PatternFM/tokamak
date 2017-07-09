@@ -31,6 +31,30 @@ class Apps extends React.Component {
         });
     }
 
+    clientCreated(client) {
+        var clients = this.state.clients.slice();
+        clients.unshift(client);
+        this.setState({ clients:clients });
+    }
+
+    clientUpdated(client) {
+        var clients = this.state.clients.slice();
+        var index = clients.findIndex(function(a) { return a.id === client.id });
+        if(index !== -1) {
+            clients[index] = client;
+        }
+        this.setState({ clients:clients });
+    }
+
+    clientDeleted(client) {
+        var clients = this.state.clients.slice();
+        var index = clients.findIndex(function(a) { return a.id === client.id });
+        if(index !== -1) {
+            clients.splice(index, 1);
+        }
+        this.setState({ clients:clients });
+    }
+
     pageRequested(page) {
         this.setState({ loading:true });
         ClientService.list(page).then((result) => {
@@ -45,7 +69,7 @@ class Apps extends React.Component {
     } 
 
     render() {
-        let page = this.state.error != null ? <ApplicationError error={this.state.error} /> : <ViewApps apps={this.state.result} pageRequested={ this.pageRequested.bind(this) }/>;
+        let page = this.state.error != null ? <ApplicationError error={this.state.error} /> : <ViewApps apps={this.state.result} clientUpdated={ this.clientUpdated.bind(this) } clientDeleted={ this.clientDeleted.bind(this) } pageRequested={ this.pageRequested.bind(this) }/>;
         let output = this.state.loading ? <Loader /> : page;
         
         return (
