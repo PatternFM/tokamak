@@ -12,9 +12,12 @@ import java.util.List;
 
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 
 import fm.pattern.tokamak.server.IntegrationTest;
 import fm.pattern.tokamak.server.model.Audience;
+import fm.pattern.tokamak.server.model.Client;
+import fm.pattern.tokamak.server.repository.Cache;
 import fm.pattern.valex.EntityNotFoundException;
 import fm.pattern.valex.ResourceConflictException;
 import fm.pattern.valex.Result;
@@ -24,6 +27,10 @@ public class AudienceServiceIntegrationTest extends IntegrationTest {
 
 	@Autowired
 	private AudienceService audienceService;
+
+	@Autowired
+	@Qualifier("clientCache")
+	private Cache cache;
 
 	@Test
 	public void shouldBeAbleToCreateAnAudience() {
@@ -48,7 +55,7 @@ public class AudienceServiceIntegrationTest extends IntegrationTest {
 
 	@Test
 	public void shouldBeAbleToUpdateAnAudience() {
-		Audience audience = audience().thatIs().persistent().build();
+		Audience audience = audience().save();
 		audience.setName("first");
 
 		assertThat(audienceService.update(audience)).accepted();
@@ -58,8 +65,17 @@ public class AudienceServiceIntegrationTest extends IntegrationTest {
 	}
 
 	@Test
+	public void shouldFlushTheClientCacheWhenAnAudienceIsUpdated() {
+		Client client = client().withGrantType(grantType().save()).save();
+
+		assertThat(cache.get("clients:id:" + client.getId(), Client.class)).isNotNull();
+		assertThat(audienceService.update(audience().save())).accepted();
+		assertThat(cache.get("clients:id:" + client.getId(), Client.class)).isNull();
+	}
+
+	@Test
 	public void shouldNotBeAbleToUpdateAnAudienceIfTheAudienceIsInvalid() {
-		Audience audience = audience().thatIs().persistent().build();
+		Audience audience = audience().save();
 		audience.setName(null);
 
 		assertThat(audienceService.update(audience)).rejected().withMessage("An audience name is required.");
@@ -67,7 +83,7 @@ public class AudienceServiceIntegrationTest extends IntegrationTest {
 
 	@Test
 	public void shouldBeAbleToDeleteAnAudience() {
-		Audience audience = audience().thatIs().persistent().build();
+		Audience audience = audience().save();
 		assertThat(audienceService.findById(audience.getId())).accepted();
 
 		assertThat(audienceService.delete(audience)).accepted();
@@ -76,15 +92,15 @@ public class AudienceServiceIntegrationTest extends IntegrationTest {
 
 	@Test
 	public void shouldNotBeAbleToDeleteAnAudienceIfTheAudienceIsInvalid() {
-		Audience audience = audience().thatIs().persistent().build();
+		Audience audience = audience().save();
 		audience.setId(null);
 		assertThat(audienceService.delete(audience)).rejected().withError("ENT-0001", "An id is required.", UnprocessableEntityException.class);
 	}
 
 	@Test
 	public void shouldNotBeAbleToDeleteAnAudienceIfTheAudienceIsBeingUsedByClients() {
-		Audience audience = audience().thatIs().persistent().build();
-		client().withAudience(audience).withGrantType(grantType().thatIs().persistent().build()).thatIs().persistent().build();
+		Audience audience = audience().save();
+		client().withAudience(audience).withGrantType(grantType().save()).save();
 
 		Result<Audience> result = audienceService.delete(audience);
 		assertThat(result).rejected().withError("AUD-0005", "This audience cannot be deleted, 1 client is linked to this audience.", ResourceConflictException.class);
@@ -92,7 +108,7 @@ public class AudienceServiceIntegrationTest extends IntegrationTest {
 
 	@Test
 	public void shouldBeAbleToFindAnAudienceById() {
-		Audience audience = audience().thatIs().persistent().build();
+		Audience audience = audience().save();
 
 		Result<Audience> result = audienceService.findById(audience.getId());
 		assertThat(result).accepted();
@@ -113,7 +129,7 @@ public class AudienceServiceIntegrationTest extends IntegrationTest {
 
 	@Test
 	public void shouldBeAbleToFindAnAudienceByName() {
-		Audience audience = audience().thatIs().persistent().build();
+		Audience audience = audience().save();
 
 		Result<Audience> result = audienceService.findByName(audience.getName());
 		assertThat(result).accepted();
@@ -134,7 +150,7 @@ public class AudienceServiceIntegrationTest extends IntegrationTest {
 
 	@Test
 	public void shouldBeAbleToListAllAudiences() {
-		range(0, 5).forEach(i -> audience().thatIs().persistent().build());
+		range(0, 5).forEach(i -> audience().save());
 
 		Result<List<Audience>> result = audienceService.list();
 		assertThat(result).accepted();
@@ -143,9 +159,9 @@ public class AudienceServiceIntegrationTest extends IntegrationTest {
 
 	@Test
 	public void shouldBeAbleToFindMultipleAudiencesById() {
-		Audience audience1 = audience().thatIs().persistent().build();
-		Audience audience2 = audience().thatIs().persistent().build();
-		Audience audience3 = audience().thatIs().persistent().build();
+		Audience audience1 = audience().save();
+		Audience audience2 = audience().save();
+		Audience audience3 = audience().save();
 
 		List<String> ids = new ArrayList<>();
 		ids.add(audience1.getId());
@@ -169,9 +185,9 @@ public class AudienceServiceIntegrationTest extends IntegrationTest {
 
 	@Test
 	public void shouldIgnoreEmptyAudienceEntries() {
-		Audience audience1 = audience().thatIs().persistent().build();
-		Audience audience2 = audience().thatIs().persistent().build();
-		Audience audience3 = audience().thatIs().persistent().build();
+		Audience audience1 = audience().save();
+		Audience audience2 = audience().save();
+		Audience audience3 = audience().save();
 
 		List<String> ids = new ArrayList<>();
 		ids.add(audience1.getId());

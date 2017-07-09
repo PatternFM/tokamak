@@ -12,15 +12,22 @@ import java.util.List;
 
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 
 import fm.pattern.tokamak.server.IntegrationTest;
+import fm.pattern.tokamak.server.model.Client;
 import fm.pattern.tokamak.server.model.Scope;
+import fm.pattern.tokamak.server.repository.Cache;
 import fm.pattern.valex.EntityNotFoundException;
 import fm.pattern.valex.ResourceConflictException;
 import fm.pattern.valex.Result;
 import fm.pattern.valex.UnprocessableEntityException;
 
 public class ScopeServiceIntegrationTest extends IntegrationTest {
+
+	@Autowired
+	@Qualifier("clientCache")
+	private Cache cache;
 
 	@Autowired
 	private ScopeService scopeService;
@@ -48,7 +55,7 @@ public class ScopeServiceIntegrationTest extends IntegrationTest {
 
 	@Test
 	public void shouldBeAbleToUpdateAScope() {
-		Scope scope = scope().thatIs().persistent().build();
+		Scope scope = scope().save();
 		scope.setName("first");
 
 		assertThat(scopeService.update(scope)).accepted();
@@ -58,8 +65,17 @@ public class ScopeServiceIntegrationTest extends IntegrationTest {
 	}
 
 	@Test
+	public void shouldFlushTheClientCacheWhenAScopeIsUpdated() {
+		Client client = client().withGrantType(grantType().save()).save();
+
+		assertThat(cache.get("clients:id:" + client.getId(), Client.class)).isNotNull();
+		assertThat(scopeService.update(scope().save())).accepted();
+		assertThat(cache.get("clients:id:" + client.getId(), Client.class)).isNull();
+	}
+
+	@Test
 	public void shouldNotBeAbleToUpdateAScopeIfTheScopeIsInvalid() {
-		Scope scope = scope().thatIs().persistent().build();
+		Scope scope = scope().save();
 		scope.setName(null);
 
 		assertThat(scopeService.update(scope)).rejected().withMessage("A scope name is required.");
@@ -67,7 +83,7 @@ public class ScopeServiceIntegrationTest extends IntegrationTest {
 
 	@Test
 	public void shouldBeAbleToDeleteAScope() {
-		Scope scope = scope().thatIs().persistent().build();
+		Scope scope = scope().save();
 		assertThat(scopeService.findById(scope.getId())).accepted();
 
 		assertThat(scopeService.delete(scope)).accepted();
@@ -76,15 +92,15 @@ public class ScopeServiceIntegrationTest extends IntegrationTest {
 
 	@Test
 	public void shouldNotBeAbleToDeleteAScopeIfTheScopeIsInvalid() {
-		Scope scope = scope().thatIs().persistent().build();
+		Scope scope = scope().save();
 		scope.setId(null);
 		assertThat(scopeService.delete(scope)).rejected().withError("ENT-0001", "An id is required.", UnprocessableEntityException.class);
 	}
 
 	@Test
 	public void shouldNotBeAbleToDeleteAScopeIfTheScopeIsBeingUsedByClients() {
-		Scope scope = scope().thatIs().persistent().build();
-		client().withScope(scope).withGrantType(grantType().thatIs().persistent().build()).thatIs().persistent().build();
+		Scope scope = scope().save();
+		client().withScope(scope).withGrantType(grantType().save()).save();
 
 		Result<Scope> result = scopeService.delete(scope);
 		assertThat(result).rejected().withError("SCO-0008", "This scope cannot be deleted, 1 client is linked to this scope.", ResourceConflictException.class);
@@ -92,7 +108,7 @@ public class ScopeServiceIntegrationTest extends IntegrationTest {
 
 	@Test
 	public void shouldBeAbleToFindAScopeById() {
-		Scope scope = scope().thatIs().persistent().build();
+		Scope scope = scope().save();
 
 		Result<Scope> result = scopeService.findById(scope.getId());
 		assertThat(result).accepted();
@@ -113,7 +129,7 @@ public class ScopeServiceIntegrationTest extends IntegrationTest {
 
 	@Test
 	public void shouldBeAbleToFindAScopeByName() {
-		Scope scope = scope().thatIs().persistent().build();
+		Scope scope = scope().save();
 
 		Result<Scope> result = scopeService.findByName(scope.getName());
 		assertThat(result).accepted();
@@ -134,7 +150,7 @@ public class ScopeServiceIntegrationTest extends IntegrationTest {
 
 	@Test
 	public void shouldBeAbleToListAllScopes() {
-		range(0, 5).forEach(i -> scope().thatIs().persistent().build());
+		range(0, 5).forEach(i -> scope().save());
 
 		Result<List<Scope>> result = scopeService.list();
 		assertThat(result).accepted();
@@ -143,9 +159,9 @@ public class ScopeServiceIntegrationTest extends IntegrationTest {
 
 	@Test
 	public void shouldBeAbleToFindMultipleScopesById() {
-		Scope scope1 = scope().thatIs().persistent().build();
-		Scope scope2 = scope().thatIs().persistent().build();
-		Scope scope3 = scope().thatIs().persistent().build();
+		Scope scope1 = scope().save();
+		Scope scope2 = scope().save();
+		Scope scope3 = scope().save();
 
 		List<String> ids = new ArrayList<>();
 		ids.add(scope1.getId());
@@ -169,9 +185,9 @@ public class ScopeServiceIntegrationTest extends IntegrationTest {
 
 	@Test
 	public void shouldIgnoreEmptyScopeEntries() {
-		Scope scope1 = scope().thatIs().persistent().build();
-		Scope scope2 = scope().thatIs().persistent().build();
-		Scope scope3 = scope().thatIs().persistent().build();
+		Scope scope1 = scope().save();
+		Scope scope2 = scope().save();
+		Scope scope3 = scope().save();
 
 		List<String> ids = new ArrayList<>();
 		ids.add(scope1.getId());

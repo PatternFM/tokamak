@@ -38,7 +38,7 @@ public class ClientServiceIntegrationTest extends IntegrationTest {
 
 	@Before
 	public void before() {
-		this.grantType = grantType().thatIs().persistent().build();
+		this.grantType = grantType().save();
 	}
 
 	@Test
@@ -60,7 +60,7 @@ public class ClientServiceIntegrationTest extends IntegrationTest {
 
 	@Test
 	public void shouldEncryptTheClientPasswordWhenCreatingAClient() {
-		Client client = client().withGrantType(grantType).withClientSecret("password1234").thatIs().persistent().build();
+		Client client = client().withGrantType(grantType).withClientSecret("password1234").save();
 		assertThat(client.getClientSecret()).startsWith("$2a$");
 		assertThat(passwordEncodingService.matches("password1234", client.getClientSecret())).isTrue();
 	}
@@ -75,7 +75,7 @@ public class ClientServiceIntegrationTest extends IntegrationTest {
 
 	@Test
 	public void shouldBeAbleToDeleteAClient() {
-		Client client = client().withGrantType(grantType).thatIs().persistent().build();
+		Client client = client().withGrantType(grantType).save();
 		assertThat(clientService.findById(client.getId())).isNotNull();
 
 		assertThat(clientService.delete(client)).accepted();
@@ -84,9 +84,9 @@ public class ClientServiceIntegrationTest extends IntegrationTest {
 
 	@Test
 	public void shouldBeAbleToUpdateAClient() {
-		Client client = client().withGrantType(grantType).thatIs().persistent().build();
+		Client client = client().withGrantType(grantType).save();
 
-		Scope scope = scope().thatIs().persistent().build();
+		Scope scope = scope().save();
 		client.setScopes(Sets.newHashSet(scope));
 
 		Result<Client> result = clientService.update(client);
@@ -99,7 +99,7 @@ public class ClientServiceIntegrationTest extends IntegrationTest {
 
 	@Test
 	public void shouldNotBeAbleToUpdateAnInvalidClient() {
-		Client client = client().withGrantType(grantType).thatIs().persistent().build();
+		Client client = client().withGrantType(grantType).save();
 		client.setGrantTypes(new HashSet<>());
 
 		Result<Client> result = clientService.update(client);
@@ -112,7 +112,7 @@ public class ClientServiceIntegrationTest extends IntegrationTest {
 
 	@Test
 	public void shouldBeAbleToFindAClientById() {
-		Client client = client().withGrantType(grantType).thatIs().persistent().build();
+		Client client = client().withGrantType(grantType).save();
 		assertThat(clientService.findById(client.getId()).getInstance()).isEqualTo(client);
 	}
 
@@ -130,7 +130,7 @@ public class ClientServiceIntegrationTest extends IntegrationTest {
 
 	@Test
 	public void shouldBeAbleToFindAClientByClientId() {
-		Client client = client().withGrantType(grantType).thatIs().persistent().build();
+		Client client = client().withGrantType(grantType).save();
 		assertThat(clientService.findByClientId(client.getClientId()).getInstance()).isEqualTo(client);
 	}
 
@@ -148,7 +148,7 @@ public class ClientServiceIntegrationTest extends IntegrationTest {
 
 	@Test
 	public void shouldBeAbleToListClients() {
-		IntStream.range(0, 5).forEach(i -> client().withGrantType(grantType).thatIs().persistent().build());
+		IntStream.range(0, 5).forEach(i -> client().withGrantType(grantType).save());
 
 		Result<List<Client>> result = clientService.list(criteria());
 		assertThat(result).accepted();

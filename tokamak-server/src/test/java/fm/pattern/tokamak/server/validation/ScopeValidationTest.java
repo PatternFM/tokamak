@@ -33,7 +33,7 @@ public class ScopeValidationTest extends IntegrationTest {
 	@Test
 	public void shouldNotBeAbleToCreateAScopeWhenTheScopeNameAlredyExists() {
 		String name = RandomStringUtils.randomAlphanumeric(15);
-		scope().withName(name).thatIs().persistent().build();
+		scope().withName(name).save();
 
 		onCreate(scope().withName(name).build()).rejected().withError("SCO-0003", "This scope name is already in use.", ResourceConflictException.class);
 	}
@@ -68,9 +68,9 @@ public class ScopeValidationTest extends IntegrationTest {
 	@Test
 	public void shouldNotBeAbleToUpdateAScopeWhenTheScopeNameAlredyExists() {
 		String name = RandomStringUtils.randomAlphanumeric(15);
-		scope().withName(name).thatIs().persistent().build();
+		scope().withName(name).save();
 
-		Scope scope = scope().thatIs().persistent().build();
+		Scope scope = scope().save();
 		scope.setName(name);
 
 		onUpdate(scope).rejected().withError("SCO-0003", "This scope name is already in use.", ResourceConflictException.class);

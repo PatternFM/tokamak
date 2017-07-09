@@ -23,11 +23,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import fm.pattern.tokamak.server.model.Audience;
+import fm.pattern.tokamak.server.repository.Cache;
 import fm.pattern.tokamak.server.repository.DataRepository;
 import fm.pattern.valex.Result;
 
@@ -36,9 +38,21 @@ import fm.pattern.valex.Result;
 class AudienceServiceImpl extends DataServiceImpl<Audience> implements AudienceService {
 
 	private final DataRepository repository;
+	private final Cache cache;
 
-	AudienceServiceImpl(@Qualifier("dataRepository") DataRepository repository) {
+	@Autowired
+	AudienceServiceImpl(@Qualifier("dataRepository") DataRepository repository, @Qualifier("clientCache") Cache cache) {
 		this.repository = repository;
+		this.cache = cache;
+	}
+
+	@Transactional
+	public Result<Audience> update(Audience audience) {
+		Result<Audience> result = super.update(audience);
+		if (result.accepted()) {
+			cache.flush();
+		}
+		return result;
 	}
 
 	@Transactional

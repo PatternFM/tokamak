@@ -38,7 +38,7 @@ public class AudienceValidationTest extends IntegrationTest {
 	public void shouldNotBeAbleToCreateAnAudienceWhenTheAudienceNameAlredyExists() {
 		String name = RandomStringUtils.randomAlphanumeric(15);
 
-		audience().withName(name).thatIs().persistent().build();
+		audience().withName(name).save();
 		onCreate(audience().withName(name).build()).rejected().withError("AUD-0003", "This audience name is already in use.", ResourceConflictException.class);
 	}
 
@@ -67,9 +67,9 @@ public class AudienceValidationTest extends IntegrationTest {
 	@Test
 	public void shouldNotBeAbleToUpdateAnAudienceWhenTheAudienceNameAlredyExists() {
 		String name = RandomStringUtils.randomAlphanumeric(15);
-		audience().withName(name).thatIs().persistent().build();
+		audience().withName(name).save();
 
-		Audience audience = audience().thatIs().persistent().build();
+		Audience audience = audience().save();
 		audience.setName(name);
 
 		onUpdate(audience).rejected().withError("AUD-0003", "This audience name is already in use.", ResourceConflictException.class);

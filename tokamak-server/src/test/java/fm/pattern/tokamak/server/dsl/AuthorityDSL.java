@@ -1,6 +1,7 @@
 package fm.pattern.tokamak.server.dsl;
 
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
+
 import fm.pattern.tokamak.server.model.Authority;
 import fm.pattern.tokamak.server.service.AuthorityService;
 import fm.pattern.valex.Result;
@@ -25,17 +26,21 @@ public class AuthorityDSL extends AbstractDSL<AuthorityDSL, Authority> {
 	}
 
 	public Authority build() {
-		Authority authority = new Authority(name);
-		authority.setDescription(description);
-		return shouldPersist() ? persist(authority) : authority;
+		return create();
 	}
 
-	private Authority persist(Authority authority) {
-		Result<Authority> result = load(AuthorityService.class).create(authority);
+	public Authority save() {
+		Result<Authority> result = load(AuthorityService.class).create(create());
 		if (result.accepted()) {
 			return result.getInstance();
 		}
-		throw new IllegalStateException("Unable to create authority, errors:" + result.toString());
+		throw new IllegalStateException("Unable to create authority, errors:" + result.getErrors().toString());
+	}
+
+	private Authority create() {
+		Authority authority = new Authority(name);
+		authority.setDescription(description);
+		return authority;
 	}
 
 }

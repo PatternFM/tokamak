@@ -59,4 +59,14 @@ class AccountCache implements Cache {
 		}
 	}
 
+	@Override
+	public void flush() {
+		try {
+			template.getConnectionFactory().getConnection().flushDb();
+		}
+		catch (Exception e) {
+
+		}
+	}
+
 }

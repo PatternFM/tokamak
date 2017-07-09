@@ -32,7 +32,7 @@ public class GrantTypeValidationTest extends IntegrationTest {
 	@Test
 	public void shouldNotBeAbleToCreateAGrantTypeWhenTheGrantTypeNameAlredyExists() {
 		String name = RandomStringUtils.randomAlphanumeric(15);
-		grantType().withName(name).thatIs().persistent().build();
+		grantType().withName(name).save();
 
 		onCreate(grantType().withName(name).build()).rejected().withError("GNT-0003", "This grant type name is already in use.", ResourceConflictException.class);
 	}
@@ -57,9 +57,9 @@ public class GrantTypeValidationTest extends IntegrationTest {
 	@Test
 	public void shouldNotBeAbleToUpdateAGrantTypeWhenTheGrantTypeNameAlredyExists() {
 		String name = RandomStringUtils.randomAlphanumeric(15);
-		grantType().withName(name).thatIs().persistent().build();
+		grantType().withName(name).save();
 
-		GrantType grantType = grantType().thatIs().persistent().build();
+		GrantType grantType = grantType().save();
 		grantType.setName(name);
 		
 		onUpdate(grantType).rejected().withError("GNT-0003", "This grant type name is already in use.", ResourceConflictException.class);

@@ -38,7 +38,7 @@ public class AuthorityValidationTest extends IntegrationTest {
 	public void shouldNotBeAbleToCreateAnAuthorityWhenTheAuthorityNameAlredyExists() {
 		String name = RandomStringUtils.randomAlphanumeric(15);
 
-		authority().withName(name).thatIs().persistent().build();
+		authority().withName(name).save();
 		onCreate(authority().withName(name).build()).rejected().withError("ATH-0003", "This authority name is already in use.", ResourceConflictException.class);
 	}
 
@@ -67,9 +67,9 @@ public class AuthorityValidationTest extends IntegrationTest {
 	@Test
 	public void shouldNotBeAbleToUpdateAnAuthorityWhenTheAuthorityNameAlredyExists() {
 		String name = RandomStringUtils.randomAlphanumeric(15);
-		authority().withName(name).thatIs().persistent().build();
+		authority().withName(name).save();
 
-		Authority authority = authority().thatIs().persistent().build();
+		Authority authority = authority().save();
 		authority.setName(name);
 
 		onUpdate(authority).rejected().withError("ATH-0003", "This authority name is already in use.", ResourceConflictException.class);

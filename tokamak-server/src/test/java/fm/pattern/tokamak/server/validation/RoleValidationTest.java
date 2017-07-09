@@ -38,7 +38,7 @@ public class RoleValidationTest extends IntegrationTest {
 	@Test
 	public void shouldNotBeAbleToCreateARoleWhenTheRoleNameAlredyExists() {
 		String name = RandomStringUtils.randomAlphanumeric(15);
-		role().withName(name).thatIs().persistent().build();
+		role().withName(name).save();
 
 		onCreate(role().withName(name).build()).rejected().withError("ROL-0003", "This role name is already in use.", ResourceConflictException.class);
 	}
@@ -68,9 +68,9 @@ public class RoleValidationTest extends IntegrationTest {
 	@Test
 	public void shouldNotBeAbleToUpdateARoleWhenTheRoleNameAlredyExists() {
 		String name = RandomStringUtils.randomAlphanumeric(15);
-		role().withName(name).thatIs().persistent().build();
+		role().withName(name).save();
 
-		Role role = role().thatIs().persistent().build();
+		Role role = role().save();
 		role.setName(name);
 
 		onUpdate(role).rejected().withError("ROL-0003", "This role name is already in use.", ResourceConflictException.class);

@@ -26,17 +26,21 @@ public class GrantTypeDSL extends AbstractDSL<GrantTypeDSL, GrantType> {
 	}
 
 	public GrantType build() {
-		GrantType grantType = new GrantType(name);
-		grantType.setDescription(description);
-		return shouldPersist() ? persist(grantType) : grantType;
+		return create();
 	}
 
-	private GrantType persist(GrantType grantType) {
-		Result<GrantType> result = load(GrantTypeService.class).create(grantType);
+	public GrantType save() {
+		Result<GrantType> result = load(GrantTypeService.class).create(create());
 		if (result.accepted()) {
 			return result.getInstance();
 		}
-		throw new IllegalStateException("Unable to create grant type, errors: " + result.getErrors());
+		throw new IllegalStateException("Unable to create grant type, errors: " + result.getErrors().toString());
+	}
+
+	private GrantType create() {
+		GrantType grantType = new GrantType(name);
+		grantType.setDescription(description);
+		return grantType;
 	}
 
 }

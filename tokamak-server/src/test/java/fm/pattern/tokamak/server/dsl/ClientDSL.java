@@ -56,7 +56,7 @@ public class ClientDSL extends AbstractDSL<ClientDSL, Client> {
 		this.description = description;
 		return this;
 	}
-	
+
 	public ClientDSL withRedirectUri(String redirectUri) {
 		this.redirectUri = redirectUri;
 		return this;
@@ -93,6 +93,18 @@ public class ClientDSL extends AbstractDSL<ClientDSL, Client> {
 	}
 
 	public Client build() {
+		return create();
+	}
+
+	public Client save() {
+		Result<Client> result = load(ClientService.class).create(create());
+		if (result.accepted()) {
+			return result.getInstance();
+		}
+		throw new IllegalStateException("Unable to create client: " + result.getErrors().toString());
+	}
+
+	private Client create() {
 		Client client = new Client(clientId, clientSecret, authorities, audiences, grantTypes, scopes);
 		client.setAccessTokenValiditySeconds(accessTokenValiditySeconds);
 		client.setRefreshTokenValiditySeconds(refreshTokenValiditySeconds);
@@ -103,15 +115,7 @@ public class ClientDSL extends AbstractDSL<ClientDSL, Client> {
 			client.setRedirectUri(redirectUri);
 		}
 
-		return shouldPersist() ? persist(client) : client;
-	}
-
-	private Client persist(Client client) {
-		Result<Client> result = load(ClientService.class).create(client);
-		if (result.accepted()) {
-			return result.getInstance();
-		}
-		throw new IllegalStateException("Unable to create client: " + result.getErrors().toString());
+		return client;
 	}
 
 }

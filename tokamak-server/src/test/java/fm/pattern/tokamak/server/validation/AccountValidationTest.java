@@ -22,7 +22,7 @@ public class AccountValidationTest extends IntegrationTest {
 	public void shouldNotBeAbleToCreateAnAccountIfTheUsernameIsAlreadyInUse() {
 		String username = RandomStringUtils.randomAlphanumeric(15);
 
-		account().withUsername(username).thatIs().persistent().build();
+		account().withUsername(username).save();
 		onCreate(account().withUsername(username).build()).rejected().withError("ACC-0003", "This account username is already in use.", ResourceConflictException.class);
 	}
 
@@ -68,9 +68,9 @@ public class AccountValidationTest extends IntegrationTest {
 	@Test
 	public void shouldNotBeAbleToUpdateAnAccountIfTheUsernameIsAlreadyInUse() {
 		String username = RandomStringUtils.randomAlphanumeric(15);
-		account().withUsername(username).thatIs().persistent().build();
+		account().withUsername(username).save();
 
-		Account account = account().thatIs().persistent().build();
+		Account account = account().save();
 		account.setUsername(username);
 
 		onUpdate(account).rejected().withError("ACC-0003", "This account username is already in use.", ResourceConflictException.class);

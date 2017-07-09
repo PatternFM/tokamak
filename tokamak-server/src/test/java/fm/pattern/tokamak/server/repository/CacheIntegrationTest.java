@@ -18,7 +18,7 @@ public class CacheIntegrationTest extends IntegrationTest {
 
 	@Test
 	public void shouldBeAbleToStoreAndRetrieveAndDeleteAnObjectFromCache() {
-		Account account = account().thatIs().persistent().build();
+		Account account = account().save();
 		cache.put("account", account);
 
 		Account result = cache.get("account", Account.class);
@@ -41,6 +41,23 @@ public class CacheIntegrationTest extends IntegrationTest {
 	@Test
 	public void shouldReturnANullValueWhenAValueCannotBeFoundForAKey() {
 		assertThat(cache.get("lasidjfalsdifjsl", String.class)).isNull();
+	}
+
+	@Test
+	public void shouldBeAbleToFlushTheDatabase() {
+		cache.put("account1", account().save());
+		cache.put("account2", account().save());
+		cache.put("account3", account().save());
+
+		assertThat(cache.get("account1", Account.class)).isNotNull();
+		assertThat(cache.get("account2", Account.class)).isNotNull();
+		assertThat(cache.get("account3", Account.class)).isNotNull();
+
+		cache.flush();
+
+		assertThat(cache.get("account1", Account.class)).isNull();
+		assertThat(cache.get("account2", Account.class)).isNull();
+		assertThat(cache.get("account3", Account.class)).isNull();
 	}
 
 }

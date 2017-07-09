@@ -10,15 +10,22 @@ import java.util.List;
 
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 
 import fm.pattern.tokamak.server.IntegrationTest;
+import fm.pattern.tokamak.server.model.Account;
 import fm.pattern.tokamak.server.model.Role;
+import fm.pattern.tokamak.server.repository.Cache;
 import fm.pattern.valex.EntityNotFoundException;
 import fm.pattern.valex.ResourceConflictException;
 import fm.pattern.valex.Result;
 import fm.pattern.valex.UnprocessableEntityException;
 
 public class RoleServiceIntegrationTest extends IntegrationTest {
+
+	@Autowired
+	@Qualifier("accountCache")
+	private Cache cache;
 
 	@Autowired
 	private RoleService roleService;
@@ -46,7 +53,7 @@ public class RoleServiceIntegrationTest extends IntegrationTest {
 
 	@Test
 	public void shouldBeAbleToUpdateARole() {
-		Role role = role().thatIs().persistent().build();
+		Role role = role().save();
 		role.setName("first");
 
 		assertThat(roleService.update(role)).accepted();
@@ -56,8 +63,17 @@ public class RoleServiceIntegrationTest extends IntegrationTest {
 	}
 
 	@Test
+	public void shouldFlushTheAccountCacheWhenARoleIsUpdated() {
+		Account account = account().save();
+
+		assertThat(cache.get("accounts:id:" + account.getId(), Account.class)).isNotNull();
+		assertThat(roleService.update(role().save())).accepted();
+		assertThat(cache.get("accounts:id:" + account.getId(), Account.class)).isNull();
+	}
+
+	@Test
 	public void shouldNotBeAbleToUpdateARoleIfTheRoleIsInvalid() {
-		Role role = role().thatIs().persistent().build();
+		Role role = role().save();
 		role.setName(null);
 
 		assertThat(roleService.update(role)).rejected().withMessage("A role name is required.");
@@ -65,7 +81,7 @@ public class RoleServiceIntegrationTest extends IntegrationTest {
 
 	@Test
 	public void shouldBeAbleToDeleteARole() {
-		Role role = role().thatIs().persistent().build();
+		Role role = role().save();
 
 		assertThat(roleService.findById(role.getId())).accepted();
 		assertThat(roleService.delete(role)).accepted();
@@ -74,15 +90,15 @@ public class RoleServiceIntegrationTest extends IntegrationTest {
 
 	@Test
 	public void shouldNotBeAbleToDeleteARoleIfTheRoleIsInvalid() {
-		Role role = role().thatIs().persistent().build();
+		Role role = role().save();
 		role.setId(null);
 		assertThat(roleService.delete(role)).rejected().withError("ENT-0001", "An id is required.", UnprocessableEntityException.class);
 	}
 
 	@Test
 	public void shouldNotBeAbleToDeleteAnRoleIfTheRoleIsBeingUsedByOtherAccounts() {
-		Role role = role().thatIs().persistent().build();
-		account().withRole(role).thatIs().persistent().build();
+		Role role = role().save();
+		account().withRole(role).save();
 
 		Result<Role> result = roleService.delete(role);
 		assertThat(result).rejected().withError("ROL-0007", "This role cannot be deleted, 1 account is linked to this role.", ResourceConflictException.class);
@@ -90,7 +106,7 @@ public class RoleServiceIntegrationTest extends IntegrationTest {
 
 	@Test
 	public void shouldBeAbleToFindARoleById() {
-		Role role = role().thatIs().persistent().build();
+		Role role = role().save();
 
 		Result<Role> result = roleService.findById(role.getId());
 		assertThat(result).accepted();
@@ -111,7 +127,7 @@ public class RoleServiceIntegrationTest extends IntegrationTest {
 
 	@Test
 	public void shouldBeAbleToFindARoleByName() {
-		Role role = role().thatIs().persistent().build();
+		Role role = role().save();
 
 		Result<Role> result = roleService.findByName(role.getName());
 		assertThat(result).accepted();
@@ -132,7 +148,7 @@ public class RoleServiceIntegrationTest extends IntegrationTest {
 
 	@Test
 	public void shouldBeAbleToListAllRoles() {
-		range(0, 5).forEach(i -> role().thatIs().persistent().build());
+		range(0, 5).forEach(i -> role().save());
 
 		Result<List<Role>> result = roleService.list();
 		assertThat(result).accepted();

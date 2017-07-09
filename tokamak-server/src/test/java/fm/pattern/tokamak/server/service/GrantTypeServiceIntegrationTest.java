@@ -47,7 +47,7 @@ public class GrantTypeServiceIntegrationTest extends IntegrationTest {
 
 	@Test
 	public void shouldBeAbleToUpdateAGrantType() {
-		GrantType grantType = grantType().thatIs().persistent().build();
+		GrantType grantType = grantType().save();
 		grantType.setName("first");
 
 		assertThat(grantTypeService.update(grantType)).accepted();
@@ -58,7 +58,7 @@ public class GrantTypeServiceIntegrationTest extends IntegrationTest {
 
 	@Test
 	public void shouldNotBeAbleToUpdateAGrantTypeIfTheGrantTypeIsInvalid() {
-		GrantType grantType = grantType().thatIs().persistent().build();
+		GrantType grantType = grantType().save();
 		grantType.setName(null);
 
 		assertThat(grantTypeService.update(grantType)).rejected().withMessage("A grant type name is required.");
@@ -66,7 +66,7 @@ public class GrantTypeServiceIntegrationTest extends IntegrationTest {
 
 	@Test
 	public void shouldBeAbleToDeleteAGrantType() {
-		GrantType grantType = grantType().thatIs().persistent().build();
+		GrantType grantType = grantType().save();
 		assertThat(grantTypeService.findById(grantType.getId())).accepted();
 
 		assertThat(grantTypeService.delete(grantType)).accepted();
@@ -75,15 +75,15 @@ public class GrantTypeServiceIntegrationTest extends IntegrationTest {
 
 	@Test
 	public void shouldNotBeAbleToDeleteAGrantTypeIfTheGrantTypeIsInvalid() {
-		GrantType grantType = grantType().thatIs().persistent().build();
+		GrantType grantType = grantType().save();
 		grantType.setId(null);
 		assertThat(grantTypeService.delete(grantType)).rejected().withError("ENT-0001", "An id is required.", UnprocessableEntityException.class);
 	}
 
 	@Test
 	public void shouldNotBeAbleToDeleteAnGrantTypeIfTheGrantTypeIsBeingUsedByClients() {
-		GrantType grantType = grantType().thatIs().persistent().build();
-		client().withGrantType(grantType).withGrantType(grantType().thatIs().persistent().build()).thatIs().persistent().build();
+		GrantType grantType = grantType().save();
+		client().withGrantType(grantType).withGrantType(grantType().save()).save();
 
 		Result<GrantType> result = grantTypeService.delete(grantType);
 		assertThat(result).rejected().withError("GNT-0008", "This grant type cannot be deleted, 1 client is linked to this grant type.", ResourceConflictException.class);
@@ -91,7 +91,7 @@ public class GrantTypeServiceIntegrationTest extends IntegrationTest {
 
 	@Test
 	public void shouldBeAbleToFindAGrantTypeById() {
-		GrantType grantType = grantType().thatIs().persistent().build();
+		GrantType grantType = grantType().save();
 
 		Result<GrantType> result = grantTypeService.findById(grantType.getId());
 		assertThat(result).accepted();
@@ -112,7 +112,7 @@ public class GrantTypeServiceIntegrationTest extends IntegrationTest {
 
 	@Test
 	public void shouldBeAbleToFindAGrantTypeByName() {
-		GrantType grantType = grantType().thatIs().persistent().build();
+		GrantType grantType = grantType().save();
 
 		Result<GrantType> result = grantTypeService.findByName(grantType.getName());
 		assertThat(result).accepted();
@@ -133,7 +133,7 @@ public class GrantTypeServiceIntegrationTest extends IntegrationTest {
 
 	@Test
 	public void shouldBeAbleToListAllGrantTypes() {
-		range(0, 5).forEach(i -> grantType().thatIs().persistent().build());
+		range(0, 5).forEach(i -> grantType().save());
 
 		Result<List<GrantType>> result = grantTypeService.list();
 		assertThat(result).accepted();
@@ -142,9 +142,9 @@ public class GrantTypeServiceIntegrationTest extends IntegrationTest {
 
 	@Test
 	public void shouldBeAbleToFindMultipleGrantTypesById() {
-		GrantType grantType1 = grantType().thatIs().persistent().build();
-		GrantType grantType2 = grantType().thatIs().persistent().build();
-		GrantType grantType3 = grantType().thatIs().persistent().build();
+		GrantType grantType1 = grantType().save();
+		GrantType grantType2 = grantType().save();
+		GrantType grantType3 = grantType().save();
 
 		List<String> ids = new ArrayList<>();
 		ids.add(grantType1.getId());
@@ -168,9 +168,9 @@ public class GrantTypeServiceIntegrationTest extends IntegrationTest {
 
 	@Test
 	public void shouldIgnoreEmptyGrantTypeEntries() {
-		GrantType grantType1 = grantType().thatIs().persistent().build();
-		GrantType grantType2 = grantType().thatIs().persistent().build();
-		GrantType grantType3 = grantType().thatIs().persistent().build();
+		GrantType grantType1 = grantType().save();
+		GrantType grantType2 = grantType().save();
+		GrantType grantType3 = grantType().save();
 
 		List<String> ids = new ArrayList<>();
 		ids.add(grantType1.getId());

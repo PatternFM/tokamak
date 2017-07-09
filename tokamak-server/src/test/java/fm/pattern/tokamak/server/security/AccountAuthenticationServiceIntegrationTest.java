@@ -19,14 +19,14 @@ public class AccountAuthenticationServiceIntegrationTest extends IntegrationTest
 
 	@Test
 	public void shouldBeAbleToFindAnAccountByUsername() {
-		account().withUsername("username@email.com").thatIs().persistent().build();
+		account().withUsername("username@email.com").save();
 		UserDetails authenticatedUser = authenticationService.loadUserByUsername("username@email.com");
 		assertThat(authenticatedUser).isNotNull();
 	}
 
 	@Test(expected = UsernameNotFoundException.class)
 	public void shouldThrowAnExceptionIfTheAccountIsLocked() {
-		Account account = account().withUsername("username@email.com").thatIs().persistent().build();
+		Account account = account().withUsername("username@email.com").save();
 		assertThat(account.isLocked()).isFalse();
 
 		Account lockedAccount = account().withUsername("locked@email.com").thatIs().locked().and().persistent().build();

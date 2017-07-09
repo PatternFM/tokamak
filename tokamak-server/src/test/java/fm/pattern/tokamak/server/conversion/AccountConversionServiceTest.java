@@ -36,7 +36,7 @@ public class AccountConversionServiceTest extends IntegrationTest {
 
 	@Test
 	public void shouldBeAbleToConvertAnAccountRepresentationIntoANewAccount() {
-		Role role = role().thatIs().persistent().build();
+		Role role = role().save();
 
 		AccountRepresentation representation = AccountDSL.account().withRoles(roleConversionService.convert(role)).build();
 
@@ -49,9 +49,9 @@ public class AccountConversionServiceTest extends IntegrationTest {
 
 	@Test
 	public void shouldBeAbleToConvertAnAccountRepresentationIntoAnExistingAccount() {
-		Role role1 = role().thatIs().persistent().build();
-		Role role2 = role().thatIs().persistent().build();
-		Role role3 = role().thatIs().persistent().build();
+		Role role1 = role().save();
+		Role role2 = role().save();
+		Role role3 = role().save();
 
 		AccountRepresentation representation = AccountDSL.account().withUsername("foo").withPassword("foo").withRoles(roleConversionService.convert(role3)).build();
 		Account account = account().withRole(role1).withRole(role2).build();

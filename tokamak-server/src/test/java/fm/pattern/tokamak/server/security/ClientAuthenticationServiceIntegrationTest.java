@@ -24,12 +24,12 @@ public class ClientAuthenticationServiceIntegrationTest extends IntegrationTest 
 
 	@Before
 	public void before() {
-		this.grantType = grantType().thatIs().persistent().build();
+		this.grantType = grantType().save();
 	}
 
 	@Test
 	public void shouldBeAbleToFindAnInternalClientByUsername() {
-		Client client = client().withGrantType(grantType).thatIs().persistent().build();
+		Client client = client().withGrantType(grantType).save();
 		ClientDetails clientDetails = clientAuthenticationService.loadClientByClientId(client.getClientId());
 
 		assertThat(clientDetails).isNotNull();
@@ -39,7 +39,7 @@ public class ClientAuthenticationServiceIntegrationTest extends IntegrationTest 
 
 	@Test
 	public void shouldBeAbleToFindAnAdminClientByUsername() {
-		Client client = client().withGrantType(grantType).thatIs().persistent().build();
+		Client client = client().withGrantType(grantType).save();
 		ClientDetails clientDetails = clientAuthenticationService.loadClientByClientId(client.getClientId());
 
 		assertThat(clientDetails).isNotNull();
@@ -49,7 +49,7 @@ public class ClientAuthenticationServiceIntegrationTest extends IntegrationTest 
 
 	@Test
 	public void shouldBeAbleToFindATrustedClientByUsername() {
-		Client client = client().withGrantType(grantType).thatIs().persistent().build();
+		Client client = client().withGrantType(grantType).save();
 		ClientDetails clientDetails = clientAuthenticationService.loadClientByClientId(client.getClientId());
 		assertThat(clientDetails).isNotNull();
 	}
@@ -71,7 +71,7 @@ public class ClientAuthenticationServiceIntegrationTest extends IntegrationTest 
 
 	@Test
 	public void shouldBeAbleToResolveTheClientFromTheThreadLocalCache() {
-		Client client = client().withGrantType(grantType).thatIs().persistent().build();
+		Client client = client().withGrantType(grantType).save();
 		CurrentAuthenticatedClientContext.setAuthenticatedClient(new AuthenticatedClient(client));
 
 		ClientDetails details = clientAuthenticationService.loadClientByClientId(client.getClientId());
@@ -82,8 +82,8 @@ public class ClientAuthenticationServiceIntegrationTest extends IntegrationTest 
 
 	@Test
 	public void shouldResolveTheClientEvenWhenAnotherClientIStoredInCache() {
-		Client client1 = client().withGrantType(grantType).thatIs().persistent().build();
-		Client client2 = client().withGrantType(grantType).thatIs().persistent().build();
+		Client client1 = client().withGrantType(grantType).save();
+		Client client2 = client().withGrantType(grantType).save();
 		
 		CurrentAuthenticatedClientContext.setAuthenticatedClient(new AuthenticatedClient(client1));
 

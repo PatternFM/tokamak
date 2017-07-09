@@ -63,10 +63,10 @@ public class ClientConversionServiceTest extends IntegrationTest {
 
 	@Test
 	public void shouldBeAbleToConvertAClientRepresentationIntoANewClient() {
-		Authority authority = authority().thatIs().persistent().build();
-		Audience audience = audience().thatIs().persistent().build();
-		Scope scope = scope().thatIs().persistent().build();
-		GrantType grantType = grantType().thatIs().persistent().build();
+		Authority authority = authority().save();
+		Audience audience = audience().save();
+		Scope scope = scope().save();
+		GrantType grantType = grantType().save();
 
 		ClientRepresentation representation = ClientDSL.client().withDescription("desc").withAudiences(audienceConversionService.convert(audience)).withAuthorities(authorityConversionService.convert(authority)).withScopes(scopeConversionService.convert(scope)).withGrantTypes(grantTypeConversionService.convert(grantType)).build();
 
@@ -89,12 +89,12 @@ public class ClientConversionServiceTest extends IntegrationTest {
 
 	@Test
 	public void shouldBeAbleToConvertAClientRepresentationIntoAnExistingClient() {
-		Authority authority = authority().thatIs().persistent().build();
-		Audience audience = audience().thatIs().persistent().build();
-		Scope scope = scope().thatIs().persistent().build();
-		GrantType grantType = grantType().thatIs().persistent().build();
+		Authority authority = authority().save();
+		Audience audience = audience().save();
+		Scope scope = scope().save();
+		GrantType grantType = grantType().save();
 
-		Client client = client().withGrantType(grantType).thatIs().persistent().build();
+		Client client = client().withGrantType(grantType).save();
 		ClientRepresentation representation = ClientDSL.client().withAudiences(audienceConversionService.convert(audience)).withAuthorities(authorityConversionService.convert(authority)).withScopes(scopeConversionService.convert(scope)).withGrantTypes(grantTypeConversionService.convert(grantType)).build();
 
 		Client updated = clientConversionService.convert(representation, client);

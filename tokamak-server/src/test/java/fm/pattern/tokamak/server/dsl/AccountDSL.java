@@ -43,17 +43,21 @@ public class AccountDSL extends AbstractDSL<AccountDSL, Account> {
 	}
 
 	public Account build() {
-		Account account = new Account(username, password, roles);
-		account.setLocked(locked);
-		return shouldPersist() ? persist(account) : account;
+		return create();
 	}
 
-	private Account persist(Account account) {
-		Result<Account> result = load(AccountService.class).create(account);
+	public Account save() {
+		Result<Account> result = load(AccountService.class).create(create());
 		if (result.accepted()) {
 			return result.getInstance();
 		}
 		throw new IllegalStateException("Unable to create account, errors:" + result.getErrors().toString());
+	}
+
+	private Account create() {
+		Account account = new Account(username, password, roles);
+		account.setLocked(locked);
+		return account;
 	}
 
 }

@@ -26,6 +26,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import fm.pattern.tokamak.server.model.Role;
+import fm.pattern.tokamak.server.repository.Cache;
 import fm.pattern.tokamak.server.repository.DataRepository;
 import fm.pattern.valex.Result;
 
@@ -33,10 +34,21 @@ import fm.pattern.valex.Result;
 class RoleServiceImpl extends DataServiceImpl<Role> implements RoleService {
 
 	private final DataRepository repository;
+	private final Cache cache;
 
 	@Autowired
-	RoleServiceImpl(@Qualifier("dataRepository") DataRepository repository) {
+	RoleServiceImpl(@Qualifier("dataRepository") DataRepository repository, @Qualifier("accountCache") Cache cache) {
 		this.repository = repository;
+		this.cache = cache;
+	}
+
+	@Transactional
+	public Result<Role> update(Role role) {
+		Result<Role> result = super.update(role);
+		if (result.accepted()) {
+			cache.flush();
+		}
+		return result;
 	}
 
 	@Transactional

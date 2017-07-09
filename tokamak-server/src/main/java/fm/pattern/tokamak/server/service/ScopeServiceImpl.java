@@ -29,6 +29,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import fm.pattern.tokamak.server.model.Scope;
+import fm.pattern.tokamak.server.repository.Cache;
 import fm.pattern.tokamak.server.repository.DataRepository;
 import fm.pattern.valex.Result;
 
@@ -37,10 +38,21 @@ import fm.pattern.valex.Result;
 class ScopeServiceImpl extends DataServiceImpl<Scope> implements ScopeService {
 
 	private final DataRepository repository;
+	private final Cache cache;
 
 	@Autowired
-	ScopeServiceImpl(@Qualifier("dataRepository") DataRepository repository) {
+	ScopeServiceImpl(@Qualifier("dataRepository") DataRepository repository, @Qualifier("clientCache") Cache cache) {
 		this.repository = repository;
+		this.cache = cache;
+	}
+
+	@Transactional
+	public Result<Scope> update(Scope scope) {
+		Result<Scope> result = super.update(scope);
+		if (result.accepted()) {
+			cache.flush();
+		}
+		return result;
 	}
 
 	@Transactional

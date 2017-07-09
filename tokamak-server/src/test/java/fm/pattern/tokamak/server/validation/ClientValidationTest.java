@@ -20,7 +20,7 @@ public class ClientValidationTest extends IntegrationTest {
 
 	@Before
 	public void before() {
-		this.grantType = grantType().thatIs().persistent().build();
+		this.grantType = grantType().save();
 	}
 
 	@Test
@@ -31,7 +31,7 @@ public class ClientValidationTest extends IntegrationTest {
 	@Test
 	public void shouldNotBeAbleToCreateAClientIfTheClientIdAlreadyExists() {
 		String clientId = RandomStringUtils.randomAlphanumeric(15);
-		client().withClientId(clientId).withGrantType(grantType).thatIs().persistent().build();
+		client().withClientId(clientId).withGrantType(grantType).save();
 
 		onCreate(client().withClientId(clientId).withGrantType(grantType).build()).rejected().withError("CLI-0003", "This client id is already in use.", ResourceConflictException.class);
 	}
@@ -105,9 +105,9 @@ public class ClientValidationTest extends IntegrationTest {
 
 	@Test
 	public void shouldNotBeAbleToUpdateAClientIfTheClientIdAlreadyExists() {
-		client().withClientId("firstclient").withGrantType(grantType).thatIs().persistent().build();
+		client().withClientId("firstclient").withGrantType(grantType).save();
 
-		Client updated = client().withClientId("secondclient").withGrantType(grantType).thatIs().persistent().build();
+		Client updated = client().withClientId("secondclient").withGrantType(grantType).save();
 		updated.setClientId("firstclient");
 
 		onUpdate(updated).rejected().withError("CLI-0003", "This client id is already in use.", ResourceConflictException.class);

@@ -57,7 +57,7 @@ public class AccountServiceIntegrationTest extends IntegrationTest {
 
 	@Test
 	public void shouldBeAbleToUpdateAnAccount() {
-		Account account = account().thatIs().persistent().build();
+		Account account = account().save();
 		account.setLocked(true);
 
 		Result<Account> result = accountService.update(account);
@@ -67,11 +67,11 @@ public class AccountServiceIntegrationTest extends IntegrationTest {
 
 	@Test
 	public void shouldBeAbleToUpdateAnAccountWithRoles() {
-		Role role1 = role().thatIs().persistent().build();
-		Role role2 = role().thatIs().persistent().build();
-		Role role3 = role().thatIs().persistent().build();
+		Role role1 = role().save();
+		Role role2 = role().save();
+		Role role3 = role().save();
 
-		Account account = account().withRole(role1).withRole(role2).withRole(role3).thatIs().persistent().build();
+		Account account = account().withRole(role1).withRole(role2).withRole(role3).save();
 		account.setRoles(new HashSet<>(Arrays.asList(role2)));
 
 		Result<Account> result = accountService.update(account);
@@ -82,7 +82,7 @@ public class AccountServiceIntegrationTest extends IntegrationTest {
 
 	@Test
 	public void shouldNotBeAbleToUpdateAnInvalidAccount() {
-		Account account = account().thatIs().persistent().build();
+		Account account = account().save();
 		account.setUsername(null);
 
 		Result<Account> result = accountService.update(account);
@@ -91,7 +91,7 @@ public class AccountServiceIntegrationTest extends IntegrationTest {
 
 	@Test
 	public void shouldBeAbleToDeleteAnAccount() {
-		Account account = account().thatIs().persistent().build();
+		Account account = account().save();
 		assertThat(accountService.findById(account.getId())).accepted();
 
 		assertThat(accountService.delete(account)).accepted();
@@ -100,14 +100,14 @@ public class AccountServiceIntegrationTest extends IntegrationTest {
 
 	@Test
 	public void shouldEncryptTheAccountPasswordBeforeSavingTheAccount() {
-		Account account = account().withPassword("password1234").thatIs().persistent().build();
+		Account account = account().withPassword("password1234").save();
 		assertThat(account.getPassword()).startsWith("$2a$");
 		assertThat(passwordEncodingService.matches("password1234", account.getPassword())).isTrue();
 	}
 
 	@Test
 	public void shouldBeAbleToFindAnAccountById() {
-		Account account = account().thatIs().persistent().build();
+		Account account = account().save();
 
 		Result<Account> result = accountService.findById(account.getId());
 		assertThat(result).accepted();
@@ -128,7 +128,7 @@ public class AccountServiceIntegrationTest extends IntegrationTest {
 
 	@Test
 	public void shouldBeAbleToFindAnAccountByUsername() {
-		Account account = account().thatIs().persistent().build();
+		Account account = account().save();
 
 		Result<Account> result = accountService.findByUsername(account.getUsername());
 		assertThat(result).accepted();
@@ -151,7 +151,7 @@ public class AccountServiceIntegrationTest extends IntegrationTest {
 		String newPassword = "myNEWPassword";
 		String username = "test@email.com";
 
-		Account account = account().withUsername(username).withPassword(currentPassword).thatIs().persistent().build();
+		Account account = account().withUsername(username).withPassword(currentPassword).save();
 		assertThat(accountService.updatePassword(account, currentPassword, newPassword)).accepted();
 
 		assertAccountHasPassword(username, newPassword);
@@ -162,7 +162,7 @@ public class AccountServiceIntegrationTest extends IntegrationTest {
 		String oldPassword = "myOLDPassword";
 		String email = "test@email.com";
 
-		Account account = account().withUsername(email).withPassword(oldPassword).thatIs().persistent().build();
+		Account account = account().withUsername(email).withPassword(oldPassword).save();
 		assertThat(accountService.updatePassword(account, oldPassword, null)).rejected().withMessage("Your new password must be provided.");
 		assertThat(accountService.updatePassword(account, oldPassword, "")).rejected().withMessage("Your new password must be provided.");
 		assertThat(accountService.updatePassword(account, oldPassword, "  ")).rejected().withMessage("Your new password must be provided.");
@@ -173,7 +173,7 @@ public class AccountServiceIntegrationTest extends IntegrationTest {
 		String oldPassword = "myOLDPassword";
 		String email = "test@email.com";
 
-		Account account = account().withUsername(email).withPassword(oldPassword).thatIs().persistent().build();
+		Account account = account().withUsername(email).withPassword(oldPassword).save();
 		assertThat(accountService.updatePassword(account, oldPassword, "abc")).rejected().withMessage("Your new password must be between 8 and 50 characters.");
 	}
 
@@ -182,7 +182,7 @@ public class AccountServiceIntegrationTest extends IntegrationTest {
 		String oldPassword = "myOLDPassword";
 		String email = "test@email.com";
 
-		Account account = account().withUsername(email).withPassword(oldPassword).thatIs().persistent().build();
+		Account account = account().withUsername(email).withPassword(oldPassword).save();
 		assertThat(accountService.updatePassword(account, oldPassword, RandomStringUtils.randomAlphabetic(51))).rejected().withMessage("Your new password must be between 8 and 50 characters.");
 	}
 
@@ -191,7 +191,7 @@ public class AccountServiceIntegrationTest extends IntegrationTest {
 		String oldPassword = "myOLDPassword";
 		String email = "test@email.com";
 
-		Account account = account().withUsername(email).withPassword(oldPassword).thatIs().persistent().build();
+		Account account = account().withUsername(email).withPassword(oldPassword).save();
 		assertThat(accountService.updatePassword(account, null, "ABC")).rejected().withMessage("Your current password must be provided.");
 		assertThat(accountService.updatePassword(account, "", "ABC")).rejected().withMessage("Your current password must be provided.");
 		assertThat(accountService.updatePassword(account, "  ", "ABC")).rejected().withMessage("Your current password must be provided.");
@@ -202,13 +202,13 @@ public class AccountServiceIntegrationTest extends IntegrationTest {
 		String oldPassword = "myOLDPassword";
 		String email = "test@email.com";
 
-		Account account = account().withUsername(email).withPassword(oldPassword).thatIs().persistent().build();
+		Account account = account().withUsername(email).withPassword(oldPassword).save();
 		assertThat(accountService.updatePassword(account, "invalid", "ABC")).rejected().withMessage("The password you provided does not match your current password. Please try again.");
 	}
 
 	@Test
 	public void shouldBeAbleToListAccounts() {
-		IntStream.range(1, 5).forEach(i -> account().thatIs().persistent().build());
+		IntStream.range(1, 5).forEach(i -> account().save());
 
 		Result<List<Account>> result = accountService.list(criteria());
 		assertThat(result).accepted();

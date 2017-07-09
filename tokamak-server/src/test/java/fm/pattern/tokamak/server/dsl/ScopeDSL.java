@@ -1,6 +1,7 @@
 package fm.pattern.tokamak.server.dsl;
 
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
+
 import fm.pattern.tokamak.server.model.Scope;
 import fm.pattern.tokamak.server.service.ScopeService;
 import fm.pattern.valex.Result;
@@ -25,17 +26,21 @@ public class ScopeDSL extends AbstractDSL<ScopeDSL, Scope> {
 	}
 
 	public Scope build() {
-		Scope scope = new Scope(name);
-		scope.setDescription(description);
-		return shouldPersist() ? persist(scope) : scope;
+		return create();
 	}
 
-	private Scope persist(Scope scope) {
-		Result<Scope> result = load(ScopeService.class).create(scope);
+	public Scope save() {
+		Result<Scope> result = load(ScopeService.class).create(create());
 		if (result.accepted()) {
 			return result.getInstance();
 		}
-		throw new IllegalStateException("Unable to create scope, errors:" + result.toString());
+		throw new IllegalStateException("Unable to create scope, errors:" + result.getErrors().toString());
+	}
+
+	private Scope create() {
+		Scope scope = new Scope(name);
+		scope.setDescription(description);
+		return scope;
 	}
 
 }

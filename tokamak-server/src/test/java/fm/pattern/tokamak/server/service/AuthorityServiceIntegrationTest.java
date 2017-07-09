@@ -12,9 +12,12 @@ import java.util.List;
 
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 
 import fm.pattern.tokamak.server.IntegrationTest;
 import fm.pattern.tokamak.server.model.Authority;
+import fm.pattern.tokamak.server.model.Client;
+import fm.pattern.tokamak.server.repository.Cache;
 import fm.pattern.valex.EntityNotFoundException;
 import fm.pattern.valex.ResourceConflictException;
 import fm.pattern.valex.Result;
@@ -24,6 +27,10 @@ public class AuthorityServiceIntegrationTest extends IntegrationTest {
 
 	@Autowired
 	private AuthorityService authorityService;
+
+	@Autowired
+	@Qualifier("clientCache")
+	private Cache cache;
 
 	@Test
 	public void shouldBeAbleToCreateAnAuthority() {
@@ -48,7 +55,7 @@ public class AuthorityServiceIntegrationTest extends IntegrationTest {
 
 	@Test
 	public void shouldBeAbleToUpdateAnAuthority() {
-		Authority authority = authority().thatIs().persistent().build();
+		Authority authority = authority().save();
 		authority.setName("first");
 
 		assertThat(authorityService.update(authority)).accepted();
@@ -58,8 +65,17 @@ public class AuthorityServiceIntegrationTest extends IntegrationTest {
 	}
 
 	@Test
+	public void shouldFlushTheClientCacheWhenAnAuthorityIsUpdated() {
+		Client client = client().withGrantType(grantType().save()).save();
+
+		assertThat(cache.get("clients:id:" + client.getId(), Client.class)).isNotNull();
+		assertThat(authorityService.update(authority().save())).accepted();
+		assertThat(cache.get("clients:id:" + client.getId(), Client.class)).isNull();
+	}
+
+	@Test
 	public void shouldNotBeAbleToUpdateAnAuthorityIfTheAuthorityIsInvalid() {
-		Authority authority = authority().thatIs().persistent().build();
+		Authority authority = authority().save();
 		authority.setName(null);
 
 		assertThat(authorityService.update(authority)).rejected().withMessage("An authority name is required.");
@@ -67,7 +83,7 @@ public class AuthorityServiceIntegrationTest extends IntegrationTest {
 
 	@Test
 	public void shouldBeAbleToDeleteAnAuthority() {
-		Authority authority = authority().thatIs().persistent().build();
+		Authority authority = authority().save();
 		assertThat(authorityService.findById(authority.getId())).accepted();
 
 		assertThat(authorityService.delete(authority)).accepted();
@@ -76,15 +92,15 @@ public class AuthorityServiceIntegrationTest extends IntegrationTest {
 
 	@Test
 	public void shouldNotBeAbleToDeleteAnAuthorityIfTheAuthorityIsInvalid() {
-		Authority authority = authority().thatIs().persistent().build();
+		Authority authority = authority().save();
 		authority.setId(null);
 		assertThat(authorityService.delete(authority)).rejected().withError("ENT-0001", "An id is required.", UnprocessableEntityException.class);
 	}
 
 	@Test
 	public void shouldNotBeAbleToDeleteAnAuthorityIfTheAuthorityIsBeingUsedByClients() {
-		Authority authority = authority().thatIs().persistent().build();
-		client().withAuthority(authority).withGrantType(grantType().thatIs().persistent().build()).thatIs().persistent().build();
+		Authority authority = authority().save();
+		client().withAuthority(authority).withGrantType(grantType().save()).save();
 
 		Result<Authority> result = authorityService.delete(authority);
 		assertThat(result).rejected().withError("ATH-0005", "This authority cannot be deleted, 1 client is linked to this authority.", ResourceConflictException.class);
@@ -92,7 +108,7 @@ public class AuthorityServiceIntegrationTest extends IntegrationTest {
 
 	@Test
 	public void shouldBeAbleToFindAnAuthorityById() {
-		Authority authority = authority().thatIs().persistent().build();
+		Authority authority = authority().save();
 
 		Result<Authority> result = authorityService.findById(authority.getId());
 		assertThat(result).accepted();
@@ -113,7 +129,7 @@ public class AuthorityServiceIntegrationTest extends IntegrationTest {
 
 	@Test
 	public void shouldBeAbleToFindAnAuthorityByName() {
-		Authority authority = authority().thatIs().persistent().build();
+		Authority authority = authority().save();
 
 		Result<Authority> result = authorityService.findByName(authority.getName());
 		assertThat(result).accepted();
@@ -134,7 +150,7 @@ public class AuthorityServiceIntegrationTest extends IntegrationTest {
 
 	@Test
 	public void shouldBeAbleToListAllAuthorities() {
-		range(0, 5).forEach(i -> authority().thatIs().persistent().build());
+		range(0, 5).forEach(i -> authority().save());
 
 		Result<List<Authority>> result = authorityService.list();
 		assertThat(result).accepted();
@@ -143,9 +159,9 @@ public class AuthorityServiceIntegrationTest extends IntegrationTest {
 
 	@Test
 	public void shouldBeAbleToFindMultipleAuthoritiesById() {
-		Authority authority1 = authority().thatIs().persistent().build();
-		Authority authority2 = authority().thatIs().persistent().build();
-		Authority authority3 = authority().thatIs().persistent().build();
+		Authority authority1 = authority().save();
+		Authority authority2 = authority().save();
+		Authority authority3 = authority().save();
 
 		List<String> ids = new ArrayList<String>();
 		ids.add(authority1.getId());
@@ -169,9 +185,9 @@ public class AuthorityServiceIntegrationTest extends IntegrationTest {
 
 	@Test
 	public void shouldIgnoreEmptyAuthorityEntries() {
-		Authority authority1 = authority().thatIs().persistent().build();
-		Authority authority2 = authority().thatIs().persistent().build();
-		Authority authority3 = authority().thatIs().persistent().build();
+		Authority authority1 = authority().save();
+		Authority authority2 = authority().save();
+		Authority authority3 = authority().save();
 
 		List<String> ids = new ArrayList<>();
 		ids.add(authority1.getId());
