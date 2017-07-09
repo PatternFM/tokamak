@@ -12,7 +12,7 @@ class Apps extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            apps: [],
+            result: [],
             loading: false,
             error: null
         };
@@ -22,7 +22,7 @@ class Apps extends React.Component {
         this.setState({ loading:true });
         ClientService.list().then((result) => {
             if(result.status === "accepted") {
-                this.setState({ apps: result.instance.payload }, function() { });
+                this.setState({ result: result.instance }, function() { });
             }
             else {
                 this.setState({ error:result.errors[0] });
@@ -31,8 +31,21 @@ class Apps extends React.Component {
         });
     }
 
+    pageRequested(page) {
+        this.setState({ loading:true });
+        ClientService.list(page).then((result) => {
+            if(result.status === "accepted") {
+                this.setState({ result: result.instance }, function() { });
+            }
+            else {
+                this.setState({ error:result.errors[0] });
+            }
+            this.setState( { loading:false } );
+        });
+    } 
+
     render() {
-        let page = this.state.error != null ? <ApplicationError error={this.state.error} /> : <ViewApps apps={this.state.apps} />;
+        let page = this.state.error != null ? <ApplicationError error={this.state.error} /> : <ViewApps apps={this.state.result} pageRequested={ this.pageRequested.bind(this) }/>;
         let output = this.state.loading ? <Loader /> : page;
         
         return (

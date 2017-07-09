@@ -12,7 +12,7 @@ class Accounts extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            accounts: [],
+            result: {},
             loading: false,
             error: null
         };
@@ -22,7 +22,20 @@ class Accounts extends React.Component {
         this.setState({ loading:true });
         AccountService.list().then((result) => {
             if(result.status === "accepted") {
-                this.setState({ accounts: result.instance.payload }, function() { });
+                this.setState({ result: result.instance }, function() { });
+            }
+            else {
+                this.setState({ error:result.errors[0] });
+            }
+            this.setState( { loading:false } );
+        });
+    }
+
+    pageRequested(page) {
+        this.setState({ loading:true });
+        AccountService.list(page).then((result) => {
+            if(result.status === "accepted") {
+                this.setState({ result: result.instance }, function() { });
             }
             else {
                 this.setState({ error:result.errors[0] });
@@ -56,7 +69,7 @@ class Accounts extends React.Component {
     }
 
     render() {
-        let output = this.state.error != null ? <ApplicationError error={this.state.error} /> : <ViewAccounts accounts={this.state.accounts} accountCreated={ this.accountCreated.bind(this) } accountUpdated={ this.accountUpdated.bind(this) } accountDeleted={ this.accountDeleted.bind(this) } />;
+        let output = this.state.error != null ? <ApplicationError error={this.state.error} /> : <ViewAccounts accounts={this.state.result} accountCreated={ this.accountCreated.bind(this) } accountUpdated={ this.accountUpdated.bind(this) } accountDeleted={ this.accountDeleted.bind(this) } pageRequested={ this.pageRequested.bind(this) } />;
         let render = this.state.loading ? <Loader /> : output;
         
         return (

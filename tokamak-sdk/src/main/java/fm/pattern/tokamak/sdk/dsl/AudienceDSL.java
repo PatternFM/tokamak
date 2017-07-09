@@ -15,7 +15,7 @@ public class AudienceDSL extends AbstractDSL<AudienceDSL, AudienceRepresentation
 
 	private String id = null;
 	private String name = randomAlphanumeric(10);
-	private String description = "description";
+	private String description  = "Auto-generated audience created by acceptance tests.";
 
 	public static AudienceDSL audience() {
 		return new AudienceDSL();

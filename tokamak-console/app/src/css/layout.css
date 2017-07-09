@@ -464,3 +464,28 @@ textarea {
 .change-password:hover {
 	cursor: pointer;
 }
+
+.pagination-container {
+	margin: 0 auto;
+	text-align: center;
+	margin-top: 50px;
+}
+
+.pagination-element {
+	display: inline-block;
+	padding: 2px 7px;
+	border-bottom: 2px solid #CCC;
+    font-family: "Helvetica Neue", "Helvetica", "Sans Serif";
+    font-size: 12px;  
+    font-weight: bold;
+    margin-right: 7px;  
+}
+
+.pagination-element:hover {
+	cursor: pointer;
+	background: #F0F0F0;
+}
+
+.pagination-active {
+	border-bottom: 2px solid red !important;
+}

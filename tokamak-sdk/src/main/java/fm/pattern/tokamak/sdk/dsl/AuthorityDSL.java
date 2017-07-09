@@ -15,7 +15,7 @@ public class AuthorityDSL extends AbstractDSL<AuthorityDSL, AuthorityRepresentat
 
 	private String id = null;
 	private String name = randomAlphanumeric(10);
-	private String description = "description";
+	private String description  = "Auto-generated authority created by acceptance tests.";
 
 	public static AuthorityDSL authority() {
 		return new AuthorityDSL();

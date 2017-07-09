@@ -7,7 +7,7 @@ import ManageAccountDialog from "./ManageAccountDialog.jsx";
 class ViewAccounts extends React.Component {
 
     render() {
-        let moreThanOneResult = this.props.accounts && this.props.accounts.length > 0;
+        let moreThanOneResult = this.props.accounts.payload && this.props.accounts.payload.length > 0;
          
         return (
             <div className="animated fadeIn">
@@ -23,7 +23,7 @@ class ViewAccounts extends React.Component {
                     <button className="tok-button fixed-top" onClick={() => this.refs.manageAccountDialog.show()}>+ Create Account</button>
                   </div>
                   <div className="table-container">
-                    <AccountTable accounts={this.props.accounts} accountUpdated={this.props.accountUpdated} accountDeleted={this.props.accountDeleted} />
+                    <AccountTable accounts={this.props.accounts} accountUpdated={this.props.accountUpdated} accountDeleted={this.props.accountDeleted} pageRequested={this.props.pageRequested} />
                   </div>
                 </div>
               </MuiThemeProvider>

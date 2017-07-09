@@ -3,7 +3,7 @@ package fm.pattern.tokamak.server.pagination;
 public class Range {
 
 	private static final Integer DEFAULT_PAGE = 1;
-	private static final Integer DEFAULT_LIMIT = 20;
+	private static final Integer DEFAULT_LIMIT = 50;
 
 	private Integer limit;
 	private Integer page;

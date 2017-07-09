@@ -1,6 +1,7 @@
 import React from "react";
 import ManageAccountDialog from "./ManageAccountDialog.jsx";
 import DeleteAccountDialog from "./DeleteAccountDialog.jsx";
+import Pagination from "../pagination/Pagination.jsx";
 
 const Timestamp = require("react-timestamp");
 
@@ -15,7 +16,7 @@ class AccountTable extends React.Component {
                 <table className="display-table">
                   <thead>
                     <tr>
-                      <th className="dth left-pad-0">Account</th>
+                      <th className="dth left-pad-0">Username</th>
                       <th className="dth">ID</th>
                       <th className="dth">Created</th>
                       <th className="dth right-pad-0"></th>
@@ -23,7 +24,7 @@ class AccountTable extends React.Component {
                   </thead>
                   
                   <tbody>
-                    {this.props.accounts.map((account) => 
+                    {this.props.accounts.payload.map((account) => 
                      <tr key={account.id}>
                        <td className="dtr left-pad-0">
                          {account.username}<br/>
@@ -40,6 +41,8 @@ class AccountTable extends React.Component {
                     )}
                   </tbody>
                 </table>
+                
+                <Pagination records={this.props.accounts} pageRequested={this.props.pageRequested} />
             </div>
         );
     }

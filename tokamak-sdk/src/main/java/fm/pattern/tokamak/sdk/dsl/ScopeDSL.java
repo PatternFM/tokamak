@@ -15,7 +15,7 @@ public class ScopeDSL extends AbstractDSL<ScopeDSL, ScopeRepresentation> {
 
 	private String id = null;
 	private String name = randomAlphanumeric(10);
-	private String description = "description";
+	private String description = "Auto-generated scope created by acceptance tests.";;
 
 	public static ScopeDSL scope() {
 		return new ScopeDSL();

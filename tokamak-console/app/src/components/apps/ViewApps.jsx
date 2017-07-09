@@ -6,7 +6,7 @@ import { NavLink } from "react-router-dom";
 class ViewApps extends React.Component {
 
     render() {
-        let moreThanOneResult = this.props.apps && this.props.apps.length > 0;
+        let moreThanOneResult = this.props.apps.payload && this.props.apps.payload.length > 0;
         
         return (
             <div className="animated fadeIn">
@@ -19,7 +19,7 @@ class ViewApps extends React.Component {
                     <button className="tok-button fixed-top">+ Create App</button>
                   </div>
                   <div className="table-container">
-                    <AppTable apps={this.props.apps} />
+                    <AppTable apps={this.props.apps} pageRequested={this.props.pageRequested} />
                   </div>
                 </div>
               </MuiThemeProvider>

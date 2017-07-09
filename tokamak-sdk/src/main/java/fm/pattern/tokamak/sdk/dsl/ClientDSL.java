@@ -28,7 +28,7 @@ public class ClientDSL extends AbstractDSL<ClientDSL, ClientRepresentation> {
 	private AudiencesClient audiencesClient = new AudiencesClient(JwtClientProperties.getEndpoint());
 
 	private String name = randomAlphanumeric(8);
-	private String description;
+	private String description = "Auto-generated app created by acceptance tests.";
 
 	private String clientId = "cli_" + randomAlphanumeric(15);
 	private String clientSecret = randomAlphanumeric(20);

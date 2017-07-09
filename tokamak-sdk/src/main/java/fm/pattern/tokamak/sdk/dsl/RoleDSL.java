@@ -15,7 +15,7 @@ public class RoleDSL extends AbstractDSL<RoleDSL, RoleRepresentation> {
 
 	private String id = null;
 	private String name = randomAlphanumeric(10);
-	private String description = "description";
+	private String description  = "Auto-generated role created by acceptance tests.";
 
 	public static RoleDSL role() {
 		return new RoleDSL();

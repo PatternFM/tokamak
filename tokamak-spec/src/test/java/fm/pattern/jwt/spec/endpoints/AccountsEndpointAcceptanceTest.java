@@ -97,7 +97,6 @@ public class AccountsEndpointAcceptanceTest extends AcceptanceTest {
 		assertThat(updated.getCreated()).isBefore(updated.getUpdated());
 		assertThat(updated.getUpdated()).isAfter(account.getUpdated());
 
-		assertThat(updated.isLocked()).isTrue();
 		assertThat(updated.getRoles()).hasSize(1);
 		assertThat(updated.getRoles().iterator().next()).isEqualToComparingFieldByField(role);
 		
@@ -126,7 +125,7 @@ public class AccountsEndpointAcceptanceTest extends AcceptanceTest {
 	}
 
 	@Test
-	public void updatingAnAccountShouldNotUpdateTheUsernameOrPassword() {
+	public void updatingAnAccountShouldNotUpdateTheUsernameOrPasswordOrLockedStatus() {
 		AccountRepresentation account = account().withPassword("password").thatIs().persistent(token).build();
 		String username = account.getUsername();
 
@@ -138,10 +137,9 @@ public class AccountsEndpointAcceptanceTest extends AcceptanceTest {
 		assertThat(result).accepted().withResponseCode(200);
 
 		AccountRepresentation updated = result.getInstance();
-		assertThat(updated.getId()).startsWith("acc_");
-
+		assertThat(updated.getId()).isEqualTo(account.getId());
 		assertThat(updated.getUsername()).isEqualTo(username);
-		assertThat(updated.isLocked()).isTrue();
+		assertThat(updated.isLocked()).isEqualTo(false);
 
 		Result<AccessTokenRepresentation> response = tokensClient.getAccessToken(TEST_CLIENT_CREDENTIALS, new UserCredentials(username, "new_password"));
 		assertThat(response).rejected().withResponseCode(400).withMessage(BAD_CREDENTIALS);

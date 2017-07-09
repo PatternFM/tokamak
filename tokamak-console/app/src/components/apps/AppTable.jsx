@@ -1,10 +1,13 @@
 import React from "react";
+import Pagination from "../pagination/Pagination.jsx";
+
 const Timestamp = require("react-timestamp");
 
 class AppTable extends React.Component {
 
     render() {
         return (
+          <div>
             <table className="display-table">
                 <thead>
                     <tr>
@@ -15,7 +18,7 @@ class AppTable extends React.Component {
                     </tr>
                 </thead>
                 <tbody>  
-                    {this.props.apps.map((app) => 
+                    {this.props.apps.payload.map((app) => 
                      <tr>
                        <td className="dtr left-pad-0">
                          {app.name}<br/>
@@ -31,6 +34,9 @@ class AppTable extends React.Component {
                     )}
                 </tbody>
             </table>
+            
+            <Pagination records={this.props.apps} pageRequested={this.props.pageRequested} />
+          </div>
         );
     }
   

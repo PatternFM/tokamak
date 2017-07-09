@@ -2,8 +2,8 @@ import RestService from "./RestService.js"
 
 var AccountService = {
         
-    list() {
-        return RestService.list("/v1/accounts");
+    list(page) {
+        return page? RestService.list("/v1/accounts?page=" + page) : RestService.list("/v1/accounts");
     }, 
     
     create(account) {
