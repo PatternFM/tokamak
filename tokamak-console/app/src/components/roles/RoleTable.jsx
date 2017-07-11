@@ -24,7 +24,7 @@ class RoleTable extends React.Component {
                   
                   <tbody>
                     {this.props.roles.map((role) => 
-                     <tr>
+                     <tr key={role.id}>
                        <td className="dtr left-pad-0">
                          {role.name}<br/>
                          <span className="description">{role.description}</span>

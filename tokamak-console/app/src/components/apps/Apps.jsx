@@ -51,7 +51,6 @@ class Apps extends React.Component {
     }
 
     clientDeleted(client) {
-        console.log("DELETEING CLINET: " + client.name);
         var result = this.state.result;
         var clients = result.payload.slice();
         var index = clients.findIndex(function(a) { return a.id === client.id });

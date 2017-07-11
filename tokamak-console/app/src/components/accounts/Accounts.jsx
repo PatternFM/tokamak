@@ -44,29 +44,35 @@ class Accounts extends React.Component {
         });
     }
 
-    accountCreated(account) {
-        var accounts = this.state.accounts.slice();
-        accounts.unshift(account);
-        this.setState({ accounts:accounts });
-    }
+accountCreated(account) {
+    var result = this.state.result;
+    var accounts = result.payload.slice();
+    accounts.unshift(account);
+    result.payload = accounts;
+    this.setState({ result:result });
+}
 
-    accountUpdated(account) {
-        var accounts = this.state.accounts.slice();
-        var index = accounts.findIndex(function(a) { return a.id === account.id });
-        if(index !== -1) {
-            accounts[index] = account;
-        }
-        this.setState({ accounts:accounts });
+accountUpdated(account) {
+    var result = this.state.result;
+    var accounts = result.payload.slice();
+    var index = accounts.findIndex(function(a) { return a.id === account.id });
+    if(index !== -1) {
+        accounts[index] = account;
     }
+    result.payload = accounts;
+    this.setState({ result:result });
+}
 
-    accountDeleted(account) {
-        var accounts = this.state.accounts.slice();
-        var index = accounts.findIndex(function(a) { return a.id === account.id });
-        if(index !== -1) {
-            accounts.splice(index, 1);
-        }
-        this.setState({ accounts:accounts });
+accountDeleted(account) {
+    var result = this.state.result;
+    var accounts = result.payload.slice();
+    var index = accounts.findIndex(function(a) { return a.id === account.id });
+    if(index !== -1) {
+        accounts.splice(index, 1);
     }
+    result.payload = accounts;
+    this.setState({ result:result });
+}
 
     render() {
         let output = this.state.error != null ? <ApplicationError error={this.state.error} /> : <ViewAccounts accounts={this.state.result} accountCreated={ this.accountCreated.bind(this) } accountUpdated={ this.accountUpdated.bind(this) } accountDeleted={ this.accountDeleted.bind(this) } pageRequested={ this.pageRequested.bind(this) } />;
