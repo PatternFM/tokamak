@@ -399,6 +399,13 @@ body {
 	background: #CCC !important;
 }
 
+.form-header {
+	text-align: left !important;
+	width: 100% !important;
+	padding: 0 0 5px 0 !important;
+	border-bottom: 1px solid #EEE;
+}
+
 .form-key {
 	text-align: right;
     font-size: 15px;
@@ -432,7 +439,7 @@ textarea {
 
 .select-table {
 	width: 100%;
-	padding: 0 60px 30px 60px;
+	padding: 0 60px 40px 60px;
 }
 
 .select-table td {
@@ -488,4 +495,51 @@ textarea {
 
 .pagination-active {
 	border-bottom: 2px solid red !important;
+}
+
+
+.login-button {
+  display: inline-block;
+  border-radius: 3px;
+  -webkit-border-radius: 3px;
+  padding: 0 40px 0 40px;
+  background: #E40000;
+  color: #EEE;
+  text-transform: uppercase;
+  height: 50px;
+  border: 0;
+  -webkit-font-smoothing: antialiased;
+  -webkit-transition: all 250ms; 
+  transition: all 250ms; 
+  letter-spacing: 1.1px;
+  font-weight: 200;
+  display: inline-block;
+  line-height: 50px;
+  font-size: 14px;
+  margin-right: 10px;
+}
+
+.login-button:hover {
+  background: #D20000;
+  cursor: pointer;
+}
+
+.login-button:disabled {
+    background: #E40000;
+    color: #FFF;
+    cursor: not-allowed;
+}
+
+.login-button:disabled:hover {
+    background: #E40000 !important;
+    color: #FFF !important;
+    cursor: not-allowed !important;
+}
+
+.round-button {
+    border-radius: 50%;
+    line-height: 60px;
+    width: 50px;
+    border-radius: 50% !important;
+    padding: 0 !important;
 }

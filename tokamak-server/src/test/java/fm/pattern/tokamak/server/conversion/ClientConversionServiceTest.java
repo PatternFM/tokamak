@@ -94,7 +94,7 @@ public class ClientConversionServiceTest extends IntegrationTest {
 		Scope scope = scope().save();
 		GrantType grantType = grantType().save();
 
-		Client client = client().withGrantType(grantType).save();
+		Client client = client().withDescription("desc").withGrantType(grantType).save();
 		ClientRepresentation representation = ClientDSL.client().withAudiences(audienceConversionService.convert(audience)).withAuthorities(authorityConversionService.convert(authority)).withScopes(scopeConversionService.convert(scope)).withGrantTypes(grantTypeConversionService.convert(grantType)).build();
 
 		Client updated = clientConversionService.convert(representation, client);
@@ -104,6 +104,7 @@ public class ClientConversionServiceTest extends IntegrationTest {
 		assertThat(updated.getUpdated()).isEqualTo(client.getUpdated());
 		assertThat(updated.getClientId()).isEqualTo(client.getClientId());
 		assertThat(updated.getClientSecret()).isEqualTo(client.getClientSecret());
+		assertThat(updated.getName()).isEqualTo(client.getName());
 
 		assertThat(updated.getAuthorities()).hasSize(1);
 		assertThat(updated.getAuthorities()).contains(authority);
@@ -114,6 +115,9 @@ public class ClientConversionServiceTest extends IntegrationTest {
 		assertThat(updated.getScopes()).hasSize(1);
 		assertThat(updated.getScopes()).contains(scope);
 
+		assertThat(updated.getRedirectUri()).isEqualTo(representation.getRedirectUri());
+		assertThat(updated.getName()).isEqualTo(representation.getName());
+		assertThat(updated.getDescription()).isEqualTo(representation.getDescription());
 		assertThat(updated.getAccessTokenValiditySeconds()).isEqualTo(representation.getAccessTokenValiditySeconds());
 		assertThat(updated.getRefreshTokenValiditySeconds()).isEqualTo(representation.getRefreshTokenValiditySeconds());
 	}

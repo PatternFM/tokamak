@@ -15,6 +15,7 @@ public class ClientRepresentation extends EntityRepresentation {
 	private Set<GrantTypeRepresentation> grantTypes = new HashSet<GrantTypeRepresentation>();
 	private Set<ScopeRepresentation> scopes = new HashSet<ScopeRepresentation>();
 
+	private String redirectUri;
 	private Integer accessTokenValiditySeconds;
 	private Integer refreshTokenValiditySeconds;
 
@@ -88,6 +89,14 @@ public class ClientRepresentation extends EntityRepresentation {
 
 	public void setScopes(Set<ScopeRepresentation> scopes) {
 		this.scopes = scopes;
+	}
+
+	public String getRedirectUri() {
+		return redirectUri;
+	}
+
+	public void setRedirectUri(String redirectUri) {
+		this.redirectUri = redirectUri;
 	}
 
 	public Integer getAccessTokenValiditySeconds() {

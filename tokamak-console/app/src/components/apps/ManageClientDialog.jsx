@@ -5,6 +5,7 @@ import ScopeService from "../../services/ScopeService.js";
 import AudienceService from "../../services/AudienceService.js";
 import AuthorityService from "../../services/AuthorityService.js";
 import GrantTypeService from "../../services/GrantTypeService.js";
+import Button from "../ui-controls/Button.jsx";
 
 class CreateClientForm extends React.Component {
     propTypes: {
@@ -172,9 +173,8 @@ class CreateClientForm extends React.Component {
         
         let self = this;
         ClientService.create({ clientId:this.state.clientId, clientSecret:this.state.clientSecret, name:this.state.name, description:this.state.description, scopes:this.state.selectedScopes, grantTypes:this.state.selectedGrantTypes, authorities:this.state.selectedAuthorities, audiences:this.state.selectedAudiences }).then(function(result) {
+            setTimeout(function() {
             if(result.status === "accepted") {
-                self.props.clientCreated(result.instance);
-                self.hide();
                 self.setState({ clientId:"" });
                 self.setState({ clientSecret:"" });
                 self.setState({ name:"" });
@@ -183,11 +183,14 @@ class CreateClientForm extends React.Component {
                 self.setState({ selectedAudiences:[] });
                 self.setState({ selectedAuthorities:[] });
                 self.setState({ selectedGrantTypes:[] });
+                self.props.clientCreated(result.instance);
+                self.hide();
             }
             if(result.status === "rejected") {
                 self.setState({ error:result.errors[0].message });
             }
             self.setState({ loading:false });
+            }, 300);
         });
     }
 
@@ -196,9 +199,8 @@ class CreateClientForm extends React.Component {
 
         let self = this;
         ClientService.update({ id:this.state.id, name:this.state.name, description:this.state.description, scopes:this.state.selectedScopes, authorities:this.state.selectedAuthorities, grantTypes:this.state.selectedGrantTypes, audiences:this.state.selectedAudiences }).then(function(result) {
+          setTimeout(function() {
             if(result.status === "accepted") {
-                self.props.clientUpdated(result.instance);
-                self.hide();
                 self.setState({ clientId:"" });
                 self.setState({ clientSecret:"" });
                 self.setState({ name:"" });
@@ -207,11 +209,14 @@ class CreateClientForm extends React.Component {
                 self.setState({ selectedAudiences:[] });
                 self.setState({ selectedAuthorities:[] });
                 self.setState({ selectedGrantTypes:[] });
+                self.props.clientUpdated(result.instance);
+                self.hide();
             }
             if(result.status === "rejected") {
                 self.setState({ error:result.errors[0].message });
             }
             self.setState({ loading:false });
+          }, 300);
         });
     }
 
@@ -245,7 +250,7 @@ class CreateClientForm extends React.Component {
 
     render() {
         let title = this.state.update ? "Update App" : "Create App";
-        let button = this.state.update ? <button className="tok-button center" style={{marginRight:"10px"}} onClick={ () => this.update() }>Update</button> : <button className="tok-button center" style={{marginRight:"10px"}} onClick={() => this.create()}>Create</button>;
+        let button = this.state.update ? <Button loading={this.state.loading} className="login-button center" name="Update" onClick={ () => this.update() } /> : <Button loading={this.state.loading} className="login-button center" name="Create" onClick={ () => this.create() } />;
         let clientSecretField = this.state.update ? <div><div className="tok-textfield-disabled" style={{ width:"70%", float:"left" }}>&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;</div><i className="change-password">change password</i></div> : <input className="tok-textfield" type="password" name="name" value={this.state.password} onChange={this.clientSecretChanged.bind(this)} autoComplete="off" />;
         let clientIdField = this.state.update ? <div className="tok-textfield-disabled">{this.state.clientId}</div> : <input autoFocus className="tok-textfield" type="text" name="name" value={this.state.username} onChange={this.clientIdChanged.bind(this)} autoComplete="off" />;
 
@@ -276,15 +281,17 @@ class CreateClientForm extends React.Component {
                 </tr>                                                            
               </table>
 
-                <div className="form-key" style={{textAlign:"left", width:"100%", padding:"0 65px 0 65px"}}>Grant Types</div>
+                <div style={{width:"100%", padding:"0 65px 0 65px"}}>
+                     <div className="form-key form-header">Grant Types</div>
+                </div>
                 <table className="display-table select-table">
                   <tbody>
                     {this.state.grantTypes.map((grantType) => 
                      <tr key={grantType.id}>
-                       <td className="dtr left-pad-0">
+                       <td className="dtr left-pad-0" style={{ width:"20px" }}>
                          <input type="checkbox" name={grantType.name} onChange={ this.toggleGrantType.bind(this, grantType) } defaultChecked={this.isGrantTypeChecked(grantType)}></input>
                        </td>
-                       <td className="dtr left-pad-0" style={{ whiteSpace:"nowrap" }}>
+                       <td className="dtr left-pad-0" style={{ whiteSpace:"nowrap", width:"200px" }}>
                          {grantType.name}
                        </td>
                        <td className="dtr right-pad-0">
@@ -295,15 +302,17 @@ class CreateClientForm extends React.Component {
                   </tbody>
                 </table>  
               
-                <div className="form-key" style={{textAlign:"left", width:"100%", padding:"0 65px 0 65px"}}>Scopes</div>
+                <div style={{width:"100%", padding:"0 65px 0 65px"}}>
+                     <div className="form-key form-header">Scopes</div>
+                </div>
                 <table className="display-table select-table">
                   <tbody>
                     {this.state.scopes.map((scope) => 
                      <tr key={scope.id}>
-                       <td className="dtr left-pad-0">
+                       <td className="dtr left-pad-0" style={{ width:"20px" }}>
                          <input type="checkbox" name={scope.name} onChange={ this.toggleScope.bind(this, scope) } defaultChecked={this.isScopeChecked(scope)}></input>
                        </td>
-                       <td className="dtr left-pad-0" style={{ whiteSpace:"nowrap" }}>
+                       <td className="dtr left-pad-0" style={{ whiteSpace:"nowrap", width:"200px"}}>
                          {scope.name}
                        </td>
                        <td className="dtr right-pad-0">
@@ -314,15 +323,19 @@ class CreateClientForm extends React.Component {
                   </tbody>
                 </table>              
 
-                <div className="form-key" style={{textAlign:"left", width:"100%", padding:"0 65px 0 65px"}}>Authorities</div>
+                {this.state.authorities.length > 0 &&
+                <div>
+                  <div style={{width:"100%", padding:"0 65px 0 65px"}}>
+                     <div className="form-key form-header">Authorities</div>
+                  </div>
                 <table className="display-table select-table">
                   <tbody>
                     {this.state.authorities.map((authority) => 
                      <tr key={authority.id}>
-                       <td className="dtr left-pad-0">
+                       <td className="dtr left-pad-0" style={{ width:"20px" }}>
                          <input type="checkbox" name={authority.name} onChange={ this.toggleAuthority.bind(this, authority) } defaultChecked={this.isAuthorityChecked(authority)}></input>
                        </td>
-                       <td className="dtr left-pad-0" style={{ whiteSpace:"nowrap" }}>
+                       <td className="dtr left-pad-0" style={{ whiteSpace:"nowrap", width:"200px" }}>
                          {authority.name}
                        </td>
                        <td className="dtr right-pad-0">
@@ -332,16 +345,22 @@ class CreateClientForm extends React.Component {
                     )}
                   </tbody>
                 </table> 
+                </div>
+                }
               
-                <div className="form-key" style={{textAlign:"left", width:"100%", padding:"0 65px 0 65px"}}>Audiences</div>
-                <table className="display-table select-table">
-                  <tbody>
+                {this.state.audiences.length > 0 &&
+                <div>
+                  <div style={{width:"100%", padding:"0 65px 0 65px"}}>
+                     <div className="form-key form-header">Audiences</div>
+                  </div>
+                  <table className="display-table select-table">
+                    <tbody>
                     {this.state.audiences.map((audience) => 
                      <tr key={audience.id}>
-                       <td className="dtr left-pad-0">
+                       <td className="dtr left-pad-0" style={{ width:"20px" }}>
                          <input type="checkbox" name={audience.name} onChange={ this.toggleAudience.bind(this, audience) } defaultChecked={this.isAudienceChecked(audience)}></input>
                        </td>
-                       <td className="dtr left-pad-0" style={{ whiteSpace:"nowrap" }}>
+                       <td className="dtr left-pad-0" style={{ whiteSpace:"nowrap", width:"200px" }}>
                          {audience.name}
                        </td>
                        <td className="dtr right-pad-0">
@@ -349,8 +368,10 @@ class CreateClientForm extends React.Component {
                        </td>                       
                      </tr>
                     )}
-                  </tbody>
-                </table>               
+                    </tbody>
+                  </table>  
+                </div>
+                }             
               
               <div style={{textAlign:"center", paddingBottom:"30px"}}>
                 {button}

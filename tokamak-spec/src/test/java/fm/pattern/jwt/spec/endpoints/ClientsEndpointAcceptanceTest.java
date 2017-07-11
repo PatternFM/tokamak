@@ -108,6 +108,7 @@ public class ClientsEndpointAcceptanceTest extends AcceptanceTest {
 		client.setAccessTokenValiditySeconds(100);
 		client.setRefreshTokenValiditySeconds(100);
 		client.setName("update");
+		client.setDescription("updated");
 
 		Result<ClientRepresentation> result = clientsClient.update(client, token.getAccessToken());
 
@@ -123,6 +124,7 @@ public class ClientsEndpointAcceptanceTest extends AcceptanceTest {
 		assertThat(updated.getAuthorities()).hasSize(2);
 		assertThat(updated.getScopes()).isEmpty();
 		assertThat(updated.getName()).isEqualTo("update");
+		assertThat(updated.getDescription()).isEqualTo("updated");
 
 	}
 

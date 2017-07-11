@@ -1,6 +1,7 @@
 import React from "react";
 import {withRouter} from "react-router-dom";
 import AuthenticationService from "../../services/AuthenticationService";
+import Button from "../ui-controls/Button.jsx";
 
 class LoginForm extends React.Component {
 
@@ -15,7 +16,11 @@ class LoginForm extends React.Component {
         }
     }
 
-    login() {
+    login(event) {
+        if(event) {
+            event.preventDefault();
+        }
+        
         if(!this.complete()) {
             return;
         }
@@ -33,7 +38,7 @@ class LoginForm extends React.Component {
                 if(result.status === "rejected") {
                     self.setState({error: result.message});
                 }
-            }, 500);
+            }, 300);
         });
     }
 
@@ -50,12 +55,9 @@ class LoginForm extends React.Component {
     }
     
     render() {
-        let className = this.state.loading ? "login-button round-button" : "login-button";
-        let content = this.state.loading ? <svg className="spinner button-spinner" width="20px" height="20px" viewBox="0 0 66 66"><circle className="path" fill="none" strokeWidth="6" strokeLinecap="round" cx="33" cy="33" r="30" /></svg> : "Sign In";
-        
         return (
           <div id="login-form">
-            <form  method="POST" onSubmit={this.login.bind(this)}>
+            <form  method="POST" onSubmit={ this.login.bind(this) }>
               <div id="login-title">Sign In To Tokamak</div>
               
               {this.state.error.length > 0 &&
@@ -69,10 +71,7 @@ class LoginForm extends React.Component {
               <input id="password" className="login-textfield" type="password" name="password" value={this.state.password} onChange={this.changePassword.bind(this)} placeholder="password" autoComplete="off" />
               <br/>
               
-              <div className={className} onClick={ () => this.login() }>
-                {content}
-              </div>  
-                           
+              <Button className="login-button" loading={this.state.loading} name="Sign In" onClick={ this.login.bind(this) } />
             </form>
           </div>
         );

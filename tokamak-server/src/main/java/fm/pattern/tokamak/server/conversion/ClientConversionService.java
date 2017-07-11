@@ -94,6 +94,8 @@ public class ClientConversionService {
 		client.setAudiences(audiences);
 
 		client.setName(representation.getName());
+		client.setDescription(representation.getDescription());
+		client.setRedirectUri(representation.getRedirectUri());
 		client.setAccessTokenValiditySeconds(representation.getAccessTokenValiditySeconds());
 		client.setRefreshTokenValiditySeconds(representation.getRefreshTokenValiditySeconds());
 
