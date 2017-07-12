@@ -250,7 +250,7 @@ class CreateClientForm extends React.Component {
 
     render() {
         let title = this.state.update ? "Update App" : "Create App";
-        let button = this.state.update ? <Button loading={this.state.loading} className="login-button center" name="Update" onClick={ () => this.update() } /> : <Button loading={this.state.loading} className="login-button center" name="Create" onClick={ () => this.create() } />;
+        let button = this.state.update ? <button className="tok-button center" style={{marginRight:"10px"}} onClick={ () => this.update() }>Update</button> : <button className="tok-button center" style={{marginRight:"10px"}} onClick={() => this.create()}>Create</button>;
         let clientSecretField = this.state.update ? <div><div className="tok-textfield-disabled" style={{ width:"70%", float:"left" }}>&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;</div><i className="change-password">change password</i></div> : <input className="tok-textfield" type="password" name="name" value={this.state.password} onChange={this.clientSecretChanged.bind(this)} autoComplete="off" />;
         let clientIdField = this.state.update ? <div className="tok-textfield-disabled">{this.state.clientId}</div> : <input autoFocus className="tok-textfield" type="text" name="name" value={this.state.username} onChange={this.clientIdChanged.bind(this)} autoComplete="off" />;
 

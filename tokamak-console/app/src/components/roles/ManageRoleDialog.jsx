@@ -1,7 +1,6 @@
 import React from 'react';
 import Dialog from 'material-ui/Dialog';
 import RoleService from "../../services/RoleService";
-import Button from "../ui-controls/Button.jsx";
 
 class CreateRoleForm extends React.Component {
     propTypes: {
@@ -47,7 +46,6 @@ class CreateRoleForm extends React.Component {
         
         let self = this;
         RoleService.create(this.state.name, this.state.description).then(function(result) {
-           setTimeout(function() {
             if(result.status === "accepted") {
                 self.props.roleCreated(result.instance);
                 self.hide();
@@ -59,7 +57,6 @@ class CreateRoleForm extends React.Component {
                 self.setState({ error:result.errors[0].message });
             }
             self.setState({ loading:false });
-          }, 300);  
         });
     }
 
@@ -68,7 +65,6 @@ class CreateRoleForm extends React.Component {
 
         let self = this;
         RoleService.update(this.state.role_id, this.state.name, this.state.description).then(function(result) {
-          setTimeout(function() {
             if(result.status === "accepted") {
                 self.props.roleUpdated(result.instance);
                 self.hide();
@@ -80,14 +76,13 @@ class CreateRoleForm extends React.Component {
                 self.setState({ error:result.errors[0].message });
             }
             self.setState({ loading:false });
-            }, 300);
         });
     }
 
 
     render() {
         let title = this.state.update ? "Update Role" : "Create Role";
-        let button = this.state.update ? <Button loading={this.state.loading} className="login-button center" name="Update" onClick={ () => this.update() } /> : <Button loading={this.state.loading} className="login-button center" name="Create" onClick={ () => this.create() } />;
+        let button = this.state.update ? <button className="tok-button center" style={{marginRight:"10px"}} onClick={ () => this.update() }>Update</button> : <button className="tok-button center" style={{marginRight:"10px"}} onClick={() => this.create()}>Create</button>;
 
         return (
             <Dialog modal={true} open={this.state.open}>

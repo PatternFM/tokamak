@@ -4,6 +4,10 @@
   stroke: #E40000;
 }
 
+.inline-button-spinner {
+    stroke: #FFFFFF !important;
+}
+
 .button-spinner {
 	stroke: #FFFFFF !important;
 	height: 50px;
