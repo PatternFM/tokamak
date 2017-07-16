@@ -14,4 +14,6 @@ public interface PasswordPolicyService {
 
 	Result<PasswordPolicy> delete(@Delete PasswordPolicy policy);
 
+	Result<PasswordPolicy> findByName(String name);
+
 }
