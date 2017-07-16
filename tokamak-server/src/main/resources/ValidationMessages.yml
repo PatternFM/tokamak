@@ -65,6 +65,32 @@ audience.name.not_found:
   exception: fm.pattern.valex.EntityNotFoundException
 
 
+auth.invalid.scope:
+  message: "Insufficient scope for this resource."
+  code: ATZ-0001
+  exception: fm.pattern.valex.AuthorizationException
+
+auth.invalid.grant:
+  message: "Unauthorized grant type: %s"
+  code: ATZ-0002
+  exception: fm.pattern.valex.AuthorizationException
+
+auth.invalid.role:
+  message: "Access is denied."
+  code: ATZ-0003
+  exception: fm.pattern.valex.AuthorizationException
+
+auth.invalid.authority:
+  message: "Access is denied."
+  code: ATZ-0004
+  exception: fm.pattern.valex.AuthorizationException
+
+auth.not.authenticated:
+  message: "Full authentication is required to access this resource."
+  code: AUT-0001
+  exception: fm.pattern.valex.AuthenticationException
+
+
 authority.id.required:
   message: "An authority id is required."
   code: ATH-0006
@@ -180,6 +206,57 @@ grantType.delete.conflict:
   exception: fm.pattern.valex.ResourceConflictException
 
 
+password.uppercase.required:
+  message: "At least one uppercase character is required."
+  code: PWD-0001
+  
+password.lowercase.required:
+  message: "At least one lowercase character is required."
+  code: PWD-0002
+  
+password.specialcase.required:
+  message: "At least one special character is required."
+  code: PWD-0003
+  
+password.minlength:
+  message: "The password must be at least %d characters."
+  code: PWD-0004
+  
+password.common:
+  message: "The password entered is too common, please choose another password."
+  code: PWD-0005
+
+
+passwordPolicy.name.conflict:
+  message: "This policy name is already in use."
+  code: POL-0001
+  exception: fm.pattern.valex.ResourceConflictException
+
+passwordPolicy.name.required:
+  message: "A policy name is required."
+  code: POL-0002
+
+passwordPolicy.name.size:
+  message: "A policy name cannot be greater than {max} characters."
+  code: POL-0003
+  
+passwordPolicy.description.size:
+  message: "A policy description cannot be greater than {max} characters."
+  code: POL-0004
+
+passwordPolicy.minLength.required:
+  message: "A password minimum length is required."
+  code: POL-0005
+  
+passwordPolicy.minLength.tooSmall:
+  message: "A password minimum length must be greater than 0."
+  code: POL-0006
+
+passwordPolicy.minLength.tooLarge:
+  message: "A password minimum length must be less than {value}."
+  code: POL-0007
+  
+
 role.id.required:
   message: "A role id is required."
   code: ROL-0005
@@ -242,32 +319,6 @@ scope.delete.conflict:
   message: "This scope cannot be deleted, %d %s linked to this scope."
   code: SCO-0008
   exception: fm.pattern.valex.ResourceConflictException
-
-
-auth.invalid.scope:
-  message: "Insufficient scope for this resource."
-  code: ATZ-0001
-  exception: fm.pattern.valex.AuthorizationException
-
-auth.invalid.grant:
-  message: "Unauthorized grant type: %s"
-  code: ATZ-0002
-  exception: fm.pattern.valex.AuthorizationException
-
-auth.invalid.role:
-  message: "Access is denied."
-  code: ATZ-0003
-  exception: fm.pattern.valex.AuthorizationException
-
-auth.invalid.authority:
-  message: "Access is denied."
-  code: ATZ-0004
-  exception: fm.pattern.valex.AuthorizationException
-
-auth.not.authenticated:
-  message: "Full authentication is required to access this resource."
-  code: AUT-0001
-  exception: fm.pattern.valex.AuthenticationException
 
 
 entity.id.required:

@@ -121,6 +121,28 @@ CREATE TABLE GrantTypes (
 
 
 
+DROP TABLE IF EXISTS PasswordPolicies;
+
+CREATE TABLE PasswordPolicies (
+  id varchar(64) NOT NULL,
+  _id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  created datetime(3) NOT NULL,
+  updated datetime(3) NOT NULL,
+  name varchar(30) NOT NULL,
+  description varchar(255),
+  minlength smallint NOT NULL,
+  requireUppercaseCharacter tinyint(1) NOT NULL DEFAULT 1,
+  requireLowercaseCharacter tinyint(1) NOT NULL DEFAULT 1,
+  requireNumericCharacter tinyint(1) NOT NULL DEFAULT 1,
+  requireSpecialCharacter tinyint(1) NOT NULL DEFAULT 1,
+  rejectCommonPasswords tinyint(1) NOT NULL DEFAULT 1,
+  KEY(_id),
+  PRIMARY KEY(id),
+  UNIQUE KEY UK_PASSWORD_POLICY_NAME (name)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
 DROP TABLE IF EXISTS AccountRoles;
 
 CREATE TABLE AccountRoles (

@@ -59,6 +59,7 @@ public class ClientConversionService {
 		representation.setGrantTypes(client.getGrantTypes().stream().map(grantType -> grantTypeConversionService.convert(grantType)).collect(Collectors.toCollection(HashSet::new)));
 		representation.setScopes(client.getScopes().stream().map(scope -> scopeConversionService.convert(scope)).collect(Collectors.toCollection(HashSet::new)));
 
+		representation.setRedirectUri(client.getRedirectUri());
 		representation.setAccessTokenValiditySeconds(client.getAccessTokenValiditySeconds());
 		representation.setRefreshTokenValiditySeconds(client.getRefreshTokenValiditySeconds());
 
@@ -75,6 +76,7 @@ public class ClientConversionService {
 
 		client.setName(representation.getName());
 		client.setDescription(representation.getDescription());
+		client.setRedirectUri(representation.getRedirectUri());
 		client.setAccessTokenValiditySeconds(representation.getAccessTokenValiditySeconds());
 		client.setRefreshTokenValiditySeconds(representation.getRefreshTokenValiditySeconds());
 
