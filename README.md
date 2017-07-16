@@ -5,6 +5,8 @@
 
 Tokamak is a Spring Boot OAuth2 JWT Authorization Server with a React administrative console to simplify the management your OAuth2 apps and accounts.
 
+![Alt text](tokamak-screenshot.jpg?raw=true)
+
 # Documentation
 
 A quick start guide and reference documentation for Tokamak is hosted on the [Tokamak Project Page](http://pattern.fm/tokamak/#documentation).
