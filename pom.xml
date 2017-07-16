@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
    <name>Tokamak</name>
-   <description>Tokamak is a Spring Boot OAuth2 JWT Authorization Server with a React administrative console to simplify the management your OAuth2 apps and accounts.</description>
+   <description>Tokamak is an OAuth 2.0 JWT Authorization Server with a React front end to simplify the management your apps and accounts.</description>
    <url>https://github.com/PatternFM/tokamak</url>
 
    <groupId>fm.pattern</groupId>
