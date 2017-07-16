@@ -20,6 +20,7 @@ class PasswordValidatorImpl implements PasswordValidator {
 		errors.addAll(validateSpecialCharacter(password, policy).getErrors());
 		errors.addAll(validateMinimumLength(password, policy).getErrors());
 		errors.addAll(validateCommonPasswords(password, policy).getErrors());
+		errors.addAll(validateNumericCharacter(password, policy).getErrors());
 		return errors.isEmpty() ? Result.accept(password) : Result.reject(errors.toArray(new Reportable[errors.size()]));
 	}
 
@@ -42,6 +43,13 @@ class PasswordValidatorImpl implements PasswordValidator {
 			return Result.accept(password);
 		}
 		return !password.matches("[A-Za-z0-9 ]*") ? Result.accept(password) : Result.reject("password.specialcase.required");
+	}
+
+	private Result<String> validateNumericCharacter(String password, PasswordPolicy policy) {
+		if (!policy.isRequireNumericCharacter()) {
+			return Result.accept(password);
+		}
+		return password.matches(".*\\d+.*") ? Result.accept(password) : Result.reject("password.digit.required");
 	}
 
 	private Result<String> validateMinimumLength(String password, PasswordPolicy policy) {

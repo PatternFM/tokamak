@@ -226,6 +226,10 @@ password.common:
   message: "The password entered is too common, please choose another password."
   code: PWD-0005
 
+password.digit.required:
+  message: "At least one digit is required."
+  code: PWD-0006
+
 
 passwordPolicy.name.conflict:
   message: "This policy name is already in use."
