@@ -37,7 +37,7 @@ public class JWTAcceptanceTest extends AcceptanceTest {
 	private TokensClient tokensClient = new TokensClient(JwtClientProperties.getEndpoint());
 	private ClientsClient clientsClient = new ClientsClient(JwtClientProperties.getEndpoint());
 
-	private String password = "password12345";
+	private String password = "PasWhar3433$$";
 
 	private AccountRepresentation account;
 	private RoleRepresentation role;
@@ -61,10 +61,10 @@ public class JWTAcceptanceTest extends AcceptanceTest {
 		ScopeRepresentation scope1 = scope().thatIs().persistent(token).build();
 		ScopeRepresentation scope2 = scope().thatIs().persistent(token).build();
 
-		ClientRepresentation representation = client().withToken(token).withAudiences(audience1, audience2).withScopes(scope1, scope2).withAuthorities(authority1, authority2).withClientSecret("testClientSecret").withGrantTypes("client_credentials", "password", "refresh_token").build();
+		ClientRepresentation representation = client().withToken(token).withAudiences(audience1, audience2).withScopes(scope1, scope2).withAuthorities(authority1, authority2).withClientSecret("ssalR34w3AtX34!33#").withGrantTypes("client_credentials", "password", "refresh_token").build();
 		assertThat(clientsClient.create(representation, this.token.getAccessToken())).accepted().withResponseCode(201);
 
-		Result<AccessTokenRepresentation> response = tokensClient.getAccessToken(new ClientCredentials(representation.getClientId(), "testClientSecret"));
+		Result<AccessTokenRepresentation> response = tokensClient.getAccessToken(new ClientCredentials(representation.getClientId(), "ssalR34w3AtX34!33#"));
 		assertThat(response).accepted();
 
 		DecodedJWT jwt = JWT.decode(response.getInstance().getAccessToken());
@@ -102,10 +102,10 @@ public class JWTAcceptanceTest extends AcceptanceTest {
 		ScopeRepresentation scope1 = scope().thatIs().persistent(token).build();
 		ScopeRepresentation scope2 = scope().thatIs().persistent(token).build();
 
-		ClientRepresentation representation = client().withToken(token).withAudiences(audience1, audience2).withScopes(scope1, scope2).withAuthorities(authority1, authority2).withClientSecret("testClientSecret").withGrantTypes("client_credentials", "password", "refresh_token").build();
+		ClientRepresentation representation = client().withToken(token).withAudiences(audience1, audience2).withScopes(scope1, scope2).withAuthorities(authority1, authority2).withClientSecret("ssalR34w3AtX34!33#").withGrantTypes("client_credentials", "password", "refresh_token").build();
 		assertThat(clientsClient.create(representation, this.token.getAccessToken())).accepted().withResponseCode(201);
 
-		Result<AccessTokenRepresentation> response = tokensClient.getAccessToken(new ClientCredentials(representation.getClientId(), "testClientSecret"), account.getUsername(), password);
+		Result<AccessTokenRepresentation> response = tokensClient.getAccessToken(new ClientCredentials(representation.getClientId(), "ssalR34w3AtX34!33#"), account.getUsername(), password);
 		assertThat(response).accepted();
 
 		DecodedJWT jwt = JWT.decode(response.getInstance().getAccessToken());

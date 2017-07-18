@@ -267,3 +267,7 @@ INSERT INTO Scopes (created, updated, id, name, description) VALUES (NOW(),NOW()
 
 INSERT INTO Roles (created, updated, id, name, description) VALUES (NOW(),NOW(),'rol_ibg9lhwzjwiot4n9xsrh','role:tokamak-admin','Users are authorized to manage the Tokamak server through the web console or REST API.');
 
+
+INSERT INTO PasswordPolicies(created, updated, id, name, description, minlength, requireUppercaseCharacter, requireLowercaseCharacter, requireNumericCharacter, requireSpecialCharacter, rejectCommonPasswords) VALUES(NOW(), NOW(), 'pol_xt7rltj0xdb8539pkyuk', 'account-password-policy', '', 8, true, true, true, true, true);
+INSERT INTO PasswordPolicies(created, updated, id, name, description, minlength, requireUppercaseCharacter, requireLowercaseCharacter, requireNumericCharacter, requireSpecialCharacter, rejectCommonPasswords) VALUES(NOW(), NOW(), 'pol_atjtt66l28vnn5mx87tl', 'client-password-policy', '', 12, true, true, true, true, true);
+

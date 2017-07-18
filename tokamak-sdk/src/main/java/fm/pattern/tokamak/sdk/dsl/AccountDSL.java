@@ -20,7 +20,7 @@ public class AccountDSL extends AbstractDSL<AccountDSL, AccountRepresentation> {
 
     private String id = null;
     private String username = "usr_" + randomAlphanumeric(15);
-    private String password = "pwd_" + randomAlphanumeric(15);
+    private String password = randomAlphanumeric(8) + "aA4$";
 
     private Set<RoleRepresentation> roles = new HashSet<RoleRepresentation>();
 

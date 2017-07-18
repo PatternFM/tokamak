@@ -18,7 +18,7 @@ import fm.pattern.tokamak.sdk.model.ClientRepresentation;
 
 public class GrantTypesEndpointSecurityTest extends AcceptanceTest {
 
-	private static final String CLIENT_SECRET = "client_secret";
+	private static final String CLIENT_SECRET = "sdfsd#@#$234234ASDASDsdfi";
 
 	private GrantTypesClient grantTypesClient = new GrantTypesClient(JwtClientProperties.getEndpoint());
 

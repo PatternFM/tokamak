@@ -26,10 +26,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import fm.pattern.tokamak.server.model.Client;
+import fm.pattern.tokamak.server.model.PasswordPolicy;
 import fm.pattern.tokamak.server.pagination.Criteria;
 import fm.pattern.tokamak.server.pagination.PaginatedList;
 import fm.pattern.tokamak.server.repository.Cache;
 import fm.pattern.tokamak.server.security.PasswordEncodingService;
+import fm.pattern.tokamak.server.security.PasswordValidator;
+import fm.pattern.valex.Reportable;
 import fm.pattern.valex.Result;
 
 @Service
@@ -40,22 +43,32 @@ class ClientServiceImpl extends DataServiceImpl<Client> implements ClientService
 	private static final String client_id_key = "clients:client_id:%s";
 
 	private final PasswordEncodingService passwordEncodingService;
+	private final PasswordPolicyService passwordPolicyService;
+	private final PasswordValidator passwordValidator;
 	private final Cache cache;
 
 	@Autowired
-	public ClientServiceImpl(PasswordEncodingService passwordEncodingService, @Qualifier("clientCache") Cache cache) {
+	public ClientServiceImpl(PasswordEncodingService passwordEncodingService, PasswordPolicyService passwordPolicyService, PasswordValidator passwordValidator, @Qualifier("clientCache") Cache cache) {
 		this.passwordEncodingService = passwordEncodingService;
+		this.passwordPolicyService = passwordPolicyService;
+		this.passwordValidator = passwordValidator;
 		this.cache = cache;
 	}
 
 	@Transactional
 	public Result<Client> create(Client client) {
-		client.setClientSecret(passwordEncodingService.encode(client.getClientSecret()));
+		PasswordPolicy policy = passwordPolicyService.findByName("client-password-policy").orThrow();
 
-		Result<Client> result = super.create(client);
+		Result<String> password = passwordValidator.validate(client.getClientSecret(), policy);
+		if (password.rejected()) {
+			return Result.reject(password.getErrors().toArray(new Reportable[password.getErrors().size()]));
+		}
+
+		Result<Client> result = super.create(client.clientSecret(passwordEncodingService.encode(client.getClientSecret())));
 		if (result.accepted()) {
 			cache(result.getInstance());
 		}
+
 		return result;
 	}
 
@@ -110,6 +123,37 @@ class ClientServiceImpl extends DataServiceImpl<Client> implements ClientService
 		}
 
 		return result.accepted() ? result : Result.reject("client.clientId.not_found", clientId);
+	}
+
+	@Transactional
+	public Result<Client> updateClientSecret(Client client, String newSecret) {
+		PasswordPolicy policy = passwordPolicyService.findByName("client-password-policy").orThrow();
+
+		Result<String> result = passwordValidator.validate(newSecret, policy);
+		if (result.rejected()) {
+			return Result.reject(result.getErrors().toArray(new Reportable[result.getErrors().size()]));
+		}
+
+		return update(client.clientSecret(passwordEncodingService.encode(newSecret)));
+	}
+
+	@Transactional
+	public Result<Client> updateClientSecret(Client client, String currentSecret, String newSecret) {
+		if (isBlank(currentSecret)) {
+			return Result.reject("current.secret.required");
+		}
+		if (!passwordEncodingService.matches(currentSecret, client.getClientSecret())) {
+			return Result.reject("current.secret.mismatch");
+		}
+
+		PasswordPolicy policy = passwordPolicyService.findByName("client-password-policy").orThrow();
+
+		Result<String> result = passwordValidator.validate(newSecret, policy);
+		if (result.rejected()) {
+			return Result.reject(result.getErrors().toArray(new Reportable[result.getErrors().size()]));
+		}
+
+		return update(client.clientSecret(passwordEncodingService.encode(newSecret)));
 	}
 
 	@Transactional(readOnly = true)

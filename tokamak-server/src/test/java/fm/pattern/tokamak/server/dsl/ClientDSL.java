@@ -20,7 +20,7 @@ import fm.pattern.valex.Result;
 public class ClientDSL extends AbstractDSL<ClientDSL, Client> {
 
 	private String clientId = IdGenerator.generateId(15);
-	private String clientSecret = IdGenerator.generateId(15);
+	private String clientSecret = IdGenerator.generateId(12) + "aA9!";
 	private Set<Authority> authorities = new HashSet<Authority>();
 	private Set<Audience> audiences = new HashSet<Audience>();
 	private Set<GrantType> grantTypes = new HashSet<GrantType>();

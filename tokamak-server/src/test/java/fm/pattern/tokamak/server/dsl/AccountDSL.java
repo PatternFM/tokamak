@@ -14,7 +14,7 @@ import fm.pattern.valex.Result;
 public class AccountDSL extends AbstractDSL<AccountDSL, Account> {
 
 	private String username = randomAlphabetic(20);
-	private String password = randomAlphanumeric(20);
+	private String password = randomAlphanumeric(8) + "aA9!";
 	private Set<Role> roles = new HashSet<Role>();
 	private boolean locked = false;
 

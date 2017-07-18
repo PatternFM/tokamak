@@ -101,6 +101,11 @@ public class Account extends PersistentEntity {
 		return roles.stream().filter(r -> r.equals(role)).count() != 0;
 	}
 
+	public Account password(String password) {
+		this.password = password;
+		return this;
+	}
+	
 	public int hashCode() {
 		return Objects.hashCode(getId());
 	}

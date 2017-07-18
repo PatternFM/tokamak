@@ -31,7 +31,7 @@ public class ClientDSL extends AbstractDSL<ClientDSL, ClientRepresentation> {
 	private String description = "Auto-generated app created by acceptance tests.";
 
 	private String clientId = "cli_" + randomAlphanumeric(15);
-	private String clientSecret = randomAlphanumeric(20);
+	private String clientSecret = randomAlphanumeric(15) + "aA9^";
 
 	private Integer accessTokenValiditySeconds = 600;
 	private Integer refreshTokenValiditySeconds = 6000;

@@ -135,6 +135,11 @@ public class Client extends PersistentEntity {
 		this.scopes.addAll(scope.stream().filter(a -> a != null).collect(Collectors.toList()));
 	}
 
+	public Client clientSecret(String clientSecret) {
+		this.clientSecret = clientSecret;
+		return this;
+	}
+
 	public int hashCode() {
 		return getId().hashCode();
 	}

@@ -60,9 +60,10 @@ public class ClientServiceIntegrationTest extends IntegrationTest {
 
 	@Test
 	public void shouldEncryptTheClientPasswordWhenCreatingAClient() {
-		Client client = client().withGrantType(grantType).withClientSecret("password1234").save();
+		String secret = "jfksd888ASDF%%$$jslfsidfj";
+		Client client = client().withGrantType(grantType).withClientSecret(secret).save();
 		assertThat(client.getClientSecret()).startsWith("$2a$");
-		assertThat(passwordEncodingService.matches("password1234", client.getClientSecret())).isTrue();
+		assertThat(passwordEncodingService.matches(secret, client.getClientSecret())).isTrue();
 	}
 
 	@Test

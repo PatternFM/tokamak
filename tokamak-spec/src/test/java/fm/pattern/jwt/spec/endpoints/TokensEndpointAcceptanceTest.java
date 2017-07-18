@@ -26,7 +26,7 @@ public class TokensEndpointAcceptanceTest extends AcceptanceTest {
 	private TokensClient tokensClient = new TokensClient(JwtClientProperties.getEndpoint());
 	private PreFlightClient preFlightClient = new PreFlightClient(JwtClientProperties.getEndpoint());
 
-	private String password = "password12345";
+	private String password = "dsafli3424sdfasSADFSADF234X#";
 
 	private AccountRepresentation account;
 	private AccessTokenRepresentation token;
@@ -44,11 +44,13 @@ public class TokensEndpointAcceptanceTest extends AcceptanceTest {
 
 	@Test
 	public void shouldNotBeAbleToUseARefreshTokenWhenAnAccessTokenIsExpected() {
-		AccountRepresentation account = account().withPassword("password").withToken(token).thatIs().persistent().build();
-		Result<AccessTokenRepresentation> response = tokensClient.getAccessToken(TEST_CLIENT_CREDENTIALS, account.getUsername(), "password");
+		String pwd = "alsdifSDF43243!";
+		
+		AccountRepresentation account = account().withPassword(pwd).withToken(token).thatIs().persistent().build();
+		Result<AccessTokenRepresentation> response = tokensClient.getAccessToken(TEST_CLIENT_CREDENTIALS, account.getUsername(), pwd);
 		assertThat(response).accepted();
 
-		AccountRepresentation account2 = account().withPassword("password").build();
+		AccountRepresentation account2 = account().withPassword(password).build();
 
 		Result<AccountRepresentation> response2 = accountsClient.create(account2, response.getInstance().getRefreshToken());
 		assertThat(response2).rejected().withError(401, "AUT-0001", "Encoded token is a refresh token.");
@@ -77,7 +79,7 @@ public class TokensEndpointAcceptanceTest extends AcceptanceTest {
 	}
 
 	@Test
-	public void theServerShouldReturnAnAccessTokenButNotRefreshTokenWhenUsingTheClientCredentialsGrantType() {
+	public void shouldReturnAnAccessTokenButNotARefreshTokenWhenUsingTheClientCredentialsGrantType() {
 		Result<AccessTokenRepresentation> response = tokensClient.getAccessToken(TEST_CLIENT_CREDENTIALS);
 		assertThat(response).accepted();
 

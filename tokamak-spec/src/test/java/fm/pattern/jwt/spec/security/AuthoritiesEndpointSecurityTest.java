@@ -27,7 +27,7 @@ public class AuthoritiesEndpointSecurityTest extends AcceptanceTest {
 	@Before
 	public void before() {
 		this.token = token().withClient(TEST_CLIENT_CREDENTIALS).thatIs().persistent().build();
-		this.client = client().withClientSecret("client_secret").withScopes("clients:read").withGrantTypes("client_credentials", "refresh_token").thatIs().persistent(token).build();
+		this.client = client().withClientSecret("aasdfilj3234fjasldiASDAFSA%^").withScopes("clients:read").withGrantTypes("client_credentials", "refresh_token").thatIs().persistent(token).build();
 	}
 
 	@Test
@@ -68,7 +68,7 @@ public class AuthoritiesEndpointSecurityTest extends AcceptanceTest {
 
 	@Test
 	public void clientsThatDoNotHaveTheAppropriateScopeShouldNotBeAbleToCreateAnAuthority() {
-		AccessTokenRepresentation t = token().withClient(client.getClientId(), "client_secret").thatIs().persistent().build();
+		AccessTokenRepresentation t = token().withClient(client.getClientId(), "aasdfilj3234fjasldiASDAFSA%^").thatIs().persistent().build();
 
 		Result<AuthorityRepresentation> response = authoritiesClient.create(authority().build(), t.getAccessToken());
 		assertThat(response).rejected().withError(403, "ATZ-0001", "Insufficient scope for this resource.");
@@ -76,7 +76,7 @@ public class AuthoritiesEndpointSecurityTest extends AcceptanceTest {
 
 	@Test
 	public void clientsThatDoNotHaveTheAppropriateScopeShouldNotBeAbleToUpdateAnAuthority() {
-		AccessTokenRepresentation t = token().withClient(client.getClientId(), "client_secret").thatIs().persistent().build();
+		AccessTokenRepresentation t = token().withClient(client.getClientId(), "aasdfilj3234fjasldiASDAFSA%^").thatIs().persistent().build();
 
 		Result<AuthorityRepresentation> response = authoritiesClient.update(authority().withId("12345").build(), t.getAccessToken());
 		assertThat(response).rejected().withError(403, "ATZ-0001", "Insufficient scope for this resource.");
@@ -84,7 +84,7 @@ public class AuthoritiesEndpointSecurityTest extends AcceptanceTest {
 
 	@Test
 	public void clientsThatDoNotHaveTheAppropriateScopeShouldNotBeAbleToDeleteAnAuthority() {
-		AccessTokenRepresentation t = token().withClient(client.getClientId(), "client_secret").thatIs().persistent().build();
+		AccessTokenRepresentation t = token().withClient(client.getClientId(), "aasdfilj3234fjasldiASDAFSA%^").thatIs().persistent().build();
 
 		Result<AuthorityRepresentation> response = authoritiesClient.delete("12345", t.getAccessToken());
 		assertThat(response).rejected().withError(403, "ATZ-0001", "Insufficient scope for this resource.");
@@ -92,7 +92,7 @@ public class AuthoritiesEndpointSecurityTest extends AcceptanceTest {
 
 	@Test
 	public void clientsThatDoNotHaveTheAppropriateScopeShouldNotBeAbleToFindAnAuthorityById() {
-		AccessTokenRepresentation t = token().withClient(client.getClientId(), "client_secret").thatIs().persistent().build();
+		AccessTokenRepresentation t = token().withClient(client.getClientId(), "aasdfilj3234fjasldiASDAFSA%^").thatIs().persistent().build();
 
 		Result<AuthorityRepresentation> response = authoritiesClient.findById("12345", t.getAccessToken());
 		assertThat(response).rejected().withError(403, "ATZ-0001", "Insufficient scope for this resource.");
@@ -100,7 +100,7 @@ public class AuthoritiesEndpointSecurityTest extends AcceptanceTest {
 
 	@Test
 	public void clientsThatDoNotHaveTheAppropriateScopeShouldNotBeAbleToFindAnAuthorityByName() {
-		AccessTokenRepresentation t = token().withClient(client.getClientId(), "client_secret").thatIs().persistent().build();
+		AccessTokenRepresentation t = token().withClient(client.getClientId(), "aasdfilj3234fjasldiASDAFSA%^").thatIs().persistent().build();
 
 		Result<AuthorityRepresentation> response = authoritiesClient.findByName("username", t.getAccessToken());
 		assertThat(response).rejected().withError(403, "ATZ-0001", "Insufficient scope for this resource.");
@@ -108,7 +108,7 @@ public class AuthoritiesEndpointSecurityTest extends AcceptanceTest {
 
 	@Test
 	public void clientsThatDoNotHaveTheAppropriateScopeShouldNotBeAbleToListAuthorities() {
-		AccessTokenRepresentation t = token().withClient(client.getClientId(), "client_secret").thatIs().persistent().build();
+		AccessTokenRepresentation t = token().withClient(client.getClientId(), "aasdfilj3234fjasldiASDAFSA%^").thatIs().persistent().build();
 
 		Result<AuthoritiesRepresentation> response = authoritiesClient.list(t.getAccessToken());
 		assertThat(response).rejected().withError(403, "ATZ-0001", "Insufficient scope for this resource.");

@@ -37,8 +37,10 @@ public interface AccountService {
 
 	Result<Account> findByUsername(String username);
 
+	Result<Account> updatePassword(Account account, String newPassword);
+
 	Result<Account> updatePassword(Account account, String currentPassword, String newPassword);
 
 	Result<List<Account>> list(Criteria criteria);
-	
+
 }

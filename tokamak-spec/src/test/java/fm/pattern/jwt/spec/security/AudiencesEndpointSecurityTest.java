@@ -19,7 +19,7 @@ import fm.pattern.tokamak.sdk.model.ClientRepresentation;
 
 public class AudiencesEndpointSecurityTest extends AcceptanceTest {
 
-	private static final String CLIENT_SECRET = "client_secret";
+	private static final String CLIENT_SECRET = "as4dfSDFSw33sfsdf%%^";
 
 	private AudiencesClient audiencesClient = new AudiencesClient(JwtClientProperties.getEndpoint());
 

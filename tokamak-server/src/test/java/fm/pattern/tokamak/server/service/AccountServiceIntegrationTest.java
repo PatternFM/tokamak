@@ -11,7 +11,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.stream.IntStream;
 
-import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -33,7 +32,8 @@ public class AccountServiceIntegrationTest extends IntegrationTest {
 
 	@Test
 	public void shouldBeAbleToCreateAnAccount() {
-		Account account = account().withUsername("email@address.com").withPassword("password").build();
+		String password = "csli2i3R83lsjasi%%";
+		Account account = account().withUsername("email@address.com").withPassword(password).build();
 
 		Result<Account> result = accountService.create(account);
 		assertThat(result).accepted();
@@ -46,7 +46,7 @@ public class AccountServiceIntegrationTest extends IntegrationTest {
 		assertThat(created.isLocked()).isFalse();
 		assertThat(created.getUsername()).isEqualTo("email@address.com");
 		assertThat(created.getPassword()).isNotNull();
-		assertThat(passwordEncodingService.matches("password", created.getPassword())).isTrue();
+		assertThat(passwordEncodingService.matches(password, created.getPassword())).isTrue();
 	}
 
 	@Test
@@ -100,9 +100,11 @@ public class AccountServiceIntegrationTest extends IntegrationTest {
 
 	@Test
 	public void shouldEncryptTheAccountPasswordBeforeSavingTheAccount() {
-		Account account = account().withPassword("password1234").save();
+		String password = "pArls345axbd!!";
+		
+		Account account = account().withPassword(password).save();
 		assertThat(account.getPassword()).startsWith("$2a$");
-		assertThat(passwordEncodingService.matches("password1234", account.getPassword())).isTrue();
+		assertThat(passwordEncodingService.matches(password, account.getPassword())).isTrue();
 	}
 
 	@Test
@@ -147,8 +149,8 @@ public class AccountServiceIntegrationTest extends IntegrationTest {
 
 	@Test
 	public void shouldBeAbleToUpdateAPassword() {
-		String currentPassword = "myOLDPassword";
-		String newPassword = "myNEWPassword";
+		String currentPassword = "myOLDPassword2!";
+		String newPassword = "myNEWPassword2!";
 		String username = "test@email.com";
 
 		Account account = account().withUsername(username).withPassword(currentPassword).save();
@@ -158,52 +160,18 @@ public class AccountServiceIntegrationTest extends IntegrationTest {
 	}
 
 	@Test
-	public void shouldNotBeAbleToUpdateAPasswordWhenTheNewPasswordIsNotProvided() {
-		String oldPassword = "myOLDPassword";
-		String email = "test@email.com";
-
-		Account account = account().withUsername(email).withPassword(oldPassword).save();
-		assertThat(accountService.updatePassword(account, oldPassword, null)).rejected().withMessage("Your new password must be provided.");
-		assertThat(accountService.updatePassword(account, oldPassword, "")).rejected().withMessage("Your new password must be provided.");
-		assertThat(accountService.updatePassword(account, oldPassword, "  ")).rejected().withMessage("Your new password must be provided.");
-	}
-
-	@Test
-	public void shouldNotBeAbleToUpdateAPasswordWhenTheNewPasswordIsLessThanEightCharacters() {
-		String oldPassword = "myOLDPassword";
-		String email = "test@email.com";
-
-		Account account = account().withUsername(email).withPassword(oldPassword).save();
-		assertThat(accountService.updatePassword(account, oldPassword, "abc")).rejected().withMessage("Your new password must be between 8 and 50 characters.");
-	}
-
-	@Test
-	public void shouldNotBeAbleToUpdateAPasswordWhenTheNewPasswordIsGreaterThan50Characters() {
-		String oldPassword = "myOLDPassword";
-		String email = "test@email.com";
-
-		Account account = account().withUsername(email).withPassword(oldPassword).save();
-		assertThat(accountService.updatePassword(account, oldPassword, RandomStringUtils.randomAlphabetic(51))).rejected().withMessage("Your new password must be between 8 and 50 characters.");
-	}
-
-	@Test
 	public void shouldNotBeAbleToUpdateAPasswordWhenTheCurrentPasswordIsNotProvided() {
-		String oldPassword = "myOLDPassword";
-		String email = "test@email.com";
-
-		Account account = account().withUsername(email).withPassword(oldPassword).save();
-		assertThat(accountService.updatePassword(account, null, "ABC")).rejected().withMessage("Your current password must be provided.");
-		assertThat(accountService.updatePassword(account, "", "ABC")).rejected().withMessage("Your current password must be provided.");
-		assertThat(accountService.updatePassword(account, "  ", "ABC")).rejected().withMessage("Your current password must be provided.");
+		Account account = account().withPassword("myOLDPassword12!").save();
+		
+		assertThat(accountService.updatePassword(account, null, "ABC")).rejected().withMessage("The current password is required.");
+		assertThat(accountService.updatePassword(account, "", "ABC")).rejected().withMessage("The current password is required.");
+		assertThat(accountService.updatePassword(account, "  ", "ABC")).rejected().withMessage("The current password is required.");
 	}
 
 	@Test
-	public void shouldNotBeAbleToUpdateAPasswordWhenTheProvidedPasswordDoesNotMatchTheExistingPassword() {
-		String oldPassword = "myOLDPassword";
-		String email = "test@email.com";
-
-		Account account = account().withUsername(email).withPassword(oldPassword).save();
-		assertThat(accountService.updatePassword(account, "invalid", "ABC")).rejected().withMessage("The password you provided does not match your current password. Please try again.");
+	public void shouldNotBeAbleToUpdateAPasswordWhenTheCurrentPasswordDoesNotMatchTheProvidedPassword() {
+		Account account = account().withPassword("myOLDPassword2!").save();
+		assertThat(accountService.updatePassword(account, "myOLDPassword3!", "ABC")).rejected().withMessage("The password provided does not match your current password. Please try again.");
 	}
 
 	@Test
@@ -220,9 +188,9 @@ public class AccountServiceIntegrationTest extends IntegrationTest {
 		assertThat(accountService.list(criteria().limit(1).page(3)).getInstance().size()).isEqualTo(1);
 	}
 
-	private void assertAccountHasPassword(String email, String expectedPassword) {
-		String accountPassword = accountService.findByUsername(email).getInstance().getPassword();
-		passwordEncodingService.matches(expectedPassword, accountPassword);
+	private void assertAccountHasPassword(String username, String expectedPassword) {
+		String actualPassword = accountService.findByUsername(username).getInstance().getPassword();
+		passwordEncodingService.matches(expectedPassword, actualPassword);
 	}
 
 }

@@ -44,7 +44,7 @@ public class AccountsEndpointAcceptanceTest extends AcceptanceTest {
 
 	@Test
 	public void shouldBeAbleToCreateAnAccount() {
-		AccountRepresentation account = account().withPassword("password").build();
+		AccountRepresentation account = account().build();
 
 		Result<AccountRepresentation> response = accountsClient.create(account);
 		assertThat(response).accepted().withResponseCode(201);
@@ -68,7 +68,7 @@ public class AccountsEndpointAcceptanceTest extends AcceptanceTest {
 
 	@Test
 	public void shouldNotBeAbleToCreateAnAccountIfTheUsernameIsAlreadyTaken() {
-		AccountRepresentation account = account().withPassword("password").thatIs().persistent(token).build();
+		AccountRepresentation account = account().thatIs().persistent(token).build();
 		account.setPassword("password");
 
 		Result<AccountRepresentation> response = accountsClient.create(account);
@@ -77,7 +77,7 @@ public class AccountsEndpointAcceptanceTest extends AcceptanceTest {
 
 	@Test
 	public void shouldBeAbleToUpdateAnAccount() {
-		AccountRepresentation account = account().withPassword("password").thatIs().persistent(token).build();
+		AccountRepresentation account = account().thatIs().persistent(token).build();
 		pause(1000);
 
 		RoleRepresentation role = role().thatIs().persistent(token).build();
@@ -126,7 +126,7 @@ public class AccountsEndpointAcceptanceTest extends AcceptanceTest {
 
 	@Test
 	public void updatingAnAccountShouldNotUpdateTheUsernameOrPasswordOrLockedStatus() {
-		AccountRepresentation account = account().withPassword("password").thatIs().persistent(token).build();
+		AccountRepresentation account = account().withPassword("dfsfsASDFSA454$").thatIs().persistent(token).build();
 		String username = account.getUsername();
 
 		account.setLocked(true);

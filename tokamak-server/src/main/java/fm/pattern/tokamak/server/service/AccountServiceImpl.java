@@ -25,10 +25,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import fm.pattern.tokamak.server.model.Account;
+import fm.pattern.tokamak.server.model.PasswordPolicy;
 import fm.pattern.tokamak.server.pagination.Criteria;
 import fm.pattern.tokamak.server.pagination.PaginatedList;
 import fm.pattern.tokamak.server.repository.Cache;
 import fm.pattern.tokamak.server.security.PasswordEncodingService;
+import fm.pattern.tokamak.server.security.PasswordValidator;
+import fm.pattern.valex.Reportable;
 import fm.pattern.valex.Result;
 
 @Service
@@ -39,21 +42,31 @@ class AccountServiceImpl extends DataServiceImpl<Account> implements AccountServ
 	private static final String username_key = "accounts:username:%s";
 
 	private final PasswordEncodingService passwordEncodingService;
+	private final PasswordPolicyService passwordPolicyService;
+	private final PasswordValidator passwordValidator;
 	private final Cache cache;
 
-	public AccountServiceImpl(PasswordEncodingService passwordEncodingService, @Qualifier("accountCache") Cache cache) {
+	public AccountServiceImpl(PasswordEncodingService passwordEncodingService, PasswordPolicyService passwordPolicyService, PasswordValidator passwordValidator, @Qualifier("accountCache") Cache cache) {
 		this.passwordEncodingService = passwordEncodingService;
+		this.passwordPolicyService = passwordPolicyService;
+		this.passwordValidator = passwordValidator;
 		this.cache = cache;
 	}
 
 	@Transactional
 	public Result<Account> create(Account account) {
-		account.setPassword(passwordEncodingService.encode(account.getPassword()));
+		PasswordPolicy policy = passwordPolicyService.findByName("account-password-policy").orThrow();
 
-		Result<Account> result = super.create(account);
+		Result<String> password = passwordValidator.validate(account.getPassword(), policy);
+		if (password.rejected()) {
+			return Result.reject(password.getErrors().toArray(new Reportable[password.getErrors().size()]));
+		}
+
+		Result<Account> result = super.create(account.password(passwordEncodingService.encode(account.getPassword())));
 		if (result.accepted()) {
 			cache(result.getInstance());
 		}
+
 		return result;
 	}
 
@@ -105,27 +118,35 @@ class AccountServiceImpl extends DataServiceImpl<Account> implements AccountServ
 		return result.accepted() ? result : Result.reject("account.username.not_found", username);
 	}
 
-	// TODO: Refactor into a PasswordPolicy model.
+	@Transactional
+	public Result<Account> updatePassword(Account account, String newPassword) {
+		PasswordPolicy policy = passwordPolicyService.findByName("account-password-policy").orThrow();
+
+		Result<String> result = passwordValidator.validate(newPassword, policy);
+		if (result.rejected()) {
+			return Result.reject(result.getErrors().toArray(new Reportable[result.getErrors().size()]));
+		}
+
+		return update(account.password(passwordEncodingService.encode(newPassword)));
+	}
+
 	@Transactional
 	public Result<Account> updatePassword(Account account, String currentPassword, String newPassword) {
 		if (isBlank(currentPassword)) {
-			return Result.reject("Your current password must be provided.");
+			return Result.reject("current.password.required");
 		}
-
-		if (isBlank(newPassword)) {
-			return Result.reject("Your new password must be provided.");
-		}
-
 		if (!passwordEncodingService.matches(currentPassword, account.getPassword())) {
-			return Result.reject("The password you provided does not match your current password. Please try again.");
+			return Result.reject("current.password.mismatch");
 		}
 
-		if (newPassword.length() < 8 || newPassword.length() > 50) {
-			return Result.reject("Your new password must be between 8 and 50 characters.");
+		PasswordPolicy policy = passwordPolicyService.findByName("account-password-policy").orThrow();
+
+		Result<String> result = passwordValidator.validate(newPassword, policy);
+		if (result.rejected()) {
+			return Result.reject(result.getErrors().toArray(new Reportable[result.getErrors().size()]));
 		}
 
-		account.setPassword(passwordEncodingService.encode(newPassword));
-		return update(account);
+		return update(account.password(passwordEncodingService.encode(newPassword)));
 	}
 
 	@Transactional(readOnly = true)

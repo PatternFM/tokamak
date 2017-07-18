@@ -37,13 +37,15 @@ public class ScopesEndpointSecurityTest extends AcceptanceTest {
 
 	private ScopesClient scopesClient = new ScopesClient(JwtClientProperties.getEndpoint());
 
+	private String secret = "sdjgi45895jasSDF#$#23";
+	
 	private ClientRepresentation client;
 	private AccessTokenRepresentation token;
 
 	@Before
 	public void before() {
 		this.token = token().withClient(TEST_CLIENT_CREDENTIALS).thatIs().persistent().build();
-		this.client = client().withClientSecret("client_secret").withScopes("clients:read").withGrantTypes("client_credentials", "refresh_token").thatIs().persistent(token).build();
+		this.client = client().withClientSecret(secret).withScopes("clients:read").withGrantTypes("client_credentials", "refresh_token").thatIs().persistent(token).build();
 	}
 
 	@Test
@@ -84,7 +86,7 @@ public class ScopesEndpointSecurityTest extends AcceptanceTest {
 
 	@Test
 	public void clientsThatDoNotHaveTheAppropriateScopeShouldNotBeAbleToCreateAScope() {
-		AccessTokenRepresentation t = token().withClient(client.getClientId(), "client_secret").thatIs().persistent().build();
+		AccessTokenRepresentation t = token().withClient(client.getClientId(), secret).thatIs().persistent().build();
 
 		Result<ScopeRepresentation> response = scopesClient.create(scope().build(), t.getAccessToken());
 		assertThat(response).rejected().withError(403, "ATZ-0001", "Insufficient scope for this resource.");
@@ -92,7 +94,7 @@ public class ScopesEndpointSecurityTest extends AcceptanceTest {
 
 	@Test
 	public void clientsThatDoNotHaveTheAppropriateScopeShouldNotBeAbleToUpdateAScope() {
-		AccessTokenRepresentation t = token().withClient(client.getClientId(), "client_secret").thatIs().persistent().build();
+		AccessTokenRepresentation t = token().withClient(client.getClientId(), secret).thatIs().persistent().build();
 
 		Result<ScopeRepresentation> response = scopesClient.update(scope().withId("12345").build(), t.getAccessToken());
 		assertThat(response).rejected().withError(403, "ATZ-0001", "Insufficient scope for this resource.");
@@ -100,7 +102,7 @@ public class ScopesEndpointSecurityTest extends AcceptanceTest {
 
 	@Test
 	public void clientsThatDoNotHaveTheAppropriateScopeShouldNotBeAbleToDeleteAScope() {
-		AccessTokenRepresentation t = token().withClient(client.getClientId(), "client_secret").thatIs().persistent().build();
+		AccessTokenRepresentation t = token().withClient(client.getClientId(), secret).thatIs().persistent().build();
 
 		Result<ScopeRepresentation> response = scopesClient.delete("12345", t.getAccessToken());
 		assertThat(response).rejected().withError(403, "ATZ-0001", "Insufficient scope for this resource.");
@@ -108,7 +110,7 @@ public class ScopesEndpointSecurityTest extends AcceptanceTest {
 
 	@Test
 	public void clientsThatDoNotHaveTheAppropriateScopeShouldNotBeAbleToFindAScopeById() {
-		AccessTokenRepresentation t = token().withClient(client.getClientId(), "client_secret").thatIs().persistent().build();
+		AccessTokenRepresentation t = token().withClient(client.getClientId(), secret).thatIs().persistent().build();
 
 		Result<ScopeRepresentation> response = scopesClient.findById("12345", t.getAccessToken());
 		assertThat(response).rejected().withError(403, "ATZ-0001", "Insufficient scope for this resource.");
@@ -116,7 +118,7 @@ public class ScopesEndpointSecurityTest extends AcceptanceTest {
 
 	@Test
 	public void clientsThatDoNotHaveTheAppropriateScopeShouldNotBeAbleToFindAScopeByName() {
-		AccessTokenRepresentation t = token().withClient(client.getClientId(), "client_secret").thatIs().persistent().build();
+		AccessTokenRepresentation t = token().withClient(client.getClientId(), secret).thatIs().persistent().build();
 
 		Result<ScopeRepresentation> response = scopesClient.findByName("username", t.getAccessToken());
 		assertThat(response).rejected().withError(403, "ATZ-0001", "Insufficient scope for this resource.");
@@ -124,7 +126,7 @@ public class ScopesEndpointSecurityTest extends AcceptanceTest {
 
 	@Test
 	public void clientsThatDoNotHaveTheAppropriateScopeShouldNotBeAbleToListScopes() {
-		AccessTokenRepresentation t = token().withClient(client.getClientId(), "client_secret").thatIs().persistent().build();
+		AccessTokenRepresentation t = token().withClient(client.getClientId(), secret).thatIs().persistent().build();
 
 		Result<ScopesRepresentation> response = scopesClient.list(t.getAccessToken());
 		assertThat(response).rejected().withError(403, "ATZ-0001", "Insufficient scope for this resource.");
