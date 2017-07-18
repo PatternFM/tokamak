@@ -95,12 +95,7 @@ class ScopeServiceImpl extends DataServiceImpl<Scope> implements ScopeService {
 
 	@Transactional(readOnly = true)
 	public Result<List<Scope>> list() {
-		try {
-			return Result.accept(repository.query("from Scopes order by name").getResultList());
-		}
-		catch (Exception e) {
-			return Result.reject("system.query.failed", e.getMessage());
-		}
+		return Result.accept(repository.query("from Scopes order by name").getResultList());
 	}
 
 }

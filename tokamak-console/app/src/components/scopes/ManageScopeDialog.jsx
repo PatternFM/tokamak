@@ -30,6 +30,7 @@ class CreateScopeForm extends React.Component {
     }
 
     hide() {
+        this.setState({ error:null });    
         this.setState({open:false});
     }
 
