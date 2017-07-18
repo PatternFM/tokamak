@@ -82,6 +82,29 @@ class ClientServiceImpl extends DataServiceImpl<Client> implements ClientService
 	}
 
 	@Transactional
+	public Result<Client> updateClientSecret(Client client, String newSecret) {
+		PasswordPolicy policy = passwordPolicyService.findByName("client-password-policy").orThrow();
+
+		Result<String> result = passwordValidator.validate(newSecret, policy);
+		if (result.rejected()) {
+			return Result.reject(result.getErrors().toArray(new Reportable[result.getErrors().size()]));
+		}
+
+		return update(client.clientSecret(passwordEncodingService.encode(newSecret)));
+	}
+
+	@Transactional
+	public Result<Client> updateClientSecret(Client client, String currentSecret, String newSecret) {
+		if (isBlank(currentSecret)) {
+			return Result.reject("current.secret.required");
+		}
+		if (!passwordEncodingService.matches(currentSecret, client.getClientSecret())) {
+			return Result.reject("current.secret.mismatch");
+		}
+		return updateClientSecret(client, newSecret);
+	}
+
+	@Transactional
 	public Result<Client> delete(Client client) {
 		Result<Client> result = super.delete(client);
 		if (result.accepted()) {
@@ -123,37 +146,6 @@ class ClientServiceImpl extends DataServiceImpl<Client> implements ClientService
 		}
 
 		return result.accepted() ? result : Result.reject("client.clientId.not_found", clientId);
-	}
-
-	@Transactional
-	public Result<Client> updateClientSecret(Client client, String newSecret) {
-		PasswordPolicy policy = passwordPolicyService.findByName("client-password-policy").orThrow();
-
-		Result<String> result = passwordValidator.validate(newSecret, policy);
-		if (result.rejected()) {
-			return Result.reject(result.getErrors().toArray(new Reportable[result.getErrors().size()]));
-		}
-
-		return update(client.clientSecret(passwordEncodingService.encode(newSecret)));
-	}
-
-	@Transactional
-	public Result<Client> updateClientSecret(Client client, String currentSecret, String newSecret) {
-		if (isBlank(currentSecret)) {
-			return Result.reject("current.secret.required");
-		}
-		if (!passwordEncodingService.matches(currentSecret, client.getClientSecret())) {
-			return Result.reject("current.secret.mismatch");
-		}
-
-		PasswordPolicy policy = passwordPolicyService.findByName("client-password-policy").orThrow();
-
-		Result<String> result = passwordValidator.validate(newSecret, policy);
-		if (result.rejected()) {
-			return Result.reject(result.getErrors().toArray(new Reportable[result.getErrors().size()]));
-		}
-
-		return update(client.clientSecret(passwordEncodingService.encode(newSecret)));
 	}
 
 	@Transactional(readOnly = true)

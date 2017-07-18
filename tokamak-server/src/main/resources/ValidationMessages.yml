@@ -24,7 +24,7 @@ account.password.required:
   code: ACC-0004
 
 account.password.size:
-  message: "An account password must be between {min} and {max} characters."
+  message: "An account password must be less than {max} characters."
   code: ACC-0005
 
 account.username.not_found:

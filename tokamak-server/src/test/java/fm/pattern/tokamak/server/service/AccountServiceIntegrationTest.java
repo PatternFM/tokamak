@@ -151,12 +151,12 @@ public class AccountServiceIntegrationTest extends IntegrationTest {
 	public void shouldBeAbleToUpdateAPassword() {
 		String currentPassword = "myOLDPassword2!";
 		String newPassword = "myNEWPassword2!";
-		String username = "test@email.com";
 
-		Account account = account().withUsername(username).withPassword(currentPassword).save();
+		Account account = account().withUsername("test@email.com").withPassword(currentPassword).save();
 		assertThat(accountService.updatePassword(account, currentPassword, newPassword)).accepted();
-
-		assertAccountHasPassword(username, newPassword);
+		assertThat(accountService.updatePassword(account, newPassword)).accepted();
+		
+		assertAccountHasPassword("test@email.com", newPassword);
 	}
 
 	@Test
@@ -174,6 +174,16 @@ public class AccountServiceIntegrationTest extends IntegrationTest {
 		assertThat(accountService.updatePassword(account, "myOLDPassword3!", "ABC")).rejected().withMessage("The password provided does not match your current password. Please try again.");
 	}
 
+	@Test
+	public void shouldNotBeAbleToUpdateAPasswordWhenTheNewPasswordDoesNotMeetPolicyRequirements() {
+		String currentPassword = "myOLDPassword2!";
+		String newPassword = "pass!";
+
+		Account account = account().withUsername("test@email.com").withPassword(currentPassword).save();
+		assertThat(accountService.updatePassword(account, currentPassword, newPassword)).rejected();
+		assertThat(accountService.updatePassword(account, newPassword)).rejected();
+	}
+	
 	@Test
 	public void shouldBeAbleToListAccounts() {
 		IntStream.range(1, 5).forEach(i -> account().save());

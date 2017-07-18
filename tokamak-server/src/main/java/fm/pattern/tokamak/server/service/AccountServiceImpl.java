@@ -80,6 +80,29 @@ class AccountServiceImpl extends DataServiceImpl<Account> implements AccountServ
 	}
 
 	@Transactional
+	public Result<Account> updatePassword(Account account, String newPassword) {
+		PasswordPolicy policy = passwordPolicyService.findByName("account-password-policy").orThrow();
+
+		Result<String> result = passwordValidator.validate(newPassword, policy);
+		if (result.rejected()) {
+			return Result.reject(result.getErrors().toArray(new Reportable[result.getErrors().size()]));
+		}
+
+		return update(account.password(passwordEncodingService.encode(newPassword)));
+	}
+
+	@Transactional
+	public Result<Account> updatePassword(Account account, String currentPassword, String newPassword) {
+		if (isBlank(currentPassword)) {
+			return Result.reject("current.password.required");
+		}
+		if (!passwordEncodingService.matches(currentPassword, account.getPassword())) {
+			return Result.reject("current.password.mismatch");
+		}
+		return updatePassword(account, newPassword);
+	}
+
+	@Transactional
 	public Result<Account> delete(Account account) {
 		Result<Account> result = super.delete(account);
 		if (result.accepted()) {
@@ -116,37 +139,6 @@ class AccountServiceImpl extends DataServiceImpl<Account> implements AccountServ
 		}
 
 		return result.accepted() ? result : Result.reject("account.username.not_found", username);
-	}
-
-	@Transactional
-	public Result<Account> updatePassword(Account account, String newPassword) {
-		PasswordPolicy policy = passwordPolicyService.findByName("account-password-policy").orThrow();
-
-		Result<String> result = passwordValidator.validate(newPassword, policy);
-		if (result.rejected()) {
-			return Result.reject(result.getErrors().toArray(new Reportable[result.getErrors().size()]));
-		}
-
-		return update(account.password(passwordEncodingService.encode(newPassword)));
-	}
-
-	@Transactional
-	public Result<Account> updatePassword(Account account, String currentPassword, String newPassword) {
-		if (isBlank(currentPassword)) {
-			return Result.reject("current.password.required");
-		}
-		if (!passwordEncodingService.matches(currentPassword, account.getPassword())) {
-			return Result.reject("current.password.mismatch");
-		}
-
-		PasswordPolicy policy = passwordPolicyService.findByName("account-password-policy").orThrow();
-
-		Result<String> result = passwordValidator.validate(newPassword, policy);
-		if (result.rejected()) {
-			return Result.reject(result.getErrors().toArray(new Reportable[result.getErrors().size()]));
-		}
-
-		return update(account.password(passwordEncodingService.encode(newPassword)));
 	}
 
 	@Transactional(readOnly = true)

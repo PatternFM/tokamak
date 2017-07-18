@@ -63,7 +63,7 @@ public class Account extends PersistentEntity {
 	@Setter
 	@Column(name = "password", nullable = false)
 	@NotBlank(message = "{account.password.required}", groups = { CreateLevel1.class, UpdateLevel1.class })
-	@Size(min = 8, max = 255, message = "{account.password.size}", groups = { CreateLevel2.class, UpdateLevel2.class })
+	@Size(max = 255, message = "{account.password.size}", groups = { CreateLevel2.class, UpdateLevel2.class })
 	private String password;
 
 	@Getter

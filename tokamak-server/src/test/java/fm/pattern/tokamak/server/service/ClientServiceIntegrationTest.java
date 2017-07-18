@@ -148,6 +148,43 @@ public class ClientServiceIntegrationTest extends IntegrationTest {
 	}
 
 	@Test
+	public void shouldBeAbleToUpdateASecret() {
+		String currentSecret = "myOLDSecret1111112!";
+		String newSecret = "myNEWSecret1111112!";
+
+		Client client = client().withGrantType(grantType).withClientId("test@email.com").withClientSecret(currentSecret).save();
+		assertThat(clientService.updateClientSecret(client, currentSecret, newSecret)).accepted();
+		assertThat(clientService.updateClientSecret(client, newSecret)).accepted();
+
+		assertClientHasSecret("test@email.com", newSecret);
+	}
+
+	@Test
+	public void shouldNotBeAbleToUpdateASecretWhenTheCurrentSecretIsNotProvided() {
+		Client client = client().withGrantType(grantType).withClientSecret("myOLDSecre111111t12!").save();
+
+		assertThat(clientService.updateClientSecret(client, null, "ABC")).rejected().withMessage("The current client secret is required.");
+		assertThat(clientService.updateClientSecret(client, "", "ABC")).rejected().withMessage("The current client secret is required.");
+		assertThat(clientService.updateClientSecret(client, "  ", "ABC")).rejected().withMessage("The current client secret is required.");
+	}
+
+	@Test
+	public void shouldNotBeAbleToUpdateASecretWhenTheCurrentSecretDoesNotMatchTheProvidedSecret() {
+		Client client = client().withGrantType(grantType).withClientSecret("myOLDSecret1111112!").save();
+		assertThat(clientService.updateClientSecret(client, "myOLDSecret3!", "ABC")).rejected().withMessage("The client secret provided does not match your current client secret. Please try again.");
+	}
+
+	@Test
+	public void shouldNotBeAbleToUpdateASecretWhenTheNewSecretDoesNotMeetPolicyRequirements() {
+		String currentSecret = "myOLDSecret2!";
+		String newSecret = "pass!";
+
+		Client client = client().withGrantType(grantType).withClientId("test@email.com").withClientSecret(currentSecret).save();
+		assertThat(clientService.updateClientSecret(client, currentSecret, newSecret)).rejected();
+		assertThat(clientService.updateClientSecret(client, newSecret)).rejected();
+	}
+
+	@Test
 	public void shouldBeAbleToListClients() {
 		IntStream.range(0, 5).forEach(i -> client().withGrantType(grantType).save());
 
@@ -161,4 +198,9 @@ public class ClientServiceIntegrationTest extends IntegrationTest {
 		assertThat(clientService.list(criteria().limit(1).page(3)).getInstance().size()).isEqualTo(1);
 	}
 
+	private void assertClientHasSecret(String username, String expectedSecret) {
+		String actualSecret = clientService.findByClientId(username).getInstance().getClientSecret();
+		passwordEncodingService.matches(expectedSecret, actualSecret);
+	}
+	
 }

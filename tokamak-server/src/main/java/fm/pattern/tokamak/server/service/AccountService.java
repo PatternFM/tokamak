@@ -31,15 +31,15 @@ public interface AccountService {
 
 	Result<Account> update(@Update Account account);
 
+	Result<Account> updatePassword(Account account, String newPassword);
+
+	Result<Account> updatePassword(Account account, String currentPassword, String newPassword);
+
 	Result<Account> delete(@Delete Account account);
 
 	Result<Account> findById(String id);
 
 	Result<Account> findByUsername(String username);
-
-	Result<Account> updatePassword(Account account, String newPassword);
-
-	Result<Account> updatePassword(Account account, String currentPassword, String newPassword);
 
 	Result<List<Account>> list(Criteria criteria);
 

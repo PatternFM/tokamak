@@ -31,6 +31,10 @@ public interface ClientService {
 
 	Result<Client> update(@Update Client client);
 
+	Result<Client> updateClientSecret(Client client, String newSecret);
+	
+	public Result<Client> updateClientSecret(Client client, String currentSecret, String newSecret);
+	
 	Result<Client> delete(@Delete Client client);
 
 	Result<Client> findById(String id);

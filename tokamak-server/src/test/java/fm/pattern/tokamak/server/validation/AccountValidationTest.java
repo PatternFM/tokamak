@@ -52,12 +52,7 @@ public class AccountValidationTest extends IntegrationTest {
 
 	@Test
 	public void shouldNotBeAbleToCreateAnAccountIfThePasswordIsGreaterThan255Characters() {
-		onCreate(account().withPassword(RandomStringUtils.randomNumeric(256)).build()).rejected().withError("ACC-0005", "An account password must be between 8 and 255 characters.", UnprocessableEntityException.class);
-	}
-
-	@Test
-	public void shouldNotBeAbleToCreateAnAccountIfThePasswordIsLessThenEightCharacters() {
-		onCreate(account().withPassword(RandomStringUtils.randomNumeric(7)).build()).rejected().withError("ACC-0005", "An account password must be between 8 and 255 characters.", UnprocessableEntityException.class);
+		onCreate(account().withPassword(RandomStringUtils.randomNumeric(256)).build()).rejected().withError("ACC-0005", "An account password must be less than 255 characters.", UnprocessableEntityException.class);
 	}
 
 	@Test
@@ -109,12 +104,7 @@ public class AccountValidationTest extends IntegrationTest {
 
 	@Test
 	public void shouldNotBeAbleToUpdateAnAccountIfThePasswordIsGreaterThan255Characters() {
-		onUpdate(account().withPassword(RandomStringUtils.randomNumeric(256)).build()).rejected().withError("ACC-0005", "An account password must be between 8 and 255 characters.", UnprocessableEntityException.class);
-	}
-
-	@Test
-	public void shouldNotBeAbleToUpdateAnAccountIfThePasswordIsLessThenEightCharacters() {
-		onUpdate(account().withPassword(RandomStringUtils.randomNumeric(7)).build()).rejected().withError("ACC-0005", "An account password must be between 8 and 255 characters.", UnprocessableEntityException.class);
+		onUpdate(account().withPassword(RandomStringUtils.randomNumeric(256)).build()).rejected().withError("ACC-0005", "An account password must be less than 255 characters.", UnprocessableEntityException.class);
 	}
 
 }
