@@ -37,10 +37,14 @@ class CreateClientForm extends React.Component {
             grantTypes:[],
             selectedGrantTypes:[],
             
+            newClientSecret:"",
+            confirmNewClientSecret:"",
+            
             error: "",
             loading: false,
             update: false,
-            open: false
+            open: false,
+            updateSecret: false
         };
     }
 
@@ -122,6 +126,14 @@ class CreateClientForm extends React.Component {
 
     refreshTokenValiditySecondsChanged(event) {
         this.setState({ refreshTokenValiditySeconds:event.target.value });
+    }
+
+    newClientSecretChanged(event) {
+        this.setState({ newClientSecret:event.target.value });
+    }
+
+    confirmNewClientSecretChanged(event) {
+        this.setState({ confirmNewClientSecret:event.target.value });
     }
 
     redirectUriChanged(event) {
@@ -236,6 +248,14 @@ class CreateClientForm extends React.Component {
         });
     }
 
+    changeSecret() {
+        this.setState( { updateSecret: true } );
+    }
+
+    cancelUpdateSecret() {
+         this.setState( { updateSecret: false } );
+    }
+
     isScopeChecked(scope) {
        let result = this.state.selectedScopes.filter(function(obj) {
            return obj.name === scope.name; 
@@ -267,78 +287,108 @@ class CreateClientForm extends React.Component {
     render() {
         let title = this.state.update ? "Update App" : "Create App";
         let button = this.state.update ? <button className="tok-button center" style={{marginRight:"10px"}} onClick={ () => this.update() }>Update</button> : <button className="tok-button center" style={{marginRight:"10px"}} onClick={() => this.create()}>Create</button>;
-        let clientSecretField = this.state.update ? <div><div className="tok-textfield-disabled" style={{ width:"70%", float:"left" }}>&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;</div><i className="change-password">change secret</i></div> : <input className="tok-textfield" type="password" name="clientSecret" onChange={this.clientSecretChanged.bind(this)} autoComplete="off" />;
+        let clientSecretField = this.state.update ? <div><div className="tok-textfield-disabled" style={{ width:"70%", float:"left" }}>&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;</div><i className="change-password" onClick={ () => this.changeSecret() }>change secret</i></div> : <input className="tok-textfield" type="password" name="clientSecret" onChange={this.clientSecretChanged.bind(this)} autoComplete="off" />;
         let clientIdField = this.state.update ? <div className="tok-textfield-disabled">{this.state.clientId}</div> : <input autoFocus className="tok-textfield" type="text" name="name" value={this.state.username} onChange={this.clientIdChanged.bind(this)} autoComplete="off" />;
 
         return (
             <Dialog modal={true} contentStyle={{width:"80%", maxWidth:"none"}} open={this.state.open}>
-              <div className="modal-title">{title}</div>
+              {this.state.updateSecret && 
+                  <div className="animated fadeIn">
+                    <div className="modal-title">Update Secret</div>
+                    
+                    <div style={{width:"50%", float:"left"}}>
+                      {this.state.error && this.state.error.length > 0 &&
+                        <div className="validation-error">{this.state.error}</div>
+                      }        
               
-              <div style={{width:"50%", float:"left"}}>
-              {this.state.error && this.state.error.length > 0 &&
-                 <div className="validation-error">{this.state.error}</div>
-              }        
+                      <table style={{width:"100%", padding:"0 60px 30px 60px"}}>
+                        <tr>
+                          <td className="form-key">Client Secret</td>
+                          <td className="form-value"><input className="tok-textfield" type="password" name="clientSecret" value={this.state.newClientSecret} onChange={this.newClientSecretChanged.bind(this)} autoComplete="off" /></td>
+                        </tr>
+                        <tr>
+                          <td className="form-key">Confirm Secret</td>
+                          <td className="form-value"><input className="tok-textfield" type="password" name="confirmClientSecret" value={this.state.confirmNewClientSecret} onChange={this.confirmNewClientSecretChanged.bind(this)} autoComplete="off" /></td>
+                        </tr>                                                                                                        
+                      </table>
               
-              <table style={{width:"100%", padding:"0 60px 30px 60px"}}>
-                <tr>
-                  <td className="form-key">Client ID</td>
-                  <td className="form-value">{clientIdField}</td>
-                </tr>
-                <tr>
-                  <td className="form-key">Client Secret</td>
-                  <td className="form-value">{clientSecretField}</td>
-                </tr>  
-                <tr>
-                  <td className="form-key">App Name</td>
-                  <td className="form-value"><input className="tok-textfield" type="text" name="name" value={this.state.name} onChange={this.nameChanged.bind(this)} autoComplete="off" /></td>
-                </tr>  
-                <tr>
-                  <td className="form-key">Description</td>
-                  <td><textarea className="tok-textfield" name="description" value={this.state.description} onChange={this.descriptionChanged.bind(this)} autoComplete="off" /></td>
-                </tr>  
-                <tr>
-                  <td className="form-key">Access Token TTL</td>
-                  <td className="form-value"><input className="tok-textfield" type="text" name="accessTokenValiditySeconds" value={this.state.accessTokenValiditySeconds} onChange={this.accessTokenValiditySecondsChanged.bind(this)} autoComplete="off" /></td>
-                </tr>     
-                <tr>
-                  <td className="form-key">Refresh Token TTL</td>
-                  <td className="form-value"><input className="tok-textfield" type="text" name="refreshTokenValiditySeconds" value={this.state.refreshTokenValiditySeconds} onChange={this.refreshTokenValiditySecondsChanged.bind(this)} autoComplete="off" /></td>
-                </tr> 
-                <tr>
-                  <td className="form-key">Redirect URL</td>
-                  <td className="form-value"><input className="tok-textfield" type="text" name="redirectUri" value={this.state.redirectUri} onChange={this.redirectUriChanged.bind(this)} autoComplete="off" /></td>
-                </tr>                                                                                                       
-              </table>
+                      <div style={{textAlign:"center", paddingBottom:"30px"}}>
+                        {button}
+                        <button className="tok-button tok-cancel center" onClick={() => this.cancelUpdateSecret()}>Cancel</button>
+                      </div>
+                      <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+                    </div>                    
+                  </div>
+              }
               
-              <div style={{textAlign:"center", paddingBottom:"30px"}}>
-{button}
-<button className="tok-button tok-cancel center" onClick={() => this.hide()}>Cancel</button>
-</div>
+              {!this.state.updateSecret &&
+                <div className="animated fadeIn">
+                <div className="modal-title">{title}</div>
               
+                <div style={{width:"50%", float:"left"}}>
+                  {this.state.error && this.state.error.length > 0 &&
+                     <div className="validation-error">{this.state.error}</div>
+                  }        
               
-              </div>
+                  <table style={{width:"100%", padding:"0 60px 30px 60px"}}>
+                    <tr>
+                      <td className="form-key">Client ID</td>
+                      <td className="form-value">{clientIdField}</td>
+                    </tr>
+                    <tr>
+                      <td className="form-key">Client Secret</td>
+                      <td className="form-value">{clientSecretField}</td>
+                    </tr>  
+                    <tr>
+                      <td className="form-key">App Name</td>
+                      <td className="form-value"><input className="tok-textfield" type="text" name="name" value={this.state.name} onChange={this.nameChanged.bind(this)} autoComplete="off" /></td>
+                    </tr>  
+                    <tr>
+                      <td className="form-key">Description</td>
+                      <td><textarea className="tok-textfield" name="description" value={this.state.description} onChange={this.descriptionChanged.bind(this)} autoComplete="off" /></td>
+                    </tr>  
+                    <tr>
+                      <td className="form-key">Access Token TTL</td>
+                      <td className="form-value"><input className="tok-textfield" type="text" name="accessTokenValiditySeconds" value={this.state.accessTokenValiditySeconds} onChange={this.accessTokenValiditySecondsChanged.bind(this)} autoComplete="off" /></td>
+                    </tr>     
+                    <tr>
+                      <td className="form-key">Refresh Token TTL</td>
+                      <td className="form-value"><input className="tok-textfield" type="text" name="refreshTokenValiditySeconds" value={this.state.refreshTokenValiditySeconds} onChange={this.refreshTokenValiditySecondsChanged.bind(this)} autoComplete="off" /></td>
+                    </tr> 
+                    <tr>
+                      <td className="form-key">Redirect URL</td>
+                      <td className="form-value"><input className="tok-textfield" type="text" name="redirectUri" value={this.state.redirectUri} onChange={this.redirectUriChanged.bind(this)} autoComplete="off" /></td>
+                    </tr>                                                                                                       
+                  </table>
               
-              <div style={{width:"50%", height:"600px", overflow:"scroll"}}>
-<div style={{width:"100%", padding:"0 65px 0 65px"}}>
-     <div className="form-key form-header">Grant Types</div>
-</div>
-<table className="display-table select-table">
-  <tbody>
-    {this.state.grantTypes.map((grantType) => 
-     <tr key={grantType.id}>
-       <td className="dtr left-pad-0" style={{ width:"20px" }}>
-         <input type="checkbox" name={grantType.name} onChange={ this.toggleGrantType.bind(this, grantType) } defaultChecked={this.isGrantTypeChecked(grantType)}></input>
-       </td>
-       <td className="dtr left-pad-0" style={{ whiteSpace:"nowrap", width:"200px" }}>
-         {grantType.name}
-       </td>
-       <td className="dtr right-pad-0">
-         <span className="description">{grantType.description}</span>
-       </td>                       
-     </tr>
-    )}
-  </tbody>
-</table>  
+                  <div style={{textAlign:"center", paddingBottom:"30px"}}>
+                    {button}
+                    <button className="tok-button tok-cancel center" onClick={() => this.hide()}>Cancel</button>
+                  </div>
+                </div>
+              
+                <div style={{width:"50%", height:"600px", overflow:"scroll"}}>
+                  <div style={{width:"100%", padding:"0 65px 0 65px"}}>
+                    <div className="form-key form-header">Grant Types</div>
+                  </div>
+                  
+                  <table className="display-table select-table">
+                    <tbody>
+                     {this.state.grantTypes.map((grantType) => 
+                       <tr key={grantType.id}>
+                         <td className="dtr left-pad-0" style={{ width:"20px" }}>
+                           <input type="checkbox" name={grantType.name} onChange={ this.toggleGrantType.bind(this, grantType) } defaultChecked={this.isGrantTypeChecked(grantType)}></input>
+                         </td>
+                         <td className="dtr left-pad-0" style={{ whiteSpace:"nowrap", width:"200px" }}>
+                           {grantType.name}
+                         </td>
+                         <td className="dtr right-pad-0">
+                           <span className="description">{grantType.description}</span>
+                         </td>                       
+                       </tr>
+                     )}
+                    </tbody>
+                  </table>  
 
 <div style={{width:"100%", padding:"0 65px 0 65px"}}>
      <div className="form-key form-header">Scopes</div>
@@ -411,6 +461,7 @@ class CreateClientForm extends React.Component {
 </div>
 }               
               </div>
+              </div>}
             </Dialog>
         );
     }
