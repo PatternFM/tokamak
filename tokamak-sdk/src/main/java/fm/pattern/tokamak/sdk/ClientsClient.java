@@ -12,6 +12,7 @@ import fm.pattern.tokamak.sdk.commons.PaginatedListRepresentation;
 import fm.pattern.tokamak.sdk.commons.RestClient;
 import fm.pattern.tokamak.sdk.commons.Result;
 import fm.pattern.tokamak.sdk.model.ClientRepresentation;
+import fm.pattern.tokamak.sdk.model.SecretsRepresentation;
 
 public class ClientsClient extends RestClient {
 
@@ -27,6 +28,10 @@ public class ClientsClient extends RestClient {
 		return put(resource("/v1/clients/" + representation.getId()), representation, ClientRepresentation.class, token);
 	}
 
+	public Result<ClientRepresentation> updateSecret(ClientRepresentation representation, SecretsRepresentation secrets, String token) {
+		return put(resource("/v1/clients/" + representation.getId() + "/secrets"), secrets, ClientRepresentation.class, token);
+	}
+	
 	public Result<ClientRepresentation> delete(String id, String token) {
 		return delete(resource("/v1/clients/" + id), token);
 	}

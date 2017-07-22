@@ -23,6 +23,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 import static org.springframework.web.bind.annotation.RequestMethod.PUT;
 
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,8 +36,10 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import fm.pattern.tokamak.authorization.Authorize;
+import fm.pattern.tokamak.authorization.OAuth2AuthorizationContext;
 import fm.pattern.tokamak.sdk.commons.PaginatedListRepresentation;
 import fm.pattern.tokamak.sdk.model.ClientRepresentation;
+import fm.pattern.tokamak.sdk.model.SecretsRepresentation;
 import fm.pattern.tokamak.server.conversion.ClientConversionService;
 import fm.pattern.tokamak.server.conversion.PaginatedListConversionService;
 import fm.pattern.tokamak.server.model.Client;
@@ -71,6 +74,21 @@ public class ClientsEndpoint extends Endpoint {
 	public ClientRepresentation update(@PathVariable String id, @RequestBody ClientRepresentation representation) {
 		Client client = clientConversionService.convert(representation, clientService.findById(id).orThrow());
 		Client updated = clientService.update(client).orThrow();
+		return clientConversionService.convert(clientService.findById(updated.getId()).orThrow());
+	}
+
+	@Authorize(scopes = "clients:update", roles = "tokamak:admin,tokamak:user")
+	@RequestMapping(value = "/v1/clients/{id}/secrets", method = PUT, consumes = "application/json", produces = "application/json")
+	public ClientRepresentation updateSecret(@PathVariable String id, @RequestBody SecretsRepresentation representation) {
+		Client client = clientService.findById(id).orThrow();
+		Set<String> roles = new OAuth2AuthorizationContext().getRoles();
+		
+		if (roles.contains("tokamak:admin")) {
+			Client updated = clientService.updateClientSecret(client, representation.getNewSecret()).orThrow();
+			return clientConversionService.convert(clientService.findById(updated.getId()).orThrow());
+		}
+
+		Client updated = clientService.updateClientSecret(client, representation.getCurrentSecret(), representation.getNewSecret()).orThrow();
 		return clientConversionService.convert(clientService.findById(updated.getId()).orThrow());
 	}
 

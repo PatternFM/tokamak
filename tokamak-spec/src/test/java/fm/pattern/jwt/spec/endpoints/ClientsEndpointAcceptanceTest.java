@@ -3,6 +3,7 @@ package fm.pattern.jwt.spec.endpoints;
 import static fm.pattern.jwt.spec.PatternAssertions.assertThat;
 import static fm.pattern.tokamak.sdk.commons.CriteriaRepresentation.criteria;
 import static fm.pattern.tokamak.sdk.dsl.AccessTokenDSL.token;
+import static fm.pattern.tokamak.sdk.dsl.AccountDSL.account;
 import static fm.pattern.tokamak.sdk.dsl.AudienceDSL.audience;
 import static fm.pattern.tokamak.sdk.dsl.AuthorityDSL.authority;
 import static fm.pattern.tokamak.sdk.dsl.ClientDSL.client;
@@ -15,18 +16,23 @@ import org.junit.Before;
 import org.junit.Test;
 
 import fm.pattern.jwt.spec.AcceptanceTest;
+import fm.pattern.tokamak.sdk.ClientCredentials;
 import fm.pattern.tokamak.sdk.ClientsClient;
 import fm.pattern.tokamak.sdk.JwtClientProperties;
+import fm.pattern.tokamak.sdk.TokensClient;
 import fm.pattern.tokamak.sdk.commons.PaginatedListRepresentation;
 import fm.pattern.tokamak.sdk.commons.Result;
 import fm.pattern.tokamak.sdk.model.AccessTokenRepresentation;
+import fm.pattern.tokamak.sdk.model.AccountRepresentation;
 import fm.pattern.tokamak.sdk.model.AudienceRepresentation;
 import fm.pattern.tokamak.sdk.model.AuthorityRepresentation;
 import fm.pattern.tokamak.sdk.model.ClientRepresentation;
 import fm.pattern.tokamak.sdk.model.ScopeRepresentation;
+import fm.pattern.tokamak.sdk.model.SecretsRepresentation;
 
 public class ClientsEndpointAcceptanceTest extends AcceptanceTest {
 
+	private TokensClient tokensClient = new TokensClient(JwtClientProperties.getEndpoint());
 	private ClientsClient clientsClient = new ClientsClient(JwtClientProperties.getEndpoint());
 
 	private AccessTokenRepresentation token;
@@ -139,6 +145,47 @@ public class ClientsEndpointAcceptanceTest extends AcceptanceTest {
 		assertThat(result).rejected().withResponseCode(422);
 	}
 
+	@Test
+	public void anAdministratorShouldBeAbleToUpdateAClientSecret() {
+		String accountPassword = "alsdifjls3424AA!";
+		String newClientSecret = "sldifsladfjsdl#224234AB";
+
+		AccountRepresentation account = account().withPassword(accountPassword).withRoles("tokamak:admin").thatIs().persistent(token).build();
+		String t = token().withClient(TEST_CLIENT_CREDENTIALS).withUser(account.getUsername(), accountPassword).thatIs().persistent().build().getAccessToken();
+
+		ScopeRepresentation scope = scope().thatIs().persistent(token).build();
+		ClientRepresentation client = client().withScopes(scope).withToken(token).withName("name").withGrantTypes("client_credentials", "refresh_token").thatIs().persistent().build();
+
+		assertThat(clientsClient.updateSecret(client, new SecretsRepresentation(newClientSecret), t)).accepted().withResponseCode(200);
+		assertThat(tokensClient.getAccessToken(new ClientCredentials(client.getClientId(), newClientSecret))).accepted().withResponseCode(200);
+	}
+
+	@Test
+	public void anAdministratorShouldNotBeAbleToUpdateAClientSecretIfTheClientSecretIsInvalid() {
+		String accountPassword = "alsdifjls3424AA!";
+
+		AccountRepresentation account = account().withPassword(accountPassword).withRoles("tokamak:admin").thatIs().persistent(token).build();
+		String t = token().withClient(TEST_CLIENT_CREDENTIALS).withUser(account.getUsername(), accountPassword).thatIs().persistent().build().getAccessToken();
+
+		ScopeRepresentation scope = scope().thatIs().persistent(token).build();
+		ClientRepresentation client = client().withScopes(scope).withToken(token).withName("name").withGrantTypes("client_credentials", "refresh_token").thatIs().persistent().build();
+
+		assertThat(clientsClient.updateSecret(client, new SecretsRepresentation("2aaaaA$"), t)).rejected().withError(422, "PWD-0004", "The password must be at least 12 characters.");
+	}
+	
+	@Test
+	public void aUserShouldNotBeAbleToUpdateAClientSecretIfTheCurrentClientSecretIsNotProvided() {
+		String accountPassword = "alsdifjls3424AA!";
+
+		AccountRepresentation account = account().withPassword(accountPassword).withRoles("tokamak:user").thatIs().persistent(token).build();
+		String t = token().withClient(TEST_CLIENT_CREDENTIALS).withUser(account.getUsername(), accountPassword).thatIs().persistent().build().getAccessToken();
+
+		ScopeRepresentation scope = scope().thatIs().persistent(token).build();
+		ClientRepresentation client = client().withScopes(scope).withToken(token).withName("name").withGrantTypes("client_credentials", "refresh_token").thatIs().persistent().build();
+
+		assertThat(clientsClient.updateSecret(client, new SecretsRepresentation("2aaaaA$"), t)).rejected().withError(422, "PWD-1000", "The current client secret is required.");
+	}
+	
 	@Test
 	public void shouldBeAbleToDeleteAClient() {
 		ClientRepresentation client = client().withGrantTypes("password", "refresh_token").thatIs().persistent(token).build();
