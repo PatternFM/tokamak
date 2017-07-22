@@ -13,6 +13,7 @@ import fm.pattern.tokamak.sdk.commons.RestClient;
 import fm.pattern.tokamak.sdk.commons.Result;
 import fm.pattern.tokamak.sdk.commons.TokenHolder;
 import fm.pattern.tokamak.sdk.model.AccountRepresentation;
+import fm.pattern.tokamak.sdk.model.SecretsRepresentation;
 
 public class AccountsClient extends RestClient {
 
@@ -34,6 +35,10 @@ public class AccountsClient extends RestClient {
 
 	public Result<AccountRepresentation> update(AccountRepresentation representation, String token) {
 		return put(resource("/v1/accounts/" + representation.getId()), representation, AccountRepresentation.class, token);
+	}
+
+	public Result<AccountRepresentation> updatePassword(AccountRepresentation representation, SecretsRepresentation secrets, String token) {
+		return put(resource("/v1/accounts/" + representation.getId() + "/password"), secrets, AccountRepresentation.class, token);
 	}
 
 	public Result<AccountRepresentation> delete(String id) {

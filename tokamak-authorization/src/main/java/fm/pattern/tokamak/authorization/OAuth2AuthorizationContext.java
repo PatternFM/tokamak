@@ -74,6 +74,20 @@ public class OAuth2AuthorizationContext implements AuthorizationContextProvider 
 		return authorities == null ? new HashSet<String>() : authorities.stream().map(authority -> authority.getAuthority()).collect(Collectors.toSet());
 	}
 
+	public String getUsername() {
+		OAuth2Authentication oauth = oauth2Authentication();
+		if (oauth == null) {
+			return null;
+		}
+
+		if (oauth.isClientOnly()) {
+			return null;
+		}
+
+		Authentication userAuthentication = oauth.getUserAuthentication();
+		return (String) userAuthentication.getPrincipal();
+	}
+	
 	private static OAuth2Authentication oauth2Authentication() {
 		Authentication authentication = getContext().getAuthentication();
 		if (!(authentication instanceof OAuth2Authentication)) {

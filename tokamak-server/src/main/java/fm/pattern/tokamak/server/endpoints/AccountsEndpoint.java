@@ -23,6 +23,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 import static org.springframework.web.bind.annotation.RequestMethod.PUT;
 
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,8 +36,10 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import fm.pattern.tokamak.authorization.Authorize;
+import fm.pattern.tokamak.authorization.OAuth2AuthorizationContext;
 import fm.pattern.tokamak.sdk.commons.PaginatedListRepresentation;
 import fm.pattern.tokamak.sdk.model.AccountRepresentation;
+import fm.pattern.tokamak.sdk.model.SecretsRepresentation;
 import fm.pattern.tokamak.server.conversion.AccountConversionService;
 import fm.pattern.tokamak.server.conversion.PaginatedListConversionService;
 import fm.pattern.tokamak.server.model.Account;
@@ -71,6 +74,22 @@ public class AccountsEndpoint extends Endpoint {
 	public AccountRepresentation update(@PathVariable String id, @RequestBody AccountRepresentation representation) {
 		Account account = accountConversionService.convert(representation, accountService.findById(id).orThrow());
 		Account updated = accountService.update(account).orThrow();
+		return accountConversionService.convert(accountService.findById(updated.getId()).orThrow());
+	}
+
+	@Authorize(scopes = "accounts:update", roles = "tokamak:admin,tokamak:user")
+	@RequestMapping(value = "/v1/accounts/{id}/password", method = PUT, consumes = "application/json", produces = "application/json")
+	public AccountRepresentation updatePassword(@PathVariable String id, @RequestBody SecretsRepresentation representation) {
+		Set<String> roles = new OAuth2AuthorizationContext().getRoles();
+
+		if (roles.contains("tokamak:admin")) {
+			Account account = accountService.findById(id).orThrow();
+			Account updated = accountService.updatePassword(account, representation.getNewSecret()).orThrow();
+			return accountConversionService.convert(accountService.findById(updated.getId()).orThrow());
+		}
+
+		Account account = accountService.findByUsername(new OAuth2AuthorizationContext().getUsername()).orThrow();
+		Account updated = accountService.updatePassword(account, representation.getCurrentSecret(), representation.getNewSecret()).orThrow();
 		return accountConversionService.convert(accountService.findById(updated.getId()).orThrow());
 	}
 

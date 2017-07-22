@@ -172,18 +172,65 @@ public class ClientsEndpointAcceptanceTest extends AcceptanceTest {
 
 		assertThat(clientsClient.updateSecret(client, new SecretsRepresentation("2aaaaA$"), t)).rejected().withError(422, "PWD-0004", "The password must be at least 12 characters.");
 	}
-	
+
 	@Test
-	public void aUserShouldNotBeAbleToUpdateAClientSecretIfTheCurrentClientSecretIsNotProvided() {
+	public void aUserShouldBeAbleToUpdateAClientSecret() {
 		String accountPassword = "alsdifjls3424AA!";
+		String currentClientSecret = "sadfljasdf8978wrsls;ASFSADF$$";
+		String newClientSecret = "a4423SAFLSDFJSssdflsidfj5234$$";
 
 		AccountRepresentation account = account().withPassword(accountPassword).withRoles("tokamak:user").thatIs().persistent(token).build();
 		String t = token().withClient(TEST_CLIENT_CREDENTIALS).withUser(account.getUsername(), accountPassword).thatIs().persistent().build().getAccessToken();
 
 		ScopeRepresentation scope = scope().thatIs().persistent(token).build();
-		ClientRepresentation client = client().withScopes(scope).withToken(token).withName("name").withGrantTypes("client_credentials", "refresh_token").thatIs().persistent().build();
+		ClientRepresentation client = client().withClientSecret(currentClientSecret).withScopes(scope).withToken(token).withName("name").withGrantTypes("client_credentials", "refresh_token").thatIs().persistent().build();
 
-		assertThat(clientsClient.updateSecret(client, new SecretsRepresentation("2aaaaA$"), t)).rejected().withError(422, "PWD-1000", "The current client secret is required.");
+		assertThat(clientsClient.updateSecret(client, new SecretsRepresentation(newClientSecret, currentClientSecret), t)).accepted();
+		assertThat(tokensClient.getAccessToken(new ClientCredentials(client.getClientId(), newClientSecret))).accepted().withResponseCode(200);
+	}
+
+	@Test
+	public void aUserShouldNotBeAbleToUpdateAClientSecretIfTheCurrentClientSecretIsNotProvided() {
+		String accountPassword = "alsdifjls3424AA!";
+		String currentClientSecret = "sadfljasdf8978wrsls;ASFSADF$$";
+		String newClientSecret = "a4423SAFLSDFJSssdflsidfj5234$$";
+
+		AccountRepresentation account = account().withPassword(accountPassword).withRoles("tokamak:user").thatIs().persistent(token).build();
+		String t = token().withClient(TEST_CLIENT_CREDENTIALS).withUser(account.getUsername(), accountPassword).thatIs().persistent().build().getAccessToken();
+
+		ScopeRepresentation scope = scope().thatIs().persistent(token).build();
+		ClientRepresentation client = client().withClientSecret(currentClientSecret).withScopes(scope).withToken(token).withName("name").withGrantTypes("client_credentials", "refresh_token").thatIs().persistent().build();
+
+		assertThat(clientsClient.updateSecret(client, new SecretsRepresentation(newClientSecret, ""), t)).rejected().withError(422, "PWD-1000", "The current client secret is required.");
+	}
+
+	@Test
+	public void aUserShouldNotBeAbleToUpdateAClientSecretIfTheCurrentClientSecretDoesNotMatchTheExistingClientSecret() {
+		String accountPassword = "alsdifjls3424AA!";
+		String currentClientSecret = "sadfljasdf8978wrsls;ASFSADF$$";
+		String newClientSecret = "a4423SAFLSDFJSssdflsidfj5234$$";
+
+		AccountRepresentation account = account().withPassword(accountPassword).withRoles("tokamak:user").thatIs().persistent(token).build();
+		String t = token().withClient(TEST_CLIENT_CREDENTIALS).withUser(account.getUsername(), accountPassword).thatIs().persistent().build().getAccessToken();
+
+		ScopeRepresentation scope = scope().thatIs().persistent(token).build();
+		ClientRepresentation client = client().withClientSecret(currentClientSecret).withScopes(scope).withToken(token).withName("name").withGrantTypes("client_credentials", "refresh_token").thatIs().persistent().build();
+
+		assertThat(clientsClient.updateSecret(client, new SecretsRepresentation(newClientSecret, "currentClientSecret"), t)).rejected().withError(422, "PWD-1001", "The client secret provided does not match your current client secret. Please try again.");
+	}
+
+	@Test
+	public void aUserShouldNotBeAbleToUpdateAClientSecretIfTheNewClientSecretIsInvalid() {
+		String accountPassword = "alsdifjls3424AA!";
+		String currentClientSecret = "sadfljasdf8978wrsls;ASFSADF$$";
+
+		AccountRepresentation account = account().withPassword(accountPassword).withRoles("tokamak:user").thatIs().persistent(token).build();
+		String t = token().withClient(TEST_CLIENT_CREDENTIALS).withUser(account.getUsername(), accountPassword).thatIs().persistent().build().getAccessToken();
+
+		ScopeRepresentation scope = scope().thatIs().persistent(token).build();
+		ClientRepresentation client = client().withClientSecret(currentClientSecret).withScopes(scope).withToken(token).withName("name").withGrantTypes("client_credentials", "refresh_token").thatIs().persistent().build();
+
+		assertThat(clientsClient.updateSecret(client, new SecretsRepresentation("2aaaaA$", currentClientSecret), t)).rejected().withError(422, "PWD-0004", "The password must be at least 12 characters.");
 	}
 	
 	@Test

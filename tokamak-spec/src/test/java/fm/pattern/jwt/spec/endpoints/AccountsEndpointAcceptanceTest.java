@@ -4,7 +4,9 @@ import static fm.pattern.jwt.spec.PatternAssertions.assertThat;
 import static fm.pattern.tokamak.sdk.commons.CriteriaRepresentation.criteria;
 import static fm.pattern.tokamak.sdk.dsl.AccessTokenDSL.token;
 import static fm.pattern.tokamak.sdk.dsl.AccountDSL.account;
+import static fm.pattern.tokamak.sdk.dsl.ClientDSL.client;
 import static fm.pattern.tokamak.sdk.dsl.RoleDSL.role;
+import static fm.pattern.tokamak.sdk.dsl.ScopeDSL.scope;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Arrays;
@@ -17,6 +19,7 @@ import org.junit.Test;
 
 import fm.pattern.jwt.spec.AcceptanceTest;
 import fm.pattern.tokamak.sdk.AccountsClient;
+import fm.pattern.tokamak.sdk.ClientCredentials;
 import fm.pattern.tokamak.sdk.JwtClientProperties;
 import fm.pattern.tokamak.sdk.TokensClient;
 import fm.pattern.tokamak.sdk.UserCredentials;
@@ -25,7 +28,10 @@ import fm.pattern.tokamak.sdk.commons.Result;
 import fm.pattern.tokamak.sdk.commons.TokenHolder;
 import fm.pattern.tokamak.sdk.model.AccessTokenRepresentation;
 import fm.pattern.tokamak.sdk.model.AccountRepresentation;
+import fm.pattern.tokamak.sdk.model.ClientRepresentation;
 import fm.pattern.tokamak.sdk.model.RoleRepresentation;
+import fm.pattern.tokamak.sdk.model.ScopeRepresentation;
+import fm.pattern.tokamak.sdk.model.SecretsRepresentation;
 
 public class AccountsEndpointAcceptanceTest extends AcceptanceTest {
 
@@ -99,9 +105,9 @@ public class AccountsEndpointAcceptanceTest extends AcceptanceTest {
 
 		assertThat(updated.getRoles()).hasSize(1);
 		assertThat(updated.getRoles().iterator().next()).isEqualToComparingFieldByField(role);
-		
+
 		account.setRoles(new HashSet<>());
-		
+
 		Result<AccountRepresentation> result2 = accountsClient.update(account);
 		assertThat(result2).accepted().withResponseCode(200);
 		assertThat(result2.getInstance().getRoles()).isEmpty();
@@ -146,11 +152,91 @@ public class AccountsEndpointAcceptanceTest extends AcceptanceTest {
 	}
 
 	@Test
+	public void anAdministratorShouldBeAbleToSetAnAccountPassword() {
+		String clientSecret = "sadflasdjfsdfij324234ASDFD#$@#$";
+		String accountPassword = "alsdifjls3424AA!";
+		String newAccountPassword = "sldifsladfjsdl#224234AB";
+
+		AccountRepresentation admin = account().withPassword(accountPassword).withRoles("tokamak:admin").thatIs().persistent(token).build();
+		String t = token().withClient(TEST_CLIENT_CREDENTIALS).withUser(admin.getUsername(), accountPassword).thatIs().persistent().build().getAccessToken();
+
+		AccountRepresentation account = account().withPassword(accountPassword).withRoles("tokamak:admin").thatIs().persistent(token).build();
+
+		ScopeRepresentation scope = scope().thatIs().persistent(token).build();
+		ClientRepresentation client = client().withClientSecret(clientSecret).withScopes(scope).withToken(token).withName("name").withGrantTypes("password", "refresh_token").thatIs().persistent().build();
+
+		assertThat(accountsClient.updatePassword(account, new SecretsRepresentation(newAccountPassword), t)).accepted().withResponseCode(200);
+		assertThat(tokensClient.getAccessToken(new ClientCredentials(client.getClientId(), clientSecret), new UserCredentials(account.getUsername(), newAccountPassword))).accepted().withResponseCode(200);
+	}
+
+	@Test
+	public void anAdministratorShouldNotBeAbleToSetAnAccountPasswordIfThePasswordIsInvalid() {
+		String accountPassword = "alsdifjls3424AA!";
+		String newAccountPassword = "dl#234A";
+
+		AccountRepresentation admin = account().withPassword(accountPassword).withRoles("tokamak:admin").thatIs().persistent(token).build();
+		String t = token().withClient(TEST_CLIENT_CREDENTIALS).withUser(admin.getUsername(), accountPassword).thatIs().persistent().build().getAccessToken();
+
+		AccountRepresentation account = account().withPassword(accountPassword).withRoles("tokamak:admin").thatIs().persistent(token).build();
+		assertThat(accountsClient.updatePassword(account, new SecretsRepresentation(newAccountPassword), t)).rejected().withError(422, "PWD-0004", "The password must be at least 8 characters.");
+	}
+
+	@Test
+	public void aUserShouldNotBeAbleToSetAnAccountPassword() {
+		String accountPassword = "alsdifjls3424AA!";
+		String newAccountPassword = "sldifsladfjsdl#224234AB";
+
+		AccountRepresentation user = account().withPassword(accountPassword).withRoles("tokamak:user").thatIs().persistent(token).build();
+		String t = token().withClient(TEST_CLIENT_CREDENTIALS).withUser(user.getUsername(), accountPassword).thatIs().persistent().build().getAccessToken();
+
+		AccountRepresentation account = account().withPassword(accountPassword).withRoles("tokamak:user").thatIs().persistent(token).build();
+		assertThat(accountsClient.updatePassword(account, new SecretsRepresentation(newAccountPassword), t)).rejected().withError(422, "PWD-1000", "The current password is required.");
+	}
+
+	@Test
+	public void aUserShouldBeAbleToUpdateTheirOwnPassword() {
+		String clientSecret = "sadflasdjfsdfij324234ASDFD#$@#$";
+		String accountPassword = "alsdifjls3424AA!";
+		String newAccountPassword = "sldifsladfjsdl#224234AB";
+
+		AccountRepresentation account = account().withPassword(accountPassword).withRoles("tokamak:admin").thatIs().persistent(token).build();
+		String t = token().withClient(TEST_CLIENT_CREDENTIALS).withUser(account.getUsername(), accountPassword).thatIs().persistent().build().getAccessToken();
+
+		ScopeRepresentation scope = scope().thatIs().persistent(token).build();
+		ClientRepresentation client = client().withClientSecret(clientSecret).withScopes(scope).withToken(token).withName("name").withGrantTypes("password", "refresh_token").thatIs().persistent().build();
+
+		assertThat(accountsClient.updatePassword(account, new SecretsRepresentation(newAccountPassword, accountPassword), t)).accepted().withResponseCode(200);
+		assertThat(tokensClient.getAccessToken(new ClientCredentials(client.getClientId(), clientSecret), new UserCredentials(account.getUsername(), newAccountPassword))).accepted().withResponseCode(200);
+	}
+
+	@Test
+	public void aUserShouldNotBeAbleToUpdateTheirOwnPasswordIfTheNewPasswordIsInvalid() {
+		String accountPassword = "alsdifjls3424AA!";
+		String newAccountPassword = "aA2!";
+
+		AccountRepresentation user = account().withPassword(accountPassword).withRoles("tokamak:user").thatIs().persistent(token).build();
+		String t = token().withClient(TEST_CLIENT_CREDENTIALS).withUser(user.getUsername(), accountPassword).thatIs().persistent().build().getAccessToken();
+
+		assertThat(accountsClient.updatePassword(user, new SecretsRepresentation(newAccountPassword, accountPassword), t)).rejected().withError(422, "PWD-0004", "The password must be at least 8 characters.");
+	}
+
+	@Test
+	public void aUserShouldNotBeAbleToUpdateTheirOwnPasswordTheirProvidedPasswordDoesNotMatchTheCurrentPassword() {
+		String accountPassword = "alsdifjls3424AA!";
+		String newAccountPassword = "sldifsladfjsdl#224234AB";
+
+		AccountRepresentation user = account().withPassword(accountPassword).withRoles("tokamak:user").thatIs().persistent(token).build();
+		String t = token().withClient(TEST_CLIENT_CREDENTIALS).withUser(user.getUsername(), accountPassword).thatIs().persistent().build().getAccessToken();
+
+		assertThat(accountsClient.updatePassword(user, new SecretsRepresentation(newAccountPassword, "somethingelse"), t)).rejected().withError(422, "PWD-1001", "The password provided does not match your current password. Please try again.");
+	}
+
+	@Test
 	public void shouldBeAbleToDeleteAnAccount() {
 		RoleRepresentation role1 = role().thatIs().persistent(token).build();
 
 		account().withRoles(role1).thatIs().persistent(token).build();
-		
+
 		AccountRepresentation account = account().withRoles(role1).thatIs().persistent(token).build();
 		Result<AccountRepresentation> result = accountsClient.delete(account.getId());
 		assertThat(result).accepted().withResponseCode(204);
