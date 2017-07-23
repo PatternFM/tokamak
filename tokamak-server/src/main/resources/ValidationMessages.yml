@@ -222,7 +222,10 @@ grantType.delete.conflict:
   code: GNT-0008
   exception: fm.pattern.valex.ResourceConflictException
 
-
+password.required:
+  message: "A password is required."
+  code: PWD-0007
+  
 password.uppercase.required:
   message: "At least one uppercase character is required."
   code: PWD-0001

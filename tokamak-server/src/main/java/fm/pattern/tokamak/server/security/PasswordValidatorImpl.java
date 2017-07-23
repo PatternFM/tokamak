@@ -17,7 +17,6 @@ class PasswordValidatorImpl implements PasswordValidator {
 	public Result<String> validate(String password, PasswordPolicy policy) {
 		List<Reportable> errors = new ArrayList<>();
 		
-		// TODO: Test
 		if(StringUtils.isBlank(password)) {
 			return Result.reject("password.required");
 		}

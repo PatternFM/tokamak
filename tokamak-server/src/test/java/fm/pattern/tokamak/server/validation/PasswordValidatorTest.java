@@ -23,6 +23,15 @@ public class PasswordValidatorTest extends IntegrationTest {
 	}
 
 	@Test
+	public void shouldFailValidationWhenAnPasswordIsNotProvided() {
+		PasswordPolicy policy = passwordPolicy().requireUppercaseCharacter(true).build();
+
+		assertThat(validator.validate(null, policy)).rejected().withError("PWD-0007", "A password is required.", UnprocessableEntityException.class);
+		assertThat(validator.validate("", policy)).rejected().withError("PWD-0007", "A password is required.", UnprocessableEntityException.class);
+		assertThat(validator.validate("  ", policy)).rejected().withError("PWD-0007", "A password is required.", UnprocessableEntityException.class);
+	}
+
+	@Test
 	public void shouldFailValidationWhenAnUppercaseCharacterIsRequired() {
 		PasswordPolicy policy = passwordPolicy().requireUppercaseCharacter(true).build();
 
@@ -56,7 +65,7 @@ public class PasswordValidatorTest extends IntegrationTest {
 		assertThat(validator.validate("*onespecial", policy)).accepted();
 		assertThat(validator.validate("onespecial&", policy)).accepted();
 	}
-	
+
 	@Test
 	public void shouldFailValidationWhenANumericCharacterIsRequired() {
 		PasswordPolicy policy = passwordPolicy().requireNumericCharacter(true).build();
