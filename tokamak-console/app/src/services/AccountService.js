@@ -14,6 +14,10 @@ var AccountService = {
         return RestService.put("/v1/accounts/" + account.id, account);
     },
 
+    updatePassword(account, password) {
+        return RestService.put("/v1/accounts/" + account.id + "/password", { newSecret:password });
+    },
+
     delete(account) {
         return RestService.delete("/v1/accounts/" + account.id, account);
     }

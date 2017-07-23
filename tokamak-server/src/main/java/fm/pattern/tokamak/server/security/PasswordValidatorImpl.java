@@ -3,6 +3,7 @@ package fm.pattern.tokamak.server.security;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import fm.pattern.tokamak.server.model.PasswordPolicy;
@@ -15,6 +16,12 @@ class PasswordValidatorImpl implements PasswordValidator {
 	@Override
 	public Result<String> validate(String password, PasswordPolicy policy) {
 		List<Reportable> errors = new ArrayList<>();
+		
+		// TODO: Test
+		if(StringUtils.isBlank(password)) {
+			return Result.reject("password.required");
+		}
+		
 		errors.addAll(validateUppercaseCharacter(password, policy).getErrors());
 		errors.addAll(validateLowercaseCharacter(password, policy).getErrors());
 		errors.addAll(validateSpecialCharacter(password, policy).getErrors());

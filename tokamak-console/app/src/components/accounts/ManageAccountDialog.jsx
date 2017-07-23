@@ -15,8 +15,13 @@ class CreateAccountForm extends React.Component {
         this.state = {
             username:"",
             password:"",
+            
             roles:[],
             selectedRoles:[],
+            
+            newPassword:"",
+            confirmNewPassword:"",            
+            
             error: "",
             loading: false,
             update: false,
@@ -55,6 +60,14 @@ class CreateAccountForm extends React.Component {
 
     passwordChanged(event) {
         this.setState({ password:event.target.value });
+    }
+
+    newPasswordChanged(event) {
+        this.setState({ newPassword:event.target.value });
+    }
+
+    confirmNewPasswordChanged(event) {
+        this.setState({ confirmNewPassword:event.target.value });
     }
 
     toggle(role, event) {
@@ -109,6 +122,42 @@ class CreateAccountForm extends React.Component {
         });
     }
 
+    changePassword() {
+        console.log("UPDATE");
+        this.setState( { updatePassword: true } );
+    }
+
+    updatePassword() {        
+        this.setState({ loading:true });
+
+        if(this.state.newPassword !== this.state.confirmNewPassword) {
+            this.setState({ error:"Your passwords do not match." });
+            return;
+        }
+
+        let self = this;
+        AccountService.updatePassword({ id:this.state.id }, this.state.newPassword).then(function(result) {
+          setTimeout(function() {
+            if(result.status === "accepted") {
+                self.setState({ updatePassword: false });
+                self.setState({ newPassword:"" });
+                self.setState({ confirmNewPassword:"" });
+            }
+            if(result.status === "rejected") {
+                self.setState({ error:result.errors[0].message });
+            }
+            self.setState({ loading:false });
+          }, 300);
+        });
+    }
+
+    cancelUpdatePassword() {
+         this.setState( { error: "" } );
+         this.setState( { updatePassword: false } );
+         this.setState( { newPassword: "" } );
+         this.setState( { confirmNewPassword: "" } );
+    }
+
     isChecked(role) {
        let result = this.state.selectedRoles.filter(function(obj) {
            return obj.name === role.name; 
@@ -119,13 +168,45 @@ class CreateAccountForm extends React.Component {
     render() {
         let title = this.state.update ? "Update Account" : "Create Account";
         let button = this.state.update ? <button className="tok-button center" style={{marginRight:"10px"}} onClick={ () => this.update() }>Update</button> : <button className="tok-button center" style={{marginRight:"10px"}} onClick={() => this.create()}>Create</button>;
-        let inputv = this.state.update ? <div><div className="tok-textfield-disabled" style={{ width:"70%", float:"left" }}>&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;</div><i className="change-password">change password</i></div> : <input className="tok-textfield" type="password" name="name" value={this.state.password} onChange={this.passwordChanged.bind(this)} autoComplete="off" />;
-        let inputx = this.state.update ? <div className="tok-textfield-disabled">{this.state.username}</div> : <input autoFocus className="tok-textfield" type="text" name="name" value={this.state.username} onChange={this.usernameChanged.bind(this)} autoComplete="off" />;
+        let usernameField = this.state.update ? <div className="tok-textfield-disabled">{this.state.username}</div> : <input autoFocus className="tok-textfield" type="text" name="name" value={this.state.username} onChange={this.usernameChanged.bind(this)} autoComplete="off" />;
+        let passwordField = this.state.update ? <div><div className="tok-textfield-disabled" style={{ width:"68%", float:"left" }}>&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;</div><i className="change-password" onClick={ () => this.changePassword() }>change password</i></div> : <input className="tok-textfield" type="password" name="name" value={this.state.password} onChange={this.passwordChanged.bind(this)} autoComplete="off" />;
 
         return (
-            <Dialog modal={true} open={this.state.open} autoScrollBodyContent={true}>
+            <Dialog modal={true} contentStyle={{width:"80%", maxWidth:"none"}} open={this.state.open} autoScrollBodyContent={true}>
+              {this.state.updatePassword && 
+                  <div className="animated fadeIn">
+                    <div className="modal-title">Update Password</div>
+                    
+                    <div style={{width:"50%", float:"left"}}>
+                      {this.state.error && this.state.error.length > 0 &&
+                        <div className="validation-error">{this.state.error}</div>
+                      }        
+              
+                      <table style={{width:"100%", padding:"0 60px 30px 60px"}}>
+                        <tr>
+                          <td className="form-key">New Password</td>
+                          <td className="form-value"><input className="tok-textfield" type="password" value={this.state.newPassword} onChange={this.newPasswordChanged.bind(this)} autoComplete="off" /></td>
+                        </tr>
+                        <tr>
+                          <td className="form-key">Confirm Password</td>
+                          <td className="form-value"><input className="tok-textfield" type="password" value={this.state.confirmNewPassword} onChange={this.confirmNewPasswordChanged.bind(this)} autoComplete="off" /></td>
+                        </tr>                                                                                                        
+                      </table>
+              
+                      <div style={{textAlign:"center", paddingBottom:"30px"}}>
+                        <button className="tok-button center" style={{marginRight:"10px"}} onClick={ () => this.updatePassword() }>Update</button>
+                        <button className="tok-button tok-cancel center" onClick={() => this.cancelUpdatePassword()}>Cancel</button>
+                      </div>
+                      <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+                    </div>                    
+                  </div>
+              }            
+            
+              {!this.state.updatePassword &&
+                <div className="animated fadeIn">            
               <div className="modal-title">{title}</div>
               
+              <div style={{width:"50%", float:"left"}}>
               {this.state.error && this.state.error.length > 0 &&
                  <div className="validation-error">{this.state.error}</div>
               }        
@@ -133,15 +214,24 @@ class CreateAccountForm extends React.Component {
               <table style={{width:"100%", padding:"0 60px 30px 60px"}}>
                 <tr>
                   <td className="form-key">Username</td>
-                     <td className="form-value">{inputx}</td>
+                     <td className="form-value">{usernameField}</td>
                 </tr>
                 <tr>
                   <td className="form-key">Password</td>
-                  <td className="form-value">{inputv}</td>
+                  <td className="form-value">{passwordField}</td>
                 </tr>                                
               </table>
               
-              <div className="form-key" style={{textAlign:"left", width:"100%", padding:"0 65px 0 65px"}}>Roles</div>
+              <div style={{textAlign:"center", paddingBottom:"30px"}}>
+                {button}
+                <button className="tok-button tok-cancel center" onClick={() => this.hide()}>Cancel</button>
+              </div>              
+              </div>
+              
+              <div style={{width:"50%", height:"600px", overflow:"scroll"}}>
+                  <div style={{width:"100%", padding:"0 65px 0 65px"}}>
+                    <div className="form-key form-header">Roles</div>
+                  </div>
                 <table className="display-table select-table">
                   <tbody>
                     {this.state.roles.map((role) => 
@@ -159,11 +249,9 @@ class CreateAccountForm extends React.Component {
                     )}
                   </tbody>
                 </table>              
-              
-              <div style={{textAlign:"center", paddingBottom:"30px"}}>
-                {button}
-                <button className="tok-button tok-cancel center" onClick={() => this.hide()}>Cancel</button>
-              </div>
+            </div>
+            </div>
+            }
             </Dialog>
         );
     }

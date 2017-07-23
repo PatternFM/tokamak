@@ -14,6 +14,10 @@ var ClientService = {
         return RestService.put("/v1/clients/" + client.id, client);
     },
 
+    updateSecret(client, secret) {
+        return RestService.put("/v1/clients/" + client.id + "/secrets", {newSecret:secret});
+    },
+
     delete(client) {
         return RestService.delete("/v1/clients/" + client.id, client);
     }

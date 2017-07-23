@@ -252,8 +252,35 @@ class CreateClientForm extends React.Component {
         this.setState( { updateSecret: true } );
     }
 
+    updateSecret() {        
+        this.setState({ loading:true });
+
+        if(this.state.newClientSecret !== this.state.confirmNewClientSecret) {
+            this.setState({ error:"Your secrets do not match." });
+            return;
+        }
+
+        let self = this;
+        ClientService.updateSecret({ id:this.state.id }, this.state.newClientSecret).then(function(result) {
+          setTimeout(function() {
+            if(result.status === "accepted") {
+                self.setState( { updateSecret: false } );
+                self.setState({ newClientSecret:"" });
+                self.setState({ confirmNewClientSecret:"" });
+            }
+            if(result.status === "rejected") {
+                self.setState({ error:result.errors[0].message });
+            }
+            self.setState({ loading:false });
+          }, 300);
+        });
+    }
+
     cancelUpdateSecret() {
+         this.setState( { error: "" } );
          this.setState( { updateSecret: false } );
+         this.setState( { newClientSecret: "" } );
+         this.setState( { confirmNewClientSecret: "" } );
     }
 
     isScopeChecked(scope) {
@@ -287,8 +314,8 @@ class CreateClientForm extends React.Component {
     render() {
         let title = this.state.update ? "Update App" : "Create App";
         let button = this.state.update ? <button className="tok-button center" style={{marginRight:"10px"}} onClick={ () => this.update() }>Update</button> : <button className="tok-button center" style={{marginRight:"10px"}} onClick={() => this.create()}>Create</button>;
-        let clientSecretField = this.state.update ? <div><div className="tok-textfield-disabled" style={{ width:"70%", float:"left" }}>&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;</div><i className="change-password" onClick={ () => this.changeSecret() }>change secret</i></div> : <input className="tok-textfield" type="password" name="clientSecret" onChange={this.clientSecretChanged.bind(this)} autoComplete="off" />;
         let clientIdField = this.state.update ? <div className="tok-textfield-disabled">{this.state.clientId}</div> : <input autoFocus className="tok-textfield" type="text" name="name" value={this.state.username} onChange={this.clientIdChanged.bind(this)} autoComplete="off" />;
+        let clientSecretField = this.state.update ? <div><div className="tok-textfield-disabled" style={{ width:"70%", float:"left" }}>&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;</div><i className="change-password" onClick={ () => this.changeSecret() }>change secret</i></div> : <input className="tok-textfield" type="password" name="clientSecret" onChange={this.clientSecretChanged.bind(this)} autoComplete="off" />;
 
         return (
             <Dialog modal={true} contentStyle={{width:"80%", maxWidth:"none"}} open={this.state.open}>
@@ -313,7 +340,7 @@ class CreateClientForm extends React.Component {
                       </table>
               
                       <div style={{textAlign:"center", paddingBottom:"30px"}}>
-                        {button}
+                        <button className="tok-button center" style={{marginRight:"10px"}} onClick={ () => this.updateSecret() }>Update</button>
                         <button className="tok-button tok-cancel center" onClick={() => this.cancelUpdateSecret()}>Cancel</button>
                       </div>
                       <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
