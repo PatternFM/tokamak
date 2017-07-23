@@ -142,7 +142,7 @@ public class AccountServiceIntegrationTest extends IntegrationTest {
 	}
 
 	@Test
-	public void shouldNotBeAbleToFindAnAccountByIdIfTheEmailAddressIsInvalid() {
+	public void shouldNotBeAbleToFindAnAccountByIdIfTheUsernameIsInvalid() {
 		assertThat(accountService.findByUsername("csrx")).rejected().withError("ACC-0008", "No such username: csrx", EntityNotFoundException.class);
 	}
 

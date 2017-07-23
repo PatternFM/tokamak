@@ -222,6 +222,7 @@ grantType.delete.conflict:
   code: GNT-0008
   exception: fm.pattern.valex.ResourceConflictException
 
+
 password.required:
   message: "A password is required."
   code: PWD-0007
@@ -251,6 +252,10 @@ password.digit.required:
   code: PWD-0006
 
 
+passwordPolicy.id.required:
+  message: "A password policy id is required."
+  code: POL-1000
+
 passwordPolicy.name.conflict:
   message: "This policy name is already in use."
   code: POL-0001
@@ -259,6 +264,11 @@ passwordPolicy.name.conflict:
 passwordPolicy.name.required:
   message: "A policy name is required."
   code: POL-0002
+
+passwordPolicy.name.not_found:
+  message: "No such policy name: %s"
+  code: POL-0008
+  exception: fm.pattern.valex.EntityNotFoundException
 
 passwordPolicy.name.size:
   message: "A policy name cannot be greater than {max} characters."

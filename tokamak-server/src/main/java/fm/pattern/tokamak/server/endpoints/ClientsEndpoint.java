@@ -78,7 +78,7 @@ public class ClientsEndpoint extends Endpoint {
 	}
 
 	@Authorize(scopes = "clients:update", roles = "tokamak:admin,tokamak:user")
-	@RequestMapping(value = "/v1/clients/{id}/secrets", method = PUT, consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = "/v1/clients/{id}/secret", method = PUT, consumes = "application/json", produces = "application/json")
 	public ClientRepresentation updateSecret(@PathVariable String id, @RequestBody SecretsRepresentation representation) {
 		Client client = clientService.findById(id).orThrow();
 		Set<String> roles = new OAuth2AuthorizationContext().getRoles();

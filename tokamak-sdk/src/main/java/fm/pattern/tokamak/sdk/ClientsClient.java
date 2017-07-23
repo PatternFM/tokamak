@@ -29,7 +29,7 @@ public class ClientsClient extends RestClient {
 	}
 
 	public Result<ClientRepresentation> updateSecret(ClientRepresentation representation, SecretsRepresentation secrets, String token) {
-		return put(resource("/v1/clients/" + representation.getId() + "/secrets"), secrets, ClientRepresentation.class, token);
+		return put(resource("/v1/clients/" + representation.getId() + "/secret"), secrets, ClientRepresentation.class, token);
 	}
 	
 	public Result<ClientRepresentation> delete(String id, String token) {

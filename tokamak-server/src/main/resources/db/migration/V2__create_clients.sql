@@ -31,7 +31,9 @@ INSERT INTO ClientScopes (client_id, scope_id) VALUES('cli_vthrewfbhgbt2bm46bks'
 INSERT INTO ClientScopes (client_id, scope_id) VALUES('cli_vthrewfbhgbt2bm46bks', 'scp_ty8l6srhwlp9si5mpmd9');
 INSERT INTO ClientScopes (client_id, scope_id) VALUES('cli_vthrewfbhgbt2bm46bks', 'scp_cd28ieewxlb3gtde3tza');
 INSERT INTO ClientScopes (client_id, scope_id) VALUES('cli_vthrewfbhgbt2bm46bks', 'scp_edgdg5kb7bjsb9cyh55x');
-
+INSERT INTO ClientScopes (client_id, scope_id) VALUES('cli_vthrewfbhgbt2bm46bks', 'scp_2fgp0oocouglemqqdud6');
+INSERT INTO ClientScopes (client_id, scope_id) VALUES('cli_vthrewfbhgbt2bm46bks', 'scp_ats0jo8mqqdudj6yfzg6');
+INSERT INTO ClientScopes (client_id, scope_id) VALUES('cli_vthrewfbhgbt2bm46bks', 'scp_ofgp0oq1gmu4z9zhp8uk');
 
 INSERT INTO Clients (created, updated, id, client_id, client_secret, name, description) VALUES (NOW(),NOW(),'cli_zuofgp0oocouglenmqni','console-client','$2a$10$B1VW86X4Ld8wbuZr.IxJmutS0xyvTxdneX6s/KKNbhxHCpkZ532Fu', 'Tokamak Console App','The Tokamak console administrative app.');
 
@@ -63,3 +65,6 @@ INSERT INTO ClientScopes (client_id, scope_id) VALUES('cli_zuofgp0oocouglenmqni'
 INSERT INTO ClientScopes (client_id, scope_id) VALUES('cli_zuofgp0oocouglenmqni', 'scp_ty8l6srhwlp9si5mpmd9');
 INSERT INTO ClientScopes (client_id, scope_id) VALUES('cli_zuofgp0oocouglenmqni', 'scp_cd28ieewxlb3gtde3tza');
 INSERT INTO ClientScopes (client_id, scope_id) VALUES('cli_zuofgp0oocouglenmqni', 'scp_edgdg5kb7bjsb9cyh55x');
+INSERT INTO ClientScopes (client_id, scope_id) VALUES('cli_zuofgp0oocouglenmqni', 'scp_ats0jo8mqqdudj6yfzg6');
+INSERT INTO ClientScopes (client_id, scope_id) VALUES('cli_zuofgp0oocouglenmqni', 'scp_ofgp0oq1gmu4z9zhp8uk');
+INSERT INTO ClientScopes (client_id, scope_id) VALUES('cli_zuofgp0oocouglenmqni', 'scp_2fgp0oocouglemqqdud6');

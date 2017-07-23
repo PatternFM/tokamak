@@ -12,6 +12,11 @@ import fm.pattern.valex.Result;
 class PasswordPolicyServiceImpl extends DataServiceImpl<PasswordPolicy> implements PasswordPolicyService {
 
 	@Transactional(readOnly = true)
+	public Result<PasswordPolicy> findById(String id) {
+		return super.findById(id, PasswordPolicy.class);
+	}
+
+	@Transactional(readOnly = true)
 	public Result<PasswordPolicy> findByName(String name) {
 		if (isBlank(name)) {
 			return Result.reject("passwordPolicy.name.required");

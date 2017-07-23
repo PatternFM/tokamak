@@ -113,7 +113,7 @@ class ClientServiceImpl extends DataServiceImpl<Client> implements ClientService
 		return result;
 	}
 
-	@Transactional
+	@Transactional(readOnly = true)
 	public Result<Client> findById(String id) {
 		Client client = cache.get(String.format(id_key, id), Client.class);
 		if (client != null) {
@@ -128,7 +128,7 @@ class ClientServiceImpl extends DataServiceImpl<Client> implements ClientService
 		return result;
 	}
 
-	@Transactional
+	@Transactional(readOnly = true)
 	public Result<Client> findByClientId(String clientId) {
 		if (isBlank(clientId)) {
 			return Result.reject("client.clientId.required");
