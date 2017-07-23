@@ -2,6 +2,7 @@ package fm.pattern.jwt.spec.endpoints;
 
 import static fm.pattern.jwt.spec.PatternAssertions.assertThat;
 import static fm.pattern.tokamak.sdk.dsl.AccessTokenDSL.token;
+import static fm.pattern.tokamak.sdk.dsl.PasswordPolicyDSL.passwordPolicy;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.Before;
@@ -27,7 +28,11 @@ public class PasswordPoliciesEndpointAcceptanceTest extends AcceptanceTest {
 
 	@Test
 	public void shouldBeAbleToCreateAPasswordPolicy() {
+		PasswordPolicyRepresentation representation = passwordPolicy().build();
 
+		Result<PasswordPolicyRepresentation> result = client.create(representation, token.getAccessToken());
+		assertThat(result).accepted().withResponseCode(201);
+		assertThat(result.getInstance()).isEqualToIgnoringGivenFields(representation, "id", "created", "updated");
 	}
 
 	@Test

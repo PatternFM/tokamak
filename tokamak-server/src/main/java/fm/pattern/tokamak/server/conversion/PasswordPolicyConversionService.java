@@ -14,6 +14,7 @@ public class PasswordPolicyConversionService {
 		representation.setUpdated(passwordPolicy.getUpdated());
 		representation.setName(passwordPolicy.getName());
 		representation.setDescription(passwordPolicy.getDescription());
+		representation.setMinLength(passwordPolicy.getMinLength());
 
 		representation.setRejectCommonPasswords(passwordPolicy.isRejectCommonPasswords());
 		representation.setRequireLowercaseCharacter(passwordPolicy.isRequireLowercaseCharacter());
@@ -27,6 +28,8 @@ public class PasswordPolicyConversionService {
 		PasswordPolicy passwordPolicy = new PasswordPolicy();
 		passwordPolicy.setName(representation.getName());
 		passwordPolicy.setDescription(representation.getDescription());
+		passwordPolicy.setMinLength(representation.getMinLength());
+
 		passwordPolicy.setRejectCommonPasswords(representation.isRejectCommonPasswords());
 		passwordPolicy.setRequireLowercaseCharacter(representation.isRequireLowercaseCharacter());
 		passwordPolicy.setRequireNumericCharacter(representation.isRequireNumericCharacter());
@@ -38,6 +41,8 @@ public class PasswordPolicyConversionService {
 	public PasswordPolicy convert(PasswordPolicyRepresentation representation, PasswordPolicy passwordPolicy) {
 		passwordPolicy.setName(representation.getName());
 		passwordPolicy.setDescription(representation.getDescription());
+		passwordPolicy.setMinLength(representation.getMinLength());
+
 		passwordPolicy.setRejectCommonPasswords(representation.isRejectCommonPasswords());
 		passwordPolicy.setRequireLowercaseCharacter(representation.isRequireLowercaseCharacter());
 		passwordPolicy.setRequireNumericCharacter(representation.isRequireNumericCharacter());

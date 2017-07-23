@@ -263,7 +263,7 @@ INSERT INTO Scopes (created, updated, id, name, description) VALUES (NOW(),NOW()
 INSERT INTO Scopes (created, updated, id, name, description) VALUES (NOW(),NOW(),'scp_ty8l6srhwlp9si5mpmd9','scopes:delete','Delete scopes');
 INSERT INTO Scopes (created, updated, id, name, description) VALUES (NOW(),NOW(),'scp_cd28ieewxlb3gtde3tza','scopes:read','View and list scopes');
 INSERT INTO Scopes (created, updated, id, name, description) VALUES (NOW(),NOW(),'scp_edgdg5kb7bjsb9cyh55x','grant_types:read','View and list grant types');
-INSERT INTO Scopes (created, updated, id, name, description) VALUES (NOW(),NOW(),'scp_2fgp0oocouglemqqdud6','policies:create','Create password policies');
+INSERT INTO Scopes (created, updated, id, name, description) VALUES (NOW(),NOW(),'scp_2fgp0o87tx6uglemdud1','policies:create','Create password policies');
 INSERT INTO Scopes (created, updated, id, name, description) VALUES (NOW(),NOW(),'scp_ats0jo8mqqdudj6yfzg6','policies:update','Update password policies');
 INSERT INTO Scopes (created, updated, id, name, description) VALUES (NOW(),NOW(),'scp_ofgp0oq1gmu4z9zhp8uk','policies:read','Read password policies');
 
