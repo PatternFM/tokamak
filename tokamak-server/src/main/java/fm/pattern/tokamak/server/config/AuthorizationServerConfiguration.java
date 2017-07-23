@@ -52,10 +52,10 @@ import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 
 import com.google.common.collect.Lists;
 
-import fm.pattern.tokamak.server.security.AccountAuthenticationService;
-import fm.pattern.tokamak.server.security.ClientAuthenticationService;
 import fm.pattern.tokamak.server.security.CustomJwtTokenEnhancer;
 import fm.pattern.tokamak.server.security.JWTTokenConverter;
+import fm.pattern.tokamak.server.service.AccountAuthenticationService;
+import fm.pattern.tokamak.server.service.ClientAuthenticationService;
 
 @Configuration
 @EnableWebSecurity

@@ -33,6 +33,8 @@ import org.springframework.security.oauth2.provider.OAuth2Request;
 import org.springframework.security.oauth2.provider.token.DefaultAccessTokenConverter;
 import org.springframework.stereotype.Component;
 
+import fm.pattern.tokamak.server.service.ClientAuthenticationService;
+
 @Component
 @SuppressWarnings("unchecked")
 public class JWTTokenConverter extends DefaultAccessTokenConverter {

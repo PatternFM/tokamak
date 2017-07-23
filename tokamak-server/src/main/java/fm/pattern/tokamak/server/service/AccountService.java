@@ -19,7 +19,7 @@ package fm.pattern.tokamak.server.service;
 import java.util.List;
 
 import fm.pattern.tokamak.server.model.Account;
-import fm.pattern.tokamak.server.pagination.Criteria;
+import fm.pattern.tokamak.server.repository.Criteria;
 import fm.pattern.valex.Result;
 import fm.pattern.valex.annotations.Create;
 import fm.pattern.valex.annotations.Delete;

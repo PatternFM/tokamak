@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package fm.pattern.tokamak.server.security;
+package fm.pattern.tokamak.server.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -23,7 +23,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import fm.pattern.tokamak.server.model.Account;
-import fm.pattern.tokamak.server.service.AccountService;
+import fm.pattern.tokamak.server.security.AuthenticatedAccount;
+import fm.pattern.tokamak.server.security.CurrentAuthenticatedAccountContext;
+import fm.pattern.tokamak.server.security.CurrentAuthenticatedClientContext;
 
 @Service("authenticationService")
 class AccountAuthenticationServiceImpl implements AccountAuthenticationService {
@@ -37,11 +39,21 @@ class AccountAuthenticationServiceImpl implements AccountAuthenticationService {
 
 	@Transactional(readOnly = true)
 	public UserDetails loadUserByUsername(String username) {
+		if (CurrentAuthenticatedAccountContext.hasAuthenticatedAccount()) {
+			AuthenticatedAccount account = CurrentAuthenticatedAccountContext.getAuthenticatedAccount();
+			if (account.getUsername().equals(username)) {
+				return CurrentAuthenticatedAccountContext.getAuthenticatedAccount();
+			}
+			CurrentAuthenticatedAccountContext.clear();
+		}
+
 		Account account = accountService.findByUsername(username).getInstance();
 		if (account == null || account.isLocked()) {
+			CurrentAuthenticatedClientContext.clear();
 			throw new UsernameNotFoundException("Could not find an active account with email address: " + username);
 		}
-		return new AuthenticatedAccount(account);
+
+		return CurrentAuthenticatedAccountContext.setAuthenticatedAccount(new AuthenticatedAccount(account));
 	}
 
 }

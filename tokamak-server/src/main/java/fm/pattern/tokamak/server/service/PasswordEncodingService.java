@@ -14,10 +14,12 @@
  * limitations under the License.
  */
 
-package fm.pattern.tokamak.server.security;
+package fm.pattern.tokamak.server.service;
 
-import org.springframework.security.core.userdetails.UserDetailsService;
+public interface PasswordEncodingService {
 
-public interface AccountAuthenticationService extends UserDetailsService {
+	String encode(String password);
+
+	boolean matches(String raw, String encoded);
 
 }

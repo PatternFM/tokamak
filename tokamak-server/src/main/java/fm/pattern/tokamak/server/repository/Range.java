@@ -1,4 +1,4 @@
-package fm.pattern.tokamak.server.pagination;
+package fm.pattern.tokamak.server.repository;
 
 public class Range {
 

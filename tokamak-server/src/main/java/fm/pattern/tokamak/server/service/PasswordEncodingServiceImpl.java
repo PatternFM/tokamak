@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package fm.pattern.tokamak.server.security;
+package fm.pattern.tokamak.server.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;

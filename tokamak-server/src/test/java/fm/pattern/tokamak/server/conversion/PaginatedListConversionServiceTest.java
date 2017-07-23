@@ -11,8 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import fm.pattern.tokamak.sdk.commons.PaginatedListRepresentation;
 import fm.pattern.tokamak.sdk.model.AccountRepresentation;
 import fm.pattern.tokamak.server.IntegrationTest;
-import fm.pattern.tokamak.server.pagination.Criteria;
-import fm.pattern.tokamak.server.pagination.PaginatedList;
+import fm.pattern.tokamak.server.repository.Criteria;
+import fm.pattern.tokamak.server.repository.PaginatedList;
 
 public class PaginatedListConversionServiceTest extends IntegrationTest {
 

@@ -1,4 +1,4 @@
-package fm.pattern.tokamak.server.security;
+package fm.pattern.tokamak.server.service;
 
 import static fm.pattern.tokamak.server.dsl.ClientDSL.client;
 import static fm.pattern.tokamak.server.dsl.GrantTypeDSL.grantType;
@@ -13,7 +13,9 @@ import org.springframework.security.oauth2.provider.ClientDetails;
 import fm.pattern.tokamak.server.IntegrationTest;
 import fm.pattern.tokamak.server.model.Client;
 import fm.pattern.tokamak.server.model.GrantType;
-import fm.pattern.tokamak.server.security.ClientAuthenticationService;
+import fm.pattern.tokamak.server.security.AuthenticatedClient;
+import fm.pattern.tokamak.server.security.CurrentAuthenticatedClientContext;
+import fm.pattern.tokamak.server.service.ClientAuthenticationService;
 
 public class ClientAuthenticationServiceIntegrationTest extends IntegrationTest {
 

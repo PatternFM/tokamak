@@ -1,4 +1,4 @@
-package fm.pattern.tokamak.server.security;
+package fm.pattern.tokamak.server.service;
 
 import static fm.pattern.tokamak.server.dsl.AccountDSL.account;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -10,7 +10,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import fm.pattern.tokamak.server.IntegrationTest;
 import fm.pattern.tokamak.server.model.Account;
-import fm.pattern.tokamak.server.security.AccountAuthenticationService;
+import fm.pattern.tokamak.server.service.AccountAuthenticationService;
 
 public class AccountAuthenticationServiceIntegrationTest extends IntegrationTest {
 

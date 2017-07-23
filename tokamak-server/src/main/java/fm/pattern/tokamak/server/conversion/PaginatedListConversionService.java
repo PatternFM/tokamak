@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import fm.pattern.tokamak.sdk.commons.PaginatedListRepresentation;
-import fm.pattern.tokamak.server.pagination.PaginatedList;
+import fm.pattern.tokamak.server.repository.PaginatedList;
 
 @Service
 public class PaginatedListConversionService {

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package fm.pattern.tokamak.server.security;
+package fm.pattern.tokamak.server.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -23,7 +23,8 @@ import org.springframework.security.oauth2.provider.ClientRegistrationException;
 import org.springframework.stereotype.Service;
 
 import fm.pattern.tokamak.server.model.Client;
-import fm.pattern.tokamak.server.service.ClientService;
+import fm.pattern.tokamak.server.security.AuthenticatedClient;
+import fm.pattern.tokamak.server.security.CurrentAuthenticatedClientContext;
 import fm.pattern.valex.Result;
 
 @Service

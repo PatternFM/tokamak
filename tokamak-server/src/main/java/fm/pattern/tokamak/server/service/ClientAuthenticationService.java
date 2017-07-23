@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package fm.pattern.tokamak.server.security;
+package fm.pattern.tokamak.server.service;
 
 import org.springframework.security.oauth2.provider.ClientDetailsService;
 

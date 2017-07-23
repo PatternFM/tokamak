@@ -1,4 +1,4 @@
-package fm.pattern.tokamak.server.security;
+package fm.pattern.tokamak.server.validation;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,6 +7,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import fm.pattern.tokamak.server.model.PasswordPolicy;
+import fm.pattern.tokamak.server.security.CommonPasswordsDictionary;
 import fm.pattern.valex.Reportable;
 import fm.pattern.valex.Result;
 

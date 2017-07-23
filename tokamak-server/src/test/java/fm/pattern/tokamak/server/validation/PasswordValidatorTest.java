@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import fm.pattern.tokamak.server.IntegrationTest;
 import fm.pattern.tokamak.server.model.PasswordPolicy;
-import fm.pattern.tokamak.server.security.PasswordValidator;
 import fm.pattern.valex.UnprocessableEntityException;
 
 public class PasswordValidatorTest extends IntegrationTest {

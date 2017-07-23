@@ -27,11 +27,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import fm.pattern.tokamak.server.model.Client;
 import fm.pattern.tokamak.server.model.PasswordPolicy;
-import fm.pattern.tokamak.server.pagination.Criteria;
-import fm.pattern.tokamak.server.pagination.PaginatedList;
 import fm.pattern.tokamak.server.repository.Cache;
-import fm.pattern.tokamak.server.security.PasswordEncodingService;
-import fm.pattern.tokamak.server.security.PasswordValidator;
+import fm.pattern.tokamak.server.repository.Criteria;
+import fm.pattern.tokamak.server.repository.PaginatedList;
+import fm.pattern.tokamak.server.validation.PasswordValidator;
 import fm.pattern.valex.Reportable;
 import fm.pattern.valex.Result;
 

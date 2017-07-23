@@ -16,7 +16,7 @@
 
 package fm.pattern.tokamak.server.endpoints;
 
-import static fm.pattern.tokamak.server.pagination.Criteria.criteria;
+import static fm.pattern.tokamak.server.repository.Criteria.criteria;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.web.bind.annotation.RequestMethod.DELETE;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
@@ -43,7 +43,7 @@ import fm.pattern.tokamak.sdk.model.SecretsRepresentation;
 import fm.pattern.tokamak.server.conversion.ClientConversionService;
 import fm.pattern.tokamak.server.conversion.PaginatedListConversionService;
 import fm.pattern.tokamak.server.model.Client;
-import fm.pattern.tokamak.server.pagination.PaginatedList;
+import fm.pattern.tokamak.server.repository.PaginatedList;
 import fm.pattern.tokamak.server.service.ClientService;
 
 @RestController

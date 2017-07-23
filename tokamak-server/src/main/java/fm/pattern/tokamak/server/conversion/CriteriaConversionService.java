@@ -3,7 +3,7 @@ package fm.pattern.tokamak.server.conversion;
 import org.springframework.stereotype.Service;
 
 import fm.pattern.tokamak.sdk.commons.CriteriaRepresentation;
-import fm.pattern.tokamak.server.pagination.Criteria;
+import fm.pattern.tokamak.server.repository.Criteria;
 
 @Service
 public class CriteriaConversionService {

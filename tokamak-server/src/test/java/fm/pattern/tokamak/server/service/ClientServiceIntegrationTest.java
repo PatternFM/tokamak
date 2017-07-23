@@ -4,7 +4,7 @@ import static fm.pattern.tokamak.server.PatternAssertions.assertThat;
 import static fm.pattern.tokamak.server.dsl.ClientDSL.client;
 import static fm.pattern.tokamak.server.dsl.GrantTypeDSL.grantType;
 import static fm.pattern.tokamak.server.dsl.ScopeDSL.scope;
-import static fm.pattern.tokamak.server.pagination.Criteria.criteria;
+import static fm.pattern.tokamak.server.repository.Criteria.criteria;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.HashSet;
@@ -21,7 +21,6 @@ import fm.pattern.tokamak.server.IntegrationTest;
 import fm.pattern.tokamak.server.model.Client;
 import fm.pattern.tokamak.server.model.GrantType;
 import fm.pattern.tokamak.server.model.Scope;
-import fm.pattern.tokamak.server.security.PasswordEncodingService;
 import fm.pattern.valex.EntityNotFoundException;
 import fm.pattern.valex.Result;
 import fm.pattern.valex.UnprocessableEntityException;

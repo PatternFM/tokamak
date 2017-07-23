@@ -6,6 +6,8 @@ import java.util.Date;
 
 import org.junit.Test;
 
+import fm.pattern.tokamak.server.repository.Criteria;
+
 public class CriteriaTest {
 
 	@Test

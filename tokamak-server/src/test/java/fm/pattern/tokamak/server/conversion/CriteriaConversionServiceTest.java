@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import fm.pattern.tokamak.sdk.commons.CriteriaRepresentation;
 import fm.pattern.tokamak.server.IntegrationTest;
-import fm.pattern.tokamak.server.pagination.Criteria;
+import fm.pattern.tokamak.server.repository.Criteria;
 
 public class CriteriaConversionServiceTest extends IntegrationTest {
 
