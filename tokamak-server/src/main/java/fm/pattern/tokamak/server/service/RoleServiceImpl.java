@@ -31,6 +31,7 @@ import fm.pattern.tokamak.server.repository.DataRepository;
 import fm.pattern.valex.Result;
 
 @Service
+@SuppressWarnings("unchecked")
 class RoleServiceImpl extends DataServiceImpl<Role> implements RoleService {
 
 	private final DataRepository repository;
@@ -77,7 +78,7 @@ class RoleServiceImpl extends DataServiceImpl<Role> implements RoleService {
 
 	@Transactional(readOnly = true)
 	public Result<List<Role>> list() {
-		return super.list(Role.class);
+		return Result.accept(repository.query("from Roles order by name").getResultList());
 	}
 
 }

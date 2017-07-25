@@ -3,6 +3,7 @@ import Dialog from 'material-ui/Dialog';
 import ClientService from "../../services/ClientService";
 import ScopeService from "../../services/ScopeService.js";
 import AudienceService from "../../services/AudienceService.js";
+import PasswordPolicyService from "../../services/PasswordPolicyService.js";
 import AuthorityService from "../../services/AuthorityService.js";
 import GrantTypeService from "../../services/GrantTypeService.js";
 import Button from "../ui-controls/Button.jsx";
@@ -89,7 +90,17 @@ class CreateClientForm extends React.Component {
                 this.setState({ error:result.errors[0] });
             }
             this.setState({ loading:false });
-        });                        
+        });   
+        
+        PasswordPolicyService.findByName("client-password-policy").then((result) => {
+            if(result.status === "accepted") {
+                this.setState({ policy:result.instance }, function() { } );
+            }
+            else {
+                this.setState({ error:result.errors[0] });
+            }
+            this.setState({ loading:false });
+        });                   
     }
 
     show(client) {
@@ -267,6 +278,7 @@ class CreateClientForm extends React.Component {
                 self.setState( { updateSecret: false } );
                 self.setState({ newClientSecret:"" });
                 self.setState({ confirmNewClientSecret:"" });
+                self.setState({ error:"" });
             }
             if(result.status === "rejected") {
                 self.setState({ error:result.errors[0].message });
@@ -328,9 +340,9 @@ class CreateClientForm extends React.Component {
                         <div className="validation-error">{this.state.error}</div>
                       }        
               
-                      <table style={{width:"100%", padding:"0 60px 30px 60px"}}>
+                      <table style={{width:"100%", padding:"10px 60px 30px 60px"}}>
                         <tr>
-                          <td className="form-key">Client Secret</td>
+                          <td className="form-key">New Secret</td>
                           <td className="form-value"><input className="tok-textfield" type="password" name="clientSecret" value={this.state.newClientSecret} onChange={this.newClientSecretChanged.bind(this)} autoComplete="off" /></td>
                         </tr>
                         <tr>
@@ -344,7 +356,48 @@ class CreateClientForm extends React.Component {
                         <button className="tok-button tok-cancel center" onClick={() => this.cancelUpdateSecret()}>Cancel</button>
                       </div>
                       <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
-                    </div>                    
+                    </div> 
+                    
+                <div style={{width:"50%", height:"600px", overflow:"scroll"}}>
+                  <div style={{width:"100%", padding:"0 65px 0 65px"}}>
+                    <div className="form-key form-header">Client Secret Policy</div>
+                  </div>
+                  
+                  <table className="display-table select-table">
+                    <tbody>
+                      <tr>
+                        <td className="dtr left-pad-0">The secret must be at least {this.state.policy.minLength} characters long.</td>
+                      </tr>
+                      {this.state.policy.requireSpecialCharacter &&
+                      <tr>
+                        <td className="dtr left-pad-0">At least one special character is required.</td>
+                      </tr>
+                      }
+                      {this.state.policy.requireNumericCharacter &&
+                      <tr>
+                        <td className="dtr left-pad-0">At least one numeric character is required.</td>
+                      </tr>
+                      }     
+                      {this.state.policy.requireLowercaseCharacter &&
+                      <tr>
+                        <td className="dtr left-pad-0">At least one lowercase character is required.</td>
+                      </tr>
+                      }  
+                      {this.state.policy.requireUppercaseCharacter &&
+                      <tr>
+                        <td className="dtr left-pad-0">At least one uppercase character is required.</td>
+                      </tr>
+                      }       
+                      {this.state.policy.rejectCommonPasswords   &&
+                      <tr>
+                        <td className="dtr left-pad-0">Common passwords are not allowed.</td>
+                      </tr>
+                      }                       
+                    </tbody>
+                  </table>
+                </div>  
+                                    
+                                       
                   </div>
               }
               
@@ -406,11 +459,8 @@ class CreateClientForm extends React.Component {
                          <td className="dtr left-pad-0" style={{ width:"20px" }}>
                            <input type="checkbox" name={grantType.name} onChange={ this.toggleGrantType.bind(this, grantType) } defaultChecked={this.isGrantTypeChecked(grantType)}></input>
                          </td>
-                         <td className="dtr left-pad-0" style={{ whiteSpace:"nowrap", width:"200px" }}>
+                         <td className="dtr left-pad-0">
                            {grantType.name}
-                         </td>
-                         <td className="dtr right-pad-0">
-                           <span className="description">{grantType.description}</span>
                          </td>                       
                        </tr>
                      )}
@@ -427,12 +477,9 @@ class CreateClientForm extends React.Component {
        <td className="dtr left-pad-0" style={{ width:"20px" }}>
          <input type="checkbox" name={scope.name} onChange={ this.toggleScope.bind(this, scope) } defaultChecked={this.isScopeChecked(scope)}></input>
        </td>
-       <td className="dtr left-pad-0" style={{ whiteSpace:"nowrap", width:"200px"}}>
+       <td className="dtr left-pad-0">
          {scope.name}
-       </td>
-       <td className="dtr right-pad-0">
-         <span className="description">{scope.description}</span>
-       </td>                       
+       </td>                      
      </tr>
     )}
   </tbody>
@@ -450,12 +497,9 @@ class CreateClientForm extends React.Component {
        <td className="dtr left-pad-0" style={{ width:"20px" }}>
          <input type="checkbox" name={authority.name} onChange={ this.toggleAuthority.bind(this, authority) } defaultChecked={this.isAuthorityChecked(authority)}></input>
        </td>
-       <td className="dtr left-pad-0" style={{ whiteSpace:"nowrap", width:"200px" }}>
+       <td className="dtr left-pad-0">
          {authority.name}
-       </td>
-       <td className="dtr right-pad-0">
-         <span className="description">{authority.description}</span>
-       </td>                       
+       </td>                     
      </tr>
     )}
   </tbody>
@@ -475,11 +519,8 @@ class CreateClientForm extends React.Component {
        <td className="dtr left-pad-0" style={{ width:"20px" }}>
          <input type="checkbox" name={audience.name} onChange={ this.toggleAudience.bind(this, audience) } defaultChecked={this.isAudienceChecked(audience)}></input>
        </td>
-       <td className="dtr left-pad-0" style={{ whiteSpace:"nowrap", width:"200px" }}>
+       <td className="dtr left-pad-0">
          {audience.name}
-       </td>
-       <td className="dtr right-pad-0">
-         <span className="description">{audience.description}</span>
        </td>                       
      </tr>
     )}

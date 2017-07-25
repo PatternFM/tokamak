@@ -2,6 +2,7 @@ import React from 'react';
 import Dialog from 'material-ui/Dialog';
 import AccountService from "../../services/AccountService";
 import RoleService from "../../services/RoleService.js";
+import PasswordPolicyService from "../../services/PasswordPolicyService.js";
 
 class CreateAccountForm extends React.Component {
     propTypes: {
@@ -40,6 +41,16 @@ class CreateAccountForm extends React.Component {
             }
             this.setState({ loading:false });
         });
+        
+        PasswordPolicyService.findByName("account-password-policy").then((result) => {
+            if(result.status === "accepted") {
+                this.setState({ policy:result.instance }, function() { } );
+            }
+            else {
+                this.setState({ error:result.errors[0] });
+            }
+            this.setState({ loading:false });
+        });        
     }
 
     show(account) {
@@ -182,7 +193,7 @@ class CreateAccountForm extends React.Component {
                         <div className="validation-error">{this.state.error}</div>
                       }        
               
-                      <table style={{width:"100%", padding:"0 60px 30px 60px"}}>
+                      <table style={{width:"100%", padding:"10px 60px 30px 60px"}}>
                         <tr>
                           <td className="form-key">New Password</td>
                           <td className="form-value"><input className="tok-textfield" type="password" value={this.state.newPassword} onChange={this.newPasswordChanged.bind(this)} autoComplete="off" /></td>
@@ -198,7 +209,47 @@ class CreateAccountForm extends React.Component {
                         <button className="tok-button tok-cancel center" onClick={() => this.cancelUpdatePassword()}>Cancel</button>
                       </div>
                       <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
-                    </div>                    
+                    </div>  
+                    
+                <div style={{width:"50%", height:"600px", overflow:"scroll"}}>
+                  <div style={{width:"100%", padding:"0 65px 0 65px"}}>
+                    <div className="form-key form-header">Password Policy</div>
+                  </div>
+                  
+                  <table className="display-table select-table">
+                    <tbody>
+                      <tr>
+                        <td className="dtr left-pad-0">The password must be at least {this.state.policy.minLength} characters long.</td>
+                      </tr>
+                      {this.state.policy.requireSpecialCharacter &&
+                      <tr>
+                        <td className="dtr left-pad-0">At least one special character is required.</td>
+                      </tr>
+                      }
+                      {this.state.policy.requireNumericCharacter &&
+                      <tr>
+                        <td className="dtr left-pad-0">At least one numeric character is required.</td>
+                      </tr>
+                      }     
+                      {this.state.policy.requireLowercaseCharacter &&
+                      <tr>
+                        <td className="dtr left-pad-0">At least one lowercase character is required.</td>
+                      </tr>
+                      }  
+                      {this.state.policy.requireUppercaseCharacter &&
+                      <tr>
+                        <td className="dtr left-pad-0">At least one uppercase character is required.</td>
+                      </tr>
+                      }       
+                      {this.state.policy.rejectCommonPasswords   &&
+                      <tr>
+                        <td className="dtr left-pad-0">Common passwords are not allowed.</td>
+                      </tr>
+                      }                       
+                    </tbody>
+                  </table>
+                </div>                     
+                                      
                   </div>
               }            
             
@@ -211,7 +262,7 @@ class CreateAccountForm extends React.Component {
                  <div className="validation-error">{this.state.error}</div>
               }        
               
-              <table style={{width:"100%", padding:"0 60px 30px 60px"}}>
+              <table style={{width:"100%", padding:"10px 60px 30px 60px"}}>
                 <tr>
                   <td className="form-key">Username</td>
                      <td className="form-value">{usernameField}</td>
@@ -236,14 +287,11 @@ class CreateAccountForm extends React.Component {
                   <tbody>
                     {this.state.roles.map((role) => 
                      <tr key={role.id}>
-                       <td className="dtr left-pad-0">
+                       <td className="dtr left-pad-0" style={{ width:"20px" }}>
                          <input type="checkbox" name={role.name} onChange={ this.toggle.bind(this, role) } defaultChecked={this.isChecked(role)}></input>
                        </td>
-                       <td className="dtr left-pad-0" style={{ whiteSpace:"nowrap" }}>
+                       <td className="dtr left-pad-0">
                          {role.name}
-                       </td>
-                       <td className="dtr right-pad-0">
-                         <span className="description">{role.description}</span>
                        </td>                       
                      </tr>
                     )}

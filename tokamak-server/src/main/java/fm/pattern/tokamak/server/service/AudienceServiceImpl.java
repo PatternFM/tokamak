@@ -95,7 +95,7 @@ class AudienceServiceImpl extends DataServiceImpl<Audience> implements AudienceS
 
 	@Transactional(readOnly = true)
 	public Result<List<Audience>> list() {
-		return super.list(Audience.class);
+		return Result.accept(repository.query("from Audiences order by name").getResultList());
 	}
 
 }

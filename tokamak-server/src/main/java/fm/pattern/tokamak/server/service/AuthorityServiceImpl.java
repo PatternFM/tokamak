@@ -95,7 +95,7 @@ class AuthorityServiceImpl extends DataServiceImpl<Authority> implements Authori
 
 	@Transactional(readOnly = true)
 	public Result<List<Authority>> list() {
-		return super.list(Authority.class);
+		return Result.accept(repository.query("from Authorities order by name").getResultList());
 	}
 
 }
