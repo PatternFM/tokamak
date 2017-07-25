@@ -28,13 +28,49 @@ public class PasswordPoliciesEndpointAcceptanceTest extends AcceptanceTest {
 
 	@Test
 	public void shouldBeAbleToCreateAPasswordPolicy() {
-		PasswordPolicyRepresentation representation = passwordPolicy().build();
+		PasswordPolicyRepresentation policy = passwordPolicy().build();
 
-		Result<PasswordPolicyRepresentation> result = client.create(representation, token.getAccessToken());
+		Result<PasswordPolicyRepresentation> result = client.create(policy, token.getAccessToken());
 		assertThat(result).accepted().withResponseCode(201);
-		assertThat(result.getInstance()).isEqualToIgnoringGivenFields(representation, "id", "created", "updated");
+		assertThat(result.getInstance()).isEqualToIgnoringGivenFields(policy, "id", "created", "updated");
 	}
 
+	@Test
+	public void shouldBeAbleToUpdateAPasswordPolicy() {
+		PasswordPolicyRepresentation policy = passwordPolicy().withToken(token).save();
+
+		policy.setName("cannot");
+		policy.setMinLength(25);
+		policy.setRejectCommonPasswords(false);
+		policy.setRequireLowercaseCharacter(false);
+		policy.setRequireUppercaseCharacter(false);
+		policy.setRequireSpecialCharacter(false);
+		policy.setRequireNumericCharacter(false);
+		policy.setDescription("description 1");
+
+		Result<PasswordPolicyRepresentation> result = client.update(policy, token.getAccessToken());
+		assertThat(result).accepted().withResponseCode(200);
+		
+		PasswordPolicyRepresentation updated = result.getInstance();
+		assertThat(updated.isRejectCommonPasswords()).isFalse();
+		assertThat(updated.isRequireLowercaseCharacter()).isFalse();
+		assertThat(updated.isRequireUppercaseCharacter()).isFalse();
+		assertThat(updated.isRequireNumericCharacter()).isFalse();
+		assertThat(updated.isRequireSpecialCharacter()).isFalse();
+		assertThat(updated.getMinLength()).isEqualTo(25);
+		assertThat(updated.getDescription()).isEqualTo("description 1");
+		assertThat(updated.getName()).isNotEqualTo("cannot");
+	}
+
+	@Test
+	public void shouldNotBeAbleToUpdateAPasswordPolicyIfThePolicyIsInvalid() {
+		PasswordPolicyRepresentation policy = passwordPolicy().withToken(token).save();
+		policy.setMinLength(-1);
+		
+		Result<PasswordPolicyRepresentation> result = client.update(policy, token.getAccessToken());
+		assertThat(result).rejected().withError(422, "POL-0006", "A password minimum length must be greater than 0.");
+	}
+	
 	@Test
 	public void shouldBeAbleToFindAPasswordPolicyById() {
 		PasswordPolicyRepresentation representation = client.findByName("account-password-policy", token.getAccessToken()).getInstance();

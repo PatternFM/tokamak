@@ -6,6 +6,8 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.apache.commons.lang3.StringUtils;
+
 import fm.pattern.tokamak.sdk.AudiencesClient;
 import fm.pattern.tokamak.sdk.AuthoritiesClient;
 import fm.pattern.tokamak.sdk.ClientsClient;
@@ -27,6 +29,7 @@ public class ClientDSL extends AbstractDSL<ClientDSL, ClientRepresentation> {
 	private AuthoritiesClient authoritiesClient = new AuthoritiesClient(JwtClientProperties.getEndpoint());
 	private AudiencesClient audiencesClient = new AudiencesClient(JwtClientProperties.getEndpoint());
 
+	private String id = null;
 	private String name = randomAlphanumeric(8);
 	private String description = "Auto-generated app created by acceptance tests.";
 
@@ -54,6 +57,11 @@ public class ClientDSL extends AbstractDSL<ClientDSL, ClientRepresentation> {
 
 	}
 
+	public ClientDSL withId(String id) {
+		this.id = id;
+		return this;
+	}
+	
 	public ClientDSL withClientId(String clientId) {
 		this.clientId = clientId;
 		return this;
@@ -150,6 +158,9 @@ public class ClientDSL extends AbstractDSL<ClientDSL, ClientRepresentation> {
 		resolve();
 
 		ClientRepresentation client = new ClientRepresentation();
+		if(StringUtils.isNotBlank(id)) {
+			client.setId(id);
+		}
 		client.setClientId(clientId);
 		client.setClientSecret(clientSecret);
 		client.setName(name);

@@ -39,7 +39,6 @@ public class PasswordPolicyConversionService {
 	}
 
 	public PasswordPolicy convert(PasswordPolicyRepresentation representation, PasswordPolicy passwordPolicy) {
-		passwordPolicy.setName(representation.getName());
 		passwordPolicy.setDescription(representation.getDescription());
 		passwordPolicy.setMinLength(representation.getMinLength());
 

@@ -1,5 +1,7 @@
 package fm.pattern.tokamak.sdk;
 
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -85,7 +87,14 @@ public class AccountsClient extends RestClient {
 			params.put("limit", criteria.getLimit());
 		}
 
-		Response response = resource("/v1/accounts", params).header("Authorization", "Bearer " + token).get();
+		Response response = null;
+		if (isNotBlank(token)) {
+			response = resource("/v1/accounts", params).header("Authorization", "Bearer " + token).get();
+		}
+		else {
+			response = resource("/v1/accounts", params).get();
+		}
+		
 		if (response.getStatus() == 200) {
 			return Result.accept(response.getStatus(), response.readEntity(new GenericType<PaginatedListRepresentation<AccountRepresentation>>() {
 			}));

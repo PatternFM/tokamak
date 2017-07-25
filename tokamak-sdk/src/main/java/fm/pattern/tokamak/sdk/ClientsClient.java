@@ -1,5 +1,7 @@
 package fm.pattern.tokamak.sdk;
 
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -31,7 +33,7 @@ public class ClientsClient extends RestClient {
 	public Result<ClientRepresentation> updateSecret(ClientRepresentation representation, SecretsRepresentation secrets, String token) {
 		return put(resource("/v1/clients/" + representation.getId() + "/secret"), secrets, ClientRepresentation.class, token);
 	}
-	
+
 	public Result<ClientRepresentation> delete(String id, String token) {
 		return delete(resource("/v1/clients/" + id), token);
 	}
@@ -56,7 +58,14 @@ public class ClientsClient extends RestClient {
 			params.put("limit", criteria.getLimit());
 		}
 
-		Response response = resource("/v1/clients", params).header("Authorization", "Bearer " + token).get();
+		Response response = null;
+		if (isNotBlank(token)) {
+			response = resource("/v1/clients", params).header("Authorization", "Bearer " + token).get();
+		}
+		else {
+			response = resource("/v1/clients", params).get();
+		}
+
 		if (response.getStatus() == 200) {
 			return Result.accept(response.getStatus(), response.readEntity(new GenericType<PaginatedListRepresentation<ClientRepresentation>>() {
 			}));
