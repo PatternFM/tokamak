@@ -1,5 +1,7 @@
 package fm.pattern.tokamak.server.service;
 
+import java.util.List;
+
 import fm.pattern.tokamak.server.model.PasswordPolicy;
 import fm.pattern.valex.Result;
 import fm.pattern.valex.annotations.Create;
@@ -18,4 +20,6 @@ public interface PasswordPolicyService {
 	
 	Result<PasswordPolicy> findByName(String name);
 
+	Result<List<PasswordPolicy>> list();
+	
 }

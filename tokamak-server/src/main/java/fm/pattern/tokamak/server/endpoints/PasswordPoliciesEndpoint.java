@@ -21,6 +21,9 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 import static org.springframework.web.bind.annotation.RequestMethod.PUT;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,6 +33,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import fm.pattern.tokamak.authorization.Authorize;
+import fm.pattern.tokamak.sdk.model.PasswordPoliciesRepresentation;
 import fm.pattern.tokamak.sdk.model.PasswordPolicyRepresentation;
 import fm.pattern.tokamak.server.conversion.PasswordPolicyConversionService;
 import fm.pattern.tokamak.server.model.PasswordPolicy;
@@ -39,42 +43,49 @@ import fm.pattern.tokamak.server.service.PasswordPolicyService;
 public class PasswordPoliciesEndpoint extends Endpoint {
 
 	private final PasswordPolicyService policyService;
-	private final PasswordPolicyConversionService policyConversionService;
+	private final PasswordPolicyConversionService converter;
 
 	@Autowired
 	public PasswordPoliciesEndpoint(PasswordPolicyService policyService, PasswordPolicyConversionService policyConversionService) {
 		this.policyService = policyService;
-		this.policyConversionService = policyConversionService;
+		this.converter = policyConversionService;
 	}
 
 	@Authorize(scopes = "policies:create")
 	@ResponseStatus(value = HttpStatus.CREATED)
 	@RequestMapping(value = "/v1/policies", method = POST, consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
 	public PasswordPolicyRepresentation create(@RequestBody PasswordPolicyRepresentation representation) {
-		PasswordPolicy policy = policyConversionService.convert(representation);
+		PasswordPolicy policy = converter.convert(representation);
 		PasswordPolicy created = policyService.create(policy).orThrow();
-		return policyConversionService.convert(policyService.findById(created.getId()).orThrow());
+		return converter.convert(policyService.findById(created.getId()).orThrow());
 	}
-	
+
 	@Authorize(scopes = "policies:update")
 	@RequestMapping(value = "/v1/policies/{id}", method = PUT, consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
 	public PasswordPolicyRepresentation update(@PathVariable String id, @RequestBody PasswordPolicyRepresentation representation) {
-		PasswordPolicy policy = policyConversionService.convert(representation, policyService.findById(id).orThrow());
-		return policyConversionService.convert(policyService.update(policy).orThrow());
+		PasswordPolicy policy = converter.convert(representation, policyService.findById(id).orThrow());
+		return converter.convert(policyService.update(policy).orThrow());
 	}
 
 	@Authorize(scopes = "policies:read")
 	@RequestMapping(value = "/v1/policies/{id}", method = GET, produces = APPLICATION_JSON_VALUE)
 	public PasswordPolicyRepresentation findById(@PathVariable String id) {
 		PasswordPolicy policy = policyService.findById(id).orThrow();
-		return policyConversionService.convert(policy);
+		return converter.convert(policy);
 	}
 
 	@Authorize(scopes = "policies:read")
 	@RequestMapping(value = "/v1/policies/name/{name}", method = GET, produces = APPLICATION_JSON_VALUE)
 	public PasswordPolicyRepresentation findByName(@PathVariable String name) {
 		PasswordPolicy policy = policyService.findByName(name).orThrow();
-		return policyConversionService.convert(policy);
+		return converter.convert(policy);
+	}
+
+	@Authorize(scopes = "policies:read")
+	@RequestMapping(value = "/v1/policies", method = GET, produces = APPLICATION_JSON_VALUE)
+	public PasswordPoliciesRepresentation list() {
+		List<PasswordPolicy> policies = policyService.list().orThrow();
+		return new PasswordPoliciesRepresentation(policies.stream().map(policy -> converter.convert(policy)).collect(Collectors.toList()));
 	}
 
 }

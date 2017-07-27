@@ -15,6 +15,7 @@ class NavBar extends React.Component {
             <li><NavLink to="/accounts" activeClassName="active">User Accounts</NavLink></li>
             <li><NavLink to="/roles" activeClassName="active">User Roles</NavLink></li>
             <br/><br/>
+            <li><NavLink to="/policies" activeClassName="active">Password Policies</NavLink></li>
             <li><NavLink to="/settings" activeClassName="active">Settings</NavLink></li>
             <li><NavLink to="/audit" activeClassName="active">Audit History</NavLink></li>
           </ul>

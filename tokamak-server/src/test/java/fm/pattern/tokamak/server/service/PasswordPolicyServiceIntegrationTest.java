@@ -58,4 +58,9 @@ public class PasswordPolicyServiceIntegrationTest extends IntegrationTest {
 		assertThat(passwordPolicyService.findByName("csrx")).rejected().withError("POL-0008", "No such policy name: csrx", EntityNotFoundException.class);
 	}
 
+	@Test
+	public void shouldBeAbleToListAllPasswordPolicies() {
+		assertThat(passwordPolicyService.list()).accepted();
+	}
+
 }

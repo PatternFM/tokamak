@@ -83,7 +83,7 @@ class GrantTypeServiceImpl extends DataServiceImpl<GrantType> implements GrantTy
 
 	@Transactional(readOnly = true)
 	public Result<List<GrantType>> list() {
-		return super.list(GrantType.class);
+		return Result.accept(repository.query("from GrantTypes order by name").getResultList());
 	}
 
 }

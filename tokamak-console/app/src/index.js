@@ -18,6 +18,7 @@ import Roles from "./components/roles/Roles.jsx";
 import Audiences from "./components/audiences/Audiences.jsx";
 import Authorities from "./components/authorities/Authorities.jsx";
 import Accounts from "./components/accounts/Accounts.jsx";
+import Policies from "./components/policies/Policies.jsx";
 import Settings from "./components/settings/Settings.jsx";
 import AuditHistory from "./components/audit/AuditHistory.jsx";
 
@@ -51,6 +52,7 @@ ReactDom.render(
           <PrivateRoute path="/audiences" component={Audiences} />
           <PrivateRoute path="/accounts" component={Accounts} />
           <PrivateRoute path="/roles" component={Roles} />
+          <PrivateRoute path="/policies" component={Policies} />
           <PrivateRoute path="/settings" component={Settings} />
           <PrivateRoute path="/audit" component={AuditHistory} />
       </div>
