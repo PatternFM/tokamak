@@ -18,9 +18,8 @@ class ViewPolicies extends React.Component {
               <MuiThemeProvider>
                 <div>
                   <div id="header">
-                    <div className="title">User Policies</div>
-                    <p className="overview">View, create and manage user policies. <NavLink to="/help#policies">Learn more about policies.</NavLink></p>
-                    <button className="tok-button fixed-top" onClick={() => this.refs.managePolicyDialog.show()}>+ Create Policy</button>
+                    <div className="title">Password Policies</div>
+                    <p className="overview">View, create and manage password policies.</p>
                   </div>
                   <div className="table-container">
                     <PolicyTable policies={this.props.policies} policyUpdated={this.props.policyUpdated} policyDeleted={this.props.policyDeleted} />

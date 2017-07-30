@@ -1,8 +1,8 @@
 import React from 'react';
 import Dialog from 'material-ui/Dialog';
-import RoleService from "../../services/RoleService";
+import PasswordPolicyService from "../../services/PasswordPolicyService";
 
-class CreateRoleForm extends React.Component {
+class CreatePolicyForm extends React.Component {
     propTypes: {
         roleCreated: React.PropTypes.func,
         roleUpdated: React.PropTypes.func
@@ -46,7 +46,7 @@ class CreateRoleForm extends React.Component {
         this.setState({ loading:true });
         
         let self = this;
-        RoleService.create(this.state.name, this.state.description).then(function(result) {
+        PasswordPolicyService.create(this.state.name, this.state.description).then(function(result) {
             if(result.status === "accepted") {
                 self.props.roleCreated(result.instance);
                 self.hide();
@@ -65,7 +65,7 @@ class CreateRoleForm extends React.Component {
         this.setState({ loading:true });
 
         let self = this;
-        RoleService.update(this.state.role_id, this.state.name, this.state.description).then(function(result) {
+        PasswordPolicyService.update(this.state.role_id, this.state.name, this.state.description).then(function(result) {
             if(result.status === "accepted") {
                 self.props.roleUpdated(result.instance);
                 self.hide();
@@ -82,7 +82,7 @@ class CreateRoleForm extends React.Component {
 
 
     render() {
-        let title = this.state.update ? "Update Role" : "Create Role";
+        let title = this.state.update ? "Update Policy" : "Create Policy";
         let button = this.state.update ? <button className="tok-button center" style={{marginRight:"10px"}} onClick={ () => this.update() }>Update</button> : <button className="tok-button center" style={{marginRight:"10px"}} onClick={() => this.create()}>Create</button>;
 
         return (
@@ -95,7 +95,7 @@ class CreateRoleForm extends React.Component {
               
               <table style={{width:"100%", padding:"0 60px 30px 60px"}}>
                 <tr>
-                  <td className="form-key">Role Name</td>
+                  <td className="form-key">Policy Name</td>
                   <td className="form-value"><input autoFocus className="tok-textfield" type="text" name="name" value={this.state.name} onChange={this.nameChanged.bind(this)} autoComplete="off" /></td>
                 </tr>
                 <tr>
@@ -114,4 +114,4 @@ class CreateRoleForm extends React.Component {
     
 }
 
-export default CreateRoleForm;
+export default CreatePolicyForm;
