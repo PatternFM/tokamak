@@ -1,0 +1,38 @@
+zuul:
+  ignored-headers: Access-Control-Allow-Credentials, Access-Control-Allow-Origin
+  routes:
+    accounts:
+      path: /accounts/**
+      url: http://localhost:9600/accounts
+    audiences:
+      path: /audiences/**
+      url: http://localhost:9600/audiences
+    authorities:
+      path: /authorities/**
+      url: http://localhost:9600/authorities
+    clients:
+      path: /clients/**
+      url: http://localhost:9600/clients      
+    policies:
+      path: /policies/**
+      url: http://localhost:9600/policies      
+    roles:
+      path: /roles/**
+      url: http://localhost:9600/roles
+    scopes:
+      path: /scopes/**
+      url: http://localhost:9600/scopes            
+      
+ribbon.eureka.enabled: false
+
+server.port: 9605
+management.port: 9606
+
+management.context-path: /manage
+management.address: 127.0.0.1
+
+endpoints.enabled: true
+endpoints.info.enabled: true
+endpoints.shutdown.enabled: true
+endpoints.metrics.enabled: true
+endpoints.health.enabled: true

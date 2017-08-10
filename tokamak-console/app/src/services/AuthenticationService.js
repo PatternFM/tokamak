@@ -4,20 +4,17 @@ import {CLIENT_CREDENTIALS} from "../config"
 var AuthenticationService = {
 		
     login(username, password, callback) {
-        fetch(BASE_URL + "/oauth/token", {
+        fetch(BASE_URL + "/login", {
             method: "POST",
             headers: {
-                "Content-Type": "application/x-www-form-urlencoded",
+                "Content-Type": "application/json",
                 "Accept": "application/json",
-                "Authorization": "Basic " + CLIENT_CREDENTIALS
             },
-            body: "grant_type=password&username=" + username + "&password=" + password
+            body: JSON.stringify({username:username,password:password}),
         })
         .then(function(response) {
         	if(response.status === 200) {
         		response.json().then(function(data) {  
-        	        localStorage.access_token = data.access_token;
-        	        localStorage.refresh_token = data.refresh_token;
            		    callback({status:"accepted", error: ""});
         		    return;
         	    }); 
