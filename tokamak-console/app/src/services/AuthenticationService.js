@@ -1,5 +1,4 @@
 import {BASE_URL} from "../config"
-import {CLIENT_CREDENTIALS} from "../config"
 
 var AuthenticationService = {
 		

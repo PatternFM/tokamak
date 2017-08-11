@@ -1,7 +1,6 @@
 import React from "react";
 import ReactDom from "react-dom";
 import { BrowserRouter as Router, Route, Redirect } from "react-router-dom"
-import createHistory from "history/createBrowserHistory"
 
 import AuthenticationService from "./services/AuthenticationService"
 
@@ -21,10 +20,9 @@ import Accounts from "./components/accounts/Accounts.jsx";
 import Policies from "./components/policies/Policies.jsx";
 import Settings from "./components/settings/Settings.jsx";
 import AuditHistory from "./components/audit/AuditHistory.jsx";
+import history from "./components/history/history.js"
 
 var FontAwesome = require('react-fontawesome');
-
-const history = createHistory();
 
 const PrivateRoute = ({component: Component, ...rest}) => (
   <Route {...rest} render={props => (

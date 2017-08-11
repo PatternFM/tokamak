@@ -41,7 +41,7 @@ public class Application {
 		config.addAllowedMethod("POST");
 		config.addAllowedMethod("DELETE");
 		config.addAllowedMethod("PATCH");
-		
+
 		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 		source.registerCorsConfiguration("/**", config);
 		return new CorsFilter(source);

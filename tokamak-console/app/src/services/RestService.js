@@ -1,4 +1,5 @@
 import {BASE_URL} from "../config"
+import AuthenticationService from "./AuthenticationService.js"
 
 var RestService = {
 		
@@ -8,6 +9,10 @@ var RestService = {
         	headers: { "Accept": "application/json" }
         })
         .then(function(response) {
+        	if(response.status === 401) {
+        		AuthenticationService.logout();
+        		window.location.replace("/logout");
+        	}
             if(response.ok) {
                 return response.json();
             }
@@ -27,6 +32,9 @@ var RestService = {
         	headers: { "Accept": "application/json" }
         })
         .then(function(response) {
+        	if(response.status === 401) {
+        		AuthenticationService.logout();
+        	}
             if(response.ok) {
                 return response.json();
             }
@@ -48,8 +56,10 @@ var RestService = {
         	headers: { "Accept": "application/json", "Content-Type": "application/json" }
         })
         .then(function(response) {
+        	if(response.status === 401) {
+        		AuthenticationService.logout();
+        	}
             return response.json();
-            throw Error("Received " + response.status + " reponse code from the Tokamak Server.");
         })
         .then(function(json) {
         	return json.errors ? { status:"rejected", errors:json.errors } : { status:"accepted", instance:json };
@@ -67,8 +77,10 @@ var RestService = {
         	headers: { "Accept": "application/json", "Content-Type": "application/json" }
         })
         .then(function(response) {
+        	if(response.status === 401) {
+        		AuthenticationService.logout();
+        	}
             return response.json();
-            throw Error("Received " + response.status + " reponse code from the Tokamak Server.");
         })
         .then(function(json) {
         	return json.errors ? { status:"rejected", errors:json.errors } : { status:"accepted", instance:json };
@@ -85,13 +97,15 @@ var RestService = {
         	headers: { "Accept": "application/json", "Content-Type": "application/json" }
         })
         .then(function(response) {
+        	if(response.status === 401) {
+        		AuthenticationService.logout();
+        	}
             if(response.ok) {
                 return instance;
             }
             else {
             	return response.json();
             }
-            throw Error("Received " + response.status + " reponse code from the Tokamak Server.");
         })
         .then(function(json) {
         	return json.errors ? { status:"rejected", errors:json.errors } : { status:"accepted", instance:json };
