@@ -5,6 +5,7 @@ import javax.servlet.http.HttpSession;
 import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
 
+import fm.pattern.minimal.JSON;
 import fm.pattern.tokamak.sdk.model.AccessTokenRepresentation;
 
 public class AuthorizationHeaderFilter extends ZuulFilter {
@@ -30,13 +31,10 @@ public class AuthorizationHeaderFilter extends ZuulFilter {
 
 		HttpSession session = RequestContext.getCurrentContext().getRequest().getSession(false);
 		if (session == null) {
-			System.out.println("session is null!!");
 			return null;
 		}
 
-		System.out.println("using session id: " + session.getId());
-
-		AccessTokenRepresentation token = (AccessTokenRepresentation) session.getAttribute("token");
+		AccessTokenRepresentation token = JSON.parse((String) session.getAttribute("token"), AccessTokenRepresentation.class);
 		if (token != null) {
 			context.addZuulRequestHeader("Authorization", "Bearer " + token.getAccessToken());
 		}

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import fm.pattern.minimal.JSON;
 import fm.pattern.tokamak.sdk.TokensClient;
 import fm.pattern.tokamak.sdk.commons.Result;
 import fm.pattern.tokamak.sdk.model.AccessTokenRepresentation;
@@ -28,8 +29,7 @@ public class LoginController extends Controller {
 	@RequestMapping(value = "/login", method = POST, consumes = APPLICATION_JSON_VALUE)
 	public AccessTokenRepresentation login(@RequestBody Credentials credentials, HttpSession session) {
 		Result<AccessTokenRepresentation> result = tokensClient.getAccessToken(clientId, clientSecret, credentials.getUsername(), credentials.getPassword());
-		session.setAttribute("token", verify(result).getInstance());
-		System.out.println("SESSION ID: " + session.getId() + " assigned with token: " + result.getInstance().getAccessToken());
+		session.setAttribute("token", JSON.stringify(verify(result).getInstance()));
 		return result.getInstance();
 	}
 

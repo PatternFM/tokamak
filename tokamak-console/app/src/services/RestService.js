@@ -1,11 +1,11 @@
 import {BASE_URL} from "../config"
-import AuthenticationService from "./AuthenticationService.js"
 
 var RestService = {
 		
     list(endpoint) {
         return fetch(BASE_URL + endpoint, {
-            headers: { "Accept": "application/json" }
+        	credentials: "include",
+        	headers: { "Accept": "application/json" }
         })
         .then(function(response) {
             if(response.ok) {
@@ -23,7 +23,8 @@ var RestService = {
     
     get(endpoint) {
         return fetch(BASE_URL + endpoint, {
-            headers: { "Accept": "application/json" }
+        	credentials: "include",
+        	headers: { "Accept": "application/json" }
         })
         .then(function(response) {
             if(response.ok) {
@@ -42,6 +43,7 @@ var RestService = {
     post(endpoint, payload) {
         return fetch(BASE_URL + endpoint, {
             method: "POST",
+            credentials: "include",
             body: JSON.stringify(payload),
         	headers: { "Accept": "application/json", "Content-Type": "application/json" }
         })
@@ -60,6 +62,7 @@ var RestService = {
     put(endpoint, payload) {
         return fetch(BASE_URL + endpoint, {
             method: "PUT",
+            credentials: "include",
             body: JSON.stringify(payload),
         	headers: { "Accept": "application/json", "Content-Type": "application/json" }
         })
@@ -78,6 +81,7 @@ var RestService = {
     delete(endpoint, instance) {
         return fetch(BASE_URL + endpoint, {
             method: "DELETE",
+            credentials: "include",
         	headers: { "Accept": "application/json", "Content-Type": "application/json" }
         })
         .then(function(response) {

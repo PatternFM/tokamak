@@ -5,7 +5,8 @@ var AuthenticationService = {
 		
     login(username, password, callback) {
         fetch(BASE_URL + "/login", {
-            method: "POST",
+        	credentials: "include",
+        	method: "POST",
             headers: {
                 "Content-Type": "application/json",
                 "Accept": "application/json",
@@ -14,6 +15,7 @@ var AuthenticationService = {
         })
         .then(function(response) {
         	if(response.status === 200) {
+        		response.headers.forEach(function(val, key) { console.log(key + ' -> ' + val); });
         		response.json().then(function(data) {  
         			localStorage.setItem("authenticated", true);
            		    callback({status:"accepted", error: ""});
