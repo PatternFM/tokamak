@@ -1,4 +1,4 @@
-package fm.pattern.tokamak.console;
+package fm.pattern.tokamak.console.controllers;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
@@ -6,6 +6,12 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import fm.pattern.tokamak.console.exceptions.AuthenticationException;
+import fm.pattern.tokamak.console.exceptions.AuthorizationException;
+import fm.pattern.tokamak.console.exceptions.BadRequestException;
+import fm.pattern.tokamak.console.exceptions.EntityNotFoundException;
+import fm.pattern.tokamak.console.exceptions.UnhandledException;
+import fm.pattern.tokamak.console.exceptions.UnprocessableEntityException;
 import fm.pattern.tokamak.sdk.commons.ErrorsRepresentation;
 import fm.pattern.tokamak.sdk.commons.Result;
 

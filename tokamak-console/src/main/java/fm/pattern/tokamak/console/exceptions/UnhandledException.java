@@ -1,24 +1,24 @@
-package fm.pattern.tokamak.console;
+package fm.pattern.tokamak.console.exceptions;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import fm.pattern.tokamak.sdk.commons.ErrorRepresentation;
 
-public class AuthorizationException extends RuntimeException {
+public class UnhandledException extends RuntimeException {
 
-	private static final long serialVersionUID = -7022235229824655548L;
+	private static final long serialVersionUID = -7093595345324626648L;
 	private final List<ErrorRepresentation> errors = new ArrayList<ErrorRepresentation>();
 
-	public AuthorizationException() {
+	public UnhandledException() {
 
 	}
 
-	public AuthorizationException(ErrorRepresentation message) {
+	public UnhandledException(ErrorRepresentation message) {
 		this.errors.add(message);
 	}
 
-	public AuthorizationException(List<ErrorRepresentation> errors) {
+	public UnhandledException(List<ErrorRepresentation> errors) {
 		this.errors.addAll(errors);
 	}
 

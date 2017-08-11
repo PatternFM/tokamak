@@ -1,4 +1,4 @@
-package fm.pattern.tokamak.console;
+package fm.pattern.tokamak.console.controllers;
 
 public class Credentials {
 

@@ -2,28 +2,39 @@ zuul:
   ignored-headers: Access-Control-Allow-Credentials, Access-Control-Allow-Origin
   routes:
     accounts:
-      path: /accounts/**
-      url: http://localhost:9600/accounts
+      path: /v1/accounts/**
+      url: http://localhost:9600/v1/accounts
     audiences:
-      path: /audiences/**
-      url: http://localhost:9600/audiences
+      path: /v1/audiences/**
+      url: http://localhost:9600/v1/audiences
     authorities:
-      path: /authorities/**
-      url: http://localhost:9600/authorities
+      path: /v1/authorities/**
+      url: http://localhost:9600/v1/authorities
     clients:
-      path: /clients/**
-      url: http://localhost:9600/clients      
+      path: /v1/clients/**
+      url: http://localhost:9600/v1/clients      
     policies:
-      path: /policies/**
-      url: http://localhost:9600/policies      
+      path: /v1/policies/**
+      url: http://localhost:9600/v1/policies      
     roles:
-      path: /roles/**
-      url: http://localhost:9600/roles
+      path: /v1/roles/**
+      url: http://localhost:9600/v1/roles
     scopes:
-      path: /scopes/**
-      url: http://localhost:9600/scopes            
+      path: /v1/scopes/**
+      url: http://localhost:9600/v1/scopes            
       
 ribbon.eureka.enabled: false
+
+spring:
+  redis:
+    host: localhost
+    port: 6379
+    timeout: 10
+    pool:
+      max-active: 10
+      max-idle: 10
+      min-idle: 0
+      max-wait: 60000
 
 server.port: 9605
 management.port: 9606

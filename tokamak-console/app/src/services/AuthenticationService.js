@@ -10,11 +10,12 @@ var AuthenticationService = {
                 "Content-Type": "application/json",
                 "Accept": "application/json",
             },
-            body: JSON.stringify({username:username,password:password}),
+            body: JSON.stringify( {username:username, password:password} ),
         })
         .then(function(response) {
         	if(response.status === 200) {
         		response.json().then(function(data) {  
+        			localStorage.setItem("authenticated", true);
            		    callback({status:"accepted", error: ""});
         		    return;
         	    }); 
@@ -33,18 +34,13 @@ var AuthenticationService = {
         	}        	
         });
     },		
-		
-    getAccessToken() {
-    	return localStorage.getItem("access_token");
-    },
     
     logout() {
-        localStorage.removeItem("access_token");
-        localStorage.removeItem("refresh_token");
+        localStorage.removeItem("authenticated");
     },
     
     isAuthenticated() {
-        return !!localStorage.access_token;
+        return !!localStorage.authenticated;
     }    
     
 }

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <statusListener class="ch.qos.logback.core.status.NopStatusListener" />
+
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <Pattern>
+                %d{yyyy-MM-dd HH:mm:ss} %-5level %logger - %msg%n
+            </Pattern>
+        </layout>
+    </appender>
+
+    <logger name="org.springframework" level="ERROR" />
+    <logger name="org.springframework.security" level="ERROR" />
+    <logger name="org.hibernate" level="ERROR" />
+    <logger name="org.hibernate.SQL" level="ERROR" />
+    <logger name="ch.qos.logback" level="ERROR" />
+    <logger name="org.apache" level="ERROR" />
+    <logger name="com.netflix" level="ERROR" />
+    <logger name="fm.pattern" level="INFO" />
+
+    <root>
+        <appender-ref ref="CONSOLE" />
+    </root>
+</configuration>

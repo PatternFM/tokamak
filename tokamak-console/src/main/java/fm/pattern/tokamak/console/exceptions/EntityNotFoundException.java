@@ -1,4 +1,4 @@
-package fm.pattern.tokamak.console;
+package fm.pattern.tokamak.console.exceptions;
 
 import java.util.ArrayList;
 import java.util.List;

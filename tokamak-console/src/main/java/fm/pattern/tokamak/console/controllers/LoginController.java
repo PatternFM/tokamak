@@ -1,4 +1,4 @@
-package fm.pattern.tokamak.console;
+package fm.pattern.tokamak.console.controllers;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
@@ -26,9 +26,11 @@ public class LoginController extends Controller {
 
 	@ResponseStatus(value = HttpStatus.OK)
 	@RequestMapping(value = "/login", method = POST, consumes = APPLICATION_JSON_VALUE)
-	public void login(@RequestBody Credentials credentials, HttpSession session) {
+	public AccessTokenRepresentation login(@RequestBody Credentials credentials, HttpSession session) {
 		Result<AccessTokenRepresentation> result = tokensClient.getAccessToken(clientId, clientSecret, credentials.getUsername(), credentials.getPassword());
-		session.setAttribute("token", verify(result));
+		session.setAttribute("token", verify(result).getInstance());
+		System.out.println("SESSION ID: " + session.getId() + " assigned with token: " + result.getInstance().getAccessToken());
+		return result.getInstance();
 	}
 
 	@RequestMapping(value = "/logout", method = GET)

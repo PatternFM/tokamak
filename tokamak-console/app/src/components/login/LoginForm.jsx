@@ -25,7 +25,6 @@ class LoginForm extends React.Component {
             return;
         }
         
-        
         this.setState({ loading:true, error:"" });
         
         let self = this;

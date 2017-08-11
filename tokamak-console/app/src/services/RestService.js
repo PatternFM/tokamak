@@ -5,7 +5,7 @@ var RestService = {
 		
     list(endpoint) {
         return fetch(BASE_URL + endpoint, {
-            headers: { "Accept": "application/json", "Authorization": "Bearer " + AuthenticationService.getAccessToken() }
+            headers: { "Accept": "application/json" }
         })
         .then(function(response) {
             if(response.ok) {
@@ -23,7 +23,7 @@ var RestService = {
     
     get(endpoint) {
         return fetch(BASE_URL + endpoint, {
-            headers: { "Accept": "application/json", "Authorization": "Bearer " + AuthenticationService.getAccessToken() }
+            headers: { "Accept": "application/json" }
         })
         .then(function(response) {
             if(response.ok) {
@@ -43,7 +43,7 @@ var RestService = {
         return fetch(BASE_URL + endpoint, {
             method: "POST",
             body: JSON.stringify(payload),
-        	headers: { "Accept": "application/json", "Content-Type": "application/json", "Authorization": "Bearer " + AuthenticationService.getAccessToken() }
+        	headers: { "Accept": "application/json", "Content-Type": "application/json" }
         })
         .then(function(response) {
             return response.json();
@@ -61,7 +61,7 @@ var RestService = {
         return fetch(BASE_URL + endpoint, {
             method: "PUT",
             body: JSON.stringify(payload),
-        	headers: { "Accept": "application/json", "Content-Type": "application/json", "Authorization": "Bearer " + AuthenticationService.getAccessToken() }
+        	headers: { "Accept": "application/json", "Content-Type": "application/json" }
         })
         .then(function(response) {
             return response.json();
@@ -78,7 +78,7 @@ var RestService = {
     delete(endpoint, instance) {
         return fetch(BASE_URL + endpoint, {
             method: "DELETE",
-        	headers: { "Accept": "application/json", "Content-Type": "application/json", "Authorization": "Bearer " + AuthenticationService.getAccessToken() }
+        	headers: { "Accept": "application/json", "Content-Type": "application/json" }
         })
         .then(function(response) {
             if(response.ok) {
