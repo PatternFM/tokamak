@@ -16,6 +16,7 @@ import Policies from "./components/policies/Policies.jsx";
 import Settings from "./components/settings/Settings.jsx";
 import AuditHistory from "./components/audit/AuditHistory.jsx";
 import history from "./components/history/history.js"
+import injectTapEventPlugin from 'react-tap-event-plugin';
 
 var FontAwesome = require('react-fontawesome');
 
@@ -31,6 +32,8 @@ const PrivateRoute = ({component: Component, ...rest}) => (
     )
   )}/>
 )
+
+injectTapEventPlugin();
 
 ReactDom.render(
   <Router history={history}>

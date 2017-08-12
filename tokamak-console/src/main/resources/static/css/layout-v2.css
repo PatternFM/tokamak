@@ -1,3 +1,61 @@
 body {
-	
+	background: #5fdca5;
+}
+
+label {
+    font-size: 16px !important;
+    -webkit-font-smoothing: antialiased;
+    rgba(0,0,0,0.26);
+}
+
+hr {
+	border-bottom-color: rgba(0, 0, 0, 0.12); !important;
+}
+
+.mui-red {
+	background: rgb(244,67,54) !important;
+}
+
+.mui-button-full {
+    width: 100% !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    box-shadow: 0 2px 5px 0 rgba(0,0,0,.26) !important;
+    border-radius: 3px !important;
+}
+
+.margin-top-20 {
+	margin-top: 20px !important;
+}
+
+.margin-top-30 {
+    margin-top: 30px !important;
+}
+
+.margin-top-40 {
+    margin-top: 40px !important;
+}
+
+.margin-top-50 {
+    margin-top: 50px !important;
+}
+
+.login-container {
+    width: 700px;
+    margin: 0 auto;
+    padding: 60px 150px 70px 150px !important;
+    margin-top: 250px;
+}
+
+.login-container input {
+    width: 100% !important;
+    margin-top: 0 !important;
+}
+
+.login-container h2 {
+    font-family: "Lato", "Arial", "Sans-Serif" !important;
+    font-weight: 300 !important;
+    font-size: 36px;
+    margin: 0;
+    line-height: 42px;
 }

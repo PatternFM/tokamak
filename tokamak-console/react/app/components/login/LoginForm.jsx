@@ -2,13 +2,13 @@ import React from "react";
 import {withRouter} from "react-router-dom";
 import AuthenticationService from "../../services/AuthenticationService";
 
-import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles';
+import { MuiThemeProvider } from 'material-ui/styles';
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import { withStyles, createStyleSheet } from 'material-ui/styles';
-import createPalette from 'material-ui/styles/palette';
-import { blue, red } from 'material-ui/colors';
-import Button from 'material-ui/Button';
+import RaisedButton from 'material-ui/RaisedButton';
+import TextField from 'material-ui/TextField';
 import Paper from 'material-ui/Paper';
-import Typography from 'material-ui/Typography';
+import {blue900} from 'material-ui/styles/colors';
 
 class LoginForm extends React.Component {
 
@@ -61,12 +61,20 @@ class LoginForm extends React.Component {
     }
     
     render() {
+        const theme = getMuiTheme({
+           palette: {
+             primary1Color: blue900
+           }
+        });
+        
         return (
-          <MuiThemeProvider>
-             <paper>
-               HI
-               <button>click</button>
-             </paper>
+          <MuiThemeProvider muiTheme={theme}>
+             <Paper className="login-container">
+               <h2>Sign in to the Tokamak Console</h2>
+               <TextField style={{width:"100%"}} id="username" floatingLabelText="Username" value={this.state.username} onChange={this.changeUsername.bind(this)} />
+               <TextField style={{width:"100%"}} id="password" floatingLabelText="Password" value={this.state.password} onChange={this.changePassword.bind(this)} type="password" />
+               <RaisedButton primary={true} className="mui-button-full margin-top-40" disabledBackgroundColor="rgba(0,0,0,0.12)" disabledLabelColor="#999" buttonStyle={{height:"auto",lineHeight:"auto"}} labelStyle={{height:"auto",display:"inline-block",padding:"20px"}} overlayStyle={{height:"auto",borderRadius:"3px"}} label="Sign In"></RaisedButton>
+             </Paper>
           </MuiThemeProvider>
         );
     }

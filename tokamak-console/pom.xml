@@ -159,6 +159,7 @@
 				<version>${spring.boot.version}</version>
 				<configuration>
 					<mainClass>fm.pattern.tokamak.console.Application</mainClass>
+					 <addResources>true</addResources>
 				</configuration>
 				<executions>
 					<execution>
