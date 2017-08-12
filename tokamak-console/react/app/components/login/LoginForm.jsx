@@ -1,7 +1,14 @@
 import React from "react";
 import {withRouter} from "react-router-dom";
 import AuthenticationService from "../../services/AuthenticationService";
-import Button from "../ui-controls/Button.jsx";
+
+import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles';
+import { withStyles, createStyleSheet } from 'material-ui/styles';
+import createPalette from 'material-ui/styles/palette';
+import { blue, red } from 'material-ui/colors';
+import Button from 'material-ui/Button';
+import Paper from 'material-ui/Paper';
+import Typography from 'material-ui/Typography';
 
 class LoginForm extends React.Component {
 
@@ -55,24 +62,12 @@ class LoginForm extends React.Component {
     
     render() {
         return (
-          <div id="login-form">
-            <form  method="POST" onSubmit={ this.login.bind(this) }>
-              <div id="login-title">Sign In To Tokamak</div>
-              
-              {this.state.error.length > 0 &&
-                 <div className="login-error">{this.state.error}</div>
-              }
-              {this.state.error.length === 0 &&
-                 <div className="login-error">&nbsp;</div>
-              }
-              
-              <input id="username" className="login-textfield" type="text" name="username" value={this.state.username} placeholder="username" onChange={this.changeUsername.bind(this)} autoComplete="off" />
-              <input id="password" className="login-textfield" type="password" name="password" value={this.state.password} onChange={this.changePassword.bind(this)} placeholder="password" autoComplete="off" />
-              <br/>
-              
-              <Button className="login-button" loading={this.state.loading} name="Sign In" onClick={ this.login.bind(this) } />
-            </form>
-          </div>
+          <MuiThemeProvider>
+             <paper>
+               HI
+               <button>click</button>
+             </paper>
+          </MuiThemeProvider>
         );
     }
     
