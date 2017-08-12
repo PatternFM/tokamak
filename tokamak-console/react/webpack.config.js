@@ -2,7 +2,7 @@ var webpack = require("webpack");
 var path = require("path");
 var html = require('html-webpack-plugin');
 
-var BUILD_DIR = path.resolve(__dirname, "../src/main/resources/test");
+var BUILD_DIR = path.resolve(__dirname, "../src/main/resources/public");
 var APP_DIR = path.resolve(__dirname, "app");
 
 var config = {
@@ -13,13 +13,16 @@ var config = {
     filename: "bundle.js"
   },
   
-  plugins: [new html()],
+  plugins: [new html({
+	  hash: true,
+	  template: "./index.html"
+  })],
   
   module: {
     loaders: [
 	  {
 	    test: /\.jsx?$/,
-	    exclude: /node_modules/,
+	    exclude: [/node_modules/],
 	    loaders: ["babel-loader"]
 	  }
 	]
