@@ -15,14 +15,5 @@
     "react-timestamp": "^4.2.1",
     "validator": "^7.0.0",
     "whatwg-fetch": "^2.0.3"
-  },
-  "devDependencies": {
-    "react-scripts": "1.0.7"
-  },
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
   }
 }
