@@ -16,7 +16,7 @@ import fm.pattern.tokamak.sdk.commons.ErrorsRepresentation;
 import fm.pattern.tokamak.sdk.commons.Result;
 
 @Component
-public class Controller {
+public class WebController {
 
 	@ResponseBody
 	@ResponseStatus(value = HttpStatus.UNAUTHORIZED)

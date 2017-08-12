@@ -22,6 +22,9 @@ zuul:
     scopes:
       path: /v1/scopes/**
       url: http://localhost:9600/v1/scopes            
+    grant_types:
+      path: /v1/grant_types/**
+      url: http://localhost:9600/v1/grant_types 
       
 ribbon.eureka.enabled: false
 

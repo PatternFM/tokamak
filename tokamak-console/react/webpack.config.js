@@ -1,8 +1,8 @@
 var webpack = require("webpack");
 var path = require("path");
-var html = require('html-webpack-plugin');
+var html = require("html-webpack-plugin");
 
-var BUILD_DIR = path.resolve(__dirname, "../src/main/resources/public");
+var BUILD_DIR = path.resolve(__dirname, "../src/main/resources/static");
 var APP_DIR = path.resolve(__dirname, "app");
 
 var config = {
@@ -24,7 +24,12 @@ var config = {
 	    test: /\.jsx?$/,
 	    exclude: [/node_modules/],
 	    loaders: ["babel-loader"]
-	  }
+	  },
+	  {
+        test: /\.js?$/,
+		exclude: [/node_modules/],
+		loaders: ["babel-loader"]
+      }	  
 	]
   }  
 

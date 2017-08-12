@@ -19,7 +19,7 @@ import fm.pattern.tokamak.sdk.commons.Result;
 import fm.pattern.tokamak.sdk.model.AccessTokenRepresentation;
 
 @RestController
-public class LoginController extends Controller {
+public class LoginController extends WebController {
 
 	private TokensClient tokensClient = new TokensClient("http://localhost:9600");
 	private String clientId = "test-client";
