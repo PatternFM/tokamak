@@ -1,15 +1,13 @@
 import React, { Component } from "react";
-
-import NavBar from "./NavBar.jsx"
+import ApplicationMenuBar from "./ApplicationMenuBar.jsx"
 
 class Layout extends Component {
+
   render() {
     return (
       <div id="container">
-        <NavBar />
-        <div id="content">
-          {this.props.children}
-        </div>
+        <ApplicationMenuBar />
+        {this.props.children}
       </div>
     );
   }

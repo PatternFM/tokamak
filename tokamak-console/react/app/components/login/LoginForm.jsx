@@ -8,7 +8,7 @@ import { withStyles, createStyleSheet } from 'material-ui/styles';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import Paper from 'material-ui/Paper';
-import {blue900} from 'material-ui/styles/colors';
+import LinearProgress from 'material-ui/LinearProgress';
 
 class LoginForm extends React.Component {
 
@@ -44,7 +44,7 @@ class LoginForm extends React.Component {
                 if(result.status === "rejected") {
                     self.setState({error: result.message});
                 }
-            }, 300);
+            }, 3000);
         });
     }
 
@@ -61,19 +61,43 @@ class LoginForm extends React.Component {
     }
     
     render() {
-        const theme = getMuiTheme({
+        const buttonTheme = getMuiTheme({
            palette: {
-             primary1Color: blue900
+             primary1Color: "#F44336"
+           }
+        });
+
+        const inputTheme = getMuiTheme({
+           palette: {
+             primary1Color: "#0088FF"
            }
         });
         
         return (
-          <MuiThemeProvider muiTheme={theme}>
+           <MuiThemeProvider muiTheme={buttonTheme}>
              <Paper className="login-container">
-               <h2>Sign in to the Tokamak Console</h2>
-               <TextField style={{width:"100%"}} id="username" floatingLabelText="Username" value={this.state.username} onChange={this.changeUsername.bind(this)} />
-               <TextField style={{width:"100%"}} id="password" floatingLabelText="Password" value={this.state.password} onChange={this.changePassword.bind(this)} type="password" />
-               <RaisedButton primary={true} className="mui-button-full margin-top-40" disabledBackgroundColor="rgba(0,0,0,0.12)" disabledLabelColor="#999" buttonStyle={{height:"auto",lineHeight:"auto"}} labelStyle={{height:"auto",display:"inline-block",padding:"20px"}} overlayStyle={{height:"auto",borderRadius:"3px"}} label="Sign In"></RaisedButton>
+               <h2>Sign in to Tokamak</h2>
+               <p>Manage your OAuth2 server, apps and accounts.</p>
+               
+               {this.state.error.length > 0 && <div className="login-error">{this.state.error}</div>}
+               
+               <form method="POST" onSubmit={ this.login.bind(this) }>
+                 <MuiThemeProvider muiTheme={inputTheme}>
+                   <div>
+                     <TextField style={{width:"100%"}} id="username" floatingLabelText="Username" value={this.state.username} onChange={this.changeUsername.bind(this)} />
+                     <TextField style={{width:"100%", marginTop:"-10px"}} id="password" floatingLabelText="Password" value={this.state.password} onChange={this.changePassword.bind(this)} type="password" />
+                   </div>
+                 </MuiThemeProvider>
+                 
+                 <MuiThemeProvider muiTheme={buttonTheme}>
+                   <div>
+                     <RaisedButton primary={true} onClick={ this.login.bind(this) } className="mui-button-full margin-top-40 margin-bottom-20" disabledBackgroundColor="rgba(0,0,0,0.12)" disabledLabelColor="#999" buttonStyle={{height:"auto",lineHeight:"auto"}} labelStyle={{height:"auto",display:"inline-block",padding:"20px"}} overlayStyle={{height:"auto",borderRadius:"3px"}} label="Sign In"></RaisedButton>
+                     {this.state.loading && <LinearProgress mode="indeterminate" style={{backgroundColor:"rgba(244,67,54,0.2)"}} /> }
+                   </div>
+                 </MuiThemeProvider>
+                 
+                 <input type="submit" style={{display:"none"}}></input>
+               </form>
              </Paper>
           </MuiThemeProvider>
         );

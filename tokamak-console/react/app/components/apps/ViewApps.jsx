@@ -12,6 +12,8 @@ class ViewApps extends React.Component {
         return (
             <div className="animated fadeIn">
             
+            <div className="results-panel">
+            
             <ManageClientDialog ref="manageClientDialog" clientCreated={this.props.clientCreated} />
             
             {moreThanOneResult  &&
@@ -34,6 +36,8 @@ class ViewApps extends React.Component {
                 <button className="tok-button center margin-top-50" onClick={() => this.refs.manageClientDialog.show()}>Create App</button>
               </div>
             }
+            
+            </div>
             </div>
         );
     }

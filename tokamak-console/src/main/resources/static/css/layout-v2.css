@@ -1,5 +1,8 @@
 body {
-	background: #5fdca5;
+	background: url(/img/background.jpg) no-repeat center center fixed;
+	background-size: cover;
+	margin: 0;
+	padding: 0;
 }
 
 label {
@@ -10,6 +13,28 @@ label {
 
 hr {
 	border-bottom-color: rgba(0, 0, 0, 0.12); !important;
+}
+
+#container {
+    top: 0;
+    bottom: 0;
+    margin: 0;
+    padding: 0;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: #E0E0E0;
+    overflow-y: hidden;
+}
+
+#content {
+    top: 0;
+    bottom: 0;
+    margin: 0;
+    padding: 0;
+    position: fixed;
+    width: 100%;
+    height: 100%;	
 }
 
 .mui-red {
@@ -40,16 +65,37 @@ hr {
     margin-top: 50px !important;
 }
 
+.margin-bottom-20 {
+    margin-bottom: 20px !important;
+}
+
+.margin-bottom-30 {
+    margin-bottom: 30px !important;
+}
+
+.margin-bottom-40 {
+    margin-bottom: 40px !important;
+}
+
+.margin-bottom-50 {
+    margin-bottom: 50px !important;
+}
+
+.application-bar {
+	position: absolute !important;
+	top: 0 !important;
+	width: 100% !important;
+}
+
 .login-container {
     width: 700px;
     margin: 0 auto;
-    padding: 60px 150px 70px 150px !important;
+    padding: 60px 150px 90px 150px !important;
     margin-top: 250px;
 }
 
 .login-container input {
     width: 100% !important;
-    margin-top: 0 !important;
 }
 
 .login-container h2 {
@@ -58,4 +104,22 @@ hr {
     font-size: 36px;
     margin: 0;
     line-height: 42px;
+}
+
+.login-container p {
+	color: #555;
+    font-size: 15px;
+    margin-top: 10px;
+    letter-spacing: 0.3px;
+}
+
+.results-panel {
+	position: absolute;
+	left: 0;
+	top: 65px;
+	overflow: scroll;
+	width: 500px;
+	padding: 30px;
+	height: 100%;
+	background: #FFF;
 }
