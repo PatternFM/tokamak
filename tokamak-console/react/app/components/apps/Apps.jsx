@@ -81,9 +81,7 @@ class Apps extends React.Component {
         return (
             <Layout>
                 <MuiThemeProvider>
-                   <div className="content-holder">
-                      {output}
-                   </div>
+                  {output}
                 </MuiThemeProvider>
             </Layout>
         );

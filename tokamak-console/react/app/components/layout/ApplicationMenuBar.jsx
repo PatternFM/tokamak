@@ -27,7 +27,7 @@ class ApplicationMenuBar extends React.Component {
     render() {
         const barTheme = getMuiTheme({
            palette: {
-             primary1Color: "#F44336"
+             primary1Color: "#3F5EF7"
            }
         });  
   
@@ -35,7 +35,7 @@ class ApplicationMenuBar extends React.Component {
             <MuiThemeProvider muiTheme={barTheme}>
               <div>
                 <AppBar onLeftIconButtonTouchTap={this.toggle.bind(this)} className="application-bar" />
-                <Drawer open={this.state.open} onRequestChange={(open) => this.setState({open})}>
+                <Drawer open={this.state.open} onRequestChange={(open) => this.setState({open})} docked={false}>
                     <MenuItem onTouchTap={this.close.bind(this)}><NavLink to="/apps">OAuth Apps</NavLink></MenuItem>
                     <MenuItem onTouchTap={this.close.bind(this)}><NavLink to="/scopes">App Scopes</NavLink></MenuItem>
                     <MenuItem onTouchTap={this.close.bind(this)}><NavLink to="/authorities" activeClassName="active">App Authorities</NavLink></MenuItem>
