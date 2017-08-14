@@ -1,17 +1,25 @@
 import React from "react";
 import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import AppTable from "./AppTable.jsx";
 import { NavLink } from "react-router-dom";
 import ManageClientDialog from "./ManageClientDialog.jsx";
+import FontIcon from 'material-ui/FontIcon';
+import FloatingActionButton from 'material-ui/FloatingActionButton';
+import ContentAdd from 'material-ui/svg-icons/content/add';
 
 class ViewApps extends React.Component {
 
     render() {
+        const buttonTheme = getMuiTheme({
+            palette: {
+                primary1Color: "#F02260"
+            }
+        });
+        
         let moreThanOneResult = this.props.apps.payload && this.props.apps.payload.length > 0;
         
         return (
-            <div className="animated fadeIn">
-            
             <div className="results-panel">
             
             <ManageClientDialog ref="manageClientDialog" clientCreated={this.props.clientCreated} />
@@ -20,10 +28,16 @@ class ViewApps extends React.Component {
               <MuiThemeProvider>
                 <div>
                   <div id="header">
-                    <div className="title">OAuth Apps</div>
-                    <p className="overview">View, create and manage apps to interact with OAuth2 protected endpoints. <NavLink to="/help#apps">Learn more about apps.</NavLink></p>
-                    <button className="tok-button fixed-top" onClick={() => this.refs.manageClientDialog.show()}>+ Create App</button>
+                    <h2>OAuth Apps</h2>
+                    <p>View, create and manage apps that interact with OAuth2 protected endpoints.</p>
                   </div>
+                  
+                  <MuiThemeProvider muiTheme={buttonTheme}>
+                    <FloatingActionButton className="overlay-add-button" onClick={() => this.refs.manageClientDialog.show()}>
+                      <ContentAdd />
+                    </FloatingActionButton>   
+                  </MuiThemeProvider>
+                             
                   <div className="table-container">
                     <AppTable apps={this.props.apps} clientUpdated={this.props.clientUpdated} clientDeleted={this.props.clientDeleted} pageRequested={this.props.pageRequested} />
                   </div>
@@ -37,7 +51,6 @@ class ViewApps extends React.Component {
               </div>
             }
             
-            </div>
             </div>
         );
     }

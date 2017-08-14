@@ -4,6 +4,7 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import Layout from "../layout/Layout.jsx";
 import Loader from "../layout/Loader.jsx";
 import ViewApps from "./ViewApps.jsx";
+import ViewApp from "./ViewApp.jsx";
 import ClientService from "../../services/ClientService.js";
 import ApplicationError from "../error/ApplicationError.jsx";
 
@@ -81,7 +82,10 @@ class Apps extends React.Component {
         return (
             <Layout>
                 <MuiThemeProvider>
-                  {output}
+                  <div>
+                    {output}
+                    <ViewApp />
+                  </div>
                 </MuiThemeProvider>
             </Layout>
         );

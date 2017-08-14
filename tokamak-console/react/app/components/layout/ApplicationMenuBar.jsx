@@ -27,7 +27,7 @@ class ApplicationMenuBar extends React.Component {
     render() {
         const barTheme = getMuiTheme({
            palette: {
-             primary1Color: "#3F5EF7"
+             primary1Color: "#1E43F6"
            }
         });  
   

@@ -3,7 +3,6 @@ import ManageClientDialog from "./ManageClientDialog.jsx";
 import DeleteClientDialog from "./DeleteClientDialog.jsx";
 import Pagination from "../pagination/Pagination.jsx";
 import Paper from 'material-ui/Paper';
-import FontIcon from 'material-ui/FontIcon';
 
 const Timestamp = require("react-timestamp");
 
@@ -15,18 +14,18 @@ class AppTable extends React.Component {
             <ManageClientDialog ref="manageClientDialog" clientUpdated={this.props.clientUpdated} /> 
             <DeleteClientDialog ref="deleteClientDialog" clientDeleted={this.props.clientDeleted} />
           
-            <Pagination records={this.props.apps} pageRequested={this.props.pageRequested} />
-            <br/><br/>
+            <div className="scrollable-results">
+              {this.props.apps.payload.map((app) => 
+                <Paper className="result">
+                  <h4>{app.name}</h4>
+                  <p>{app.description}</p>
+                </Paper>
+              )}
             
-            {this.props.apps.payload.map((app) => 
-              <Paper className="result">
-                <h4>{app.name}</h4>
-                <p>{app.description}</p>
-              </Paper>
-            )}
-            
-            <Pagination records={this.props.apps} pageRequested={this.props.pageRequested} />
-            <br/><br/><br/><br/><br/><br/><br/><br/>
+              <Pagination records={this.props.apps} pageRequested={this.props.pageRequested} />
+              <br/><br/><br/><br/><br/><br/><br/><br/>
+              <br/><br/><br/><br/><br/><br/><br/><br/>
+            </div>
           </div>
         );
     }
