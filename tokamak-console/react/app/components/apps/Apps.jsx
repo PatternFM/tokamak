@@ -15,7 +15,8 @@ class Apps extends React.Component {
         this.state = {
             result: {},
             loading: false,
-            error: null
+            error: null,
+            app: null
         };
     }
 
@@ -24,12 +25,22 @@ class Apps extends React.Component {
         ClientService.list().then((result) => {
             if(result.status === "accepted") {
                 this.setState({ result: result.instance }, function() { });
+                if(result.instance.payload) {
+                    this.setState({ app:result.instance.payload[0] });
+                }
+                else {
+                    this.setState( {app:{}} );
+                }
             }
             else {
                 this.setState({ error:result.errors[0] });
             }
             this.setState( { loading:false } );
         });
+    }
+
+    clientClicked(client) {
+        this.setState({app:client});
     }
 
     clientCreated(client) {
@@ -76,7 +87,7 @@ class Apps extends React.Component {
     } 
 
     render() {
-        let page = this.state.error != null ? <ApplicationError error={this.state.error} /> : <ViewApps apps={this.state.result} clientCreated={ this.clientCreated.bind(this) } clientUpdated={ this.clientUpdated.bind(this) } clientDeleted={ this.clientDeleted.bind(this) } pageRequested={ this.pageRequested.bind(this) }/>;
+        let page = this.state.error != null ? <ApplicationError error={this.state.error} /> : <div><ViewApps apps={this.state.result} clientClicked={ this.clientClicked.bind(this) } clientCreated={ this.clientCreated.bind(this) } clientUpdated={ this.clientUpdated.bind(this) } clientDeleted={ this.clientDeleted.bind(this) } pageRequested={ this.pageRequested.bind(this) }/> <ViewApp app={this.state.app} /></div>;
         let output = this.state.loading ? <Loader /> : page;
         
         return (
@@ -84,7 +95,6 @@ class Apps extends React.Component {
                 <MuiThemeProvider>
                   <div>
                     {output}
-                    <ViewApp />
                   </div>
                 </MuiThemeProvider>
             </Layout>

@@ -14,7 +14,6 @@ var AuthenticationService = {
         })
         .then(function(response) {
         	if(response.status === 200) {
-        		response.headers.forEach(function(val, key) { console.log(key + ' -> ' + val); });
         		response.json().then(function(data) {  
         			localStorage.setItem("authenticated", true);
            		    callback({status:"accepted", error: ""});

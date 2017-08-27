@@ -1,6 +1,5 @@
 body {
-	background: url(/img/background.jpg) no-repeat center center fixed;
-	background-size: cover;
+    background: #1959c3;
 	margin: 0;
 	padding: 0;
 	font-family: "Roboto", "Arial", "Sans-Serif";
@@ -36,6 +35,10 @@ hr {
     position: fixed;
     width: 100%;
     height: 100%;	
+}
+
+.clear {
+	clear: both;
 }
 
 .mui-red {
@@ -119,8 +122,8 @@ hr {
     left: 0;
     top: 120px;
     overflow: scroll;
-    width: 500px;
-    padding: 20px 50px 50px 50px;
+    width: 430px;
+    padding: 40px 35px 40px 35px;
     height: 100%;
     background: #FAFAFA;
 }
@@ -129,16 +132,34 @@ hr {
 	position: absolute;
 	left: 0;
 	top: 63px;
-	width: 500px;
+	width: 430px;
 	padding: 20px 50px 50px 50px;
 	height: 100%;
 	background: #FAFAFA;
 }
 
 .results-panel .result {
-    padding: 20px !important;
-    margin-bottom: 15px !important;
-    box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 1px, rgba(0, 0, 0, 0.12) 0px 1px 2px !important;
+    padding: 0 !important;
+    margin-bottom: 30px !important;
+    clear: both !important;
+}
+
+.results-panel .result-content {
+    float: left;
+    width: 350px;
+}
+
+.results-panel .result-icons {
+    float: right;
+    margin-top: 3px;
+}
+
+.results-panel .action-icon {
+	padding: 9px;
+	background: #E0E0E0;
+	color: #0088FF !important;
+	border-radius: 50%;
+	font-size: 18px !important;
 }
 
 .results-panel h4 {
@@ -151,22 +172,22 @@ hr {
 .results-panel p {
 	font-family: "Lato" !important;
 	font-size: 14px;
-	color: #777;
+	color: #444;
 	margin-top: 5px;
 	margin-bottom: 0;
 	letter-spacing: 0.3px;
 }
 
 .overlay-add-button {
-	position: absolute;
-    right: -29px;
-    top: 28px;
+    float: right;
+    margin-top: 32px;
 }
 
 .pagination-container {
     margin: 0 auto;
     text-align: center;
     margin-top: 50px;
+    margin-bottom: 50px;
 }
 
 .pagination-element {
@@ -189,8 +210,9 @@ hr {
 }
 
 #header {
-    padding: 25px 50px 33px 50px;
+    padding: 0 50px 0 50px;
     margin: -20px -50px 0 -50px;
+    height: 120px;
     background: #F0F0F0;
 }
 
@@ -204,6 +226,8 @@ hr {
     font-size: 28px;
     margin: 0;
     line-height: 42px;
+    float: left;
+    line-height: 120px;
 }
 
 .view-container {
@@ -211,6 +235,11 @@ hr {
     width: 100%;
     height: 100%;
     position: absolute;
-    left: 600px;
+    left: 500px;
     top: 63px;
+}
+
+.view-header {
+	height: 120px;
+	border-bottom: 1px solid #DDD;
 }

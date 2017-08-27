@@ -44,7 +44,7 @@ class LoginForm extends React.Component {
                 if(result.status === "rejected") {
                     self.setState({error: result.message});
                 }
-            }, 3000);
+            }, 1500);
         });
     }
 

@@ -13,7 +13,7 @@ class ViewApps extends React.Component {
     render() {
         const buttonTheme = getMuiTheme({
             palette: {
-                primary1Color: "#F02260"
+                primary1Color: "#F44336"
             }
         });
         
@@ -29,17 +29,15 @@ class ViewApps extends React.Component {
                 <div>
                   <div id="header">
                     <h2>OAuth Apps</h2>
-                    <p>View, create and manage apps that interact with OAuth2 protected endpoints.</p>
+                    <MuiThemeProvider muiTheme={buttonTheme}>
+                      <FloatingActionButton className="overlay-add-button" onClick={() => this.refs.manageClientDialog.show()}>
+                        <ContentAdd />
+                      </FloatingActionButton>   
+                    </MuiThemeProvider>                    
                   </div>
                   
-                  <MuiThemeProvider muiTheme={buttonTheme}>
-                    <FloatingActionButton className="overlay-add-button" onClick={() => this.refs.manageClientDialog.show()}>
-                      <ContentAdd />
-                    </FloatingActionButton>   
-                  </MuiThemeProvider>
-                             
                   <div className="table-container">
-                    <AppTable apps={this.props.apps} clientUpdated={this.props.clientUpdated} clientDeleted={this.props.clientDeleted} pageRequested={this.props.pageRequested} />
+                    <AppTable apps={this.props.apps} clientClicked={this.props.clientClicked} clientUpdated={this.props.clientUpdated} clientDeleted={this.props.clientDeleted} pageRequested={this.props.pageRequested} />
                   </div>
                 </div>
               </MuiThemeProvider>

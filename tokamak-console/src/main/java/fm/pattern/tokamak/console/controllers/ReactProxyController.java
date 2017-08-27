@@ -11,6 +11,11 @@ public class ReactProxyController {
 		return "index.html";
 	}
 	
+	@RequestMapping(value = "/logout")
+	public String logout() {
+		return "index.html";
+	}
+	
 	@RequestMapping(value = "/apps")
 	public String apps() {
 		return "index.html";
