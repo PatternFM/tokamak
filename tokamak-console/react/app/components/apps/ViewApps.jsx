@@ -35,10 +35,7 @@ class ViewApps extends React.Component {
                       </FloatingActionButton>   
                     </MuiThemeProvider>                    
                   </div>
-                  
-                  <div className="table-container">
-                    <AppTable apps={this.props.apps} clientClicked={this.props.clientClicked} clientUpdated={this.props.clientUpdated} clientDeleted={this.props.clientDeleted} pageRequested={this.props.pageRequested} />
-                  </div>
+                  <AppTable apps={this.props.apps} clientClicked={this.props.clientClicked} clientUpdated={this.props.clientUpdated} clientDeleted={this.props.clientDeleted} pageRequested={this.props.pageRequested} />
                 </div>
               </MuiThemeProvider>
             }

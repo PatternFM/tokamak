@@ -6,7 +6,13 @@ import AudienceService from "../../services/AudienceService.js";
 import PasswordPolicyService from "../../services/PasswordPolicyService.js";
 import AuthorityService from "../../services/AuthorityService.js";
 import GrantTypeService from "../../services/GrantTypeService.js";
+
 import Button from "../ui-controls/Button.jsx";
+import RaisedButton from 'material-ui/RaisedButton';
+import TextField from 'material-ui/TextField';
+import { MuiThemeProvider } from 'material-ui/styles';
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
+import { withStyles, createStyleSheet } from 'material-ui/styles';
 
 class CreateClientForm extends React.Component {
     propTypes: {
@@ -328,6 +334,18 @@ class CreateClientForm extends React.Component {
         let button = this.state.update ? <button className="tok-button center" style={{marginRight:"10px"}} onClick={ () => this.update() }>Update</button> : <button className="tok-button center" style={{marginRight:"10px"}} onClick={() => this.create()}>Create</button>;
         let clientIdField = this.state.update ? <div className="tok-textfield-disabled">{this.state.clientId}</div> : <input autoFocus className="tok-textfield" type="text" name="name" value={this.state.username} onChange={this.clientIdChanged.bind(this)} autoComplete="off" />;
         let clientSecretField = this.state.update ? <div><div className="tok-textfield-disabled" style={{ width:"70%", float:"left" }}>&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;</div><i className="change-password" onClick={ () => this.changeSecret() }>change secret</i></div> : <input className="tok-textfield" type="password" name="clientSecret" onChange={this.clientSecretChanged.bind(this)} autoComplete="off" />;
+
+        const buttonTheme = getMuiTheme({
+           palette: {
+             primary1Color: "#F44336"
+           }
+        });
+
+        const inputTheme = getMuiTheme({
+           palette: {
+             primary1Color: "#0088FF"
+           }
+        });
 
         return (
             <Dialog modal={true} contentStyle={{width:"80%", maxWidth:"none"}} open={this.state.open}>

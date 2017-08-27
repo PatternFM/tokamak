@@ -6,6 +6,7 @@ import AppBar from 'material-ui/AppBar';
 import MenuItem from 'material-ui/MenuItem';
 import Drawer from 'material-ui/Drawer';
 import { NavLink } from "react-router-dom";
+import FlatButton from 'material-ui/FlatButton';
 
 class ApplicationMenuBar extends React.Component {
 
@@ -18,6 +19,10 @@ class ApplicationMenuBar extends React.Component {
 
     toggle() {
         this.setState({open: !this.state.open});
+    }
+
+    logout() {
+        window.location.replace("/logout");
     }
 
     close() {
@@ -34,7 +39,7 @@ class ApplicationMenuBar extends React.Component {
         return (
             <MuiThemeProvider muiTheme={barTheme}>
               <div>
-                <AppBar onLeftIconButtonTouchTap={this.toggle.bind(this)} className="application-bar" />
+                <AppBar onLeftIconButtonTouchTap={this.toggle.bind(this)} onRightIconButtonTouchTap={this.logout.bind(this)} className="application-bar" iconElementRight={<FlatButton label="Sign Out" />} />
                 <Drawer open={this.state.open} onRequestChange={(open) => this.setState({open})} docked={false}>
                     <MenuItem onTouchTap={this.close.bind(this)}><NavLink to="/apps">OAuth Apps</NavLink></MenuItem>
                     <MenuItem onTouchTap={this.close.bind(this)}><NavLink to="/scopes">App Scopes</NavLink></MenuItem>
@@ -45,8 +50,6 @@ class ApplicationMenuBar extends React.Component {
                     <MenuItem onTouchTap={this.close.bind(this)}><NavLink to="/roles" activeClassName="active">User Roles</NavLink></MenuItem>
                     <MenuItem onTouchTap={this.close.bind(this)}></MenuItem>
                     <MenuItem onTouchTap={this.close.bind(this)}><NavLink to="/policies" activeClassName="active">Password Policies</NavLink></MenuItem>
-                    <MenuItem onTouchTap={this.close.bind(this)}></MenuItem>
-                    <MenuItem onTouchTap={this.close.bind(this)}><NavLink to="/logout" activeClassName="active">Sign Out</NavLink></MenuItem>
                 </Drawer>
               </div>
             </MuiThemeProvider>
