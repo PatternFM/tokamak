@@ -91,6 +91,24 @@ hr {
 	width: 100% !important;
 }
 
+.appbar-brand {
+    width: 42px;
+    height: 42px;
+    position: absolute;
+    top: 10px;
+    z-index: 2000;
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 50%;
+    left: 50%;
+}
+
+.brand-icon {
+	width: 26px;
+	height: 26px;
+	margin-left: 8px;
+    margin-top: 8px;
+}
+
 .login-container {
     width: 700px;
     margin: 0 auto;
@@ -216,7 +234,7 @@ hr {
 }
 
 #header {
-    padding: 0 40px 0 40px;
+    padding: 0 40px 0 30px;
     margin: -20px -20px 0 -50px;
     height: 120px;
     background: #F0F0F0;
@@ -248,4 +266,13 @@ hr {
 .view-header {
 	height: 120px;
 	border-bottom: 1px solid #DDD;
+}
+
+#menu-items a {
+	color: #333;
+	text-decoration: none;
+}
+
+.menu-spacer {
+	margin-bottom: 20px !important;
 }

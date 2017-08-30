@@ -7,6 +7,7 @@ import MenuItem from 'material-ui/MenuItem';
 import Drawer from 'material-ui/Drawer';
 import { NavLink } from "react-router-dom";
 import FlatButton from 'material-ui/FlatButton';
+import AuthenticationService from "../../services/AuthenticationService";
 
 class ApplicationMenuBar extends React.Component {
 
@@ -22,7 +23,8 @@ class ApplicationMenuBar extends React.Component {
     }
 
     logout() {
-        window.location.replace("/logout");
+        AuthenticationService.logout();
+        window.location.replace("/login");
     }
 
     close() {
@@ -38,17 +40,18 @@ class ApplicationMenuBar extends React.Component {
   
         return (
             <MuiThemeProvider muiTheme={barTheme}>
-              <div>
-                <AppBar onLeftIconButtonTouchTap={this.toggle.bind(this)} onRightIconButtonTouchTap={this.logout.bind(this)} className="application-bar" iconElementRight={<FlatButton label="Sign Out" />} />
+              <div id="menu-items">
+                <div className="appbar-brand"><img className="brand-icon" src="/img/logo.png"></img></div>
+                <AppBar onLeftIconButtonTouchTap={this.toggle.bind(this)} onRightIconButtonTouchTap={this.logout.bind(this)} className="application-bar" iconElementRight={<FlatButton style={{marginTop:"5px"}} label="Sign Out" />} />
                 <Drawer open={this.state.open} onRequestChange={(open) => this.setState({open})} docked={false}>
-                    <MenuItem onTouchTap={this.close.bind(this)}><NavLink to="/apps">OAuth Apps</NavLink></MenuItem>
+                    <AppBar iconElementLeft={<span></span>} className="application-bar" />
+                    <br/><br style={{paddingBottom:"30px"}}/>
+                    <MenuItem onTouchTap={this.close.bind(this)} style={{marginTop:"60px"}}><NavLink to="/apps">OAuth Apps</NavLink></MenuItem>
                     <MenuItem onTouchTap={this.close.bind(this)}><NavLink to="/scopes">App Scopes</NavLink></MenuItem>
                     <MenuItem onTouchTap={this.close.bind(this)}><NavLink to="/authorities" activeClassName="active">App Authorities</NavLink></MenuItem>
-                    <MenuItem onTouchTap={this.close.bind(this)}><NavLink to="/audiences" activeClassName="active">App Audiences</NavLink></MenuItem>
-                    <MenuItem onTouchTap={this.close.bind(this)}></MenuItem>
+                    <MenuItem onTouchTap={this.close.bind(this)} className="menu-spacer"><NavLink to="/audiences" activeClassName="active">App Audiences</NavLink></MenuItem>
                     <MenuItem onTouchTap={this.close.bind(this)}><NavLink to="/accounts" activeClassName="active">User Accounts</NavLink></MenuItem>
-                    <MenuItem onTouchTap={this.close.bind(this)}><NavLink to="/roles" activeClassName="active">User Roles</NavLink></MenuItem>
-                    <MenuItem onTouchTap={this.close.bind(this)}></MenuItem>
+                    <MenuItem onTouchTap={this.close.bind(this)} className="menu-spacer"><NavLink to="/roles" activeClassName="active">User Roles</NavLink></MenuItem>
                     <MenuItem onTouchTap={this.close.bind(this)}><NavLink to="/policies" activeClassName="active">Password Policies</NavLink></MenuItem>
                 </Drawer>
               </div>
