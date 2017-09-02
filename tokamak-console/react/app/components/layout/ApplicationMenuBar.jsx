@@ -42,7 +42,7 @@ class ApplicationMenuBar extends React.Component {
             <MuiThemeProvider muiTheme={barTheme}>
               <div id="menu-items">
                 <div className="appbar-brand"><img className="brand-icon" src="/img/logo.png"></img></div>
-                <AppBar onLeftIconButtonTouchTap={this.toggle.bind(this)} onRightIconButtonTouchTap={this.logout.bind(this)} className="application-bar" iconElementRight={<FlatButton style={{marginTop:"5px"}} label="Sign Out" />} />
+                <AppBar onLeftIconButtonTouchTap={this.toggle.bind(this)} onRightIconButtonTouchTap={this.logout.bind(this)} className="application-bar" iconElementRight={<FlatButton style={{marginTop:"6px"}} label="Sign Out" />} />
                 <Drawer open={this.state.open} onRequestChange={(open) => this.setState({open})} docked={false}>
                     <AppBar iconElementLeft={<span></span>} className="application-bar" />
                     <br/><br style={{paddingBottom:"30px"}}/>

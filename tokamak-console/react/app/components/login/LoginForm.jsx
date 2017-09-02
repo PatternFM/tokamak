@@ -44,7 +44,7 @@ class LoginForm extends React.Component {
                 if(result.status === "rejected") {
                     self.setState({error: result.message});
                 }
-            }, 1500);
+            }, 500);
         });
     }
 
@@ -75,6 +75,9 @@ class LoginForm extends React.Component {
         
         return (
            <MuiThemeProvider muiTheme={buttonTheme}>
+             <div>
+             <div className="login-brand"><img className="login-icon" src="/img/logo.png"></img></div>
+             
              <Paper className="login-container">
                <h2>Sign in to Tokamak</h2>
                <p>Manage your OAuth2 server, apps and accounts.</p>
@@ -99,6 +102,7 @@ class LoginForm extends React.Component {
                  <input type="submit" style={{display:"none"}}></input>
                </form>
              </Paper>
+             </div>
           </MuiThemeProvider>
         );
     }

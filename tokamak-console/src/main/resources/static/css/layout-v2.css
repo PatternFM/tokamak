@@ -91,15 +91,35 @@ hr {
 	width: 100% !important;
 }
 
+.login-brand {
+    width: 72px;
+    height: 72px;
+    position: absolute;
+    top: 80px;
+    z-index: 2000;
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 50%;
+    left: 0;
+    right: 0;
+    margin: auto;
+}
+
 .appbar-brand {
     width: 42px;
     height: 42px;
     position: absolute;
-    top: 10px;
+    top: 11px;
     z-index: 2000;
     background: rgba(255, 255, 255, 0.8);
     border-radius: 50%;
     left: 50%;
+}
+
+.login-icon {
+    width: 36px;
+    height: 36px;
+    margin-left: 18px;
+    margin-top: 18px;
 }
 
 .brand-icon {
