@@ -24,7 +24,7 @@ class Apps extends React.Component {
         this.setState({ loading:true });
         ClientService.list().then((result) => {
             if(result.status === "accepted") {
-                this.setState({ result: result.instance }, function() { });
+                this.setState({ result:result.instance });
                 if(result.instance.payload) {
                     this.setState({ app:result.instance.payload[0] });
                 }
@@ -39,8 +39,8 @@ class Apps extends React.Component {
         });
     }
 
-    clientClicked(client) {
-        this.setState({app:client});
+    clientClicked(target) {
+        this.setState({app:target});
     }
 
     clientCreated(client) {

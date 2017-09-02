@@ -9,6 +9,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import Paper from 'material-ui/Paper';
 import LinearProgress from 'material-ui/LinearProgress';
+import FontIcon from 'material-ui/FontIcon';
 
 class LoginForm extends React.Component {
 
@@ -36,15 +37,13 @@ class LoginForm extends React.Component {
         
         let self = this;
         AuthenticationService.login(this.state.username, this.state.password, function(result) {
-            setTimeout(function() {
-                self.setState({ loading:false });
-                if(result.status === "accepted") {
-                    self.props.history.push("/apps");
-                }
-                if(result.status === "rejected") {
-                    self.setState({error: result.message});
-                }
-            }, 500);
+            self.setState({ loading:false });
+            if(result.status === "accepted") {
+                self.props.history.push("/apps");
+            }
+            if(result.status === "rejected") {
+                self.setState({error: result.message});
+            }
         });
     }
 
@@ -73,6 +72,8 @@ class LoginForm extends React.Component {
            }
         });
         
+        let warn = "#FB8C00";
+        
         return (
            <MuiThemeProvider muiTheme={buttonTheme}>
              <div>
@@ -82,7 +83,13 @@ class LoginForm extends React.Component {
                <h2>Sign in to Tokamak</h2>
                <p>Manage your OAuth2 server, apps and accounts.</p>
                
-               {this.state.error.length > 0 && <div className="login-error">{this.state.error}</div>}
+               {this.state.error.length > 0 && 
+                 <div className="login-error">
+                   <div className="warn"><FontIcon className="material-icons" color={warn}>warning</FontIcon></div>
+                   <p>{this.state.error}</p>
+                   <br style={{clear:"both"}}/>
+                 </div>
+               }
                
                <form method="POST" onSubmit={ this.login.bind(this) }>
                  <MuiThemeProvider muiTheme={inputTheme}>
@@ -95,7 +102,7 @@ class LoginForm extends React.Component {
                  <MuiThemeProvider muiTheme={buttonTheme}>
                    <div>
                      <RaisedButton primary={true} onClick={ this.login.bind(this) } className="mui-button-full margin-top-40 margin-bottom-20" disabledBackgroundColor="rgba(0,0,0,0.12)" disabledLabelColor="#999" buttonStyle={{height:"auto",lineHeight:"auto"}} labelStyle={{height:"auto",display:"inline-block",padding:"20px"}} overlayStyle={{height:"auto",borderRadius:"3px"}} label="Sign In"></RaisedButton>
-                     {this.state.loading && <LinearProgress mode="indeterminate" style={{backgroundColor:"rgba(244,67,54,0.2)"}} /> }
+                     {this.state.loading && <div className="progress"><div className="indeterminate"></div></div> }
                    </div>
                  </MuiThemeProvider>
                  

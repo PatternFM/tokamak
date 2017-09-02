@@ -53,6 +53,14 @@ hr {
     border-radius: 3px !important;
 }
 
+.mui-button-fixed {
+    width: 300px !important;
+	margin-left: 0 !important;
+    margin-right: 0 !important;
+    box-shadow: 0 2px 5px 0 rgba(0,0,0,.26) !important;
+    border-radius: 3px !important;
+}
+
 .margin-top-20 {
 	margin-top: 20px !important;
 }
@@ -112,7 +120,9 @@ hr {
     z-index: 2000;
     background: rgba(255, 255, 255, 0.8);
     border-radius: 50%;
-    left: 50%;
+    left: 0;
+    right: 0;
+    margin: auto;
 }
 
 .login-icon {
@@ -272,6 +282,7 @@ hr {
     line-height: 42px;
     float: left;
     line-height: 120px;
+    padding-left: 5px;
 }
 
 .view-container {
@@ -295,4 +306,49 @@ hr {
 
 .menu-spacer {
 	margin-bottom: 20px !important;
+}
+
+.full-page-notice {
+	background: #FFF;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    right: 0;
+    z-index: 500;
+    margin-top: 65px;
+    text-align: center;
+    padding: 200px;
+}
+
+.full-page-notice h2 {
+    font-family: "Roboto";
+    font-size: 16px;
+    letter-spacing: 0.2px;
+    color: #555;	
+    font-weight: 300;
+    font-size: 34px;    
+}
+
+.login-error {
+	padding: 20px;
+	margin: 20px 0 10px 0;
+	font-size: 14px;
+	font-weight: bold;
+	border: 1px solid #FB8C00;
+	border-radius: 3px;
+}
+
+.login-error .warn {
+	float: left;
+	color: #FB8C00 !important;
+}
+
+.login-error p {
+	display: block;
+	float: left;
+	margin: 0;
+	font-weight: 400;
+	line-height: 18px;
+	width: 85%;
+	padding-left: 20px;
 }

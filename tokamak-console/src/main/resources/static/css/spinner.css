@@ -1,76 +1,84 @@
-.spinner {
-  -webkit-animation: rotator 1.4s linear infinite;
-  animation: rotator 1.4s linear infinite;
-  stroke: #E40000;
-}
 
-.inline-button-spinner {
-    stroke: #FFFFFF !important;
-}
+/* Progress Bar */
+.progress {
+  position: relative;
+  height: 4px;
+  display: block;
+  width: 100%;
+  background-color: rgba(244, 67, 54, 0.2);
+  border-radius: 2px;
+  background-clip: padding-box;
+  margin: 0.5rem 0 1rem 0;
+  overflow: hidden; }
+  .progress .determinate {
+    position: absolute;
+    background-color: inherit;
+    top: 0;
+    bottom: 0;
+    background-color: rgb(244, 67, 54);
+    transition: width .3s linear; }
+  .progress .indeterminate {
+    background-color: rgb(244, 67, 54); }
+    .progress .indeterminate:before {
+      content: '';
+      position: absolute;
+      background-color: inherit;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      will-change: left, right;
+      -webkit-animation: indeterminate 2.1s cubic-bezier(0.65, 0.815, 0.735, 0.395) infinite;
+              animation: indeterminate 2.1s cubic-bezier(0.65, 0.815, 0.735, 0.395) infinite; }
+    .progress .indeterminate:after {
+      content: '';
+      position: absolute;
+      background-color: inherit;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      will-change: left, right;
+      -webkit-animation: indeterminate-short 2.1s cubic-bezier(0.165, 0.84, 0.44, 1) infinite;
+              animation: indeterminate-short 2.1s cubic-bezier(0.165, 0.84, 0.44, 1) infinite;
+      -webkit-animation-delay: 1.15s;
+              animation-delay: 1.15s; }
 
-.button-spinner {
-	stroke: #FFFFFF !important;
-	height: 50px;
-}
-
-@-webkit-keyframes rotator {
+@-webkit-keyframes indeterminate {
   0% {
-    -webkit-transform: rotate(0deg);
-            transform: rotate(0deg);
-  }
+    left: -35%;
+    right: 100%; }
+  60% {
+    left: 100%;
+    right: -90%; }
   100% {
-    -webkit-transform: rotate(270deg);
-            transform: rotate(270deg);
-  }
-}
-
-@keyframes rotator {
+    left: 100%;
+    right: -90%; } }
+@keyframes indeterminate {
   0% {
-    -webkit-transform: rotate(0deg);
-            transform: rotate(0deg);
-  }
+    left: -35%;
+    right: 100%; }
+  60% {
+    left: 100%;
+    right: -90%; }
   100% {
-    -webkit-transform: rotate(270deg);
-            transform: rotate(270deg);
-  }
-}
-
-.path {
-  stroke-dasharray: 187;
-  stroke-dashoffset: 0;
-  -webkit-transform-origin: center;
-          transform-origin: center;
-  -webkit-animation: dash 1.4s ease-in-out infinite;
-          animation: dash 1.4s ease-in-out infinite;
-}
-
-@-webkit-keyframes dash {
+    left: 100%;
+    right: -90%; } }
+@-webkit-keyframes indeterminate-short {
   0% {
-    stroke-dashoffset: 187;
-  }
-  50% {
-    stroke-dashoffset: 46.75;
-    -webkit-transform: rotate(135deg);
-            transform: rotate(135deg);
-  }
+    left: -200%;
+    right: 100%; }
+  60% {
+    left: 107%;
+    right: -8%; }
   100% {
-    stroke-dashoffset: 187;
-    -webkit-transform: rotate(450deg);
-            transform: rotate(450deg);
-  }
-}
-@keyframes dash {
+    left: 107%;
+    right: -8%; } }
+@keyframes indeterminate-short {
   0% {
-    stroke-dashoffset: 187;
-  }
-  50% {
-    stroke-dashoffset: 46.75;
-    -webkit-transform: rotate(135deg);
-            transform: rotate(135deg);
-  }
+    left: -200%;
+    right: 100%; }
+  60% {
+    left: 107%;
+    right: -8%; }
   100% {
-    stroke-dashoffset: 187;
-    -webkit-transform: rotate(450deg);
-            transform: rotate(450deg);
-  }
-}
+    left: 107%;
+    right: -8%; } }
