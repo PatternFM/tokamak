@@ -15,12 +15,28 @@ class ViewScope extends React.Component {
              
              </div>
              
-             <table>
+             <table className="details-table">
                 <tbody>
                   <tr>
-                    <td>Scope ID</td>
+                    <td>Name</td>
+                    <td>{this.props.scope.name}</td>
+                  </tr>   
+                  <tr>
+                    <td>Description</td>
+                    <td>{this.props.scope.description}</td>
+                  </tr> 
+                  <tr>
+                    <td>Created</td>
                     <td>123</td>
-                  </tr>                   
+                  </tr> 
+                  <tr>
+                    <td>Updated</td>
+                    <td>123</td>
+                  </tr> 
+                  <tr>
+                    <td>ID</td>
+                    <td>{this.props.scope.id}</td>
+                  </tr>                                                                                         
                 </tbody>
              </table>
              

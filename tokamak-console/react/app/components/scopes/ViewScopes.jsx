@@ -22,9 +22,10 @@ class ViewScopes extends React.Component {
         
         return (
             <div>
+              <ManageScopeDialog ref="manageScopeDialog" scopeCreated={this.props.scopeCreated} />
+              
               {!moreThanOneResult &&
                 <div className="full-page-notice">
-                  <ManageScopeDialog ref="manageScopeDialog" scopeCreated={this.props.scopeCreated} />
                   <h2>You haven't created any scopes yet</h2>
                   <MuiThemeProvider muiTheme={buttonTheme}>
                     <RaisedButton primary={true} onClick={() => this.refs.manageScopeDialog.show()} className="mui-button-fixed margin-top-40 margin-bottom-20" buttonStyle={{height:"auto",lineHeight:"auto"}} labelStyle={{height:"auto",display:"inline-block",padding:"20px"}} overlayStyle={{height:"auto",borderRadius:"3px"}} label="Create Scope"></RaisedButton>

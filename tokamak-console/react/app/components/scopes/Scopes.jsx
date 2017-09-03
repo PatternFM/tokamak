@@ -24,9 +24,8 @@ class Scopes extends React.Component {
         this.setState({ loading:true });
         ScopeService.list().then((result) => {
             if(result.status === "accepted") {
-                console.log(JSON.stringify(result));
                 this.setState({ result:result.instance.scopes });
-                if(result.instance.payload) {
+                if(result.instance.scopes) {
                     this.setState({ scope:result.instance.scopes[0] });
                 }
                 else {
@@ -46,36 +45,36 @@ class Scopes extends React.Component {
 
     scopeCreated(scope) {
         var result = this.state.result;
-        var scopes = result.payload.slice();
+        var scopes = result.slice();
         scopes.unshift(scope);
-        result.payload = scopes;
+        result = scopes;
         this.setState({ result:result });
     }
 
     scopeUpdated(scope) {
         var result = this.state.result;
-        var scopes = result.payload.slice();
+        var scopes = result.slice();
         var index = scopes.findIndex(function(a) { return a.id === scope.id });
         if(index !== -1) {
             scopes[index] = scope;
         }
-        result.payload = scopes;
+        result = scopes;
         this.setState({ result:result });
     }
 
     scopeDeleted(scope) {
         var result = this.state.result;
-        var scopes = result.payload.slice();
+        var scopes = result.slice();
         var index = scopes.findIndex(function(a) { return a.id === scope.id });
         if(index !== -1) {
             scopes.splice(index, 1);
         }
-        result.payload = scopes;
+        result = scopes;
         this.setState({ result:result });
     }
 
     render() {
-        let output = this.state.error != null ? <ApplicationError error={this.state.error} /> : <ViewScopes scopes={this.state.result} scopeClicked={ this.scopeClicked.bind(this) } scopeCreated={ this.scopeCreated.bind(this) } scopeUpdated={ this.scopeUpdated.bind(this) } scopeDeleted={ this.scopeDeleted.bind(this) } />;
+        let output = this.state.error != null ? <ApplicationError error={this.state.error} /> : <div><ViewScopes scopes={this.state.result} scopeClicked={ this.scopeClicked.bind(this) } scopeCreated={ this.scopeCreated.bind(this) } scopeUpdated={ this.scopeUpdated.bind(this) } scopeDeleted={ this.scopeDeleted.bind(this) } />  <ViewScope scope={this.state.scope} /></div>;
         let render = this.state.loading ? <Loader /> : output;
         
         return (

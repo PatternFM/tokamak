@@ -61,6 +61,18 @@ hr {
     border-radius: 3px !important;
 }
 
+.mui-button-standard {
+    width: 200px !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    box-shadow: 0 2px 5px 0 rgba(0,0,0,.26) !important;
+    border-radius: 3px !important;
+}
+
+.margin-right-10 {
+	margin-right: 10px !important;
+}
+
 .margin-top-20 {
 	margin-top: 20px !important;
 }
@@ -170,44 +182,30 @@ hr {
     left: 0;
     top: 120px;
     overflow: scroll;
-    width: 430px;
-    padding: 40px 35px 40px 35px;
+    width: 500px;
+    padding: 0;
     height: 100%;
-    background: #FAFAFA;
+    background: #F3F3F3;
 }
 
 .results-panel {
 	position: absolute;
 	left: 0;
 	top: 63px;
-	width: 430px;
-	padding: 20px 50px 50px 50px;
+	width: 500px;
 	height: 100%;
 	background: #FAFAFA;
 }
 
 .results-panel .result {
-    padding: 0 !important;
-    margin-bottom: 30px !important;
+	padding: 20px 40px !important;
     clear: both !important;
+    border-bottom: 1px solid #FFF !important;
 }
 
 .results-panel .result-content {
     float: left;
     width: 350px;
-}
-
-.results-panel .result-icons {
-    float: right;
-    margin-top: 3px;
-}
-
-.results-panel .action-icon {
-	padding: 9px;
-	background: #E0E0E0;
-	color: #0088FF !important;
-	border-radius: 50%;
-	font-size: 18px !important;
 }
 
 .results-panel h4 {
@@ -264,10 +262,9 @@ hr {
 }
 
 #header {
-    padding: 0 40px 0 30px;
-    margin: -20px -20px 0 -50px;
+    padding: 0 35px;
     height: 120px;
-    background: #F0F0F0;
+    background: #154ba5;
 }
 
 #header p {
@@ -283,6 +280,7 @@ hr {
     float: left;
     line-height: 120px;
     padding-left: 5px;
+    color: #EEE;
 }
 
 .view-container {
@@ -296,7 +294,8 @@ hr {
 
 .view-header {
 	height: 120px;
-	border-bottom: 1px solid #DDD;
+	background: #1752b4;
+	color: #EEE;
 }
 
 #menu-items a {
@@ -329,7 +328,7 @@ hr {
     font-size: 34px;    
 }
 
-.login-error {
+.validation-error {
 	padding: 20px;
 	margin: 20px 0 10px 0;
 	font-size: 14px;
@@ -338,17 +337,36 @@ hr {
 	border-radius: 3px;
 }
 
-.login-error .warn {
+.validation-error .warn {
 	float: left;
 	color: #FB8C00 !important;
 }
 
-.login-error p {
+.validation-error p {
 	display: block;
 	float: left;
 	margin: 0;
 	font-weight: 400;
-	line-height: 18px;
+	line-height: 24px;
 	width: 85%;
 	padding-left: 20px;
+}
+
+.modal-form-container {
+	padding: 0 150px 0 150px;
+}
+
+.modal-title {
+    font-size: 15px;
+    font-weight: 500;
+    color: rgba(0,0,0,0.75);
+    font-family: "Helvetica Neue", "Helvetica", "Sans Serif";
+    margin-bottom: 10px;
+    text-align: center;
+    -webkit-font-smoothing: antialiased;
+}
+
+.details-table {
+	width: 500px;
+	margin: 0 auto;
 }

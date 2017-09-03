@@ -8,7 +8,6 @@ import { withStyles, createStyleSheet } from 'material-ui/styles';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import Paper from 'material-ui/Paper';
-import LinearProgress from 'material-ui/LinearProgress';
 import FontIcon from 'material-ui/FontIcon';
 
 class LoginForm extends React.Component {
@@ -84,7 +83,7 @@ class LoginForm extends React.Component {
                <p>Manage your OAuth2 server, apps and accounts.</p>
                
                {this.state.error.length > 0 && 
-                 <div className="login-error">
+                 <div className="validation-error">
                    <div className="warn"><FontIcon className="material-icons" color={warn}>warning</FontIcon></div>
                    <p>{this.state.error}</p>
                    <br style={{clear:"both"}}/>
