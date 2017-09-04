@@ -49,6 +49,7 @@ class Scopes extends React.Component {
         scopes.unshift(scope);
         result = scopes;
         this.setState({ result:result });
+        this.setState({ scope:scope });
     }
 
     scopeUpdated(scope) {
@@ -60,6 +61,7 @@ class Scopes extends React.Component {
         }
         result = scopes;
         this.setState({ result:result });
+        this.setState({ scope:scope });
     }
 
     scopeDeleted(scope) {
@@ -74,7 +76,7 @@ class Scopes extends React.Component {
     }
 
     render() {
-        let output = this.state.error != null ? <ApplicationError error={this.state.error} /> : <div><ViewScopes scopes={this.state.result} scopeClicked={ this.scopeClicked.bind(this) } scopeCreated={ this.scopeCreated.bind(this) } scopeUpdated={ this.scopeUpdated.bind(this) } scopeDeleted={ this.scopeDeleted.bind(this) } />  <ViewScope scope={this.state.scope} /></div>;
+        let output = this.state.error != null ? <ApplicationError error={this.state.error} /> : <div><ViewScopes scopes={this.state.result} scopeClicked={ this.scopeClicked.bind(this) } scopeCreated={ this.scopeCreated.bind(this) } scopeUpdated={ this.scopeUpdated.bind(this) } scopeDeleted={ this.scopeDeleted.bind(this) } />  <ViewScope scope={this.state.scope} scopeUpdated={ this.scopeUpdated.bind(this) } scopeDeleted={ this.scopeDeleted.bind(this) } /></div>;
         let render = this.state.loading ? <Loader /> : output;
         
         return (

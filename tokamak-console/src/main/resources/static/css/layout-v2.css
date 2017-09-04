@@ -295,7 +295,24 @@ hr {
 .view-header {
 	height: 120px;
 	background: #1752b4;
-	color: #EEE;
+    padding: 0 35px;
+}
+
+.view-header h2 {
+    font-family: "Lato", "Arial", "Sans-Serif" !important;
+    font-weight: 300 !important;
+    font-size: 28px;
+    margin: 0;
+    line-height: 42px;
+    float: left;
+    line-height: 120px;
+    padding-left: 5px;
+    color: #EEE;	
+}
+
+.view-header .actions {
+	float: right;
+	margin-top: 40px;
 }
 
 #menu-items a {
@@ -366,7 +383,22 @@ hr {
     -webkit-font-smoothing: antialiased;
 }
 
+.modal-message-center {
+	text-align: center;
+	padding-top: 35px;
+}
+
 .details-table {
 	width: 500px;
 	margin: 0 auto;
+	margin-top: 50px;
+}
+
+.details-table td {
+	padding: 5px 10px;
+}
+
+.details-table .key {
+	text-align: right;
+	font-weight: bold;
 }

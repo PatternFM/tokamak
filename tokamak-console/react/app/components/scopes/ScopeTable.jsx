@@ -1,6 +1,4 @@
 import React from "react";
-import ManageScopeDialog from "./ManageScopeDialog.jsx";
-import DeleteScopeDialog from "./DeleteScopeDialog.jsx";
 import Pagination from "../pagination/Pagination.jsx";
 import Paper from 'material-ui/Paper';
 import FontIcon from 'material-ui/FontIcon';
@@ -16,9 +14,6 @@ class ScopeTable extends React.Component {
     render() {
         return (
           <div>
-            <ManageScopeDialog ref="manageScopeDialog" scopeUpdated={this.props.scopeUpdated} /> 
-            <DeleteScopeDialog ref="deleteScopeDialog" scopeDeleted={this.props.scopeDeleted} />
-          
             <div className="scrollable-results">
               {this.props.scopes.map((scope) => 
                 <div className="result" key={scope.id}>
