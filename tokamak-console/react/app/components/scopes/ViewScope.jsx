@@ -55,11 +55,11 @@ class ViewScope extends React.Component {
                   </tr> 
                   <tr>
                     <td className="key">Created</td>
-                    <td>{Moment(this.props.scope.created).format('MMMM Do YYYY, h:mm:ssa')}</td>
+                    <td>{Moment(this.props.scope.created).format('MMMM Do YYYY, h:mm a')}</td>
                   </tr> 
                   <tr>
                     <td className="key">Updated</td>
-                    <td>{Moment(this.props.scope.updated).format('MMMM Do YYYY, h:mm:ssa')}</td>
+                    <td>{Moment(this.props.scope.updated).format('MMMM Do YYYY, h:mm a')}</td>
                   </tr> 
                   <tr>
                     <td className="key">ID</td>

@@ -70,7 +70,27 @@ hr {
 }
 
 .margin-right-10 {
-	margin-right: 10px !important;
+    margin-right: 10px !important;
+}
+
+.margin-right-20 {
+    margin-right: 20px !important;
+}
+
+.margin-right-30 {
+    margin-right: 30px !important;
+}
+
+.margin-right-40 {
+    margin-right: 40px !important;
+}
+
+.margin-right-50 {
+    margin-right: 50px !important;
+}
+
+.margin-top-10 {
+    margin-top: 10px !important;
 }
 
 .margin-top-20 {
@@ -103,6 +123,26 @@ hr {
 
 .margin-bottom-50 {
     margin-bottom: 50px !important;
+}
+
+.margin-left-10 {
+    margin-left: 10px !important;
+}
+
+.margin-left-20 {
+    margin-left: 20px !important;
+}
+
+.margin-left-30 {
+    margin-left: 30px !important;
+}
+
+.margin-left-40 {
+    margin-left: 40px !important;
+}
+
+.margin-left-50 {
+    margin-left: 50px !important;
 }
 
 .application-bar {
@@ -201,6 +241,12 @@ hr {
 	padding: 20px 40px !important;
     clear: both !important;
     border-bottom: 1px solid #FFF !important;
+    transition: background-color 350ms;
+}
+
+.results-panel .result:hover {
+	background-color: #FFF;
+	cursor:pointer;
 }
 
 .results-panel .result-content {
@@ -213,12 +259,6 @@ hr {
     font-weight: 400 !important;
     font-size: 18px !important;	
 	margin: 0;
-}
-
-.results-panel h4:hover {
-	cursor: pointer;
-	color: #0088FF;
-	transition: all 200ms;
 }
 
 .results-panel p {
@@ -305,7 +345,7 @@ hr {
     margin: 0;
     line-height: 42px;
     float: left;
-    line-height: 120px;
+    line-height: 115px;
     padding-left: 5px;
     color: #EEE;	
 }
@@ -388,10 +428,22 @@ hr {
 	padding-top: 35px;
 }
 
+.modal-validation-error {
+	margin: 0 60px 0 60px;
+}
+
+.modal-progress {
+	margin: 0 auto !important;
+	width: 415px !important;
+	margin-top: 5px !important;
+}
+
 .details-table {
 	width: 500px;
 	margin: 0 auto;
-	margin-top: 50px;
+	margin-top: 100px;
+	font-size: 22px;
+	font-weight: 200;
 }
 
 .details-table td {
@@ -400,5 +452,5 @@ hr {
 
 .details-table .key {
 	text-align: right;
-	font-weight: bold;
+	font-weight: 400;
 }

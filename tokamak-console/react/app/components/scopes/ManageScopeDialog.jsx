@@ -128,6 +128,7 @@ class CreateScopeForm extends React.Component {
                 <div style={{textAlign:"center", paddingBottom:"30px"}}>
                   {button}
                   <RaisedButton secondary={true} onClick={() => this.hide()} className="mui-button-standard margin-top-40 margin-bottom-20" disabledBackgroundColor="rgba(0,0,0,0.12)" disabledLabelColor="#999" buttonStyle={{height:"auto",lineHeight:"auto"}} labelStyle={{height:"auto", display:"inline-block", padding:"20px", color:"#333"}} overlayStyle={{height:"auto",borderRadius:"3px", color:"#333"}} label="Cancel"></RaisedButton>
+                  {this.state.loading && <div className="progress modal-progress"><div className="indeterminate"></div></div> }
                 </div>
               </MuiThemeProvider>
             </Dialog>

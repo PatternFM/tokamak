@@ -73,6 +73,10 @@ class Scopes extends React.Component {
         }
         result = scopes;
         this.setState({ result:result });
+        
+        if(scopes.length > 1) {
+            this.setState({ scope:scopes[index - 1] });
+        }
     }
 
     render() {

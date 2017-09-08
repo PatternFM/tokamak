@@ -16,8 +16,8 @@ class ScopeTable extends React.Component {
           <div>
             <div className="scrollable-results">
               {this.props.scopes.map((scope) => 
-                <div className="result" key={scope.id}>
-                    <h4 onClick={ () => this.viewScopeDetails(scope) }>{scope.name}</h4> 
+                <div className="result" key={scope.id} onClick={ () => this.viewScopeDetails(scope) }>
+                    <h4>{scope.name}</h4> 
                     <p>{scope.description}</p>
                 </div>
               )}
