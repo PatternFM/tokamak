@@ -1,45 +1,32 @@
 import React from "react";
-import ManageAuthorityDialog from "./ManageAuthorityDialog.jsx";
-import DeleteAuthorityDialog from "./DeleteAuthorityDialog.jsx";
+import Pagination from "../pagination/Pagination.jsx";
+import Paper from 'material-ui/Paper';
+import FontIcon from 'material-ui/FontIcon';
 
 const Timestamp = require("react-timestamp");
 
 class AuthorityTable extends React.Component {
-    
+
+    viewAuthorityDetails(authority) {
+        this.props.authorityClicked(authority);
+    }
+
     render() {
         return (
-            <div>
-                <ManageAuthorityDialog ref="manageAuthorityDialog" authorityUpdated={this.props.authorityUpdated} /> 
-                <DeleteAuthorityDialog ref="deleteAuthorityDialog" authorityDeleted={this.props.authorityDeleted} />
-                
-                <table className="display-table">
-                  <thead>
-                    <tr>
-                      <th className="dth left-pad-0">Authority</th>
-                      <th className="dth">ID</th>
-                      <th className="dth">Created</th>
-                      <th className="dth right-pad-0"></th>
-                    </tr>
-                  </thead>
-                  
-                  <tbody>
-                    {this.props.authorities.map((authority) => 
-                     <tr key={authority.id}>
-                       <td className="dtr left-pad-0">
-                         {authority.name}<br/>
-                         <span className="description">{authority.description}</span>
-                       </td>
-                       <td className="dtr">{authority.id}</td>
-                       <td className="dtr"><Timestamp time={authority.created/1000} format="full" /></td>
-                       <td className="dtr right-pad-0"> 
-                         <i className="fa fa-times inline-button" onClick={() => this.refs.deleteAuthorityDialog.show(authority)}></i>
-                         <i className="fa fa-pencil inline-button" style={{marginRight:"5px"}} onClick={() => this.refs.manageAuthorityDialog.show(authority)}></i> 
-                       </td>
-                     </tr>
-                    )}
-                  </tbody>
-                </table>
-            </div>    
+          <div>
+            <div className="scrollable-results">
+              {this.props.authorities.map((authority) => 
+                <div className="result" key={authority.id} onClick={ () => this.viewAuthorityDetails(authority) }>
+                    <h4>{authority.name}</h4> 
+                    <p>{authority.description}</p>
+                </div>
+              )}
+            
+              <Pagination records={this.props.authorities} pageRequested={this.props.pageRequested} />
+              <br/><br/><br/><br/><br/><br/><br/><br/>
+              <br/><br/><br/><br/><br/><br/><br/><br/>
+            </div>
+          </div>
         );
     }
   
