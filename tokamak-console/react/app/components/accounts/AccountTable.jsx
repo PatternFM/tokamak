@@ -1,49 +1,31 @@
 import React from "react";
-import ManageAccountDialog from "./ManageAccountDialog.jsx";
-import DeleteAccountDialog from "./DeleteAccountDialog.jsx";
 import Pagination from "../pagination/Pagination.jsx";
+import Paper from 'material-ui/Paper';
+import FontIcon from 'material-ui/FontIcon';
 
 const Timestamp = require("react-timestamp");
 
 class AccountTable extends React.Component {
 
+    viewAccountDetails(account) {
+        this.props.accountClicked(account);
+    }
+
     render() {
         return (
-           <div>
-                <ManageAccountDialog ref="manageAccountDialog" accountUpdated={this.props.accountUpdated} /> 
-                <DeleteAccountDialog ref="deleteAccountDialog" accountDeleted={this.props.accountDeleted} />
-                        
-                <table className="display-table">
-                  <thead>
-                    <tr>
-                      <th className="dth left-pad-0">Username</th>
-                      <th className="dth">ID</th>
-                      <th className="dth">Created</th>
-                      <th className="dth right-pad-0"></th>
-                    </tr>
-                  </thead>
-                  
-                  <tbody>
-                    {this.props.accounts.payload.map((account) => 
-                     <tr key={account.id}>
-                       <td className="dtr left-pad-0">
-                         {account.username}<br/>
-                         <span className="description">{account.name}</span>
-                       </td>
-                       <td className="dtr">{account.id}</td>
-                       <td className="dtr"><Timestamp time={account.created/1000} format="full" /></td>
-                       <td className="dtr right-pad-0"> 
-                         <i className="fa fa-lock inline-button"></i>
-                         <i className="fa fa-times inline-button" style={{marginRight:"5px"}} onClick={ () => this.refs.deleteAccountDialog.show(account) }></i>
-                         <i className="fa fa-pencil inline-button" style={{marginRight:"5px"}} onClick={ () => this.refs.manageAccountDialog.show(account) }></i> 
-                       </td>
-                     </tr>
-                    )}
-                  </tbody>
-                </table>
-                
-                <Pagination records={this.props.accounts} pageRequested={this.props.pageRequested} />
+          <div>
+            <div className="scrollable-results">
+              {this.props.accounts.payload.map((account) => 
+                <div className="result" key={account.id} onClick={ () => this.viewAccountDetails(account) }>
+                    <h4>{account.username}</h4> 
+                </div>
+              )}
+            
+              <Pagination records={this.props.accounts} pageRequested={this.props.pageRequested} />
+              <br/><br/><br/><br/><br/><br/><br/><br/>
+              <br/><br/><br/><br/><br/><br/><br/><br/>
             </div>
+          </div>
         );
     }
   

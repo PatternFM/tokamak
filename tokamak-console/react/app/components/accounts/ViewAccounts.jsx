@@ -1,39 +1,55 @@
 import React from "react";
 import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import AccountTable from "./AccountTable.jsx";
 import { NavLink } from "react-router-dom";
 import ManageAccountDialog from "./ManageAccountDialog.jsx";
+import FontIcon from 'material-ui/FontIcon';
+import FloatingActionButton from 'material-ui/FloatingActionButton';
+import ContentAdd from 'material-ui/svg-icons/content/add';
+import RaisedButton from 'material-ui/RaisedButton';
 
 class ViewAccounts extends React.Component {
 
     render() {
+        const buttonTheme = getMuiTheme({
+            palette: {
+                primary1Color: "#F44336"
+            }
+        });
+        
         let moreThanOneResult = this.props.accounts.payload && this.props.accounts.payload.length > 0;
-         
+        
         return (
-            <div className="animated fadeIn">
-            
-            <ManageAccountDialog ref="manageAccountDialog" accountCreated={this.props.accountCreated} />
-            
-            {moreThanOneResult &&
-              <MuiThemeProvider>
-                <div>
-                  <div id="header">
-                    <div className="title">User Accounts</div>
-                    <p className="overview">View, create and manage accounts. <NavLink to="/help#accounts">Learn more about accounts.</NavLink></p>
-                    <button className="tok-button fixed-top" onClick={() => this.refs.manageAccountDialog.show()}>+ Create Account</button>
-                  </div>
-                  <div className="table-container">
-                    <AccountTable accounts={this.props.accounts} accountUpdated={this.props.accountUpdated} accountDeleted={this.props.accountDeleted} pageRequested={this.props.pageRequested} />
-                  </div>
+            <div>
+              <ManageAccountDialog ref="manageAccountDialog" accountCreated={this.props.accountCreated} />
+              
+              {!moreThanOneResult &&
+                <div className="full-page-notice">
+                  <h2>You haven't created any accounts yet</h2>
+                  <MuiThemeProvider muiTheme={buttonTheme}>
+                    <RaisedButton primary={true} onClick={() => this.refs.manageAccountDialog.show()} className="mui-button-fixed margin-top-40 margin-bottom-20" buttonStyle={{height:"auto",lineHeight:"auto"}} labelStyle={{height:"auto",display:"inline-block",padding:"20px"}} overlayStyle={{height:"auto",borderRadius:"3px"}} label="Create Account"></RaisedButton>
+                  </MuiThemeProvider>  
                 </div>
-              </MuiThemeProvider>
-            }
-            {!moreThanOneResult &&
-              <div className="error-page">
-                <h2 className="error-title">You haven't created any accounts yet</h2>
-                <button className="tok-button center margin-top-50" onClick={() => this.refs.manageAccountDialog.show()}>Create Account</button>
-              </div>
-            }
+              }
+            
+              {moreThanOneResult &&
+                <div className="results-panel">
+                  <MuiThemeProvider>
+                    <div>
+                      <div id="header">
+                        <h2>User Accounts</h2>
+                        <MuiThemeProvider muiTheme={buttonTheme}>
+                          <FloatingActionButton className="overlay-add-button" onClick={() => this.refs.manageAccountDialog.show()}>
+                            <ContentAdd />
+                          </FloatingActionButton>   
+                        </MuiThemeProvider>                    
+                      </div>
+                      <AccountTable accounts={this.props.accounts} accountClicked={this.props.accountClicked} accountUpdated={this.props.accountUpdated} accountDeleted={this.props.accountDeleted} pageRequested={this.props.pageRequested} />
+                    </div>
+                  </MuiThemeProvider>
+                </div>
+               }            
             </div>
         );
     }
