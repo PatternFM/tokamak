@@ -74,7 +74,7 @@ class Authorities extends React.Component {
         result = authorities;
         this.setState({ result:result });
         
-        if(authorities.length > 1) {
+        if(authorities.length > 1  && index > 0) {
             this.setState({ authority:authorities[index - 1] });
         }
     }

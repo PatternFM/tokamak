@@ -1,16 +1,16 @@
 import React from "react";
 import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
+import getMuiTheme from "material-ui/styles/getMuiTheme";
 import ManageAccountDialog from "./ManageAccountDialog.jsx";
 import DeleteAccountDialog from "./DeleteAccountDialog.jsx";
 import Pagination from "../pagination/Pagination.jsx";
-import Paper from 'material-ui/Paper';
-import Moment from 'moment';
-import RaisedButton from 'material-ui/RaisedButton';
-import FlatButton from 'material-ui/FlatButton';
-import FontIcon from 'material-ui/FontIcon';
-import ActionDelete from 'material-ui/svg-icons/action/delete';
-import ActionEdit from 'material-ui/svg-icons/content/create';
+import Paper from "material-ui/Paper";
+import Moment from "moment";
+import RaisedButton from "material-ui/RaisedButton";
+import FlatButton from "material-ui/FlatButton";
+import FontIcon from "material-ui/FontIcon";
+import ActionDelete from "material-ui/svg-icons/action/delete";
+import ActionEdit from "material-ui/svg-icons/content/create";
 
 const Timestamp = require("react-timestamp");
 
@@ -54,12 +54,20 @@ class ViewAccount extends React.Component {
                     <td>&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;</td>
                   </tr>
                   <tr>
+                    <td className="key">Roles</td>
+                    <td>
+                      {this.props.account.roles.map((role) => 
+                        <div className="list-item">{role.name}</div>
+                      )}
+                    </td>
+                  </tr>
+                  <tr>
                     <td className="key">Created</td>
-                    <td>{Moment(this.props.account.created).format('MMMM Do YYYY, h:mm a')}</td>
+                    <td>{Moment(this.props.account.created).format("MMMM Do YYYY, h:mm a")}</td>
                   </tr> 
                   <tr>
                     <td className="key">Updated</td>
-                    <td>{Moment(this.props.account.updated).format('MMMM Do YYYY, h:mm a')}</td>
+                    <td>{Moment(this.props.account.updated).format("MMMM Do YYYY, h:mm a")}</td>
                   </tr> 
                   <tr>
                     <td className="key">ID</td>

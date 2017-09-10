@@ -74,7 +74,7 @@ class Audiences extends React.Component {
         result = audiences;
         this.setState({ result:result });
         
-        if(audiences.length > 1) {
+        if(audiences.length > 1 && index > 0) {
             this.setState({ audience:audiences[index - 1] });
         }
     }

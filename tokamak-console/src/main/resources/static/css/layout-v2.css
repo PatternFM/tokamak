@@ -445,8 +445,13 @@ hr {
 	font-weight: 200;
 }
 
+.details-table .list-item {
+	padding-bottom: 7px;
+}
+
 .details-table td {
 	padding: 10px;
+	vertical-align: top;
 }
 
 .details-table .key {

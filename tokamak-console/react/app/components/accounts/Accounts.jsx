@@ -71,6 +71,10 @@ class Accounts extends React.Component {
         }
         result.payload = accounts;
         this.setState({ result:result });
+        
+        if(accounts.length > 1 && index > 0) {
+            this.setState({ account:accounts[index - 1] });
+        }
     }
 
     render() {

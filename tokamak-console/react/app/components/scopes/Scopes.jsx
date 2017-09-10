@@ -74,7 +74,7 @@ class Scopes extends React.Component {
         result = scopes;
         this.setState({ result:result });
         
-        if(scopes.length > 1) {
+        if(scopes.length > 1 && index > 0) {
             this.setState({ scope:scopes[index - 1] });
         }
     }
