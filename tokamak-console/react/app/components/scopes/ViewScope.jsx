@@ -43,7 +43,7 @@ class ViewScope extends React.Component {
                </MuiThemeProvider>    
              </div>
              
-             <table className="details-table">
+             <table className="details-table" class="details-table">
                 <tbody>
                   <tr>
                     <td className="key">Name</td>

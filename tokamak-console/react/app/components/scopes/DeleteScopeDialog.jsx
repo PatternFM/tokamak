@@ -60,15 +60,16 @@ class DeleteScopeDialog extends React.Component {
         return (
             <Dialog modal={true} open={this.state.open}>
               <div className="modal-title">Delete Scope</div>
-              <p className="modal-message-center">Are you sure you want to delete <strong>{name}</strong>?</p>
               
               {this.state.error && this.state.error.length > 0 &&
-                 <div className="validation-error modal-validation-error">
+                 <div className="validation-error modal-validation-error margin-top-40">
                    <div className="warn"><FontIcon className="material-icons" color={warn}>warning</FontIcon></div>
                    <p>{this.state.error}</p>
                    <br style={{clear:"both"}}/>
                  </div>
-              }              
+              } 
+                           
+              <p className="modal-message-center">Are you sure you want to delete <strong>{name}</strong>?</p>
               
               <MuiThemeProvider muiTheme={buttonTheme}>
                 <div style={{textAlign:"center", paddingBottom:"30px"}}>

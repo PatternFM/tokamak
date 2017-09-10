@@ -23,7 +23,6 @@ hr {
     position: fixed;
     width: 100%;
     height: 100%;
-    background: #E0E0E0;
     overflow-y: hidden;
 }
 
@@ -453,4 +452,24 @@ hr {
 .details-table .key {
 	text-align: right;
 	font-weight: 400;
+}
+
+.error-page {
+    text-align: center;
+    padding-top: 200px;
+    background: #FFF;
+    height: 100%;
+}
+
+.error-title {
+    font-size: 34px !important;
+    font-weight: 200;
+    color: #222;
+}
+
+.error-message {
+    font-family: "Roboto";
+    font-size: 16px;
+    letter-spacing: 0.2px;
+    color: #555;
 }
