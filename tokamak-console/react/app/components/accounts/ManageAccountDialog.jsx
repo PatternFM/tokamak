@@ -186,6 +186,8 @@ class CreateAccountForm extends React.Component {
         let usernameField = this.state.update ? <TextField style={{width:"100%"}} id="username" disabled={true} floatingLabelText="Username" value={this.state.username} onChange={this.usernameChanged.bind(this)} /> : <TextField style={{width:"100%"}} id="name" floatingLabelText="Username" value={this.state.username} onChange={this.usernameChanged.bind(this)} />;
         let passwordField = this.state.update ? <div><TextField style={{width:"70%"}} id="password" disabled={true} floatingLabelText="Password" value="&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;" onChange={this.usernameChanged.bind(this)} /><i className="change-password" onClick={ () => this.changePassword() }>change password</i></div> : <TextField style={{width:"100%"}} id="password" floatingLabelText="Password" value={this.state.password} onChange={this.passwordChanged.bind(this)} />;
 
+        let warn = "#FB8C00";
+
         const buttonTheme = getMuiTheme({
            palette: {
              primary1Color: "#F44336",
@@ -276,47 +278,51 @@ class CreateAccountForm extends React.Component {
               
                   <div style={{width:"50%", float:"left"}}>
                     {this.state.error && this.state.error.length > 0 &&
-                      <div className="validation-error">{this.state.error}</div>
+                      <div className="validation-error margin-top-40 margin-left-50 margin-right-50">
+                        <div className="warn"><FontIcon className="material-icons" color={warn}>warning</FontIcon></div>
+                        <p>{this.state.error}</p>
+                        <br style={{clear:"both"}} />
+                    </div>
                     }        
               
                     <div style={{padding:"15px 100px"}}>
-                    <MuiThemeProvider muiTheme={inputTheme}>
-                      <div>
-                        {usernameField}
-                        {passwordField}
-                      </div>
-                    </MuiThemeProvider>
+                      <MuiThemeProvider muiTheme={inputTheme}>
+                        <div>
+                          {usernameField}
+                          {passwordField}
+                        </div>
+                      </MuiThemeProvider>
               
-                    <MuiThemeProvider muiTheme={buttonTheme}>
-                      <div style={{textAlign:"center", paddingBottom:"30px"}}>
-                        {button}
-                        <RaisedButton secondary={true} onClick={() => this.hide()} className="mui-button-standard margin-top-40 margin-bottom-20" disabledBackgroundColor="rgba(0,0,0,0.12)" disabledLabelColor="#999" buttonStyle={{height:"auto",lineHeight:"auto"}} labelStyle={{height:"auto", display:"inline-block", padding:"20px", color:"#333"}} overlayStyle={{height:"auto",borderRadius:"3px", color:"#333"}} label="Cancel"></RaisedButton>
-                        {this.state.loading && <div className="progress modal-progress"><div className="indeterminate"></div></div> }
-                      </div>
-                    </MuiThemeProvider>
+                      <MuiThemeProvider muiTheme={buttonTheme}>
+                        <div style={{textAlign:"center", paddingBottom:"30px"}}>
+                          {button}
+                          <RaisedButton secondary={true} onClick={() => this.hide()} className="mui-button-standard margin-top-40 margin-bottom-20" disabledBackgroundColor="rgba(0,0,0,0.12)" disabledLabelColor="#999" buttonStyle={{height:"auto",lineHeight:"auto"}} labelStyle={{height:"auto", display:"inline-block", padding:"20px", color:"#333"}} overlayStyle={{height:"auto",borderRadius:"3px", color:"#333"}} label="Cancel"></RaisedButton>
+                          {this.state.loading && <div className="progress modal-progress"><div className="indeterminate"></div></div> }
+                        </div>
+                      </MuiThemeProvider>
                     </div>
                   </div>
               
-              <div style={{width:"50%", height:"600px", overflow:"scroll"}}>
-                  <div style={{width:"100%", padding:"0 65px 0 65px", marginTop:"20px"}}>
-                    <div className="select-table-header">Roles</div>
+                  <div style={{width:"50%", height:"600px", overflow:"scroll"}}>
+                    <div style={{width:"100%", padding:"0 65px 0 65px", marginTop:"20px"}}>
+                      <div className="select-table-header">Roles</div>
+                    </div>
+                    <table className="display-table select-table">
+                      <tbody>
+                        {this.state.roles.map((role) => 
+                          <tr key={role.id}>
+                            <td className="dtr left-pad-0" style={{ width:"20px" }}>
+                              <input type="checkbox" name={role.name} onChange={ this.toggle.bind(this, role) } defaultChecked={this.isChecked(role)}></input>
+                            </td>
+                            <td className="dtr left-pad-0">
+                              {role.name}
+                            </td>                       
+                          </tr>
+                        )}
+                      </tbody>
+                    </table>              
                   </div>
-                <table className="display-table select-table">
-                  <tbody>
-                    {this.state.roles.map((role) => 
-                     <tr key={role.id}>
-                       <td className="dtr left-pad-0" style={{ width:"20px" }}>
-                         <input type="checkbox" name={role.name} onChange={ this.toggle.bind(this, role) } defaultChecked={this.isChecked(role)}></input>
-                       </td>
-                       <td className="dtr left-pad-0">
-                         {role.name}
-                       </td>                       
-                     </tr>
-                    )}
-                  </tbody>
-                </table>              
-            </div>
-            </div>
+                </div>
             }
             </Dialog>
         );
