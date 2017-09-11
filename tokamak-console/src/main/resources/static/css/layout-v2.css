@@ -329,6 +329,7 @@ hr {
     left: 500px;
     top: 63px;
     right: 0;
+    overflow: scroll;
 }
 
 .view-header {
@@ -441,6 +442,7 @@ hr {
 	width: 650px;
 	margin: 0 auto;
 	margin-top: 100px;
+	margin-bottom: 150px;
 	font-size: 18px;
 	font-weight: 200;
 }
