@@ -119,8 +119,10 @@ class CreateScopeForm extends React.Component {
                     </div>
                   } 
                 
-                  <TextField style={{width:"100%"}} id="name" floatingLabelText="Scope Name" value={this.state.name} onChange={this.nameChanged.bind(this)} />
-                  <TextField style={{width:"100%"}} id="description" multiLine={true} floatingLabelText="Description" value={this.state.description} onChange={this.descriptionChanged.bind(this)} />
+                  <div style={{padding:"15px 100px"}}>
+                    <TextField style={{width:"100%"}} id="name" floatingLabelText="Scope Name" value={this.state.name} onChange={this.nameChanged.bind(this)} />
+                    <TextField style={{width:"100%"}} id="description" multiLine={true} floatingLabelText="Description" value={this.state.description} onChange={this.descriptionChanged.bind(this)} />
+                  </div>
                 </div>
               </MuiThemeProvider>
               

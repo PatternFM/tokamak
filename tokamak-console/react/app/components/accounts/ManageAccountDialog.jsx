@@ -146,6 +146,7 @@ class CreateAccountForm extends React.Component {
         this.setState({ loading:true });
 
         if(this.state.newPassword !== this.state.confirmNewPassword) {
+            this.setState({ loading:false });
             this.setState({ error:"Your passwords do not match." });
             return;
         }
@@ -209,30 +210,34 @@ class CreateAccountForm extends React.Component {
                     
                     <div style={{width:"50%", float:"left"}}>
                       {this.state.error && this.state.error.length > 0 &&
-                        <div className="validation-error">{this.state.error}</div>
+                        <div className="validation-error margin-top-40 margin-left-50 margin-right-50">
+                          <div className="warn"><FontIcon className="material-icons" color={warn}>warning</FontIcon></div>
+                          <p>{this.state.error}</p>
+                          <br style={{clear:"both"}} />
+                        </div>
                       }        
               
-                      <table style={{width:"100%", padding:"10px 60px 30px 60px"}}>
-                        <tr>
-                          <td className="form-key">New Password</td>
-                          <td className="form-value"><input className="tok-textfield" type="password" value={this.state.newPassword} onChange={this.newPasswordChanged.bind(this)} autoComplete="off" /></td>
-                        </tr>
-                        <tr>
-                          <td className="form-key">Confirm Password</td>
-                          <td className="form-value"><input className="tok-textfield" type="password" value={this.state.confirmNewPassword} onChange={this.confirmNewPasswordChanged.bind(this)} autoComplete="off" /></td>
-                        </tr>                                                                                                        
-                      </table>
-              
-                      <div style={{textAlign:"center", paddingBottom:"30px"}}>
-                        <button className="tok-button center" style={{marginRight:"10px"}} onClick={ () => this.updatePassword() }>Update</button>
-                        <button className="tok-button tok-cancel center" onClick={() => this.cancelUpdatePassword()}>Cancel</button>
-                      </div>
-                      <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+                      <MuiThemeProvider muiTheme={inputTheme}>
+                        <div style={{padding:"15px 100px"}}>
+                          <TextField style={{width:"100%"}} type="password" floatingLabelText="New Password" value={this.state.newPassword} onChange={this.newPasswordChanged.bind(this)} />
+                          <TextField style={{width:"100%"}} type="password" floatingLabelText="Confirm Password" value={this.state.confirmNewPassword} onChange={this.confirmNewPasswordChanged.bind(this)} />
+                        </div>
+                      </MuiThemeProvider> 
+                      
+                      <MuiThemeProvider muiTheme={buttonTheme}>
+                        <div style={{textAlign:"center", paddingBottom:"30px"}}>
+                          <RaisedButton primary={true} onClick={() => this.updatePassword()} className="mui-button-standard margin-top-40 margin-bottom-20 margin-right-10" disabledBackgroundColor="rgba(0,0,0,0.12)" disabledLabelColor="#999" buttonStyle={{height:"auto",lineHeight:"auto"}} labelStyle={{height:"auto",display:"inline-block",padding:"20px"}} overlayStyle={{height:"auto",borderRadius:"3px"}} label="Update"></RaisedButton>
+                          <RaisedButton secondary={true} onClick={() => this.cancelUpdatePassword()} className="mui-button-standard margin-top-40 margin-bottom-20" disabledBackgroundColor="rgba(0,0,0,0.12)" disabledLabelColor="#999" buttonStyle={{height:"auto",lineHeight:"auto"}} labelStyle={{height:"auto", display:"inline-block", padding:"20px", color:"#333"}} overlayStyle={{height:"auto",borderRadius:"3px", color:"#333"}} label="Cancel"></RaisedButton>
+                          {this.state.loading && <div className="progress modal-progress"><div className="indeterminate"></div></div> }
+                        </div>
+                      </MuiThemeProvider>                      
+                      
+                      <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
                     </div>  
                     
                 <div style={{width:"50%", height:"600px", overflow:"scroll"}}>
-                  <div style={{width:"100%", padding:"0 65px 0 65px"}}>
-                    <div className="form-key form-header">Password Policy</div>
+                  <div style={{width:"100%", padding:"25px 65px 0 65px"}}>
+                    <div className="select-table-header">Password Policy</div>
                   </div>
                   
                   <table className="display-table select-table">
@@ -282,7 +287,7 @@ class CreateAccountForm extends React.Component {
                         <div className="warn"><FontIcon className="material-icons" color={warn}>warning</FontIcon></div>
                         <p>{this.state.error}</p>
                         <br style={{clear:"both"}} />
-                    </div>
+                      </div>
                     }        
               
                     <div style={{padding:"15px 100px"}}>
