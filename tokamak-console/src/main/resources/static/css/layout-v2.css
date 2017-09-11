@@ -478,3 +478,43 @@ hr {
     letter-spacing: 0.2px;
     color: #555;
 }
+
+.change-password {
+	font-style: normal;
+	font-size: 15px;
+	padding-left: 15px;
+	color: #4f7ec7;
+	transition: all 300ms;
+}
+
+.change-password:hover {
+	cursor: pointer;
+	color: #264779;
+}
+
+.select-table {
+    width: 100%;
+    padding: 0 60px 25px 60px;
+}
+
+.select-table td {
+    border-bottom: none !important;
+    padding: 5px !important;
+}
+
+.select-table td:first-child {
+    padding: 5px !important;
+}
+
+.select-table td:last-child {
+    padding: 5px !important;
+}
+
+.select-table-header {
+    font-size: 15px;
+    font-weight: 500;
+    color: rgba(0,0,0,0.75);
+    font-family: "Helvetica Neue", "Helvetica", "Sans Serif";
+    -webkit-font-smoothing: antialiased;	
+    margin-bottom: 10px;
+}

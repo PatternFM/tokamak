@@ -60,6 +60,7 @@ class Accounts extends React.Component {
         }
         result.payload = accounts;
         this.setState({ result:result });
+        this.setState({ account:account });
     }
 
     accountDeleted(account) {

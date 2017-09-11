@@ -1,8 +1,13 @@
 import React from 'react';
 import Dialog from 'material-ui/Dialog';
+import TextField from 'material-ui/TextField';
 import AccountService from "../../services/AccountService";
 import RoleService from "../../services/RoleService.js";
 import PasswordPolicyService from "../../services/PasswordPolicyService.js";
+import { MuiThemeProvider } from 'material-ui/styles';
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
+import FontIcon from 'material-ui/FontIcon';
+import RaisedButton from 'material-ui/RaisedButton';
 
 class CreateAccountForm extends React.Component {
     propTypes: {
@@ -134,7 +139,6 @@ class CreateAccountForm extends React.Component {
     }
 
     changePassword() {
-        console.log("UPDATE");
         this.setState( { updatePassword: true } );
     }
 
@@ -178,9 +182,22 @@ class CreateAccountForm extends React.Component {
 
     render() {
         let title = this.state.update ? "Update Account" : "Create Account";
-        let button = this.state.update ? <button className="tok-button center" style={{marginRight:"10px"}} onClick={ () => this.update() }>Update</button> : <button className="tok-button center" style={{marginRight:"10px"}} onClick={() => this.create()}>Create</button>;
-        let usernameField = this.state.update ? <div className="tok-textfield-disabled">{this.state.username}</div> : <input autoFocus className="tok-textfield" type="text" name="name" value={this.state.username} onChange={this.usernameChanged.bind(this)} autoComplete="off" />;
-        let passwordField = this.state.update ? <div><div className="tok-textfield-disabled" style={{ width:"68%", float:"left" }}>&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;</div><i className="change-password" onClick={ () => this.changePassword() }>change password</i></div> : <input className="tok-textfield" type="password" name="name" value={this.state.password} onChange={this.passwordChanged.bind(this)} autoComplete="off" />;
+        let button = this.state.update ? <RaisedButton primary={true} onClick={() => this.update()} className="mui-button-standard margin-top-40 margin-bottom-20 margin-right-10" disabledBackgroundColor="rgba(0,0,0,0.12)" disabledLabelColor="#999" buttonStyle={{height:"auto",lineHeight:"auto"}} labelStyle={{height:"auto",display:"inline-block",padding:"20px"}} overlayStyle={{height:"auto",borderRadius:"3px"}} label="Update"></RaisedButton> : <RaisedButton primary={true} onClick={() => this.create()} className="mui-button-standard margin-top-40 margin-bottom-20 margin-right-10" disabledBackgroundColor="rgba(0,0,0,0.12)" disabledLabelColor="#999" buttonStyle={{height:"auto",lineHeight:"auto"}} labelStyle={{height:"auto",display:"inline-block",padding:"20px"}} overlayStyle={{height:"auto",borderRadius:"3px"}} label="Create"></RaisedButton>;
+        let usernameField = this.state.update ? <TextField style={{width:"100%"}} id="username" disabled={true} floatingLabelText="Username" value={this.state.username} onChange={this.usernameChanged.bind(this)} /> : <TextField style={{width:"100%"}} id="name" floatingLabelText="Username" value={this.state.username} onChange={this.usernameChanged.bind(this)} />;
+        let passwordField = this.state.update ? <div><TextField style={{width:"70%"}} id="password" disabled={true} floatingLabelText="Password" value="&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;" onChange={this.usernameChanged.bind(this)} /><i className="change-password" onClick={ () => this.changePassword() }>change password</i></div> : <TextField style={{width:"100%"}} id="password" floatingLabelText="Password" value={this.state.password} onChange={this.passwordChanged.bind(this)} />;
+
+        const buttonTheme = getMuiTheme({
+           palette: {
+             primary1Color: "#F44336",
+             accent1Color: "#DDDDDD"
+           }
+        });
+
+        const inputTheme = getMuiTheme({
+           palette: {
+             primary1Color: "#0088FF"
+           }
+        });
 
         return (
             <Dialog modal={true} contentStyle={{width:"80%", maxWidth:"none"}} open={this.state.open} autoScrollBodyContent={true}>
@@ -255,33 +272,34 @@ class CreateAccountForm extends React.Component {
             
               {!this.state.updatePassword &&
                 <div className="animated fadeIn">            
-              <div className="modal-title">{title}</div>
+                  <div className="modal-title">{title}</div>
               
-              <div style={{width:"50%", float:"left"}}>
-              {this.state.error && this.state.error.length > 0 &&
-                 <div className="validation-error">{this.state.error}</div>
-              }        
+                  <div style={{width:"50%", float:"left"}}>
+                    {this.state.error && this.state.error.length > 0 &&
+                      <div className="validation-error">{this.state.error}</div>
+                    }        
               
-              <table style={{width:"100%", padding:"10px 60px 30px 60px"}}>
-                <tr>
-                  <td className="form-key">Username</td>
-                     <td className="form-value">{usernameField}</td>
-                </tr>
-                <tr>
-                  <td className="form-key">Password</td>
-                  <td className="form-value">{passwordField}</td>
-                </tr>                                
-              </table>
+                    <div style={{padding:"15px 100px"}}>
+                    <MuiThemeProvider muiTheme={inputTheme}>
+                      <div>
+                        {usernameField}
+                        {passwordField}
+                      </div>
+                    </MuiThemeProvider>
               
-              <div style={{textAlign:"center", paddingBottom:"30px"}}>
-                {button}
-                <button className="tok-button tok-cancel center" onClick={() => this.hide()}>Cancel</button>
-              </div>              
-              </div>
+                    <MuiThemeProvider muiTheme={buttonTheme}>
+                      <div style={{textAlign:"center", paddingBottom:"30px"}}>
+                        {button}
+                        <RaisedButton secondary={true} onClick={() => this.hide()} className="mui-button-standard margin-top-40 margin-bottom-20" disabledBackgroundColor="rgba(0,0,0,0.12)" disabledLabelColor="#999" buttonStyle={{height:"auto",lineHeight:"auto"}} labelStyle={{height:"auto", display:"inline-block", padding:"20px", color:"#333"}} overlayStyle={{height:"auto",borderRadius:"3px", color:"#333"}} label="Cancel"></RaisedButton>
+                        {this.state.loading && <div className="progress modal-progress"><div className="indeterminate"></div></div> }
+                      </div>
+                    </MuiThemeProvider>
+                    </div>
+                  </div>
               
               <div style={{width:"50%", height:"600px", overflow:"scroll"}}>
-                  <div style={{width:"100%", padding:"0 65px 0 65px"}}>
-                    <div className="form-key form-header">Roles</div>
+                  <div style={{width:"100%", padding:"0 65px 0 65px", marginTop:"20px"}}>
+                    <div className="select-table-header">Roles</div>
                   </div>
                 <table className="display-table select-table">
                   <tbody>
