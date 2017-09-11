@@ -87,7 +87,7 @@ class Apps extends React.Component {
     } 
 
     render() {
-        let page = this.state.error != null ? <ApplicationError error={this.state.error} /> : <div><ViewApps apps={this.state.result} clientClicked={ this.clientClicked.bind(this) } clientCreated={ this.clientCreated.bind(this) } clientUpdated={ this.clientUpdated.bind(this) } clientDeleted={ this.clientDeleted.bind(this) } pageRequested={ this.pageRequested.bind(this) }/> <ViewApp app={this.state.app} /></div>;
+        let page = this.state.error != null ? <ApplicationError error={this.state.error} /> : <div><ViewApps apps={this.state.result} clientClicked={ this.clientClicked.bind(this) } clientCreated={ this.clientCreated.bind(this) } clientUpdated={ this.clientUpdated.bind(this) } clientDeleted={ this.clientDeleted.bind(this) } pageRequested={ this.pageRequested.bind(this) }/> <ViewApp app={this.state.app} clientClicked={ this.clientClicked.bind(this) } clientCreated={ this.clientCreated.bind(this) } clientUpdated={ this.clientUpdated.bind(this) } clientDeleted={ this.clientDeleted.bind(this) } /></div>;
         let output = this.state.loading ? <Loader /> : page;
         
         return (

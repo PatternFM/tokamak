@@ -43,7 +43,7 @@ class ViewAccount extends React.Component {
                </MuiThemeProvider>    
              </div>
              
-             <table className="details-table" class="details-table">
+             <table className="details-table">
                 <tbody>
                   <tr>
                     <td className="key">Username</td>
