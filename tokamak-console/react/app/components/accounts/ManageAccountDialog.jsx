@@ -273,8 +273,7 @@ class CreateAccountForm extends React.Component {
                     </tbody>
                   </table>
                 </div>                     
-                                      
-                  </div>
+              </div>
               }            
             
               {!this.state.updatePassword &&

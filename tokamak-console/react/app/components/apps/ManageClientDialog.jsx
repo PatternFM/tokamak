@@ -13,6 +13,7 @@ import TextField from 'material-ui/TextField';
 import { MuiThemeProvider } from 'material-ui/styles';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import { withStyles, createStyleSheet } from 'material-ui/styles';
+import FontIcon from 'material-ui/FontIcon';
 
 class CreateClientForm extends React.Component {
     propTypes: {
@@ -337,7 +338,8 @@ class CreateClientForm extends React.Component {
 
         const buttonTheme = getMuiTheme({
            palette: {
-             primary1Color: "#F44336"
+             primary1Color: "#F44336",
+             accent1Color: "#DDDDDD"
            }
         });
 
@@ -349,42 +351,48 @@ class CreateClientForm extends React.Component {
 
         return (
             <Dialog modal={true} contentStyle={{width:"80%", maxWidth:"none"}} open={this.state.open}>
-              {this.state.updateSecret && 
+            
+            
+             {this.state.updateSecret && 
                   <div className="animated fadeIn">
-                    <div className="modal-title">Update Secret</div>
+                    <div className="modal-title">Update Client Secret</div>
                     
                     <div style={{width:"50%", float:"left"}}>
                       {this.state.error && this.state.error.length > 0 &&
-                        <div className="validation-error">{this.state.error}</div>
+                        <div className="validation-error margin-top-40 margin-left-50 margin-right-50">
+                          <div className="warn"><FontIcon className="material-icons" color={warn}>warning</FontIcon></div>
+                          <p>{this.state.error}</p>
+                          <br style={{clear:"both"}} />
+                        </div>
                       }        
               
-                      <table style={{width:"100%", padding:"10px 60px 30px 60px"}}>
-                        <tr>
-                          <td className="form-key">New Secret</td>
-                          <td className="form-value"><input className="tok-textfield" type="password" name="clientSecret" value={this.state.newClientSecret} onChange={this.newClientSecretChanged.bind(this)} autoComplete="off" /></td>
-                        </tr>
-                        <tr>
-                          <td className="form-key">Confirm Secret</td>
-                          <td className="form-value"><input className="tok-textfield" type="password" name="confirmClientSecret" value={this.state.confirmNewClientSecret} onChange={this.confirmNewClientSecretChanged.bind(this)} autoComplete="off" /></td>
-                        </tr>                                                                                                        
-                      </table>
-              
-                      <div style={{textAlign:"center", paddingBottom:"30px"}}>
-                        <button className="tok-button center" style={{marginRight:"10px"}} onClick={ () => this.updateSecret() }>Update</button>
-                        <button className="tok-button tok-cancel center" onClick={() => this.cancelUpdateSecret()}>Cancel</button>
-                      </div>
-                      <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
-                    </div> 
+                      <MuiThemeProvider muiTheme={inputTheme}>
+                        <div style={{padding:"15px 100px"}}>
+                          <TextField style={{width:"100%"}} type="password" floatingLabelText="New Client Secret" value={this.state.newClientSecret} onChange={this.newClientSecretChanged.bind(this)} />
+                          <TextField style={{width:"100%"}} type="password" floatingLabelText="Confirm Client Secret" value={this.state.confirmNewClientSecret} onChange={this.confirmNewClientSecretChanged.bind(this)} />
+                        </div>
+                      </MuiThemeProvider> 
+                      
+                      <MuiThemeProvider muiTheme={buttonTheme}>
+                        <div style={{textAlign:"center", paddingBottom:"30px"}}>
+                          <RaisedButton primary={true} onClick={() => this.updateSecret()} className="mui-button-standard margin-top-40 margin-bottom-20 margin-right-10" disabledBackgroundColor="rgba(0,0,0,0.12)" disabledLabelColor="#999" buttonStyle={{height:"auto",lineHeight:"auto"}} labelStyle={{height:"auto",display:"inline-block",padding:"20px"}} overlayStyle={{height:"auto",borderRadius:"3px"}} label="Update"></RaisedButton>
+                          <RaisedButton secondary={true} onClick={() => this.cancelUpdateSecret()} className="mui-button-standard margin-top-40 margin-bottom-20" disabledBackgroundColor="rgba(0,0,0,0.12)" disabledLabelColor="#999" buttonStyle={{height:"auto",lineHeight:"auto"}} labelStyle={{height:"auto", display:"inline-block", padding:"20px", color:"#333"}} overlayStyle={{height:"auto",borderRadius:"3px", color:"#333"}} label="Cancel"></RaisedButton>
+                          {this.state.loading && <div className="progress modal-progress"><div className="indeterminate"></div></div> }
+                        </div>
+                      </MuiThemeProvider>                      
+                      
+                      <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+                    </div>  
                     
                 <div style={{width:"50%", height:"600px", overflow:"scroll"}}>
-                  <div style={{width:"100%", padding:"0 65px 0 65px"}}>
-                    <div className="form-key form-header">Client Secret Policy</div>
+                  <div style={{width:"100%", padding:"25px 65px 0 65px"}}>
+                    <div className="select-table-header">Client Secret Policy</div>
                   </div>
                   
                   <table className="display-table select-table">
                     <tbody>
                       <tr>
-                        <td className="dtr left-pad-0">The secret must be at least {this.state.policy.minLength} characters long.</td>
+                        <td className="dtr left-pad-0">The client secret must be at least {this.state.policy.minLength} characters long.</td>
                       </tr>
                       {this.state.policy.requireSpecialCharacter &&
                       <tr>
@@ -413,11 +421,9 @@ class CreateClientForm extends React.Component {
                       }                       
                     </tbody>
                   </table>
-                </div>  
-                                    
-                                       
-                  </div>
-              }
+                </div>                     
+              </div>
+              }     
               
               {!this.state.updateSecret &&
                 <div className="animated fadeIn">
@@ -467,7 +473,7 @@ class CreateClientForm extends React.Component {
               
                 <div style={{width:"50%", height:"600px", overflow:"scroll"}}>
                   <div style={{width:"100%", padding:"0 65px 0 65px"}}>
-                    <div className="form-key form-header">Grant Types</div>
+                    <div className="select-table-header">Grant Types</div>
                   </div>
                   
                   <table className="display-table select-table">
@@ -486,7 +492,7 @@ class CreateClientForm extends React.Component {
                   </table>  
 
 <div style={{width:"100%", padding:"0 65px 0 65px"}}>
-     <div className="form-key form-header">Scopes</div>
+     <div className="select-table-header">Scopes</div>
 </div>
 <table className="display-table select-table">
   <tbody>
@@ -506,7 +512,7 @@ class CreateClientForm extends React.Component {
 {this.state.authorities.length > 0 &&
 <div>
   <div style={{width:"100%", padding:"0 65px 0 65px"}}>
-     <div className="form-key form-header">Authorities</div>
+     <div className="select-table-header">Authorities</div>
   </div>
 <table className="display-table select-table">
   <tbody>
@@ -528,7 +534,7 @@ class CreateClientForm extends React.Component {
 {this.state.audiences.length > 0 &&
 <div>
   <div style={{width:"100%", padding:"0 65px 0 65px"}}>
-     <div className="form-key form-header">Audiences</div>
+     <div className="select-table-header">Audiences</div>
   </div>
   <table className="display-table select-table">
     <tbody>

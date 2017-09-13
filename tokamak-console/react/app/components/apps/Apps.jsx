@@ -71,6 +71,10 @@ class Apps extends React.Component {
         }
         result.payload = clients;
         this.setState({ result:result });
+
+        if(clients.length > 1 && index > 0) {
+            this.setState({ app:clients[index - 1] });
+        }        
     }
 
     pageRequested(page) {
